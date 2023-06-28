@@ -1,0 +1,7 @@
+.clock {
+  margin-inline: auto;
+  display: inline-block;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}

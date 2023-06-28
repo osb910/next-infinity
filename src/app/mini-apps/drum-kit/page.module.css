@@ -1,0 +1,17 @@
+.main {
+  background: url('/img/background-1.jpg') bottom center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding-inline: 2rem;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, auto));
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  flex: 1;
+}

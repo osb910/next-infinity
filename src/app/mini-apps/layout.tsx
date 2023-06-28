@@ -1,6 +1,5 @@
-import './globals.css';
+import Footer from '@/components/Footer';
 import {Atkinson_Hyperlegible, Roboto_Mono} from 'next/font/google';
-import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
 
 export const metadata = {
   title: 'Next.js 30',
@@ -21,10 +20,9 @@ const atkinson = Atkinson_Hyperlegible({
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang='en'>
-      <body className={`${roboto.className} ${atkinson.className}`}>
-        <SoundProvider>{children}</SoundProvider>
-      </body>
-    </html>
+    <>
+      {children}
+      <Footer />
+    </>
   );
 }
