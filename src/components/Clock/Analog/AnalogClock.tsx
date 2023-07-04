@@ -4,12 +4,11 @@ import {useMemo} from 'react';
 import styles from './AnalogClock.module.css';
 import {range} from '@/utils/numbers';
 import Spinner from '@/components/Spinner/Spinner';
+import SecondHand from './SecondHand';
+// import clockFace from '/img/AnalogClock_still_frame.svg';
 
-interface AnalogClockProps {}
-
-const AnalogClock = ({}: AnalogClockProps) => {
-  const time = useTime({tickEvery: 1000});
-  console.log(time);
+const AnalogClock = () => {
+  const time = useTime({tickSound: true});
   const numbers = useMemo(() => [12, ...range(1, 12)], []);
   if (!time) return <Spinner />;
   let hours = time?.getHours() ?? 0;
@@ -24,11 +23,11 @@ const AnalogClock = ({}: AnalogClockProps) => {
   return (
     <time dateTime={time.toISOString()} className={styles.clock}>
       <div className={styles.clockFace}>
-        {numbers.map(number => (
+        {/* {numbers.map(number => (
           <span key={number} className={styles.label}>
             {number}
           </span>
-        ))}
+        ))} */}
         <div
           style={{transform: `rotate(${hoursDegrees}deg)`}}
           className={`${styles.hand} ${styles.hour}`}
@@ -47,15 +46,24 @@ const AnalogClock = ({}: AnalogClockProps) => {
           }}
           className={`${styles.hand} ${styles.second}`}
         >
-          <span
-            className={styles.fill}
-            style={
-              {
-                // transform: `rotate(-${secondsDegrees}deg)`,
-              }
-            }
-          ></span>
+          <span className={styles.fill}></span>
         </div>
+        {/* <div
+          style={{
+            transform: `rotate(${secondsDegrees}deg)`,
+          }}
+          className={`${styles.hand} ${styles.second}`}
+        >
+          <SecondHand />
+        </div> */}
+
+        {/* element.style {
+    fill: black;
+    stroke: black;
+    color: black;
+    background-color: black;
+    width: 100%;
+    height: 100%; */}
       </div>
     </time>
   );

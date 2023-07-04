@@ -1,0 +1,88 @@
+.logistics {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  background-color: #2b2b2b;
+  padding: 2em;
+  max-width: 50rem;
+  width: 80%;
+  margin: -1em auto;
+  color: #d5eeeb;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75em;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  flex-shrink: 0;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid white;
+}
+
+.image img {
+  width: 8rem;
+  height: 8rem;
+  object-fit: cover;
+}
+
+@keyframes shimmer {
+  from {
+    opacity: 0.333;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fakeImage {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid white;
+  aspect-ratio: 400 / 275;
+  object-fit: cover;
+  background: #eee;
+  animation: shimmer 800ms infinite alternate ease-in-out;
+}
+
+.list {
+  flex: 3;
+  display: flex;
+  gap: 2em;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logistics address {
+  /* white-space: pre; */
+}
+
+@media (min-width: 768px) {
+  .logistics {
+    padding: 2rem;
+    margin: -2rem auto;
+    gap: 3rem;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .image {
+    width: 16rem;
+    height: 16rem;
+  }
+
+  .image img {
+    width: 16rem;
+    height: 16rem;
+  }
+
+  .list {
+    align-items: flex-start;
+  }
+}

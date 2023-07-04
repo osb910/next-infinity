@@ -29,19 +29,23 @@
   display: grid;
   grid-template-columns: repeat(31, 1fr);
   grid-template-rows: repeat(31, 1fr);
+  background-image: url('/img/AnalogClock_still_frame.svg');
+  background-size: 110%;
+  background-position: 50% 50%;
   align-items: center;
   justify-items: center;
   border-radius: 50%;
   font-weight: 700;
-  background-color: #efefef;
-  transform: translateY(-3px); /* account for the height of the clock hands */
+  /* background-color: #efefef; */
+  /* account for the height of the clock hands */
+  transform: translateY(-3px);
 }
 
 .hand {
   position: absolute;
   width: 50%;
   height: calc(var(--size) / 50);
-  top: 50%;
+  inset-block-start: 49%;
   display: flex;
   align-items: center;
   transform-origin: 100%;

@@ -1,5 +1,10 @@
 import './globals.css';
-import {Atkinson_Hyperlegible, Roboto_Mono} from 'next/font/google';
+import {
+  Atkinson_Hyperlegible,
+  Roboto_Mono,
+  Lato,
+  Redacted_Script,
+} from 'next/font/google';
 import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
 
 export const metadata = {
@@ -19,10 +24,26 @@ const atkinson = Atkinson_Hyperlegible({
   subsets: ['latin'],
 });
 
+const lato = Lato({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
+
+const loadingFont = Redacted_Script({
+  weight: ['400'],
+  subsets: ['latin'],
+});
+
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  const style: {[key: string]: string} = {
+    '--font-family-loading': loadingFont.style.fontFamily,
+  };
   return (
-    <html lang='en'>
-      <body className={`${roboto.className} ${atkinson.className}`}>
+    <html lang='en' style={style}>
+      <body
+        className={`${roboto.className} ${atkinson.className} ${lato.className}`}
+        suppressHydrationWarning
+      >
         <SoundProvider>{children}</SoundProvider>
       </body>
     </html>

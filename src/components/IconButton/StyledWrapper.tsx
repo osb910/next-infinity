@@ -2,19 +2,19 @@ import styled, {keyframes} from 'styled-components';
 
 const bump = keyframes`
   0% {
-    transform: scale(1);
+    transform: scale(1) rotate(var(--rotation-deg));
   }
   10% {
-    transform: scale(0.95);
+    transform: scale(0.95) rotate(var(--rotation-deg));
   }
   30% {
-    transform: scale(1.04);
+    transform: scale(1.04) rotate(var(--rotation-deg));
   }
   50% {
-    transform: scale(1.08);
+    transform: scale(1.08) rotate(var(--rotation-deg));
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(var(--rotation-deg));
   }
 `;
 
@@ -64,11 +64,13 @@ const Wrapper = styled.button`
     transform: scale(1.08) rotate(var(--rotation-deg));
   }
 
-  &.rtl {
+  .rtl &,
+  [dir='rtl'] & {
     --rotation-deg: -45deg;
   }
 
-  &.rtl svg {
+  .rtl & svg,
+  [dir='rtl'] & svg {
     --rotation-deg: 135deg;
   }
 

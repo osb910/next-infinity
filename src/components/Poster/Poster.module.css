@@ -1,0 +1,25 @@
+.poster {
+  width: 100%;
+  height: 100%;
+  padding-block: 0.5em;
+  padding-inline: 0.5em;
+  display: grid;
+  place-content: center;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: all 300ms ease;
+  cursor: pointer;
+  background-color: rgba(10, 10, 10, 0.6);
+}
+
+.link {
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+  color: rgb(var(--color-primary-rgb));
+}
+
+.poster:where(:hover, :focus) {
+  transform: scale(1.05);
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.5);
+}

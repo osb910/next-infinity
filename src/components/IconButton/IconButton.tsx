@@ -1,8 +1,7 @@
 import {ReactNode} from 'react';
-import Wrapper from './StyledWrapper';
-// @ts-ignore
 import useSound from 'use-sound';
 import useSoundEnabled from '../SoundToggler/sound-enabled';
+import styles from './IconButton.module.css';
 
 export type IconButtonProps = {
   icon: JSX.Element;
@@ -29,17 +28,18 @@ const IconButton = ({
   const [playOn] = useSound('/sfx/pop-up-on.mp3', {soundEnabled, volume: 0.25});
 
   return (
-    <Wrapper
-      className={`${className ?? ''} bump`}
+    // @ts-ignore
+    <button
+      className={`${className ?? ''} bump ${styles.button}`}
       onClick={() => clickHandler?.()}
-      onMouseDown={playActive}
-      onMouseUp={playOn}
+      onMouseDown={() => playActive()}
+      onMouseUp={() => playOn()}
       key={highlightDeps?.join('')}
       {...delegated}
     >
       {icon}
       {children}
-    </Wrapper>
+    </button>
   );
 };
 

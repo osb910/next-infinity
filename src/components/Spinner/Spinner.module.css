@@ -11,6 +11,7 @@
 .wrapper {
   display: block;
   animation: spin var(--speed) linear infinite;
+  margin: 0 auto;
 }
 
 [dir='rtl'] .wrapper {

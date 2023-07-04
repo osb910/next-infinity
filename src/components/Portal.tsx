@@ -10,7 +10,7 @@ const Portal = ({lang, children}: {lang?: string; children: ReactNode}) => {
     const dir = lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr';
     const portal = new DOMParser().parseFromString(
       `
-      <div data-portal${id} dir=${dir} class='${dir}'></div>
+      <div data-portal=${id} dir=${dir} class='${dir}'></div>
     `,
       'text/html'
     ).body.firstChild as HTMLElement;
