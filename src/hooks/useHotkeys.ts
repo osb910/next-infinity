@@ -1,4 +1,5 @@
-import {useEffect, useMemo, MutableRefObject} from 'react';
+'use client';
+import {useEffect, useMemo, MutableRefObject, useRef} from 'react';
 
 export type HotKey = {
   hotKey: string;
@@ -10,8 +11,7 @@ const useHotKeys = <T>(
   keyMap: HotKey[],
   ref?: MutableRefObject<T>
 ): string[] => {
-  const element = (ref?.current as HTMLElement) ?? window;
-  let keyActions: any;
+  const keyActions = useRef<any>();
 
   const hotKeyRegex = useMemo(
     (): RegExp =>
@@ -38,7 +38,8 @@ const useHotKeys = <T>(
   const metaRegex = useMemo((): RegExp => /(\B#|Win)\+?(?!Left|Right)/i, []);
 
   useEffect(() => {
-    keyActions = keyMap.map(({hotKey, run, universal}) => {
+    const element = (ref?.current as HTMLElement) ?? window;
+    keyActions.current = keyMap.map(({hotKey, run, universal}) => {
       let [char, ...mods]: any = hotKey
         .replace(hotKeyRegex, (_, mods, char) => {
           mods = mods
@@ -68,7 +69,7 @@ const useHotKeys = <T>(
     const handleKeyDown = (evt: KeyboardEvent) => {
       evt.stopPropagation();
       const {key, code} = evt;
-      for (let {char, mods, run, universal} of keyActions) {
+      for (let {char, mods, run, universal} of keyActions.current) {
         const isHotKey = universal ? char === code : char === key;
         if (
           isHotKey &&
@@ -92,7 +93,7 @@ const useHotKeys = <T>(
         handleKeyDown as unknown as (evt: Event) => void
       );
   }, [
-    element,
+    ref,
     keyMap,
     hotKeyRegex,
     leftKeyRegex,
@@ -103,9 +104,9 @@ const useHotKeys = <T>(
     metaRegex,
   ]);
 
-  if (!keyActions) return [''];
+  if (!keyActions.current) return [''];
 
-  return keyActions.map(({char, mods}: {char: string; mods: any[]}) => {
+  return keyActions.current.map(({char, mods}: {char: string; mods: any[]}) => {
     const modKeys = mods.map(({modKey, dir}) =>
       dir ? `${modKey}${dir}` : modKey
     );

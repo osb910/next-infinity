@@ -1,7 +1,7 @@
 import classes from './ErrorAlert.module.css';
 
-function ErrorAlert(props) {
-  return <div className={classes.alert}>{props.children}</div>;
+function ErrorAlert({children}: {children: React.ReactNode}) {
+  return <div className={classes.alert}>{children}</div>;
 }
 
 export default ErrorAlert;
