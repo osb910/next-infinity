@@ -1,11 +1,11 @@
 import {mongoConnect} from '@/utils/database';
+// const localMongoUri = `mongodb://localhost:27017/next-events`;
 
-const mongoUri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.l774dlz.mongodb.net/next-events?retryWrites=true&w=majority`;
-// const mongoUri = `mongodb://localhost:27017/next-events`;
-// 'ac-gvklwum-shard-00-01.l774dlz.mongodb.net:27017,ac-gvklwum-shard-00-00.l774dlz.mongodb.net:27017,ac-gvklwum-shard-00-02.l774dlz.mongodb.net:27017';
-// 'ssl=true&replicaSet=ac-gvklwum-shard-0&authSource=adminDB&';
+// const mongoUri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.l774dlz.mongodb.net/next-events?retryWrites=true&w=majority`;
+const oldMongoUri = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@ac-gvklwum-shard-00-00.l774dlz.mongodb.net:27017,ac-gvklwum-shard-00-01.l774dlz.mongodb.net:27017,ac-gvklwum-shard-00-02.l774dlz.mongodb.net:27017/next-events?ssl=true&replicaSet=atlas-i4i6o3-shard-0&authSource=admin&retryWrites=true&w=majority`;
+
 const dbConnectNextEvents = async (): Promise<void> => {
-  await mongoConnect(mongoUri);
+  await mongoConnect(oldMongoUri);
 };
 
 export {dbConnectNextEvents};
