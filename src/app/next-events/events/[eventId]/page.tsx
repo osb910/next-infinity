@@ -4,10 +4,6 @@ import EventContent from '@/components/events/event-detail/EventContent';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 import {Metadata} from 'next';
 
-export const metadata: Metadata = {
-  title: 'All Events',
-};
-
 interface EventDetailProps {
   params: {
     eventId: string;
