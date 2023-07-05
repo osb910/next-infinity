@@ -24,10 +24,7 @@ const FilteredEvents = async ({params}: FilteredEventsProps) => {
   if (!params.slug) return <Spinner />;
   const [year, month] = params.slug;
   const res = await fetch(
-    getURL(`/api/events/search?year=${year}&month=${month}`),
-    {
-      next: {revalidate: 0},
-    }
+    getURL(`/api/events/search?year=${year}&month=${month}`)
   );
   const data: Event[] | {error: string; status: number} = await res.json();
   return (
