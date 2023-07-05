@@ -12,7 +12,7 @@ export const GET = async (
 ) => {
   try {
     const res = await Event.findById(params.event);
-    return NextResponse.json(res);
+    return NextResponse.json(res, {status: 200});
   } catch (err) {
     console.error(err);
     throw err;

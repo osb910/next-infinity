@@ -7,7 +7,7 @@ export const GET = async (req: Request) => {
     const isFeatured = searchParams.has('featured');
     const filter = isFeatured ? {isFeatured: true} : {};
     const res = await Event.find(filter).limit(3);
-    return NextResponse.json(res);
+    return NextResponse.json(res, {status: 200});
   } catch (err) {
     console.error(err);
     throw err;
