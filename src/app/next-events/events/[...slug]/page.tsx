@@ -7,6 +7,7 @@ import {Event} from '../Event.model';
 import EventsSearch from '@/components/events/EventsSearch';
 import styles from './page.module.css';
 import {Metadata} from 'next';
+import {getURL} from '@/utils/path';
 
 interface FilteredEventsProps {
   params: {
@@ -23,7 +24,7 @@ const FilteredEvents = async ({params}: FilteredEventsProps) => {
   if (!params.slug) return <Spinner />;
   const [year, month] = params.slug;
   const res = await fetch(
-    `${process.env.ENDPOINT}/events/search?year=${year}&month=${month}`,
+    getURL(`/api/events/search?year=${year}&month=${month}`),
     {
       next: {revalidate: 0},
     }

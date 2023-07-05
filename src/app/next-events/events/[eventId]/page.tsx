@@ -3,6 +3,7 @@ import EventLogistics from '@/components/events/event-detail/EventLogistics';
 import EventContent from '@/components/events/event-detail/EventContent';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 import {Metadata} from 'next';
+import {getURL} from '@/utils/path';
 
 interface EventDetailProps {
   params: {
@@ -13,7 +14,7 @@ interface EventDetailProps {
 export async function generateMetadata({
   params,
 }: EventDetailProps): Promise<Metadata> {
-  const res = await fetch(`${process.env.ENDPOINT}/events/${params.eventId}`, {
+  const res = await fetch(getURL(`/api/events/${params.eventId}`), {
     next: {revalidate: 30},
   });
   const event = await res.json();
@@ -27,12 +28,9 @@ export async function generateMetadata({
 
 const EventDetail = async ({params}: EventDetailProps) => {
   try {
-    const res = await fetch(
-      `${process.env.ENDPOINT}/events/${params.eventId}`,
-      {
-        next: {revalidate: 30},
-      }
-    );
+    const res = await fetch(getURL(`/api/events/${params.eventId}`), {
+      next: {revalidate: 30},
+    });
     const event = await res.json();
     if (!event) return <ErrorAlert>No event found!</ErrorAlert>;
     const {title, description, location, date, image} = event;

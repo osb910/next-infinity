@@ -1,10 +1,11 @@
 import EventItem from '@/components/events/EventItem';
 import {Event} from './events/Event.model';
 import styles from './page.module.css';
+import {getURL} from '@/utils/path';
 
 const HomePage = async () => {
   try {
-    const res = await fetch(`${process.env.ENDPOINT}/events?featured`, {
+    const res = await fetch(getURL('/api/events?featured'), {
       next: {revalidate: 1800}, // 30 minutes
     });
     const events: Event[] = await res.json();
