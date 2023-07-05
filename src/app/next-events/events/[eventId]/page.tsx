@@ -28,7 +28,9 @@ export async function generateMetadata({
 
 const EventDetail = async ({params}: EventDetailProps) => {
   try {
-    const res = await fetch(getURL(`/api/events/${params.eventId}`));
+    const res = await fetch(getURL(`/api/events/${params.eventId}`), {
+      next: {revalidate: 30},
+    });
     const event = await res.json();
     if (!event) return <ErrorAlert>No event found!</ErrorAlert>;
     const {title, description, location, date, image} = event;
