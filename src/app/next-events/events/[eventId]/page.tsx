@@ -16,7 +16,8 @@ export async function generateMetadata({
   params,
 }: EventDetailProps): Promise<Metadata> {
   const res = await fetch(getURL(`/api/events/${params.eventId}`), {
-    next: {revalidate: 30},
+    // next: {revalidate: 30},
+    cache: 'no-store',
   });
   const event = await res.json();
   if (event.error) return {title: event.error, description: event.error};
@@ -31,7 +32,8 @@ export async function generateMetadata({
 const EventDetail = async ({params}: EventDetailProps) => {
   try {
     const res = await fetch(getURL(`/api/events/${params.eventId}`), {
-      next: {revalidate: 30},
+      // next: {revalidate: 30},
+      cache: 'no-store',
     });
     const event = await res.json();
     if (event.error) return <ErrorAlert>{event.error}</ErrorAlert>;

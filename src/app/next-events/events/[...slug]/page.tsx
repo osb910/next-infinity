@@ -25,7 +25,7 @@ const FilteredEvents = async ({params}: FilteredEventsProps) => {
   const [year, month] = params.slug;
   const res = await fetch(
     getURL(`/api/events/search?year=${year}&month=${month}`),
-    {cache: 'no-cache'}
+    {cache: 'no-store'}
   );
   const data: IEvent[] | {error: string; status: number} = await res.json();
   return (
