@@ -1,9 +1,9 @@
-import {NextResponse} from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import Event from '@/app/next-events/Event.model';
 import {isEmail} from '@/utils/validators';
 
 export const PUT = async (
-  req: Request,
+  req: NextRequest,
   {params}: {params: {event: string}}
 ) => {
   try {

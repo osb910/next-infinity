@@ -1,8 +1,8 @@
-import {NextResponse} from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import Subscriber from '@/app/next-events/Subscriber.model';
 import {isEmail} from '@/utils/validators';
 
-export const POST = async (req: Request) => {
+export const POST = async (req: NextRequest) => {
   try {
     const {email} = await req.json();
     if (!isEmail(email)) {

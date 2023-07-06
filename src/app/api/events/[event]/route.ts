@@ -1,8 +1,8 @@
-import {NextResponse} from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import Event, {IEvent} from '@/app/next-events/Event.model';
 
 export const GET = async (
-  req: Request,
+  req: NextRequest,
   {params}: {params: {event: string}}
 ) => {
   try {

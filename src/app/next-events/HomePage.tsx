@@ -6,9 +6,8 @@ import NewsletterRegistration from '@/components/events/input/NewsletterRegistra
 
 const HomePage = async () => {
   try {
-    const res = await fetch(getURL('/api/events?featured'), {
+    const res = await fetch(getURL('/api/events/featured'), {
       next: {revalidate: 1800}, // 30 minutes
-      // cache: 'no-store',
     });
     const events: IEvent[] = await res.json();
     return (
