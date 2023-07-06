@@ -1,13 +1,10 @@
 import {NextResponse} from 'next/server';
 import Event from '@/app/next-events/Event.model';
-import mongoose from 'mongoose';
 import {dbConnectNextEvents} from '@/app/next-events/database';
 
 export const GET = async () => {
   try {
-    const dbName = mongoose.connection?.db?.namespace;
-    console.log({dbName});
-    dbName !== 'next-events' && (await dbConnectNextEvents());
+    await dbConnectNextEvents();
     // const isFeatured = req.nextUrl.searchParams.has('featured');
     // const filter = isFeatured ? {isFeatured: true} : {};
     const res = await Event.find();

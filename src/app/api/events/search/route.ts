@@ -5,6 +5,7 @@ export const GET = async (req: NextRequest) => {
   const {searchParams} = req.nextUrl;
   const year = searchParams.get('year');
   const month = searchParams.get('month');
+  console.log({year, month});
   if (
     !year ||
     !month ||
@@ -15,10 +16,7 @@ export const GET = async (req: NextRequest) => {
     +year < 2021 ||
     +year > 2030
   ) {
-    return NextResponse.json(
-      {error: 'Invalid filter values', status: 422},
-      {status: 422}
-    );
+    throw new Error('Invalid filter values');
   }
 
   const filter = {
@@ -28,6 +26,7 @@ export const GET = async (req: NextRequest) => {
   };
   try {
     const res = await Event.find(filter);
+    console.log({res});
     if (!res || res.length === 0) {
       return NextResponse.json(
         {error: 'No events found for the chosen filter!', status: 404},
@@ -37,6 +36,9 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(res, {status: 200});
   } catch (err) {
     console.error(err);
-    throw err;
+    return NextResponse.json(
+      {error: (err as Error).message, status: 422},
+      {status: 422}
+    );
   }
 };
