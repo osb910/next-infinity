@@ -16,7 +16,10 @@ export const GET = async (req: NextRequest) => {
     +year < 2021 ||
     +year > 2030
   ) {
-    throw new Error('Invalid filter values');
+    return NextResponse.json(
+      {error: 'Invalid filter values', status: 422},
+      {status: 422}
+    );
   }
 
   const filter = {
@@ -36,9 +39,5 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(res, {status: 200});
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      {error: (err as Error).message, status: 422},
-      {status: 422}
-    );
   }
 };

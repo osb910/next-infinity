@@ -1,4 +1,3 @@
-import Spinner from '@/components/Spinner/Spinner';
 import ResultsTitle from '@/components/events/ResultsTitle';
 import ButtonLink from '@/components/ButtonLink/ButtonLink';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
@@ -14,6 +13,7 @@ interface FilteredEventsProps {
   params: {
     slug: string[];
   };
+  searchParams: {[key: string]: string};
 }
 
 export const metadata: Metadata = {
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   description: 'A list of filtered events',
 };
 
-const FilteredEvents = async ({params}: FilteredEventsProps) => {
-  if (!params.slug) return <Spinner />;
-  const [year, month] = params.slug;
+const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
+  if (Object.keys(searchParams).length === 0) return <EventsSearch />;
+  const {year, month} = searchParams;
   await dbConnectNextEvents();
   const res = await fetch(
     getURL(`/api/events/search?year=${year}&month=${month}`),
