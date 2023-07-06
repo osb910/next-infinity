@@ -3,7 +3,7 @@ import ResultsTitle from '@/components/events/ResultsTitle';
 import ButtonLink from '@/components/ButtonLink/ButtonLink';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 import EventItem from '@/components/events/EventItem';
-import {Event} from '../Event.model';
+import {IEvent} from '../../Event.model';
 import EventsSearch from '@/components/events/EventsSearch';
 import styles from './page.module.css';
 import {Metadata} from 'next';
@@ -27,7 +27,7 @@ const FilteredEvents = async ({params}: FilteredEventsProps) => {
     getURL(`/api/events/search?year=${year}&month=${month}`),
     {cache: 'no-cache'}
   );
-  const data: Event[] | {error: string; status: number} = await res.json();
+  const data: IEvent[] | {error: string; status: number} = await res.json();
   return (
     <>
       <EventsSearch />
@@ -42,8 +42,12 @@ const FilteredEvents = async ({params}: FilteredEventsProps) => {
         <>
           <ResultsTitle date={new Date(+year, +month - 1)} />
           <ul className={styles.list}>
-            {data.map((item: Event) => (
-              <EventItem key={item._id} {...item} id={item._id} />
+            {data.map((item: IEvent) => (
+              <EventItem
+                key={item._id?.toString()}
+                {...item}
+                id={item._id?.toString()}
+              />
             ))}
           </ul>
         </>

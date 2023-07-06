@@ -1,7 +1,7 @@
 import EventItem from '@/components/events/EventItem';
 import styles from './page.module.css';
 
-function EventsLoading() {
+const EventsLoading = () => {
   return (
     <>
       <ul className={styles.list}>
@@ -9,6 +9,6 @@ function EventsLoading() {
       </ul>
     </>
   );
-}
+};
 
 export default EventsLoading;

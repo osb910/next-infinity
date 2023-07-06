@@ -1,20 +1,16 @@
 import {NextResponse} from 'next/server';
-import Event from '@/app/next-events/events/Event.model';
-
-// type Route = (
-//   req: Request,
-//   {params}: {params: {event: string}}
-// ) => Promise<NextResponse>;
+import Event, {IEvent} from '@/app/next-events/Event.model';
 
 export const GET = async (
   req: Request,
   {params}: {params: {event: string}}
 ) => {
   try {
-    const res = await Event.findById(params.event);
-    return NextResponse.json(res, {status: 200});
+    const event: IEvent | null = await Event.findById(params.event);
+    if (!event) throw new Error('Event not found');
+    return NextResponse.json(event, {status: 200});
   } catch (err) {
     console.error(err);
-    throw err;
+    return NextResponse.json({error: (err as Error).message}, {status: 404});
   }
 };

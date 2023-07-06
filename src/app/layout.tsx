@@ -6,6 +6,8 @@ import {
   Redacted_Script,
 } from 'next/font/google';
 import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
+import {ToastProvider} from '@/components/Toaster/use-toaster';
+import Toaster from '@/components/Toaster/Toaster';
 
 export const metadata = {
   title: 'Next.js 30',
@@ -44,7 +46,12 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         className={`${roboto.className} ${atkinson.className} ${lato.className}`}
         suppressHydrationWarning
       >
-        <SoundProvider>{children}</SoundProvider>
+        <SoundProvider>
+          <ToastProvider>
+            {children}
+            <Toaster />
+          </ToastProvider>
+        </SoundProvider>
       </body>
     </html>
   );

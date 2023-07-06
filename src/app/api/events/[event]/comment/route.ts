@@ -1,0 +1,48 @@
+import {NextResponse} from 'next/server';
+import Event from '@/app/next-events/Event.model';
+import {isEmail} from '@/utils/validators';
+
+export const PUT = async (
+  req: Request,
+  {params}: {params: {event: string}}
+) => {
+  try {
+    const body = await req.json();
+    const {author, email, comment} = body;
+    if (
+      !email ||
+      !isEmail(email) ||
+      !author ||
+      !author.trim() ||
+      !comment ||
+      !comment.trim()
+    ) {
+      return NextResponse.json(
+        {
+          status: 'warning',
+          message: 'Invalid name, comment, or email address.',
+        },
+        {status: 422}
+      );
+    }
+    const res = await Event.findByIdAndUpdate(params.event, {
+      $push: {comments: {$each: [body], $position: 0}},
+    });
+
+    if (!res) throw new Error('Inserting comment failed.');
+
+    return NextResponse.json(
+      {...body, status: 'success', message: 'Comment added!'},
+      {status: 201}
+    );
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      {
+        status: 'error',
+        message: (err as Error).message,
+      },
+      {status: 500}
+    );
+  }
+};

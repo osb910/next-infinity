@@ -1,5 +1,5 @@
 import {NextResponse} from 'next/server';
-import Event from '@/app/next-events/events/Event.model';
+import Event from '@/app/next-events/Event.model';
 
 export const GET = async (req: Request) => {
   const {searchParams} = new URL(req.url);

@@ -9,7 +9,9 @@ const mongoConnect = async (uri: string): Promise<void> => {
     } as any);
     console.log(`Connected to ${client.connections[0].name} DB!`);
   } catch (err) {
-    console.error(err);
+    console.error(
+      `Connecting to the database failed! ${(err as Error).message}`
+    );
     throw err;
   }
 };

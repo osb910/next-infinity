@@ -1,0 +1,61 @@
+.newsletter {
+  margin: 2em auto;
+  width: 90%;
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.newsletter h2 {
+  text-align: center;
+}
+
+.control input {
+  font: inherit;
+  padding: 0.25em;
+  border-radius: 6px;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border: 1px solid #ccc;
+}
+
+.newsletter button {
+  background-color: #03be9f;
+  border: 1px solid #03be9f;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  color: #dafff7;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.newsletter button:hover,
+.newsletter button:active {
+  background-color: #02afa1;
+  border-color: #02afa1;
+}
+
+.control {
+  display: flex;
+}
+
+.control.invalid {
+  border-block-end: 2px solid red;
+  border-end-start-radius: 6px;
+  border-end-end-radius: 6px;
+}
+
+.error {
+  color: red;
+  font-size: 0.75rem;
+  margin: 0.25em 0;
+}
+
+.control input {
+  flex: 1;
+}

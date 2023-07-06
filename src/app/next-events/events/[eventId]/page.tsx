@@ -4,6 +4,7 @@ import EventContent from '@/components/events/event-detail/EventContent';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
+import Comments from '@/components/events/input/Comments';
 
 interface EventDetailProps {
   params: {
@@ -18,6 +19,7 @@ export async function generateMetadata({
     next: {revalidate: 30},
   });
   const event = await res.json();
+  if (event.error) return {title: event.error, description: event.error};
   const {title, description} = event;
 
   return {
@@ -32,7 +34,7 @@ const EventDetail = async ({params}: EventDetailProps) => {
       next: {revalidate: 30},
     });
     const event = await res.json();
-    if (!event) return <ErrorAlert>No event found!</ErrorAlert>;
+    if (event.error) return <ErrorAlert>{event.error}</ErrorAlert>;
     const {title, description, location, date, image} = event;
     return (
       <>
@@ -46,6 +48,7 @@ const EventDetail = async ({params}: EventDetailProps) => {
         <EventContent>
           <p>{description}</p>
         </EventContent>
+        <Comments comments={event.comments} eventId={params.eventId} />
       </>
     );
   } catch (err) {

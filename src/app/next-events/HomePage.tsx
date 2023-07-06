@@ -1,24 +1,18 @@
-import EventsSearch from '@/components/events/EventsSearch';
 import EventItem from '@/components/events/EventItem';
+import {IEvent} from './Event.model';
 import styles from './page.module.css';
-import {IEvent} from '../Event.model';
-import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
+import NewsletterRegistration from '@/components/events/input/NewsletterRegistration';
 
-export const metadata: Metadata = {
-  title: 'All Events',
-};
-
-const AllEvents = async () => {
+const HomePage = async () => {
   try {
-    const res = await fetch(getURL('/api/events'), {
+    const res = await fetch(getURL('/api/events?featured'), {
       next: {revalidate: 1800}, // 30 minutes
     });
     const events: IEvent[] = await res.json();
-
     return (
-      <>
-        <EventsSearch />
+      <section>
+        <NewsletterRegistration />
         <ul className={styles.list}>
           {events.map(item => (
             <EventItem
@@ -28,11 +22,11 @@ const AllEvents = async () => {
             />
           ))}
         </ul>
-      </>
+      </section>
     );
   } catch (err) {
     console.log(err);
   }
 };
 
-export default AllEvents;
+export default HomePage;
