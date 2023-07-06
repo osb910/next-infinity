@@ -4,5 +4,7 @@ export const register = async () => {
     await dbConnectNextEvents();
   } catch (err) {
     console.error(err);
+    const {dbConnectNextEvents} = await import('./app/next-events/database');
+    await dbConnectNextEvents();
   }
 };

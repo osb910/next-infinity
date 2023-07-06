@@ -5,6 +5,7 @@ import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
 import Comments from '@/components/events/input/Comments';
+import {dbConnectNextEvents} from '../../database';
 
 interface EventDetailProps {
   params: {
@@ -15,6 +16,7 @@ interface EventDetailProps {
 export async function generateMetadata({
   params,
 }: EventDetailProps): Promise<Metadata> {
+  await dbConnectNextEvents();
   const res = await fetch(getURL(`/api/events/${params.eventId}`), {
     // next: {revalidate: 30},
     cache: 'no-store',
@@ -31,6 +33,7 @@ export async function generateMetadata({
 
 const EventDetail = async ({params}: EventDetailProps) => {
   try {
+    await dbConnectNextEvents();
     const res = await fetch(getURL(`/api/events/${params.eventId}`), {
       // next: {revalidate: 30},
       cache: 'no-store',

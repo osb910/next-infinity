@@ -8,6 +8,7 @@ import EventsSearch from '@/components/events/EventsSearch';
 import styles from './page.module.css';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
+import {dbConnectNextEvents} from '../../database';
 
 interface FilteredEventsProps {
   params: {
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 const FilteredEvents = async ({params}: FilteredEventsProps) => {
   if (!params.slug) return <Spinner />;
   const [year, month] = params.slug;
+  await dbConnectNextEvents();
   const res = await fetch(
     getURL(`/api/events/search?year=${year}&month=${month}`),
     {cache: 'no-store'}
