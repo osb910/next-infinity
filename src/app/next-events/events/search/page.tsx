@@ -7,8 +7,8 @@ import EventsSearch from '@/components/events/EventsSearch';
 import styles from './page.module.css';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
-import {dbConnectNextEvents} from '../../database';
 
+export const dynamic = 'force-dynamic';
 interface FilteredEventsProps {
   searchParams: {[key: string]: string};
 }
@@ -22,9 +22,8 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
   const {year, month} = searchParams;
   if (Object.keys(searchParams).length === 0) return <EventsSearch />;
   try {
-    // await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events/search'), {
-      cache: 'no-store',
+      // cache: 'no-store',
       method: 'POST',
       body: JSON.stringify(searchParams),
       headers: {'Content-Type': 'application/json'},
