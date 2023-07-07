@@ -4,7 +4,6 @@ import Event from '@/app/next-events/Event.model';
 export const POST = async (req: NextRequest) => {
   try {
     const {year, month} = await req.json();
-    console.log({year, month});
     if (
       !year ||
       !month ||
@@ -27,7 +26,6 @@ export const POST = async (req: NextRequest) => {
       },
     };
     const res = await Event.find(filter);
-    console.log({res});
     if (!res || res.length === 0) {
       return NextResponse.json(
         {error: 'No events found for the chosen filter!', status: 404},
