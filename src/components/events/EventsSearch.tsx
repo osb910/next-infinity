@@ -1,26 +1,14 @@
 'use client';
-import {FormEvent, useRef} from 'react';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import styles from './EventsSearch.module.css';
-import {useRouter} from 'next/navigation';
+import SearchForm from '../SearchForm/SearchForm';
 
 const EventsSearch = () => {
-  const yearRef = useRef<HTMLSelectElement>(null);
-  const monthRef = useRef<HTMLSelectElement>(null);
-  const router = useRouter();
-  const submit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    const [year, month] = [yearRef.current!.value, monthRef.current!.value];
-    router.push(`/next-events/events/search?year=${year}&month=${month}`, {
-      query: {year, month},
-    });
-  };
-
   return (
-    <form onSubmit={submit} className={styles.form}>
+    <SearchForm searchPath='/next-events/events/search' className={styles.form}>
       <p className={styles.control}>
         <label htmlFor='year'>Year</label>
-        <select ref={yearRef} name='year' id='year'>
+        <select name='year' id='year'>
           <option value='2023'>2023</option>
           <option value='2024'>2024</option>
           <option value='2025'>2025</option>
@@ -28,7 +16,7 @@ const EventsSearch = () => {
       </p>
       <p className={styles.control}>
         <label htmlFor='month'>Month</label>
-        <select ref={monthRef} name='month' id='month'>
+        <select name='month' id='month'>
           <option value='1'>January</option>
           <option value='2'>February</option>
           <option value='3'>March</option>
@@ -44,7 +32,7 @@ const EventsSearch = () => {
         </select>
       </p>
       <ButtonLink>Find Events</ButtonLink>
-    </form>
+    </SearchForm>
   );
 };
 

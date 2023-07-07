@@ -39,7 +39,7 @@ const useInput = (validateValue: (value: any) => boolean) => {
   const isValid = validateValue(state.value);
   const hasError = state.isTouched && !isValid;
 
-  const onValueChange = useCallback((evt: ChangeEvent) => {
+  const changeValue = useCallback((evt: ChangeEvent) => {
     dispatch({type: 'INPUT', value: (evt.target as HTMLInputElement).value});
   }, []);
 
@@ -57,7 +57,7 @@ const useInput = (validateValue: (value: any) => boolean) => {
     inputRef,
     isValid,
     hasError,
-    onValueChange,
+    changeValue,
     onBlur,
     reset,
   };

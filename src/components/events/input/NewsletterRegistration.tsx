@@ -9,7 +9,7 @@ import {isEmail} from '@/utils/validators';
 import ky from 'ky';
 
 const NewsletterRegistration = () => {
-  const {value, inputRef, onValueChange, hasError, onBlur, reset} = useInput(
+  const {value, inputRef, changeValue, hasError, onBlur, reset} = useInput(
     value => isEmail(value)
   );
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ const NewsletterRegistration = () => {
             aria-label='Your email'
             value={value}
             ref={inputRef}
-            onChange={onValueChange}
+            onChange={changeValue}
             onBlur={onBlur}
             pattern={`\\b[\\-\\w!#$%&'*+\\/=?^_\`\\{\\|\\}~]+(?:\\.[\\-\\w!#$%&'*+\\/=?^_\`\\{\\|\\}~]+)*@(?:\\w(?:[\\-\\w]*\\w)?\\.)+\\w(?:[\\-\\w]*\\w)?\\b`}
             required
