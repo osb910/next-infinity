@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const AllEvents = async () => {
   try {
-    await dbConnectNextEvents();
+    // await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events'), {
       next: {revalidate: 1800}, // 30 minutes
     });
