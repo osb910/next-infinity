@@ -6,7 +6,7 @@ import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
 import {dbConnectNextEvents} from '../database';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'All Events',
@@ -16,7 +16,7 @@ const AllEvents = async () => {
   try {
     await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events'), {
-      // next: {revalidate: 1800}, // 30 minutes
+      next: {revalidate: 1800}, // 30 minutes
     });
     const events: IEvent[] = await res.json();
 
