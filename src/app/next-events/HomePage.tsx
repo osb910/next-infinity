@@ -7,7 +7,7 @@ import {dbConnectNextEvents} from './database';
 
 const HomePage = async () => {
   try {
-    // await dbConnectNextEvents();
+    await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events/featured'), {
       next: {revalidate: 1800}, // 30 minutes
     });
