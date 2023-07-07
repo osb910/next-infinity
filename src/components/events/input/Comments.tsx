@@ -7,13 +7,7 @@ import styles from './Comments.module.css';
 import useToaster from '../../Toaster/use-toaster';
 import ky from 'ky';
 
-const Comments = ({
-  eventId,
-  comments,
-}: {
-  eventId: string;
-  comments: Comment[];
-}) => {
+const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {
   const [showComments, setShowComments] = useState(false);
   const [clientComments, setClientComments] = useState<Comment[]>(comments);
   const {createToast} = useToaster();
@@ -25,7 +19,7 @@ const Comments = ({
   const addComment = async (commentData: Comment) => {
     try {
       const json: any = await ky
-        .put(`/api/events/${eventId}/comment`, {json: commentData})
+        .put(`/api/events/${event}/comment`, {json: commentData})
         .json();
       setClientComments(current => [
         {...json, _id: crypto.randomUUID()},
