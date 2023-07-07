@@ -4,9 +4,6 @@ import styles from './Events.module.css';
 import {IEvent} from '../Event.model';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
-import {dbConnectNextEvents} from '../database';
-
-// export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'All Events',
@@ -14,7 +11,6 @@ export const metadata: Metadata = {
 
 const AllEvents = async () => {
   try {
-    // await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events'), {
       next: {revalidate: 1800}, // 30 minutes
     });
