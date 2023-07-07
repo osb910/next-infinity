@@ -1,6 +1,6 @@
 import EventItem from '@/components/events/EventItem';
 import EventsSearch from '@/components/events/EventsSearch';
-import styles from './page.module.css';
+import styles from './Events.module.css';
 
 function EventsLoading() {
   return (
