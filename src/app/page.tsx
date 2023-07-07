@@ -17,7 +17,7 @@ export default function Home() {
       <section className={styles.section}>
         <h2 className={styles.subtitle}>Projects</h2>
         <ol className={styles.apps}>
-          <Poster poster='/img/coding-event.jpg' link='/next-events'>
+          <Poster poster='/img/next-events.png' link='/next-events'>
             Next Events
           </Poster>
         </ol>
@@ -28,7 +28,7 @@ export default function Home() {
           <Poster poster='/img/drum-kit.png' link='/mini-apps/drum-kit'>
             Drum Kit
           </Poster>
-          <Poster poster='/img/coding-event.jpg' link='/mini-apps/analog-clock'>
+          <Poster poster='/img/analog-clock.png' link='/mini-apps/analog-clock'>
             Analog Clock
           </Poster>
         </ol>
