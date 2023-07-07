@@ -12,6 +12,7 @@ const HomePage = async () => {
       next: {revalidate: 1800}, // 30 minutes
     });
     const events: IEvent[] = await res.json();
+    console.log({events});
     return (
       <section>
         <NewsletterRegistration />
