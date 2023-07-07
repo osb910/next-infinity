@@ -1,3 +1,5 @@
+// app/instrumentation.ts
+
 export const register = async () => {
   try {
     const {dbConnectNextEvents} = await import('./app/next-events/database');
