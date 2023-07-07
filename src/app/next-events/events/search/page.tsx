@@ -25,10 +25,12 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
   if (Object.keys(searchParams).length === 0) return <EventsSearch />;
   const {year, month} = searchParams;
   await dbConnectNextEvents();
-  const res = await fetch(
-    getURL(`/api/events/search?year=${year}&month=${month}`),
-    {cache: 'no-store'}
-  );
+  const res = await fetch(getURL('/api/events/search'), {
+    cache: 'no-store',
+    method: 'POST',
+    body: JSON.stringify(searchParams),
+    headers: {'Content-Type': 'application/json'},
+  });
   const data: IEvent[] | {error: string; status: number} = await res.json();
   return (
     <>
@@ -37,7 +39,7 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
         <>
           <ErrorAlert>{data.error}</ErrorAlert>
           <div className='center'>
-            <ButtonLink link='/events'>Show All Events</ButtonLink>
+            <ButtonLink link='/next-events/events'>Show All Events</ButtonLink>
           </div>
         </>
       ) : (

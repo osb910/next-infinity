@@ -8,6 +8,12 @@ import {
 import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
 import {ToastProvider} from '@/components/Toaster/use-toaster';
 import Toaster from '@/components/Toaster/Toaster';
+// import {createServerContext} from 'react';
+
+// export const testServerContext = createServerContext(
+//   'TestServerContext',
+//   'test'
+// );
 
 export const metadata = {
   title: 'Next.js 30',

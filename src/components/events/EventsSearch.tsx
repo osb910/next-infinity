@@ -11,7 +11,9 @@ const EventsSearch = () => {
   const submit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const [year, month] = [yearRef.current!.value, monthRef.current!.value];
-    router.push(`/next-events/events/search?year=${year}&month=${month}`);
+    router.push(`/next-events/events/search?year=${year}&month=${month}`, {
+      query: {year, month},
+    });
   };
 
   return (
