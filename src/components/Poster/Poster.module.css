@@ -13,6 +13,7 @@
 }
 
 .link {
+  min-block-size: 10rem;
   text-align: center;
   text-decoration: none;
   border-radius: 50%;

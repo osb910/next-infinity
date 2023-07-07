@@ -1,13 +1,22 @@
+.header {
+  padding-block: 0.5em;
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  justify-content: space-between;
+  background: rgb(var(--bg-elevated-rgb));
+}
+
 .main {
   block-size: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 0.5em;
   align-items: center;
   flex: 1 0 auto;
+  padding-block: 0.5em;
   padding-inline: 2rem;
-  padding-block: 1rem;
   background-color: rgba(var(--bg-default-rgb), 1);
   background-image: url('/img/Nextjs-logo.svg');
   background-size: 90%;
@@ -24,19 +33,19 @@
   align-items: center;
   gap: 0.25em;
   margin-block: 0;
-  margin-inline: auto;
   font-size: 2.5rem;
   color: var(--color-gray-700);
 }
 
 .title svg {
   align-self: flex-end;
+  flex-shrink: 0;
 }
 
 .description {
-  font-size: 1.25rem;
+  text-align: center;
+  font-size: 1.125rem;
   max-width: var(--max-width);
-  z-index: 2;
   font-family: var(--font-mono);
 }
 
@@ -54,12 +63,11 @@
 
 .apps {
   flex: 1;
-  width: 100%;
-  max-width: 950px;
+  max-width: 95vw;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, auto));
-  grid-template-rows: repeat(auto-fill, minmax(8rem, auto));
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 10rem));
+  grid-template-rows: repeat(auto-fill, minmax(8rem, 10rem));
   justify-content: center;
   align-content: space-evenly;
   gap: 1em;
@@ -130,8 +138,8 @@
 
 @media (min-width: 768px) {
   .apps {
-    grid-template-columns: repeat(auto-fill, minmax(11rem, auto));
-    grid-template-rows: repeat(auto-fill, minmax(11rem, auto));
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 12.5rem));
+    grid-template-rows: repeat(auto-fill, minmax(11rem, 12.5rem));
   }
 }
 
