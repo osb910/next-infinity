@@ -13,8 +13,6 @@ interface FilteredEventsProps {
   searchParams: {[key: string]: string};
 }
 
-type SearchResults = IEvent[] | {error: string; status: number};
-
 export const metadata: Metadata = {
   title: 'Search Events',
   description: 'A list of filtered events',
@@ -24,44 +22,41 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
   const {year, month} = searchParams;
   if (Object.keys(searchParams).length === 0) return <EventsSearch />;
   try {
-    await dbConnectNextEvents();
+    // await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events/search'), {
       cache: 'no-store',
       method: 'POST',
       body: JSON.stringify(searchParams),
       headers: {'Content-Type': 'application/json'},
     });
-    const results: SearchResults = await res.json();
+    const results = await res.json();
+    if (results.error) throw new Error(results.error);
     return (
       <>
         <EventsSearch />
-        {'error' in results ? (
-          <>
-            <ErrorAlert>{results.error}</ErrorAlert>
-            <div className='center'>
-              <ButtonLink link='/next-events/events'>
-                Show All Events
-              </ButtonLink>
-            </div>
-          </>
-        ) : (
-          <>
-            <ResultsTitle date={new Date(+year, +month - 1)} />
-            <ul className={styles.list}>
-              {results.map(item => (
-                <EventItem
-                  key={item._id?.toString()}
-                  {...item}
-                  id={item._id?.toString()}
-                />
-              ))}
-            </ul>
-          </>
-        )}
+        <ResultsTitle date={new Date(+year, +month - 1)} />
+        <ul className={styles.list}>
+          {results.map((item: IEvent) => (
+            <EventItem
+              key={item._id?.toString()}
+              {...item}
+              id={item._id?.toString()}
+            />
+          ))}
+        </ul>
       </>
     );
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    return (
+      <>
+        <EventsSearch />
+        <ErrorAlert>{(err as Error).message}</ErrorAlert>
+        <div className='center'>
+          <ButtonLink link='/next-events/events'>Show All Events</ButtonLink>
+        </div>
+      </>
+    );
   }
 };
 
