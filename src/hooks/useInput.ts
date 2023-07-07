@@ -1,6 +1,6 @@
 'use client';
 
-import {useReducer, useCallback, ChangeEvent} from 'react';
+import {useReducer, useRef, useCallback, ChangeEvent} from 'react';
 
 export type State = {
   value: string;
@@ -34,6 +34,7 @@ const reducer = (state: State, action: Action): State => {
 
 const useInput = (validateValue: (value: any) => boolean) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const isValid = validateValue(state.value);
   const hasError = state.isTouched && !isValid;
@@ -47,11 +48,13 @@ const useInput = (validateValue: (value: any) => boolean) => {
   }, []);
 
   const reset = useCallback(() => {
+    inputRef.current?.blur();
     dispatch({type: 'RESET'});
   }, []);
 
   return {
     value: state.value,
+    inputRef,
     isValid,
     hasError,
     onValueChange,

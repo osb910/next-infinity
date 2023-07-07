@@ -9,8 +9,8 @@ import {isEmail} from '@/utils/validators';
 import ky from 'ky';
 
 const NewsletterRegistration = () => {
-  const {value, onValueChange, hasError, onBlur, reset} = useInput(value =>
-    isEmail(value)
+  const {value, inputRef, onValueChange, hasError, onBlur, reset} = useInput(
+    value => isEmail(value)
   );
   const [loading, setLoading] = useState(false);
   const {createToast} = useToaster();
@@ -43,6 +43,7 @@ const NewsletterRegistration = () => {
             placeholder='Your email'
             aria-label='Your email'
             value={value}
+            ref={inputRef}
             onChange={onValueChange}
             onBlur={onBlur}
             pattern={`\\b[\\-\\w!#$%&'*+\\/=?^_\`\\{\\|\\}~]+(?:\\.[\\-\\w!#$%&'*+\\/=?^_\`\\{\\|\\}~]+)*@(?:\\w(?:[\\-\\w]*\\w)?\\.)+\\w(?:[\\-\\w]*\\w)?\\b`}
