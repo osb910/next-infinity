@@ -34,17 +34,20 @@
   justify-self: start;
 }
 
-.link:has(h1, h2, h3) {
+.link {
   display: flex;
   align-items: baseline;
-  color: inherit;
+  color: var(--color-gray-700);
   text-decoration: none;
   transition: all 300ms ease-in-out;
 }
 
-.link:has(h1, h2, h3):hover svg {
-  animation: colorize 300ms ease-in-out both;
-  color: rgb(var(--color-accent-rgb));
+.link:has(.secondary) {
+  order: -1;
+}
+
+.link:where(:hover, :focus) svg {
+  animation: colorize 300ms ease-in-out forwards;
 }
 
 @media (min-width: 28rem) {

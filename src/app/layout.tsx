@@ -4,6 +4,7 @@ import {
   Roboto_Mono,
   Lato,
   Redacted_Script,
+  Fira_Code,
 } from 'next/font/google';
 import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
 import {ToastProvider} from '@/components/Toaster/use-toaster';
@@ -37,6 +38,11 @@ const lato = Lato({
   subsets: ['latin'],
 });
 
+const fira = Fira_Code({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
+
 const loadingFont = Redacted_Script({
   weight: ['400'],
   subsets: ['latin'],
@@ -45,13 +51,14 @@ const loadingFont = Redacted_Script({
 export default function RootLayout({children}: {children: React.ReactNode}) {
   const style: {[key: string]: string} = {
     '--font-family-loading': loadingFont.style.fontFamily,
+    '--fn-roboto': roboto.style.fontFamily,
+    '--fn-atkinson': atkinson.style.fontFamily,
+    '--fn-lato': lato.style.fontFamily,
+    '--fn-fira': fira.style.fontFamily,
   };
   return (
     <html lang='en' style={style}>
-      <body
-        className={`${roboto.className} ${atkinson.className} ${lato.className}`}
-        suppressHydrationWarning
-      >
+      <body className={`${atkinson.className}`} suppressHydrationWarning>
         <SoundProvider>
           <ToastProvider>
             {children}
