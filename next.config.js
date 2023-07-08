@@ -4,7 +4,16 @@ const nextConfig = {
     instrumentationHook: true,
     esmExternals: 'loose',
     serverComponentsExternalPackages: ['mongoose'],
-    // outputFileTracingRoot: path.join(__dirname, '../../'),
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 };
 

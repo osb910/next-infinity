@@ -2,7 +2,7 @@
   padding-block: 0.5em;
   padding-inline: 0.5rem;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   grid-template-areas: 'subtitle title app-settings';
   justify-content: space-between;
   align-items: baseline;
@@ -81,7 +81,6 @@
   }
 
   .header h2 {
-    grid-area: subtitle;
     font-size: 1.25rem;
   }
 }
@@ -93,11 +92,6 @@
 
   .header h1 {
     font-size: 2rem;
-  }
-
-  .header h2 {
-    grid-area: subtitle;
-    font-size: 1.5rem;
   }
 }
 

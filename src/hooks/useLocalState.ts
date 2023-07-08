@@ -35,6 +35,7 @@ const useLocalState = <T>(
       }
     }
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const useLocalState = <T>(
       key,
       typeof state === 'string' ? state : JSON.stringify(state)
     );
-  }, [state]);
+  }, [state, key]);
 
   return [state, setState, loading];
 };
@@ -61,6 +62,7 @@ export const useLocalReducer = <T, A>(
       dispatch(initialDispatch(storedValue));
     }
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -68,7 +70,7 @@ export const useLocalReducer = <T, A>(
       key,
       typeof state === 'string' ? state : JSON.stringify(state)
     );
-  }, [state]);
+  }, [state, key]);
 
   return [state, dispatch, loading];
 };
@@ -87,6 +89,7 @@ export const useLocalImmerReducer = <T, A>(
       immerDispatch(initialDispatch(storedValue));
     }
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -94,7 +97,7 @@ export const useLocalImmerReducer = <T, A>(
       key,
       typeof immerState === 'string' ? immerState : JSON.stringify(immerState)
     );
-  }, [immerState]);
+  }, [immerState, key]);
 
   return [immerState, immerDispatch, loading];
 };

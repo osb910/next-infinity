@@ -6,9 +6,9 @@ import IconButton from '../IconButton/IconButton';
 import Modal from '../Modal/Modal';
 import Portal from '../Portal';
 import SoundToggler from '../SoundToggler/SoundToggler';
-import {Info, SkipBack} from 'react-feather';
-import Link from 'next/link';
+import {Info} from 'react-feather';
 import styles from './Header.module.css';
+import SiteLogo from '../SiteLogo/SiteLogo';
 
 const Header = ({children}: {children?: React.ReactNode}) => {
   const [showHelp, setShowHelp] = useState<boolean>(false);
@@ -17,10 +17,7 @@ const Header = ({children}: {children?: React.ReactNode}) => {
   return (
     <StyledHeader className={styles.header}>
       {children}
-      <Link className={styles.link} href='/'>
-        <SkipBack size={12} />
-        <h2>Next 30</h2>
-      </Link>
+      <SiteLogo variant='secondary' />
       <section className={`${styles.settings} ${styles.app} settings app`}>
         <SoundToggler />
         <IconButton
@@ -60,17 +57,6 @@ const StyledHeader = styled.header`
     place-content: center;
   }
 
-  a:has(h1, h2, h3) {
-    display: flex;
-    align-items: baseline;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  a:has(h1, h2, h3):hover svg {
-    color: rgb(var(--color-accent-rgb));
-  }
-
   & h1 {
     grid-area: title;
     font-size: 1.5rem;
@@ -81,13 +67,6 @@ const StyledHeader = styled.header`
   & h2 sub {
     letter-spacing: -2px;
     font-size: 0.625em;
-  }
-
-  & h2 {
-    grid-area: subtitle;
-    font-size: 1.125rem;
-    text-align: start;
-    justify-self: start;
   }
 
   & .settings {
@@ -119,11 +98,6 @@ const StyledHeader = styled.header`
     & h1 {
       font-size: 1.65rem;
     }
-
-    & h2 {
-      grid-area: subtitle;
-      font-size: 1.25rem;
-    }
   }
 
   @media (min-width: 40rem) {
@@ -131,11 +105,6 @@ const StyledHeader = styled.header`
 
     & h1 {
       font-size: 2rem;
-    }
-
-    & h2 {
-      grid-area: subtitle;
-      font-size: 1.5rem;
     }
   }
 

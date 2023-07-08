@@ -1,6 +1,6 @@
 import styles from './page.module.css';
-import {PiInfinityDuotone} from 'react-icons/pi';
 import Poster from '@/components/Poster/Poster';
+import SiteLogo from '@/components/SiteLogo/SiteLogo';
 
 const Home = async () => {
   const packages = await import('../../package.json');
@@ -8,10 +8,7 @@ const Home = async () => {
   return (
     <>
       <header className={styles.header}>
-        <h1 className={styles.title}>
-          {'<'}Next <PiInfinityDuotone />
-          {'/>'}
-        </h1>
+        <SiteLogo />
         <p className={styles.description}>
           Full-stack projects & mini-apps with Next.js {nextVersion}
         </p>
@@ -36,6 +33,12 @@ const Home = async () => {
               link='/mini-apps/analog-clock'
             >
               Analog Clock
+            </Poster>
+            <Poster
+              poster='/img/scoped-css-var.png'
+              link='/mini-apps/scoped-css-var'
+            >
+              Scoped CSS Variables
             </Poster>
           </ol>
         </section>

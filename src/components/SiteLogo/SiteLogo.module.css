@@ -1,0 +1,74 @@
+@keyframes colorize {
+  from {
+    color: var(--color-gray-700);
+  }
+  to {
+    color: rgb(var(--color-accent-rgb));
+  }
+}
+
+.logo {
+  margin-block: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  color: var(--color-gray-700);
+}
+
+.logo svg {
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+
+.primary {
+  grid-area: title;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0;
+}
+
+.secondary {
+  grid-area: subtitle;
+  font-size: 1rem;
+  text-align: start;
+  justify-self: start;
+}
+
+.link:has(h1, h2, h3) {
+  display: flex;
+  align-items: baseline;
+  color: inherit;
+  text-decoration: none;
+  transition: all 300ms ease-in-out;
+}
+
+.link:has(h1, h2, h3):hover svg {
+  animation: colorize 300ms ease-in-out both;
+  color: rgb(var(--color-accent-rgb));
+}
+
+@media (min-width: 28rem) {
+  .primary {
+    font-size: 1.75rem;
+  }
+
+  .secondary {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 40rem) {
+  .primary {
+    font-size: 2rem;
+  }
+
+  .secondary {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 72rem) {
+  .primary {
+    font-size: 2.25rem;
+  }
+}
