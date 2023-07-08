@@ -20,7 +20,10 @@ const NewsletterRegistration = () => {
     setLoading(true);
     try {
       const json: any = await ky
-        .post('/api/events/subscribe', {json: {email: value.trim()}})
+        .post('/api/events/subscribe', {
+          json: {email: value.trim()},
+          throwHttpErrors: false,
+        })
         .json();
 
       createToast(json.status, json.message);

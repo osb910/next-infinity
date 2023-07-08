@@ -9,6 +9,7 @@ const subscriberSchema = new Schema<Subscriber>(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
   },
   {timestamps: true}

@@ -21,7 +21,17 @@ export const POST = async (req: NextRequest) => {
       {status: 201}
     );
   } catch (err) {
-    console.error(err);
+    const error = err as Error;
+    if (error.message.includes('duplicate key error')) {
+      return NextResponse.json(
+        {
+          status: 'notice',
+          // @ts-ignore
+          message: `${error.keyValue.email} is already subscribed to the newsletter.`,
+        },
+        {status: 409}
+      );
+    }
     return NextResponse.json(
       {status: 'error', message: 'Inserting data failed.'},
       {status: 500}
