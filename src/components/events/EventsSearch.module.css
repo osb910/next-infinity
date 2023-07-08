@@ -49,9 +49,15 @@
   border-radius: 4px;
 }
 
+.control select,
+.control input {
+  width: 100%;
+}
+
 @media (min-width: 768px) {
   .form {
     flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .controls {
@@ -59,8 +65,8 @@
     flex-direction: row;
   }
 
-  .control select {
-    width: 100%;
+  .control {
+    flex: 1 1 25%;
   }
 
   .form button {

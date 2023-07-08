@@ -9,7 +9,7 @@ import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
 
 interface FilteredEventsProps {
-  searchParams: {[key: string]: string};
+  searchParams: {type: 'any' | 'upcoming' | 'past'; [key: string]: string};
 }
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
-  const {year, month} = searchParams;
+  const {year, month, type, q} = searchParams;
   if (Object.keys(searchParams).length === 0) return <EventsSearch />;
   try {
     const res = await fetch(getURL('/api/events/search'), {
@@ -33,7 +33,7 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
     return (
       <>
         <EventsSearch />
-        <ResultsTitle date={new Date(+year, +month - 1)} />
+        <ResultsTitle filters={{year, month, type, query: q}} />
         <ul className={styles.list}>
           {results.map((item: IEvent) => (
             <EventItem
