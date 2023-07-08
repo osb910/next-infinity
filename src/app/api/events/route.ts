@@ -7,7 +7,7 @@ export const GET = async () => {
     await dbConnectNextEvents();
     // const isFeatured = req.nextUrl.searchParams.has('featured');
     // const filter = isFeatured ? {isFeatured: true} : {};
-    const res = await Event.find();
+    const res = await Event.find().sort({date: 1});
     if (!res) throw new Error('Events not found');
     return NextResponse.json(res, {status: 200});
   } catch (err) {

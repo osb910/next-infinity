@@ -5,7 +5,7 @@ import {dbConnectNextEvents} from '@/app/next-events/database';
 export const GET = async () => {
   try {
     await dbConnectNextEvents();
-    const res = await Event.find({isFeatured: true});
+    const res = await Event.find({isFeatured: true}).sort({date: 1});
     if (!res) throw new Error('Events not found');
     return NextResponse.json(res, {status: 200});
   } catch (err) {

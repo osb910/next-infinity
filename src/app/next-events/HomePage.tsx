@@ -9,7 +9,7 @@ const HomePage = async () => {
   try {
     await dbConnectNextEvents();
     const res = await fetch(getURL('/api/events/featured'), {
-      next: {revalidate: 1800}, // 30 minutes
+      next: {revalidate: 3600}, // 1 hour
     });
     const events: IEvent[] = await res.json();
     console.log({events});
