@@ -54,6 +54,7 @@ export const POST = async (req: NextRequest) => {
 
     const searchFilters = {...dateFilter, ...queryFilter};
 
+    // const count = await Event.countDocuments(searchFilters);
     const res = (await Event.find(searchFilters).sort({date: 1})).filter(
       typeFilter
     );
@@ -64,7 +65,7 @@ export const POST = async (req: NextRequest) => {
         {status: 404}
       );
     }
-    return NextResponse.json(res, {status: 200});
+    return NextResponse.json({events: res, count: res.length}, {status: 200});
   } catch (err) {
     console.error(err);
   }

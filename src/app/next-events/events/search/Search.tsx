@@ -9,7 +9,10 @@ import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
 
 interface FilteredEventsProps {
-  searchParams: {type: 'any' | 'upcoming' | 'past'; [key: string]: string};
+  searchParams: {
+    type: 'any' | 'upcoming' | 'past';
+    [key: string]: string;
+  };
 }
 
 export const dynamic = 'force-dynamic';
@@ -28,14 +31,14 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
       body: JSON.stringify(searchParams),
       headers: {'Content-Type': 'application/json'},
     });
-    const results = await res.json();
-    if (results.error) throw new Error(results.error);
+    const {events, count, error} = await res.json();
+    if (error) throw new Error(error);
     return (
       <>
         <EventsSearch />
-        <ResultsTitle filters={{year, month, type, query: q}} />
+        <ResultsTitle filters={{year, month, type, query: q}} count={count} />
         <ul className={styles.list}>
-          {results.map((item: IEvent) => (
+          {events.map((item: IEvent) => (
             <EventItem
               key={item._id?.toString()}
               {...item}

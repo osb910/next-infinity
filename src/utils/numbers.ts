@@ -13,3 +13,6 @@ export const range = (
   }
   return output;
 };
+
+export const pluralize = (word: string, num: number) =>
+  num === 1 ? `1 ${word}` : `${num} ${word}s`;

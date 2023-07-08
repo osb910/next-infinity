@@ -1,5 +1,6 @@
+import {pluralize} from '@/utils/numbers';
 import ButtonLink from '../ButtonLink/ButtonLink';
-import classes from './ResultsTitle.module.css';
+import styles from './ResultsTitle.module.css';
 
 type Filters = {
   year: string;
@@ -9,9 +10,10 @@ type Filters = {
 };
 interface ResultsTitleProps {
   filters: Filters;
+  count: number;
 }
 
-function ResultsTitle({filters}: ResultsTitleProps) {
+const ResultsTitle = ({filters, count}: ResultsTitleProps) => {
   const {year, month, type, query} = filters;
   const readableDate =
     year === 'any'
@@ -25,16 +27,17 @@ function ResultsTitle({filters}: ResultsTitleProps) {
   const queryDisplay = query ? ` and "${query}"` : '';
 
   return (
-    <section className={classes.title}>
+    <section className={styles.title}>
       <h1>
         {year === 'any' ? 'All ' : ''}
         {type === 'upcoming' ? 'Upcoming ' : type === 'past' ? 'Past ' : ''}
         Events{' '}
         {year === 'any' && !query ? '' : `in ${readableDate}${queryDisplay}`}
       </h1>
+      <p className={styles.hits}>{pluralize('hit', count)}</p>
       <ButtonLink link='/next-events/events'>Show all events</ButtonLink>
     </section>
   );
-}
+};
 
 export default ResultsTitle;
