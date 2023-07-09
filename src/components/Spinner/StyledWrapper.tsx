@@ -15,7 +15,7 @@ const spin = keyframes`
 const Wrapper = styled.span`
   display: block;
   width: max-content;
-  margin: 0 auto;
+  margin: 0.25em;
   color: white;
   animation: ${spin} var(--speed) linear infinite;
 

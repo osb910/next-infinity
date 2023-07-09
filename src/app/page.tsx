@@ -40,6 +40,12 @@ const Home = async () => {
             >
               Scoped CSS Variables
             </Poster>
+            <Poster
+              poster='/img/array-cardio.png'
+              link='/mini-apps/array-cardio'
+            >
+              Array Cardio
+            </Poster>
           </ol>
         </section>
       </main>

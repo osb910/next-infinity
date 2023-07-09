@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from './Poster.module.css';
-import Wrapper from './Wrapper';
+import Image from 'next/image';
 
 interface PosterProps {
   link: string;
@@ -11,9 +11,16 @@ interface PosterProps {
 const Poster = ({link, children, poster}: PosterProps) => {
   return (
     <Link className={styles.link} href={link}>
-      <Wrapper poster={poster} className={styles.poster}>
+      <li className={styles.poster}>
+        <Image
+          src={poster}
+          alt=''
+          width={256}
+          height={256}
+          className={styles.image}
+        />
         {children}
-      </Wrapper>
+      </li>
     </Link>
   );
 };
