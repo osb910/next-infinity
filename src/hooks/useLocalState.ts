@@ -28,8 +28,9 @@ const useLocalState = <T>(
         const value = JSON.parse(storedValue);
         setState(value);
       } catch (err) {
+        if (!(err instanceof Error)) return;
         console.warn(
-          `${(err as Error).message}. Using the original stored value instead.`
+          `${err.message}. Using the original stored value instead.`
         );
         setState(storedValue);
       }
