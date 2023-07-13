@@ -29,8 +29,9 @@ const NewsletterRegistration = () => {
       createToast(json.status, json.message);
       reset();
     } catch (err) {
-      console.error(err as Error);
-      createToast('error', `Something went wrong. ${(err as Error).message}`);
+      if (!(err instanceof Error)) return;
+      console.error(err);
+      createToast('error', `Something went wrong. ${err.message}`);
     }
     setLoading(false);
   };

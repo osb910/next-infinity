@@ -27,8 +27,9 @@ const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {
       ]);
       createToast(json.status, json.message);
     } catch (err) {
+      if (!(err instanceof Error)) return;
       console.log(err);
-      createToast('error', `Failed to add comment!\n${(err as Error).message}`);
+      createToast('error', `Failed to add comment!\n${err.message}`);
     }
   };
 

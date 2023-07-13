@@ -6,7 +6,7 @@ import useSearchFilters from '@/hooks/useSearchFilters';
 interface SearchFormProps {
   children: ReactNode;
   searchPath: string;
-  [key: string]: any;
+  [idx: string]: any;
 }
 
 const SearchForm = ({children, searchPath, ...delegated}: SearchFormProps) => {
@@ -26,7 +26,7 @@ const SearchForm = ({children, searchPath, ...delegated}: SearchFormProps) => {
   }, []);
   const submit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    const formData = [...new FormData(formRef.current!).entries()];
+    const formData = [...new FormData(evt.currentTarget).entries()];
     const filters = Object.fromEntries(formData);
     const searchParams = formData.map(([k, v]) => `${k}=${v}`).join('&');
     setFilters(filters);

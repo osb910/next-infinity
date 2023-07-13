@@ -46,6 +46,12 @@ const Home = async () => {
             >
               Array Cardio
             </Poster>
+            <Poster
+              poster='/img/flex-image-gallery.png'
+              link='/mini-apps/flex-image-gallery'
+            >
+              Flex Image Gallery
+            </Poster>
           </ol>
         </section>
       </main>

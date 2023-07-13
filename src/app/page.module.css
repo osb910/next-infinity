@@ -1,4 +1,7 @@
 .header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
   padding-block: 0.5em;
   padding-inline: 1rem;
   display: flex;

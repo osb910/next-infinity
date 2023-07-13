@@ -49,11 +49,12 @@ const FilteredEvents = async ({searchParams}: FilteredEventsProps) => {
       </>
     );
   } catch (err) {
+    if (!(err instanceof Error)) return;
     console.error(err);
     return (
       <>
         <EventsSearch />
-        <ErrorAlert>{(err as Error).message}</ErrorAlert>
+        <ErrorAlert>{err.message}</ErrorAlert>
         <div className='center'>
           <ButtonLink link='/next-events/events'>Show All Events</ButtonLink>
         </div>

@@ -17,8 +17,8 @@ import Toaster from '@/components/Toaster/Toaster';
 // );
 
 export const metadata = {
-  title: 'Next.js 30',
-  description: 'A collection of 30 mini-apps built with Next.js',
+  title: 'Next Infinity',
+  description: 'Full-stack projects and mini-apps built with Next.js',
 };
 
 const roboto = Roboto_Mono({
