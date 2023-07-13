@@ -21,13 +21,13 @@ export const POST = async (req: NextRequest) => {
       {status: 201}
     );
   } catch (err) {
-    const error = err as Error;
-    if (error.message.includes('duplicate key error')) {
+    if (!(err instanceof Error)) return;
+    if (err.message.includes('duplicate key error')) {
       return NextResponse.json(
         {
           status: 'notice',
           // @ts-ignore
-          message: `${error.keyValue.email} is already subscribed to the newsletter.`,
+          message: `${err.keyValue.email} is already subscribed to the newsletter.`,
         },
         {status: 409}
       );

@@ -36,11 +36,12 @@ export const PUT = async (
       {status: 201}
     );
   } catch (err) {
+    if (!(err instanceof Error)) return;
     console.error(err);
     return NextResponse.json(
       {
         status: 'error',
-        message: (err as Error).message,
+        message: err.message,
       },
       {status: 500}
     );

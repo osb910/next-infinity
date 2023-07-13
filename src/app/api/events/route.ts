@@ -11,7 +11,8 @@ export const GET = async () => {
     if (!res) throw new Error('Events not found');
     return NextResponse.json(res, {status: 200});
   } catch (err) {
+    if (!(err instanceof Error)) return;
     console.error(err);
-    return NextResponse.json({error: (err as Error).message}, {status: 404});
+    return NextResponse.json({error: err.message}, {status: 404});
   }
 };
