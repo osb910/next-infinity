@@ -1,4 +1,5 @@
 import {Schema, model, models, Model} from 'mongoose';
+import {connectDBs} from '@/utils/database';
 
 export type Subscriber = {
   email: string;
@@ -15,5 +16,7 @@ const subscriberSchema = new Schema<Subscriber>(
   {timestamps: true}
 );
 
-export default (models?.Subscriber as Model<Subscriber>) ||
-  model<Subscriber>('Subscriber', subscriberSchema);
+const {eventsDB} = await connectDBs();
+
+export default (eventsDB.models?.Subscriber as Model<Subscriber>) ||
+  eventsDB.model('Subscriber', subscriberSchema);

@@ -1,4 +1,12 @@
-import {connect} from 'mongoose';
+import {connect, createConnection} from 'mongoose';
+
+const mongoUri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.l774dlz.mongodb.net/next-events?retryWrites=true&w=majority`;
+
+const localMongoUri = `mongodb://localhost:27017/next-events`;
+
+const oldMongoUri = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@ac-gvklwum-shard-00-00.l774dlz.mongodb.net:27017,ac-gvklwum-shard-00-01.l774dlz.mongodb.net:27017,ac-gvklwum-shard-00-02.l774dlz.mongodb.net:27017/`;
+const mongoUriOptions =
+  '?ssl=true&replicaSet=atlas-i4i6o3-shard-0&authSource=admin&retryWrites=true&w=majority';
 
 const mongoConnect = async (uri: string): Promise<void> => {
   try {
@@ -15,4 +23,26 @@ const mongoConnect = async (uri: string): Promise<void> => {
   }
 };
 
-export {mongoConnect};
+const connectDBs = async (): Promise<any> => {
+  try {
+    const eventsDB = await createConnection(
+      `${oldMongoUri}next-events${mongoUriOptions}`,
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      } as any
+    );
+
+    const projectsDB = await createConnection(
+      `${oldMongoUri}next-projects${mongoUriOptions}`
+    );
+
+    return {eventsDB, projectsDB};
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(`Connecting to the databases failed! ${err.message}`);
+    throw err;
+  }
+};
+
+export {mongoConnect, connectDBs};
