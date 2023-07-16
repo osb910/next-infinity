@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import styles from './Poster.module.css';
 import Image from 'next/image';
+import {motion} from 'framer-motion';
+import Wrapper from './Wrapper';
 
 interface PosterProps {
   link: string;
@@ -11,9 +13,12 @@ interface PosterProps {
 const Poster = ({link, children, poster}: PosterProps) => {
   return (
     <Link className={styles.link} href={link}>
-      <li className={styles.poster} style={{backgroundImage: `url(${poster})`}}>
+      <Wrapper
+        className={styles.poster}
+        style={{backgroundImage: `url(${poster})`}}
+      >
         {children}
-      </li>
+      </Wrapper>
     </Link>
   );
 };

@@ -58,7 +58,18 @@
   margin: 1em;
   cursor: move;
   background-color: #fff;
+  transition: scale 0.2s ease-out, box-shadow 0.2s ease-out;
 }
+
+/* .projects li:where(:hover, :focus) {
+  scale: 1.04;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.46);
+}
+
+.projects li:where(:active) {
+  scale: 0.96;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.66);
+} */
 
 .projects li h2 {
   color: #ff0062;
@@ -81,10 +92,10 @@
 .dragging {
   opacity: 0.6;
 }
-
+/* 
 .droppable {
   background: #ffe3ee;
-}
+} */
 
 .finished.droppable {
   background: #d6e1ff;

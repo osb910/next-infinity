@@ -13,7 +13,11 @@ export type Toast = {
 
 interface ToastContextProps {
   toasts: Toast[];
-  createToast: (variant: Toast['variant'], message: Toast['message']) => void;
+  createToast: (
+    variant: Toast['variant'],
+    message: Toast['message'],
+    delay?: number
+  ) => void;
   dismissToast: (idx: number) => void;
   clearToasts: () => void;
 }

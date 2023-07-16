@@ -9,8 +9,9 @@
   align-items: center;
   gap: 0.75em;
   padding: 1em;
-  background-color: #202020;
+  background-color: #20202080;
   isolation: isolate;
+  backdrop-filter: blur(4px);
 }
 
 .logo {

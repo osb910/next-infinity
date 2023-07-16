@@ -1,10 +1,13 @@
 import styles from './page.module.css';
 import Poster from '@/components/Poster/Poster';
 import SiteLogo from '@/components/SiteLogo/SiteLogo';
+import {getFolderNames, readFolder} from '@/utils/file';
 
 const Home = async () => {
   const packages = await import('../../package.json');
   const nextVersion = packages.dependencies.next.replace('^', '');
+  const appFolder = await getFolderNames('./app');
+  const miniApps = await getFolderNames('./app/mini-apps');
   return (
     <>
       <header className={styles.header}>
@@ -15,7 +18,7 @@ const Home = async () => {
       </header>
       <main className={styles.main}>
         <section className={styles.section}>
-          <h2 className={styles.subtitle}>Projects</h2>
+          <h2 className={styles.subtitle}>Projects ({appFolder.length - 2})</h2>
           <ol className={styles.apps}>
             <Poster poster='/img/next-events.png' link='/next-events'>
               Next Events
@@ -23,8 +26,14 @@ const Home = async () => {
           </ol>
         </section>
         <section className={styles.section}>
-          <h2 className={styles.subtitle}>Mini-Apps</h2>
+          <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
           <ol className={styles.apps}>
+            <Poster
+              poster='/img/next-projects.png'
+              link='/mini-apps/next-projects'
+            >
+              Next Projects
+            </Poster>
             <Poster poster='/img/drum-kit.png' link='/mini-apps/drum-kit'>
               Drum Kit
             </Poster>

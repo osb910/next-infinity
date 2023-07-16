@@ -8,7 +8,8 @@
   align-items: center;
   gap: 0.5em;
   justify-content: space-between;
-  background: rgb(var(--bg-elevated-rgb));
+  background: rgba(var(--bg-elevated-rgb), 0.8);
+  backdrop-filter: blur(4px);
 }
 
 .main {

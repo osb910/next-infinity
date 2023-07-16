@@ -1,12 +1,15 @@
 'use client';
-import {useState, ReactNode, DragEvent} from 'react';
+import {ReactNode, DragEvent} from 'react';
 import styles from './PrjList.module.css';
 import {pluralize} from '@/utils/numbers';
 import {XCircle} from 'react-feather';
 import ky from 'ky';
 import {getURL} from '@/utils/path';
 import {IProject} from './Project.model';
-import Spinner from '@/components/Spinner/Spinner';
+import {motion} from 'framer-motion';
+import useToaster from '@/components/Toaster/use-toaster';
+import Draggable from '@/components/Draggable/Draggable';
+import Droppable from '@/components/Droppable/Droppable';
 
 interface PrjListProps {
   type: 'active' | 'finished';
@@ -23,92 +26,65 @@ const PrjList = ({
   removeProject,
   moveProject,
 }: PrjListProps) => {
-  const [isDraggedOver, setIsDraggedOver] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dropping, setDropping] = useState<boolean>(false);
-  const dragStartHandler = (evt: DragEvent) => {
-    if (!(evt.target instanceof HTMLElement)) return;
-    evt.dataTransfer.setData(
-      'text/plain',
-      `${evt.target.dataset.type},${evt.target.id}`
-    );
-    evt.dataTransfer.effectAllowed = 'move';
-    setIsDragging(true);
-  };
+  const {createToast} = useToaster();
 
-  const dragEndHandler = (evt: DragEvent) => {
-    setIsDragging(false);
-  };
-
-  const dragOverHandler = (evt: DragEvent) => {
-    evt.dataTransfer?.types?.[0] === 'text/plain' && evt.preventDefault();
-    setIsDraggedOver(true);
-  };
-
-  const dropHandler = async (evt: DragEvent) => {
-    const [projectType, prjId] = evt.dataTransfer
-      ?.getData('text/plain')
-      .split(',');
-    evt.preventDefault();
-    setDropping(true);
-    if (projectType === type) {
-      setIsDraggedOver(false);
-      setIsDragging(false);
-      return;
-    }
+  const drop = async (data: string) => {
+    const [projectType, prjId] = data.split(',');
+    if (projectType === type) return;
     if (prjId) {
       try {
         const res = await ky.put(getURL(`/api/next-projects/${prjId}`), {
           json: {type},
+          throwHttpErrors: false,
         });
+        if (res.status !== 200) throw new Error('Failed to move project');
         console.log(res);
         moveProject(prjId, type);
       } catch (err) {
+        if (!(err instanceof Error)) return;
+        createToast('error', err.message, 20000);
         console.log(err);
       }
-      setIsDraggedOver(false);
-      setIsDragging(false);
-      setDropping(false);
     }
-  };
-
-  const dragLeaveHandler = (_: DragEvent) => {
-    setIsDraggedOver(false);
   };
 
   const deleteProject = async (id: string) => {
     try {
-      const res = await ky.delete(getURL(`/api/next-projects/${id}`));
+      const res = await ky.delete(getURL(`/api/next-projects/${id}`), {
+        throwHttpErrors: false,
+      });
+      if (res.status !== 200) throw new Error('Failed to delete project');
+      console.log(res);
       removeProject(id);
     } catch (err) {
+      if (!(err instanceof Error)) return;
+      createToast('error', err.message, 20000);
       console.log(err);
     }
   };
 
   return (
-    <section
-      className={`${styles.projects} ${styles[type]} ${
-        isDraggedOver ? styles.droppable : ''
-      }`}
-      onDragOver={dragOverHandler}
-      onDragLeave={dragLeaveHandler}
-      onDrop={dropHandler}
+    <Droppable
+      as='section'
+      drop={drop}
+      className={`${styles.projects} ${styles[type]}`}
     >
       <header>
         <h2>{children}</h2>
       </header>
-      {dropping && <Spinner />}
       <ul>
         {projects.length === 0 && <p>No projects yet!</p>}
         {projects.map(({_id, title, description, people}) => (
-          <li
+          <Draggable
+            as='li'
+            setDataTransfer={(evt: DragEvent) =>
+              `${(evt.target as HTMLLIElement).dataset.type},${
+                (evt.target as HTMLLIElement).id
+              }`
+            }
             id={_id?.toString()}
             data-type={type}
-            key={`${_id?.toString()}-${dropping}`}
-            draggable
-            onDragStart={dragStartHandler}
-            onDragEnd={dragEndHandler}
-            className={isDragging ? styles.dragging : ''}
+            key={`${_id?.toString()}`}
           >
             <h2>
               {title}{' '}
@@ -121,10 +97,10 @@ const PrjList = ({
             </h2>
             <h3>{pluralize('person', people)} assigned</h3>
             <p>{description}</p>
-          </li>
+          </Draggable>
         ))}
       </ul>
-    </section>
+    </Droppable>
   );
 };
 

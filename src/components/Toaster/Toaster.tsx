@@ -19,6 +19,7 @@ const Toaster = ({lang}: {lang?: string}) => {
       >
         {toasts.map(({id, variant, message, delay}, idx) => (
           <Toast
+            dir={lang === 'ar' ? 'rtl' : 'ltr'}
             key={id}
             variant={variant}
             dismiss={() => dismissToast(idx)}

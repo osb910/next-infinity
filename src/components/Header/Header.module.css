@@ -1,4 +1,6 @@
 .header {
+  position: sticky;
+  inset-block-start: 0;
   padding-block: 0.5em;
   padding-inline: 0.5rem;
   display: grid;
@@ -7,9 +9,10 @@
   justify-content: space-between;
   align-items: baseline;
   text-align: center;
-  color: rgb(var(--color-primary-rgb));
-  background-color: rgb(var(--bg-elevated-rgb));
   border-block-end: 2px dashed currentColor;
+  color: rgb(var(--color-primary-rgb));
+  background: rgba(var(--bg-elevated-rgb), 0.8);
+  backdrop-filter: blur(4px);
 }
 
 .side {

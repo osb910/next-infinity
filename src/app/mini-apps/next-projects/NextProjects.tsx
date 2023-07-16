@@ -10,6 +10,7 @@ import PrjList from './PrjList';
 import {getURL} from '@/utils/path';
 import Spinner from '@/components/Spinner/Spinner';
 import {IProject} from './Project.model';
+import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 
 export interface Draggable {
   dragStartHandler: (evt: DragEvent) => void;
@@ -63,19 +64,23 @@ const DragNDrop = () => {
   return (
     <>
       <Header>
-        <h1>Drag N Drop</h1>
+        <h1>Next Projects</h1>
       </Header>
       <main className={styles.main}>
         <ProjectInput addProject={addProject} />
         {isLoading ? (
           <Spinner />
+        ) : error ? (
+          <ErrorAlert>Failed to fetch products</ErrorAlert>
         ) : (
           <>
             <PrjList
               type='active'
-              projects={data?.filter(
-                (project: IProject) => project.type === 'active'
-              )}
+              projects={
+                data?.filter(
+                  (project: IProject) => project.type === 'active'
+                ) ?? []
+              }
               removeProject={removeProject}
               moveProject={moveProject}
             >
@@ -83,9 +88,11 @@ const DragNDrop = () => {
             </PrjList>
             <PrjList
               type='finished'
-              projects={data?.filter(
-                (project: IProject) => project.type === 'finished'
-              )}
+              projects={
+                data?.filter(
+                  (project: IProject) => project.type === 'finished'
+                ) ?? []
+              }
               removeProject={removeProject}
               moveProject={moveProject}
             >

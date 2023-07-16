@@ -1,0 +1,17 @@
+.draggable {
+  transition: scale 0.15s ease-out, box-shadow 0.2s ease-out;
+}
+
+.draggable:where(:hover, :focus) {
+  scale: 1.03;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.46);
+}
+
+.draggable:where(:active) {
+  scale: 0.97;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.66);
+}
+
+.dragging {
+  opacity: 0.6;
+}

@@ -62,7 +62,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <SoundProvider>
           <ToastProvider>
             {children}
-            <Toaster />
+            <Toaster lang='en' />
           </ToastProvider>
         </SoundProvider>
       </body>

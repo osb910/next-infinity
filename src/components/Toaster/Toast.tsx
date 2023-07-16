@@ -3,6 +3,7 @@
 import {useEffect, ReactNode, useState, useCallback} from 'react';
 import {AlertOctagon, AlertTriangle, CheckCircle, Info, X} from 'react-feather';
 import StyledToast from './StyledToast';
+import {motion, AnimatePresence} from 'framer-motion';
 // @ts-ignore';
 import styles from './Toast.module.css';
 
@@ -20,9 +21,16 @@ interface ToastProps {
   dismiss: () => void;
   delay?: number;
   children: ReactNode;
+  dir: 'ltr' | 'rtl';
 }
 
-const Toast = ({variant, dismiss, delay = 60000, children}: ToastProps) => {
+const Toast = ({
+  variant,
+  dismiss,
+  delay = 60000,
+  children,
+  dir,
+}: ToastProps) => {
   const Icon = ICONS_BY_VARIANT[variant];
   const [exiting, setExiting] = useState<boolean>(false);
 
@@ -42,27 +50,37 @@ const Toast = ({variant, dismiss, delay = 60000, children}: ToastProps) => {
     return () => clearTimeout(timeout);
   }, [delay, smoothlyDismiss]);
 
+  const enterKeyframes = dir === 'ltr' ? ['110%', '0%'] : ['-110%', '0%'];
+  const exitKeyframes = dir === 'ltr' ? ['0%', '115%'] : ['0%', '-115%'];
+
   return (
-    <StyledToast
+    <motion.li
+      key='toast'
       onClick={smoothlyDismiss}
-      className={`${variant} ${exiting ? 'exiting' : ''}`}
+      className={`${variant} ${styles.toast} ${styles[variant]} ${
+        exiting ? 'exiting' : ''
+      }`}
+      animate={{
+        translateX: exiting ? exitKeyframes : enterKeyframes,
+      }}
+      transition={{duration: 1.2, type: 'spring', bounce: 0.4}}
     >
-      <section className={`iconContainer`}>
+      <section className={`iconContainer ${styles.iconContainer}`}>
         <Icon size={24} />
       </section>
-      <section className={`content`}>
+      <section className={`content ${styles.content}`}>
         <VisuallyHidden>{variant} -</VisuallyHidden>
         {children}
       </section>
       <button
-        className={`closeButton`}
+        className={`closeButton ${styles.closeButton}`}
         onClick={smoothlyDismiss}
         aria-label='Dismiss message'
         aria-live='off'
       >
         <X size={24} />
       </button>
-    </StyledToast>
+    </motion.li>
   );
 };
 
