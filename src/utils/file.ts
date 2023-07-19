@@ -38,11 +38,13 @@ const getFolderNames = async (pathFromRoot: string): Promise<string[]> => {
 const writeFile = async (
   pathFromRoot: string,
   content: any,
-  log?: boolean
+  {log = false, stringify = false}: {log?: boolean; stringify?: boolean} = {}
 ): Promise<void> => {
   const path = getPath(pathFromRoot);
   const body =
-    typeof content === 'string' ? content : JSON.stringify(content, null, 2);
+    typeof content === 'string' || !stringify
+      ? content
+      : JSON.stringify(content, null, 2);
   try {
     await fs.writeFile(path, body, {
       encoding: 'utf8',
@@ -66,4 +68,7 @@ const deleteFile = async (pathFromRoot: string): Promise<void> => {
   }
 };
 
-export {readFile, writeFile, deleteFile, readFolder, getFolderNames};
+const getIcon = (fileName: string) =>
+  getPath(`../public/img/icons/${fileName}`);
+
+export {readFile, writeFile, deleteFile, readFolder, getFolderNames, getIcon};

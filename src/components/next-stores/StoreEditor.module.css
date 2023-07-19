@@ -1,0 +1,72 @@
+.form {
+  inline-size: 90%;
+  max-inline-size: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  background: white;
+  padding: 1.5em;
+  margin: 0 auto;
+  /* box-shadow: $grad; */
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+}
+
+.form .error {
+  border-color: red;
+}
+
+.form label {
+  padding: 10px 0;
+  display: block;
+}
+
+.form .tags {
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.form .tags .tag {
+  display: flex;
+  align-items: center;
+  white-space: pre;
+  gap: 0.25em;
+}
+
+.form .button {
+  border: 0;
+  background: orange;
+  color: black;
+  font-family: 'Panama';
+  font-weight: 600;
+}
+
+.tagChoice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tagChoice input {
+  width: auto;
+  right: -1.5rem;
+  margin-right: -0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.tagChoice input + label {
+  background: gray;
+  padding: 0.75em 0.75em 0.75em 3em;
+}
+
+.tagChoice input:checked + label {
+  background: yellow;
+}

@@ -1,0 +1,150 @@
+.main {
+  flex: 1 1 auto;
+  /* max-inline-size: 900px; */
+}
+
+.nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  background: #222;
+}
+
+.navItem {
+  display: flex;
+}
+
+.navLink {
+  background: #222;
+  color: white;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  padding: 1em;
+  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  border-block-end: 5px solid transparent;
+}
+
+.navLink svg {
+  flex-shrink: 0;
+  width: 40px;
+  transition: all 0.2s;
+  fill: white;
+  margin-bottom: 1em;
+}
+
+.navLink:where(:hover, :focus),
+.navLinkActive {
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  border-right-color: rgba(0, 0, 0, 0.05);
+  background: linear-gradient(
+    90deg,
+    #48ded4 0% 10%,
+    #4026bf 30% 40%,
+    #19db2d 50%,
+    #4026bf 60% 70%,
+    #48ded4 90% 100%
+  );
+}
+
+.navLink:where(:hover, :focus) svg,
+.navLinkActive svg {
+  transform: scale(1.2);
+}
+
+.navLinkLogo svg {
+  width: 200px;
+  margin: 0;
+}
+
+.navLinkLogo:where(:hover, :focus) svg {
+  transform: none;
+}
+
+.navSection {
+  display: flex;
+}
+
+.navSectionSearch {
+  flex: 1 1 auto;
+}
+
+@media all and (max-width: 1200px) {
+  .navLink {
+    padding-inline: 1em;
+  }
+
+  .navLink svg {
+    width: 30px;
+  }
+
+  .navLinkLogo svg {
+    width: 100px;
+  }
+}
+
+@media all and (max-width: 900px) {
+  .main {
+    padding: 2em;
+  }
+  .nav {
+    flex-wrap: wrap;
+  }
+
+  .navSection {
+    order: 1;
+  }
+
+  .navSectionSearch {
+    width: 100%;
+    order: 2;
+    border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media all and (max-width: 650px) {
+  .navSection {
+    inline-size: 100%;
+  }
+
+  .navSectionUser {
+    order: -1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navSectionUser .avatar {
+    min-inline-size: 20px;
+    block-size: 20px;
+  }
+
+  .navSectionUser svg {
+    display: none;
+  }
+
+  .navItem {
+    inline-size: 33.333333%;
+  }
+
+  .navLink {
+    inline-size: 100%;
+  }
+
+  .navLink svg {
+    max-inline-size: 100%;
+  }
+
+  .navLinkLogo svg {
+    inline-size: 100%;
+  }
+}
+
+.heartCount:before {
+  content: '♥️';
+  margin-inline-end: 1em;
+}

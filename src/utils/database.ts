@@ -8,6 +8,8 @@ const oldMongoUri = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB
 const mongoUriOptions =
   '?ssl=true&replicaSet=atlas-i4i6o3-shard-0&authSource=admin&retryWrites=true&w=majority';
 
+const storesUri = `mongodb+srv://potato-slice:vK7hpf8FRqlgpFfN@potato.o9cpijt.mongodb.net/potatodb?retryWrites=true&w=majority`;
+
 const mongoConnect = async (uri: string): Promise<void> => {
   try {
     console.log('Connecting to MongoDB...');
@@ -34,10 +36,19 @@ const connectDBs = async (): Promise<any> => {
     );
 
     const projectsDB = await createConnection(
-      `${oldMongoUri}next-projects${mongoUriOptions}`
+      `${oldMongoUri}next-projects${mongoUriOptions}`,
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      } as any
     );
 
-    return {eventsDB, projectsDB};
+    const storesDB = await createConnection(storesUri, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    } as any);
+
+    return {eventsDB, projectsDB, storesDB};
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(`Connecting to the databases failed! ${err.message}`);

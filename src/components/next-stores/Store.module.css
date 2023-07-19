@@ -1,0 +1,224 @@
+.stores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4em 1.25em;
+  margin: 0;
+}
+
+.store {
+  background: white;
+  inline-size: calc(33.3333% - 1.25em);
+  /* box-shadow: $shad; */
+}
+
+.storeWide {
+  inline-size: 100%;
+}
+
+.storeDetails {
+  padding: 2em;
+}
+
+.storeDetails p {
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.storeActions {
+  position: relative;
+  z-index: 2;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
+  margin-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.storeAction {
+  font-size: 10px;
+}
+
+.storeAction img {
+  inline-size: 25px;
+  fill: white;
+}
+
+.storeActionEdit a {
+  border-bottom: 0;
+}
+
+.storeHero {
+  position: relative;
+  padding: 0 10px 0 10px;
+  text-align: right;
+}
+
+.storeHero::before {
+  display: block;
+  content: '';
+  position: absolute;
+  height: 100%;
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  background: linear-gradient(
+      45deg,
+      hsla(190, 95%, 43%, 0.4) 0%,
+      hsla(190, 95%, 43%, 0) 70%
+    ),
+    linear-gradient(
+      135deg,
+      hsla(219, 93%, 48%, 0.4) 10%,
+      hsla(219, 93%, 48%, 0) 80%
+    ),
+    linear-gradient(
+      225deg,
+      hsla(293, 93%, 48%, 0.4) 10%,
+      hsla(293, 93%, 48%, 0) 80%
+    ),
+    linear-gradient(
+      315deg,
+      hsla(130, 96%, 45%, 0.4) 100%,
+      hsla(130, 96%, 45%, 0) 70%
+    );
+  opacity: 0.6;
+  z-index: 1;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+}
+
+.storeHero img {
+  /* height: 100%; */
+  inline-size: 100%;
+  /* inset-block-start: 0;
+  inset-inline-end: 0;
+  position: absolute;
+  inset-inline-start: 0; */
+  object-fit: cover;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+}
+
+.storeHero {
+  block-size: 500px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2vw), 0% 100%);
+}
+
+.storeImage {
+  inline-size: 100%;
+  block-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  object-fit: cover;
+  position: absolute;
+}
+
+.title {
+  word-wrap: break-word;
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-size: 40px;
+  z-index: 2;
+  line-height: 1.1;
+  -webkit-transform: skew(0, -3deg);
+  -ms-transform: skew(0, -3deg);
+  transform: skew(0, -3deg);
+  line-height: 1.1;
+}
+
+.title--long {
+  font-size: 30px;
+}
+
+.title::before {
+  content: '';
+  width: 50px;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: block;
+  position: absolute;
+  z-index: -1;
+  -webkit-transform: skew(-5deg);
+  -ms-transform: skew(-5deg);
+  transform: skew(-5deg);
+}
+
+.title a {
+  border-bottom: 0;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(100%, rgba(255, 196, 14, 0.8)),
+    color-stop(50%, rgba(255, 196, 14, 0.8))
+  );
+  background-image: -o-linear-gradient(
+    left,
+    rgba(255, 196, 14, 0.8) 100%,
+    rgba(255, 196, 14, 0.8) 50%
+  );
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 196, 14, 0.8) 100%,
+    rgba(255, 196, 14, 0.8) 50%
+  );
+}
+
+.title--single {
+  max-width: 600px;
+  margin-top: -9rem;
+  font-size: 10rem;
+  text-align: center;
+}
+
+.storeDetails {
+  background: white;
+  /* clip-path: polygon(0px 2vw, 100% 0, 100% calc(100% - 2vw), 0% 100%); */
+  position: relative;
+  padding: 3rem;
+  margin-top: -10rem;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+}
+
+.storeMap {
+  width: calc(100% + 6rem);
+  max-width: none;
+  margin-top: -3rem;
+  margin-left: -3rem;
+}
+
+.storeLocation {
+  margin: 0;
+  margin-top: -3rem;
+  margin-right: -5rem;
+  background: #222;
+  color: white;
+  display: inline-block;
+  float: right;
+  position: relative;
+  padding: 1rem;
+}
+
+@media all and (max-inline-size: 850px) {
+  .store {
+    inline-size: calc(50% - 1.25em);
+  }
+
+  .storeLocation {
+    margin-inline-end: 0;
+  }
+}
+@media all and (max-inline-size: 550px) {
+  .store {
+    inline-size: 100%;
+  }
+}

@@ -1,8 +1,26 @@
 import {NextRequest, NextResponse} from 'next/server';
 import Project from '@/app/mini-apps/next-projects/Project.model';
+// import {limiter} from '../config/limiter';
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
   try {
+    // const remaining = await limiter.removeTokens(1);
+    // const origin = req.headers.get('origin');
+    // console.log({origin});
+    // console.log({remaining});
+    // if (remaining < 0) {
+    //   return NextResponse.json(
+    //     {error: 'Too many requests'},
+    //     {
+    //       status: 429,
+    //       statusText: 'Too Many Requests',
+    //       headers: {
+    //         'Access-Control-Allow-Origin': origin || '*',
+    //         'Content-Type': 'text/plain',
+    //       },
+    //     }
+    //   );
+    // }
     const res = await Project.find();
     if (!res) throw new Error('Projects not found');
     return NextResponse.json(res, {status: 200});
