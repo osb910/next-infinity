@@ -15,9 +15,14 @@ export interface IStore {
     coordinates: number[];
     address: string;
   };
-  photo: {
-    key?: string;
-    etag?: string;
+  photo?: {
+    title: string;
+    ext: string;
+    mimeType: string;
+    size: number;
+    readableSize: string;
+    key: string;
+    etag: string;
   };
 }
 
@@ -59,6 +64,11 @@ const storeSchema = new Schema<IStore, StoreModel, IStoreMethods>(
     photo: {
       key: String,
       etag: String,
+      title: String,
+      ext: String,
+      mimeType: String,
+      size: Number,
+      readableSize: String,
     },
   },
   {

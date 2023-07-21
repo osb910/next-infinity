@@ -1,6 +1,4 @@
-import {S3} from '@aws-sdk/client-s3';
-import {createReadStream} from 'fs';
-import {Readable} from 'stream';
+import {PutObjectCommandInput, S3} from '@aws-sdk/client-s3';
 
 const client = new S3({
   region: process.env.AWS_REGION,
@@ -10,8 +8,8 @@ const client = new S3({
   },
 });
 
-const uploadFile = async (fileName: string, buffer: Buffer) => {
-  const fileData = Readable.from(buffer);
+const uploadFile = async (fileName: string, data: Buffer) => {
+  const fileData = data.buffer;
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: fileName,
@@ -19,7 +17,7 @@ const uploadFile = async (fileName: string, buffer: Buffer) => {
   };
 
   try {
-    return await client.putObject(uploadParams);
+    return await client.putObject(uploadParams as PutObjectCommandInput);
   } catch (err) {
     console.error(err);
   }

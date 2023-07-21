@@ -32,7 +32,10 @@ const StoreCard = ({store}: StoreProps) => {
         </section>
         <Image
           className={styles.storeImage}
-          src={`/api/next-stores/files/${store.photo.key || 'store.png'}`}
+          src={
+            `/api/next-stores/files/${store?.photo?.key || 'store.png'}` ??
+            '/api/next-stores/files/store.png'
+          }
           alt='Store Image'
           width={360}
           height={360}

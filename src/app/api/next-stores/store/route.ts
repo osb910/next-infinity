@@ -1,9 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 import Store from '@/entities/next-stores/store/store.model';
-import nulter from '@/lib/nulter';
-import {uploadFile} from '@/lib/s3';
-import {deleteFile} from '@/utils/file';
-import resize from '@/lib/resize';
+import {processUploadImage} from '@/lib/file.middleware';
 
 // export const config = {
 //   api: {
@@ -16,29 +13,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const body = await req.formData();
     const data = Object.fromEntries(body);
     const {name, description, address, lat, lng} = data;
-    const tags = [];
-    for (const [key, value] of body.entries()) {
-      key === 'tags' && tags.push(value);
-    }
+    const tags = body.getAll('tags');
 
-    let file;
-
-    const photo = body.get('photo') as File;
-    if (photo && photo.name !== 'undefined') {
-      file = await nulter({
-        body,
-        field: 'photo',
-        // dest: '../public/uploads',
-      });
-      // const resized = await resize(file);
-      // console.log(resized);
-      const uploaded = await uploadFile(
-        `next-stores/${file?.filename}`,
-        file?.buffer!
-      );
-      // await deleteFile(file?.path!);
-      file = {...file, ...uploaded};
-    }
+    const file = await processUploadImage(body, 'photo');
 
     const store = new Store({
       name,
@@ -49,7 +26,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
         coordinates: [+lng, +lat],
         address,
       },
-      ...(file && {photo: {key: file?.filename, etag: file?.ETag}}),
+      ...(file && {
+        photo: {
+          title: file?.title,
+          ext: file?.ext,
+          mimeType: file?.mimetype,
+          size: file?.size,
+          readableSize: file?.readableSize,
+          key: file?.fileName,
+          etag: file?.ETag,
+        },
+      }),
     });
     console.log(store);
     if (!store) {

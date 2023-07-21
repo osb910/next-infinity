@@ -47,7 +47,9 @@ const StoreEditor = ({store}: StoreEditorProps) => {
     if (newValue.length < 3) return;
     setAddressLoading(true);
     try {
-      const res = await fetch(getURL(`/api/next-stores/map?place=${address}`));
+      const res = await fetch(getURL(`/api/next-stores/map?place=${address}`), {
+        cache: 'no-store',
+      });
       const data = await res.json();
       if (data.error) {
         setError(data.error);
@@ -144,7 +146,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
           type='file'
           id='photo'
           name='photo'
-          accept='image/gif, image/png, image/jpeg, document/docx'
+          accept='image/gif, image/png, image/jpeg'
           onChange={previewPhoto}
         />
       </p>

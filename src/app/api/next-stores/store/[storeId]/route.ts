@@ -1,9 +1,7 @@
 import {HydratedDocument} from 'mongoose';
 import Store, {IStore} from '@/entities/next-stores/store/store.model';
-import nulter from '@/lib/nulter';
 import {NextRequest, NextResponse} from 'next/server';
-import {uploadFile} from '@/lib/s3';
-import {deleteFile} from '@/utils/file';
+import {processUploadImage} from '@/lib/file.middleware';
 
 type Params = {
   params: {
@@ -16,28 +14,9 @@ export const PUT = async (req: NextRequest, {params: {storeId}}: Params) => {
     const body = await req.formData();
     const data = Object.fromEntries(body);
     const {name, description, address, lat, lng} = data;
-    const tags = [];
-    for (const [key, value] of body.entries()) {
-      key === 'tags' && tags.push(value);
-    }
+    const tags = body.getAll('tags');
 
-    let file;
-
-    const photo = body.get('photo') as File;
-    if (photo && photo.name !== 'undefined') {
-      file = await nulter({
-        body,
-        field: 'photo',
-        // dest: '../public/uploads',
-      });
-      const uploaded = await uploadFile(
-        `next-stores/${file?.filename}`,
-        file?.buffer!
-      );
-      console.log({uploaded});
-      // await deleteFile(file?.path!);
-      file = {...file, ...uploaded};
-    }
+    const file = await processUploadImage(body, 'photo');
 
     const update = {
       name,
@@ -48,7 +27,17 @@ export const PUT = async (req: NextRequest, {params: {storeId}}: Params) => {
         coordinates: [+lng, +lat],
         address,
       },
-      ...(file && {photo: {key: file?.filename, etag: file?.ETag}}),
+      ...(file && {
+        photo: {
+          title: file?.title,
+          ext: file?.ext,
+          mimeType: file?.mimetype,
+          size: file?.size,
+          readableSize: file?.readableSize,
+          key: file?.fileName,
+          etag: file?.ETag,
+        },
+      }),
     };
 
     const res = (await Store.findByIdAndUpdate(storeId, update, {
