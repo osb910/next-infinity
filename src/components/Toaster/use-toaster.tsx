@@ -38,7 +38,7 @@ export const ToastProvider = ({
 
   useEffect(() => {
     const resetBtn = document.querySelector(
-      '.toaster button:not(.closeButton)'
+      '.toaster .btn:not(.closeButton)'
     ) as HTMLButtonElement;
     resetBtn?.focus();
   }, [toasts]);
@@ -51,8 +51,10 @@ export const ToastProvider = ({
     setToasts(draft => {
       draft.unshift({id: crypto.randomUUID(), variant, message, delay});
     });
-    const resetBtn = document.querySelector('.resetBtn') as HTMLButtonElement;
-    resetBtn?.focus();
+    const btn = document.querySelector('.toaster .btn') as
+      | HTMLButtonElement
+      | HTMLAnchorElement;
+    btn?.focus();
   };
 
   const dismissToast = (idx: number) => {

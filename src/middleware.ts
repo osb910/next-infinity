@@ -1,6 +1,6 @@
 import {NextResponse} from 'next/server';
 import {NextRequest} from 'next/server';
-import nulter from './utils/nulter';
+import nulter from './lib/nulter';
 
 export const middleware = async (req: NextRequest) => {
   const whitelisted =

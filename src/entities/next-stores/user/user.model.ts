@@ -18,16 +18,16 @@ const userSchema = new Schema<IUser>({
     lowercase: true,
     trim: true,
     validate: [isEmail, 'Invalid Email Address'],
-    required: [true, 'Please supply an email address'],
+    required: [true, 'Please provide an email address'],
   },
   name: {
     type: String,
-    required: [true, 'Please supply a name'],
+    required: [true, 'Please provide a name'],
     trim: true,
   },
   password: {
     type: String,
-    required: [true, 'Please supply a password'],
+    required: [true, 'Please provide a password'],
   },
 });
 
@@ -36,10 +36,9 @@ userSchema.pre(
   async function (next: (error?: Error) => void): Promise<any> {
     if (!this.isModified('password')) return next();
     try {
-      const existingUser = await this.constructor.findOne({email: this.email});
+      const existingUser = await this.collection.findOne({email: this.email});
       if (existingUser) {
         const err: Error = new Error('Email already in use');
-        err.statusCode = 409;
         throw err;
       }
       const salt = await genSalt(12);

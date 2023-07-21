@@ -68,7 +68,4 @@ const deleteFile = async (pathFromRoot: string): Promise<void> => {
   }
 };
 
-const getIcon = (fileName: string) =>
-  getPath(`../public/img/icons/${fileName}`);
-
-export {readFile, writeFile, deleteFile, readFolder, getFolderNames, getIcon};
+export {readFile, writeFile, deleteFile, readFolder, getFolderNames};

@@ -1,8 +1,10 @@
+import {deleteFile} from '@/lib/s3';
 import {connectDBs} from '@/utils/database';
+import {getPath} from '@/utils/path';
 import {Schema, Model, Types} from 'mongoose';
 import slug from 'slug';
 
-export type IStore = {
+export interface IStore {
   _id?: Types.ObjectId | string;
   name: string;
   slug: string;
@@ -13,10 +15,19 @@ export type IStore = {
     coordinates: number[];
     address: string;
   };
-  photo: string;
-};
+  photo: {
+    key?: string;
+    etag?: string;
+  };
+}
 
-const storeSchema = new Schema<IStore>(
+interface IStoreMethods {}
+
+interface StoreModel extends Model<IStore, {}, IStoreMethods> {
+  getTagsList: () => Promise<IStore[]>;
+}
+
+const storeSchema = new Schema<IStore, StoreModel, IStoreMethods>(
   {
     name: {
       type: String,
@@ -45,33 +56,73 @@ const storeSchema = new Schema<IStore>(
         required: [true, 'You must supply an address'],
       },
     },
-    photo: String,
+    photo: {
+      key: String,
+      etag: String,
+    },
   },
-  {timestamps: true}
+  {
+    timestamps: true,
+    // statics: {
+    //   getTagsList() {
+
+    //   }
+    // },
+  }
 );
 
-storeSchema.pre('save', async function (next) {
-  if (!this.isModified('name')) {
-    return next();
-  }
+storeSchema.pre('save', async function () {
+  console.log(`saving ${this.name}...`);
+  if (!this.isModified('name')) return;
   this.slug = slug(this.name);
   const slugRgx = new RegExp(`^${this.slug}((-\\d*$)?)$`, 'i');
-  const storesWithSlug = await this.constructor.find({slug: slugRgx});
-  if (storesWithSlug.length) {
-    this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
+  try {
+    // @ts-ignore
+    const storesWithSlug = await this.constructor.find({slug: slugRgx});
+    if (storesWithSlug.length) {
+      this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
+    }
+  } catch (err) {
+    console.error(err);
   }
-  next();
 });
 
-storeSchema.statics.getTagsList = function () {
+storeSchema.pre('findOneAndUpdate', async function () {
+  try {
+    const docToUpdate = await this.model.findOne(this.getQuery());
+    const update = this.getUpdate()! as IStore;
+    if (!docToUpdate) {
+      const err = new Error('Document not found!');
+      throw err;
+    }
+    // Delete old photo if new photo is uploaded
+    if (update.photo && docToUpdate.photo.key !== update.photo.key) {
+      await deleteFile(`next-stores/${docToUpdate.photo.key}`);
+    }
+    // Update slug if name is changed
+    if (docToUpdate.name !== update.name) {
+      docToUpdate.slug = slug(update.name);
+      const slugRgx = new RegExp(`^${docToUpdate.slug}((-\\d*$)?)$`, 'i');
+      const storesWithSlug = await this.model.find({slug: slugRgx});
+      if (storesWithSlug.length) {
+        docToUpdate.slug = `${docToUpdate.slug}-${storesWithSlug.length + 1}`;
+      }
+      await docToUpdate.save();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+storeSchema.static('getTagsList', function () {
   return this.aggregate([
     {$unwind: '$tags'},
     {$group: {_id: '$tags', count: {$sum: 1}}},
     {$sort: {count: -1}},
   ]);
-};
+});
 
 const {storesDB} = await connectDBs();
 
-export default (storesDB.models?.Subscriber as Model<IStore>) ||
+export default (storesDB.models?.Subscriber as Model<IStore, StoreModel>) ||
   storesDB.model('Store', storeSchema);

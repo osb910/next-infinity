@@ -10,11 +10,11 @@ const stripHtml = (el: HTMLElement) =>
 
 const getCellComments = (cell: any, comments: any) => {
   const cellCommentRefs = Array.from(cell.querySelectorAll('sup a'));
-  const cellComments = cellCommentRefs.map(ref => {
+  const cellComments = cellCommentRefs.map((ref: any) => {
     if (!ref?.id) return;
     const id = ref.id.replace('#', '');
-    const comment = comments.find(comment =>
-      comment.querySelector('a').href.match(new RegExp(`#${id}`))
+    const comment = comments.find((comment: HTMLElement) =>
+      comment.querySelector('a')!.href.match(new RegExp(`#${id}`))
     );
     return comment.textContent.replace(/\s\u2191$/, '');
   });
@@ -23,13 +23,13 @@ const getCellComments = (cell: any, comments: any) => {
 
 const parseTableData = (html: string) => {
   const dom = new JSDOM(html);
-  const table = dom.window.document.querySelector('table');
+  const table = dom.window.document.querySelector('table') as HTMLTableElement;
   const comments = Array.from(dom.window.document.querySelectorAll('dl dd'));
   const rows = Array.from(table.querySelectorAll('tr'));
   const header = rows.shift();
-  const [targetLang, sourceLang] = Array.from(header.querySelectorAll('td'));
+  const [targetLang, sourceLang] = [...header!.querySelectorAll('td')];
   const grid = rows.map(segment => {
-    const [translation, source] = Array.from(segment.querySelectorAll('td'));
+    const [translation, source] = [...segment.querySelectorAll('td')];
     const translationComments = getCellComments(translation, comments);
     const sourceComments = getCellComments(source, comments);
     const translationText = stripHtml(translation);
@@ -47,10 +47,10 @@ const parseTableData = (html: string) => {
   });
   return {
     grid,
-    sourceLang: sourceLang.textContent.replace(/^[a-z]{2}/i, lang =>
+    sourceLang: sourceLang.textContent!.replace(/^[a-z]{2}/i, lang =>
       lang.toLowerCase()
     ),
-    targetLang: targetLang.textContent.replace(/^[a-z]{2}/i, lang =>
+    targetLang: targetLang.textContent!.replace(/^[a-z]{2}/i, lang =>
       lang.toLowerCase()
     ),
   };
@@ -58,7 +58,7 @@ const parseTableData = (html: string) => {
 
 const parseDocxTm = async (
   docxPath: string
-): {segments: any; targetLang: string; sourceLang: string} => {
+): Promise<{segments: any; targetLang: string; sourceLang: string}> => {
   const options: {styleMap: string[]} = {
     styleMap: ['comment-reference => sup'],
   };

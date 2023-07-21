@@ -1,5 +1,10 @@
 .main {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
   flex: 1 1 auto;
+  font-family: var(--fn-atkinson);
   /* max-inline-size: 900px; */
 }
 

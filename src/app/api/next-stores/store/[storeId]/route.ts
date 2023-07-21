@@ -1,17 +1,17 @@
-import {NextRequest, NextResponse} from 'next/server';
-import Store from '@/entities/next-stores/store/store.model';
+import {HydratedDocument} from 'mongoose';
+import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import nulter from '@/lib/nulter';
+import {NextRequest, NextResponse} from 'next/server';
 import {uploadFile} from '@/lib/s3';
 import {deleteFile} from '@/utils/file';
-import resize from '@/lib/resize';
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
+type Params = {
+  params: {
+    storeId: string;
+  };
+};
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export const PUT = async (req: NextRequest, {params: {storeId}}: Params) => {
   try {
     const body = await req.formData();
     const data = Object.fromEntries(body);
@@ -30,17 +30,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
         field: 'photo',
         // dest: '../public/uploads',
       });
-      // const resized = await resize(file);
-      // console.log(resized);
       const uploaded = await uploadFile(
         `next-stores/${file?.filename}`,
         file?.buffer!
       );
+      console.log({uploaded});
       // await deleteFile(file?.path!);
       file = {...file, ...uploaded};
     }
 
-    const store = new Store({
+    const update = {
       name,
       description,
       tags,
@@ -50,19 +49,23 @@ export async function POST(req: NextRequest, res: NextResponse) {
         address,
       },
       ...(file && {photo: {key: file?.filename, etag: file?.ETag}}),
-    });
-    console.log(store);
-    if (!store) {
+    };
+
+    const res = (await Store.findByIdAndUpdate(storeId, update, {
+      new: true,
+      runValidators: true,
+    })) as HydratedDocument<IStore> & {_doc: HydratedDocument<IStore>};
+
+    if (!res) {
       const err = new Error('Something went wrong!');
       throw err;
     }
-    const res = await store.save();
 
     return NextResponse.json(
       {
-        ...store,
+        ...res._doc,
         status: 'success',
-        message: `Successfully created ${res.name}!`,
+        message: `Successfully updated ${res.name}!`,
       },
       {status: 201}
     );
@@ -74,4 +77,4 @@ export async function POST(req: NextRequest, res: NextResponse) {
       {status: 500}
     );
   }
-}
+};

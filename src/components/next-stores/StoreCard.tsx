@@ -20,7 +20,7 @@ const StoreCard = ({store}: StoreProps) => {
           <section
             className={`${styles.storeAction} ${styles.storeActionEdit}`}
           >
-            <Link href={`/stores/${store._id}/edit`}>
+            <Link href={`/next-stores/stores/${store._id}/edit`}>
               <Image
                 alt='Pencil icon'
                 src='/img/icons/pencil.svg'
@@ -32,7 +32,7 @@ const StoreCard = ({store}: StoreProps) => {
         </section>
         <Image
           className={styles.storeImage}
-          src={`/uploads/${store.photo || 'store.png'}`}
+          src={`/api/next-stores/files/${store.photo.key || 'store.png'}`}
           alt='Store Image'
           width={360}
           height={360}

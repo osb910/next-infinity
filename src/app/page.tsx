@@ -1,15 +1,13 @@
 import styles from './page.module.css';
 import Poster from '@/components/Poster/Poster';
 import SiteLogo from '@/components/SiteLogo/SiteLogo';
-import {getFolderNames, getIcon} from '@/utils/file';
+import {getFolderNames} from '@/utils/file';
 
 const Home = async () => {
   const packages = await import('../../package.json');
   const nextVersion = packages.dependencies.next.replace('^', '');
   const appFolder = await getFolderNames('./app');
   const miniApps = await getFolderNames('./app/mini-apps');
-  const test = getIcon('logo.svg');
-  console.log(test);
   return (
     <>
       <header className={styles.header}>
