@@ -6,6 +6,7 @@
   flex: 1 1 auto;
   font-family: var(--fn-atkinson);
   /* max-inline-size: 900px; */
+  background-color: #ddd;
 }
 
 .nav {
@@ -96,7 +97,7 @@
 
 @media all and (max-width: 900px) {
   .main {
-    padding: 2em;
+    /* padding: 2em; */
   }
   .nav {
     flex-wrap: wrap;

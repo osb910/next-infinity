@@ -1,16 +1,19 @@
 import ErrorAlert from '@/components/ErrorAlert';
 import Spinner from '@/components/Spinner/Spinner';
 import StoreEditor from '@/components/next-stores/StoreEditor';
-import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import styles from './EditStore.module.css';
+import {getURL} from '@/utils/path';
 
 const EditStore = async ({params}: {params: {storeId: string}}) => {
   try {
-    const _store = (await Store.findById(params.storeId)) as IStore & {
-      _doc: IStore;
-    };
-    if (!_store) return <Spinner />;
-    const store = {..._store._doc, _id: _store._id!.toString()};
+    const res = await fetch(
+      getURL(`/api/next-stores/stores/${params.storeId}`),
+      {cache: 'no-store'}
+    );
+    const data = await res.json();
+    console.log(data);
+    if (!data) return <Spinner />;
+    const store = {...data, _id: data._id};
     return (
       <>
         <h1 className={styles.title}>Edit {store.name}</h1>

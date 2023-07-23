@@ -8,6 +8,31 @@ import {processUploadImage} from '@/lib/file.middleware';
 //   },
 // };
 
+export const GET = async () => {
+  try {
+    const stores = await Store.find().sort({createdAt: -1});
+    if (!stores) {
+      const err = new Error('Something went wrong!');
+      throw err;
+    }
+    return NextResponse.json(
+      {
+        stores,
+        status: 'success',
+        message: `Successfully fetched stores!`,
+      },
+      {status: 200}
+    );
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(err);
+    return NextResponse.json(
+      {status: 'error', message: err.message},
+      {status: 500}
+    );
+  }
+};
+
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const body = await req.formData();
@@ -38,7 +63,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         },
       }),
     });
-    console.log(store);
     if (!store) {
       const err = new Error('Something went wrong!');
       throw err;
@@ -62,3 +86,28 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
 }
+
+// DELETE ALL STORES
+export const DELETE = async () => {
+  try {
+    const res = await Store.deleteMany({});
+    if (!res) {
+      const err = new Error('Something went wrong!');
+      throw err;
+    }
+    return NextResponse.json(
+      {
+        status: 'success',
+        message: `Successfully deleted all stores!`,
+      },
+      {status: 200}
+    );
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(err);
+    return NextResponse.json(
+      {status: 'error', message: err.message},
+      {status: 500}
+    );
+  }
+};

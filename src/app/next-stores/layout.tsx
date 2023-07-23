@@ -18,20 +18,7 @@ interface User {
   gravatar: string;
 }
 
-interface LayoutProps {
-  title: string;
-  h: {
-    siteName: string;
-    icon: (name: string) => JSX.Element;
-    menu: MenuItem[];
-    dump: (obj: any) => void;
-  };
-  currentPath: string;
-  user: User | null;
-  flashes?: {[key: string]: string[]};
-}
-
-const menu = [
+const menu: MenuItem[] = [
   {slug: '/next-stores/stores', title: 'Stores', icon: 'store'},
   {slug: '/next-stores/tags', title: 'Tags', icon: 'tag'},
   {slug: '/next-stores/top', title: 'Top', icon: 'top'},
@@ -54,7 +41,7 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
               <li className={styles.navItem}>
                 <Link
                   className={`${styles.navLink} ${styles.navLinkLogo}`}
-                  href='/'
+                  href='/next-stores'
                 >
                   <Image
                     src='/img/icons/logo.svg'

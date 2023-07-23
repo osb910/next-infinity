@@ -1,6 +1,6 @@
 import nulter from './nulter';
 import resize from './resize';
-import {uploadFile} from './s3';
+import {uploadOneObject} from './s3';
 
 const processUploadImage = async (
   body: FormData,
@@ -19,7 +19,7 @@ const processUploadImage = async (
     file = await resize(file);
 
     // Upload to S3
-    const uploaded = await uploadFile(
+    const uploaded = await uploadOneObject(
       `next-stores/${file?.fileName}`,
       file?.buffer!
     );

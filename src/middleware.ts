@@ -1,6 +1,5 @@
 import {NextResponse} from 'next/server';
 import {NextRequest} from 'next/server';
-import nulter from './lib/nulter';
 
 export const middleware = async (req: NextRequest) => {
   const whitelisted =
@@ -23,10 +22,6 @@ export const middleware = async (req: NextRequest) => {
 
   if (/^\/api\/next-stores/.test(req.nextUrl.pathname)) {
     console.log('middleware', req.method, req.nextUrl.pathname);
-    // const file = await nulter({req, field: 'photo', dest: '../public/uploads'});
-    // if (file) {
-    //   req.file = file;
-    // }
     return NextResponse.next();
   }
   return NextResponse.next();

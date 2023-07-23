@@ -102,7 +102,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
     try {
       const method = store ? 'put' : 'post';
       const res = await ky[method](
-        getURL(`/api/next-stores/store${store ? `/${store._id}` : ''}`),
+        getURL(`/api/next-stores/store${store ? `s/${store._id}` : ''}`),
         {
           body: new FormData(evt.currentTarget),
           timeout: false,

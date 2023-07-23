@@ -9,6 +9,7 @@ import {
 import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
 import {ToastProvider} from '@/components/Toaster/use-toaster';
 import Toaster from '@/components/Toaster/Toaster';
+import {Metadata} from 'next';
 // import {createServerContext} from 'react';
 
 // export const testServerContext = createServerContext(
@@ -16,7 +17,7 @@ import Toaster from '@/components/Toaster/Toaster';
 //   'test'
 // );
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Next Infinity',
   description: 'Full-stack projects and mini-apps built with Next.js',
 };

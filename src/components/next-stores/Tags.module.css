@@ -1,15 +1,15 @@
 .tags {
-  margin: 0;
-  padding: 0;
+  margin: 1em auto;
+  padding-inline: 1em;
   list-style: none;
   display: flex;
-  margin-bottom: 2em;
   flex-wrap: wrap;
 }
 
 .tag {
   display: block;
   margin-inline-end: 1em;
+  font-size: 1rem;
 }
 
 .tagChoice {
@@ -32,19 +32,32 @@
 }
 
 .tagChoice input:checked + label {
-  background: yellow;
+  background: #ffa50090;
 }
 
 .tagLink {
-  background: yellow;
+  background: #ffa50090;
   color: black;
   display: flex;
   padding-left: 10px;
   clip-path: polygon(10px 0%, 100% 1%, 100% 100%, 10px 100%, 0% 50%);
+  text-decoration: none;
 }
 
 .tagLinkActive {
-  background: lighten(purple, 40%);
+  position: relative;
+}
+
+.tagLinkActive::before {
+  content: '';
+  background-color: purple;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  filter: brightness(150%);
 }
 
 .tagLinkActive .tagText {
@@ -52,8 +65,9 @@
 }
 
 .tagText {
-  padding: 1rem 1rem;
-  display: block;
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
 }
 
 .tagCount {

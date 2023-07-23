@@ -1,15 +1,15 @@
-import styles from './Tags.module.css';
+import styles from './TagsList.module.css';
 
 interface TagsProps {
   tags: string[];
 }
 
-const Tags = ({tags}: TagsProps) => {
+const TagsList = ({tags}: TagsProps) => {
   return (
     <ul className={styles.tags}>
       {tags.map((tag, index) => (
         <li className={styles.tag} key={index}>
-          <a className={styles.tagLink} href={`/tags/${tag}`}>
+          <a className={styles.tagLink} href={`/next-stores/tags/${tag}`}>
             <span className={styles.tagText}>#{tag}</span>
           </a>
         </li>
@@ -18,4 +18,4 @@ const Tags = ({tags}: TagsProps) => {
   );
 };
 
-export default Tags;
+export default TagsList;

@@ -1,13 +1,15 @@
 import Stores from '@/components/next-stores/Stores';
 import Store from '@/entities/next-stores/store/store.model';
+import {getURL} from '@/utils/path';
 
 const StoresPage = async () => {
   try {
-    const stores = await Store.find();
+    const res = await fetch(getURL('/api/next-stores/stores'));
+    const data = await res.json();
     return (
       <>
         <h1>Stores</h1>
-        <Stores stores={stores} />
+        <Stores stores={data.stores} />
       </>
     );
   } catch (err) {

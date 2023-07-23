@@ -4,12 +4,12 @@ import {getPath} from './path';
 const readFile = async (pathFromRoot: string): Promise<any> => {
   const filePath = getPath(pathFromRoot);
   const ext = pathFromRoot.split('.').pop();
+  const data: string = await fs.readFile(filePath, 'utf8');
   try {
-    const data: string = await fs.readFile(filePath, 'utf8');
     return ext ? JSON.parse(data) : data;
   } catch (err) {
     console.error(err);
-    throw err;
+    return data;
   }
 };
 
@@ -55,7 +55,7 @@ const writeFile = async (
   }
 };
 
-const deleteFile = async (pathFromRoot: string): Promise<void> => {
+const deleteOneObject = async (pathFromRoot: string): Promise<void> => {
   try {
     const err = (await fs.unlink(pathFromRoot)) as Error | undefined;
     if (err) {
@@ -68,4 +68,4 @@ const deleteFile = async (pathFromRoot: string): Promise<void> => {
   }
 };
 
-export {readFile, writeFile, deleteFile, readFolder, getFolderNames};
+export {readFile, writeFile, deleteOneObject, readFolder, getFolderNames};

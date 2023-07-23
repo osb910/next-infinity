@@ -1,0 +1,12 @@
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0.5em;
+}
+
+.stores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4em 1.25em;
+  margin: 0;
+}

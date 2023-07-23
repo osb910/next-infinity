@@ -15,15 +15,6 @@
   inline-size: 100%;
 }
 
-.storeDetails {
-  padding: 2em;
-}
-
-.storeDetails p {
-  line-height: 1.2;
-  margin-bottom: 0;
-}
-
 .storeActions {
   position: relative;
   z-index: 2;
@@ -51,8 +42,18 @@
   border-bottom: 0;
 }
 
+.singleStore {
+  inline-size: 100%;
+}
+
 .storeHero {
+  height: 500px;
   position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2vw), 0% 100%);
   padding: 0 10px 0 10px;
   text-align: right;
 }
@@ -125,13 +126,10 @@
   position: relative;
   z-index: 2;
   margin: 0;
-  font-size: 40px;
   z-index: 2;
-  line-height: 1.1;
   -webkit-transform: skew(0, -3deg);
   -ms-transform: skew(0, -3deg);
   transform: skew(0, -3deg);
-  line-height: 1.1;
 }
 
 .title--long {
@@ -173,39 +171,67 @@
   );
 }
 
-.title--single {
-  max-width: 600px;
-  margin-top: -9rem;
-  font-size: 10rem;
+.singleTitle {
+  position: absolute;
+  width: 100%;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-inline: auto;
+  padding-inline: 0.5em;
+  font-size: 3.5rem;
   text-align: center;
+  line-height: 1.25;
+}
+
+.singleTitle a {
+  text-decoration: none;
+  color: rgb(var(--bg-default-rbg));
 }
 
 .storeDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
   background: white;
   /* clip-path: polygon(0px 2vw, 100% 0, 100% calc(100% - 2vw), 0% 100%); */
-  position: relative;
-  padding: 3rem;
-  margin-top: -10rem;
+  margin-top: -5rem;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+  margin-inline: auto;
+  margin-block-end: 2em;
+  padding-block-end: 2em;
+  width: 90%;
 }
 
-.storeMap {
-  width: calc(100% + 6rem);
-  max-width: none;
-  margin-top: -3rem;
-  margin-left: -3rem;
+.storeDetails > *:not(figure) {
+  padding-inline: 1.5em;
+  font-size: 1.125rem;
+}
+
+.storeDetails p {
+  line-height: 1.2;
+  margin-bottom: 0;
 }
 
 .storeLocation {
+  position: relative;
+  z-index: 2;
   margin: 0;
-  margin-top: -3rem;
-  margin-right: -5rem;
+  margin-block-start: -5em;
+  margin-inline-end: -3.5em;
+  padding: 1em;
+  padding-inline-end: 2em;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  display: inline-block;
+  align-self: flex-end;
   background: #222;
   color: white;
-  display: inline-block;
-  float: right;
-  position: relative;
-  padding: 1rem;
+}
+
+@media (min-width: 500px) {
+  .singleTitle {
+    font-size: 4.5rem;
+  }
 }
 
 @media all and (max-inline-size: 850px) {

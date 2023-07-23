@@ -1,4 +1,4 @@
-import {deleteFile} from '@/lib/s3';
+import {deleteOneObject} from '@/lib/s3';
 import {connectDBs} from '@/utils/database';
 import {getPath} from '@/utils/path';
 import {Schema, Model, Types} from 'mongoose';
@@ -107,7 +107,7 @@ storeSchema.pre('findOneAndUpdate', async function () {
     }
     // Delete old photo if new photo is uploaded
     if (update.photo && docToUpdate.photo.key !== update.photo.key) {
-      await deleteFile(`next-stores/${docToUpdate.photo.key}`);
+      await deleteOneObject(`next-stores/${docToUpdate.photo.key}`);
     }
     // Update slug if name is changed
     if (docToUpdate.name !== update.name) {
@@ -124,15 +124,15 @@ storeSchema.pre('findOneAndUpdate', async function () {
   }
 });
 
-storeSchema.static('getTagsList', function () {
-  return this.aggregate([
+storeSchema.static('getTagsList', async function () {
+  return await this.aggregate([
     {$unwind: '$tags'},
     {$group: {_id: '$tags', count: {$sum: 1}}},
-    {$sort: {count: -1}},
+    {$sort: {count: -1, _id: 1}},
   ]);
 });
 
 const {storesDB} = await connectDBs();
 
-export default (storesDB.models?.Subscriber as Model<IStore, StoreModel>) ||
+export default (storesDB.models?.Store as Model<IStore, StoreModel>) ||
   storesDB.model('Store', storeSchema);
