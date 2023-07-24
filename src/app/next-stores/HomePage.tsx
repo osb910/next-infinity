@@ -4,7 +4,12 @@ import {getURL} from '@/utils/path';
 
 const HomePage = async () => {
   try {
-    const res = await fetch(getURL('/api/next-stores/stores'));
+    const res = await fetch(getURL('/api/next-stores/stores'), {
+      headers: {
+        // Accept: 'application/json, text/plain, */*',
+        'User-Agent': '*',
+      },
+    });
     const data = await res.json();
     return (
       <>

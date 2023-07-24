@@ -58,9 +58,6 @@ const Home = async () => {
                   .join(' ')}
               </Poster>
             ))}
-            <Poster poster='/img/next-events.png' link='/next-events'>
-              Next Events
-            </Poster>
           </ol>
         </section>
         <section className={styles.section}>
