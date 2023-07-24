@@ -2,15 +2,10 @@ import {NextRequest, NextResponse} from 'next/server';
 import Store from '@/entities/next-stores/store/store.model';
 import {processUploadImage} from '@/lib/file.middleware';
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
-
 export const GET = async () => {
   try {
     const stores = await Store.find().sort({createdAt: -1});
+    console.log(stores);
     if (!stores) {
       const err = new Error('Something went wrong!');
       throw err;
@@ -33,7 +28,7 @@ export const GET = async () => {
   }
 };
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export const POST = async (req: NextRequest) => {
   try {
     const body = await req.formData();
     const data = Object.fromEntries(body);
@@ -85,7 +80,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       {status: 500}
     );
   }
-}
+};
 
 // DELETE ALL STORES
 export const DELETE = async () => {
