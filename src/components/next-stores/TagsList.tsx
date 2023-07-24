@@ -1,4 +1,4 @@
-import styles from './TagsList.module.css';
+import styles from './Tags.module.css';
 
 interface TagsProps {
   tags: string[];

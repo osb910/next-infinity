@@ -1,6 +1,6 @@
 import {NextResponse} from 'next/server';
 
-export const dynamic = 'dynamic';
+export const dynamic = 'force-dynamic';
 
 const endpoint = 'https://api.mapbox.com/search/geocode/v6';
 const token = process.env.MAPBOX_SECRET_TOKEN;

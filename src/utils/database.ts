@@ -8,7 +8,7 @@ const oldMongoUri = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB
 const mongoUriOptions =
   '?ssl=true&replicaSet=atlas-i4i6o3-shard-0&authSource=admin&retryWrites=true&w=majority';
 
-const storesUri = `mongodb+srv://potato-slice:vK7hpf8FRqlgpFfN@potato.o9cpijt.mongodb.net/potatodb?retryWrites=true&w=majority`;
+const storesUri = `mongodb+srv://${process.env.MONGO_USER_POTATO}:${process.env.MONGO_PASSWORD_POTATO}@potato.o9cpijt.mongodb.net/potatodb?retryWrites=true&w=majority`;
 
 const mongoConnect = async (uri: string): Promise<void> => {
   try {

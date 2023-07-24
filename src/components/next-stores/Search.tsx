@@ -7,7 +7,7 @@ const Search = ({}: SearchProps) => {
       <input
         type='text'
         className={styles.searchInput}
-        placeholder='Coffee, beer...'
+        placeholder='Coffee, tea, sandwiches...'
         name='search'
       />
       <div className={styles.searchResults}></div>

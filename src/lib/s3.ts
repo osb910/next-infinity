@@ -58,7 +58,8 @@ const getOneObject = async (fileKey: string) => {
     if (!(err instanceof S3ServiceException)) return;
     console.log(JSON.stringify(err, null, 2));
     return {
-      key: err.Key! ?? fileKey,
+      // @ts-ignore
+      key: err.Key ?? fileKey,
       fault: err.$fault,
       statusCode: err.$metadata.httpStatusCode,
       code: err.name,

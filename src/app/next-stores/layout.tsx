@@ -1,9 +1,9 @@
 import {Metadata} from 'next';
 import Link from 'next/link';
 import styles from './HomePage.module.css';
-import NavLink from './NavLink';
+import NavLink from '../../components/next-stores/NavLink';
 import Image from 'next/image';
-import Search from './Search';
+import Search from '../../components/next-stores/Search';
 
 export const metadata: Metadata = {};
 
