@@ -5,13 +5,19 @@ import {connectDBs} from '@/utils/database';
 import validator from 'validator';
 const {isEmail} = validator;
 
-export type IUser = {
+export interface IUser {
   email: string;
   name: string;
   password: string;
-};
+}
 
-const userSchema = new Schema<IUser>({
+interface IUserMethods {
+  comparePassword(password: string): Promise<boolean>;
+}
+
+type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
   email: {
     type: String,
     unique: true,
@@ -31,38 +37,31 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-userSchema.pre(
-  'save',
-  async function (next: (error?: Error) => void): Promise<any> {
-    if (!this.isModified('password')) return next();
+userSchema.pre('save', async function (): Promise<any> {
+  if (!this.isModified('password')) return;
+  try {
+    // const existingUser = await this.collection.findOne({email: this.email});
+    const salt = await genSalt(12);
+    this.password = await hash(this.password, salt);
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(err);
+  }
+});
+
+userSchema.method(
+  'comparePassword',
+  async function (password: string): Promise<boolean> {
     try {
-      const existingUser = await this.collection.findOne({email: this.email});
-      if (existingUser) {
-        const err: Error = new Error('Email already in use');
-        throw err;
-      }
-      const salt = await genSalt(12);
-      this.password = await hash(this.password, salt);
-      next();
+      const match = await compare(password, this.password);
+      return match;
     } catch (err) {
-      if (!(err instanceof Error)) return;
-      next(err);
+      return false;
     }
   }
 );
 
-userSchema.methods.comparePassword = async function (
-  password: string
-): Promise<boolean> {
-  try {
-    const match = await compare(password, this.password);
-    return match;
-  } catch (err) {
-    return false;
-  }
-};
-
 const {storesDB} = await connectDBs();
 
-export default (storesDB.models?.Subscriber as Model<IUser>) ||
-  storesDB.model('Store', userSchema);
+export default (storesDB.models?.User as Model<IUser, UserModel>) ||
+  storesDB.model('User', userSchema);

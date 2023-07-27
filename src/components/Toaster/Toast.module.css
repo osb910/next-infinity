@@ -39,29 +39,39 @@
   font-weight: 600;
 }
 
-.content button {
-  border-color: currentColor;
-  background-color: transparent;
-  transition: transform 0.2s ease-in-out;
+.content p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
 }
 
-.notice .content button {
+.content :where(button, a) {
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 600;
+  border-color: currentColor;
+  background-color: transparent;
+  transition: transform 0.3s ease-in-out;
+}
+
+.notice .content :where(button, a) {
   color: var(--color-notice);
 }
 
-.warning .content button {
+.warning .content :where(button, a) {
   color: var(--color-warning);
 }
 
-.success .content button {
+.success .content :where(button, a) {
   color: var(--color-success);
 }
 
-.error .content button {
+.error .content :where(button, a) {
   color: var(--color-error);
 }
 
-.content button:where(:hover, :focus) {
+.content :where(button, a):where(:hover, :focus) {
   transform: scale(1.1);
 }
 

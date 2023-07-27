@@ -1,0 +1,66 @@
+.form {
+  --border-radius: 6px;
+  inline-size: 90%;
+  max-inline-size: 550px;
+  padding: 1.5em;
+  margin: 1em auto;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  background: white;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid gray;
+  border-radius: var(--border-radius);
+}
+
+.error {
+  border-color: red;
+}
+
+.form label {
+  padding: 10px 0;
+  display: block;
+  border-radius: var(--border-radius);
+}
+
+.button {
+  padding-block: 1em;
+  padding-inline: 1.5em;
+  border: 0;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  align-self: center;
+  background: orange;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  filter: drop-shadow(0 0 0 10px rgba(10, 10, 20, 0.2));
+  transition: all 250ms ease-in-out;
+}
+
+.form .button:where(:hover, :focus) {
+  background: yellow;
+}
+
+.form > img {
+  inline-size: 100%;
+  block-size: auto;
+  max-inline-size: 400px;
+  max-block-size: 85vh;
+  margin: 0 auto;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}

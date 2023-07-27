@@ -6,8 +6,8 @@ const HomePage = async () => {
   try {
     const res = await fetch(getURL('/api/next-stores/stores'), {
       headers: {
-        // Accept: 'application/json, text/plain, */*',
         'User-Agent': '*',
+        Accept: 'application/json, text/plain, */*',
       },
     });
     const data = await res.json();

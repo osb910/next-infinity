@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useRef, FormEvent, ChangeEvent} from 'react';
+import {useState, useRef, ChangeEvent} from 'react';
 import Image from 'next/image';
 import ky from 'ky';
 import Link from 'next/link';
@@ -8,11 +8,13 @@ import Select from 'react-select';
 import {IStore} from '@/entities/next-stores/store/store.model';
 import {getURL} from '@/utils/path';
 import styles from './StoreEditor.module.css';
-import Spinner from '../Spinner';
 import useToaster from '../Toaster/use-toaster';
+import Form from '../Form/Form';
+import Input from '../Input';
 
 interface StoreEditorProps {
   store?: IStore;
+  isPlaceholder?: boolean;
 }
 
 type AddressOption = {
@@ -30,7 +32,6 @@ const StoreEditor = ({store}: StoreEditorProps) => {
     'Vegetarian',
     'Licensed',
   ];
-  const tags = store?.tags ?? [];
 
   const [address, setAddress] = useState(store?.location?.address ?? '');
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -39,17 +40,21 @@ const StoreEditor = ({store}: StoreEditorProps) => {
   const photoRef = useRef<HTMLImageElement>(null);
   const lngRef = useRef<HTMLInputElement>(null);
   const latRef = useRef<HTMLInputElement>(null);
-  const [submitting, setSubmitting] = useState(false);
   const {createToast} = useToaster();
+
+  const tags = store?.tags ?? [];
 
   const changeAddress = async (newValue: string) => {
     setAddress(newValue);
     if (newValue.length < 3) return;
     setAddressLoading(true);
     try {
-      const res = await fetch(getURL(`/api/next-stores/map?place=${address}`), {
-        cache: 'no-store',
-      });
+      const res = await fetch(
+        getURL(`/api/next-stores/map/search?place=${address}`),
+        {
+          cache: 'no-store',
+        }
+      );
       const data = await res.json();
       if (data.error) {
         setError(data.error);
@@ -96,60 +101,66 @@ const StoreEditor = ({store}: StoreEditorProps) => {
     };
   };
 
-  const submit = async (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    setSubmitting(true);
-    try {
-      const method = store ? 'put' : 'post';
-      const res = await ky[method](
-        getURL(`/api/next-stores/store${store ? `s/${store._id}` : ''}`),
-        {
-          body: new FormData(evt.currentTarget),
-          timeout: false,
-        }
-      );
-      const json = (await res.json()) as IStore & {
-        status: 'success' | 'warning' | 'error' | 'notice';
-        message: string;
-      };
-      createToast(
-        json.status,
-        <>
-          <p>{json.message}</p>
-          <Link className='btn' href={`/next-stores/stores/${json._id}`}>
-            View Store →
-          </Link>
-        </>,
-        30000
-      );
-      photoRef.current!.removeAttribute('class');
-      evt.currentTarget.reset();
-    } catch (err) {
-      console.error(err);
-    }
-    setSubmitting(false);
+  const submit = async (body: FormData) => {
+    const method = store ? 'put' : 'post';
+    const res = await ky[method](
+      getURL(`/api/next-stores/stores${store ? `/${store._id}` : ''}`),
+      {
+        body,
+        timeout: 20000,
+        throwHttpErrors: false,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    const json = (await res.json()) as {
+      data: IStore;
+      status: 'success' | 'warning' | 'error' | 'notice';
+      message: string;
+    };
+    console.log(json);
+    createToast(
+      json.status,
+      <>
+        <p>{json.message}</p>
+        <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
+          View Store →
+        </Link>
+      </>,
+      30000
+    );
+    photoRef.current!.removeAttribute('class');
   };
 
   return (
-    <form className={styles.form} onSubmit={submit}>
-      <p>
-        <label htmlFor='name'>Name</label>
-        <input type='text' name='name' defaultValue={store?.name ?? ''} />
-      </p>
+    <Form
+      onSubmit={submit}
+      submitText='Save →'
+      title={store ? `Edit ${store.name}` : 'Add Store'}
+    >
+      <Input
+        name='name'
+        label='Name'
+        placeholder='Store name'
+        defaultValue={store?.name ?? ''}
+        required
+      />
       <p>
         <label htmlFor='description'>Description</label>
-        <textarea name='description' defaultValue={store?.description ?? ''} />
-      </p>
-      <p>
-        <label htmlFor='photo'>Photo</label>
-        <input
-          type='file'
-          id='photo'
-          name='photo'
-          accept='image/gif, image/png, image/jpeg'
-          onChange={previewPhoto}
+        <textarea
+          name='description'
+          placeholder='How does it feel like?'
+          defaultValue={store?.description ?? ''}
         />
       </p>
+      <Input
+        type='file'
+        name='photo'
+        label='Photo'
+        accept='image/gif, image/png, image/jpeg'
+        onChange={previewPhoto}
+      />
       <Image
         src={`/api/next-stores/files/${store?.photo?.key ?? 'store.png'}`}
         alt={store?.name ?? 'store'}
@@ -177,27 +188,28 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         />
       </div>
       <p>
-        <label htmlFor='lng'>Address Lng</label>
+        <label htmlFor='lng'>Address Longitude</label>
         <input
-          type='text'
-          id='lng'
           name='lng'
-          defaultValue={store?.location?.coordinates?.[0] ?? ''}
+          id='lng'
           required
+          placeholder='Longitude'
+          defaultValue={store?.location?.coordinates?.[0] ?? ''}
           ref={lngRef}
         />
       </p>
       <p>
-        <label htmlFor='lat'>Address Lat</label>
+        <label htmlFor='lat'>Address Latitude</label>
         <input
-          type='text'
-          id='lat'
           name='lat'
-          defaultValue={store?.location?.coordinates?.[1] ?? ''}
+          id='lat'
           required
+          placeholder='Latitude'
+          defaultValue={store?.location?.coordinates?.[1] ?? ''}
           ref={latRef}
         />
       </p>
+      <label>Tags</label>
       <ul className={styles.tags}>
         {features.map((choice, index) => (
           <li className={styles.tagChoice} key={index}>
@@ -212,10 +224,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
           </li>
         ))}
       </ul>
-      <button disabled={submitting} type='submit' className={styles.button}>
-        {submitting ? <Spinner /> : 'Save →'}
-      </button>
-    </form>
+    </Form>
   );
 };
 

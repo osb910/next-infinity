@@ -1,11 +1,11 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Store from '@/entities/next-stores/store/store.model';
+import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {processUploadImage} from '@/lib/file.middleware';
+import {HydratedDocument} from 'mongoose';
 
 export const GET = async () => {
   try {
-    const stores = await Store.find().sort({createdAt: -1});
-    console.log(stores);
+    const stores = await Store.find().skip(0).limit(10).sort({createdAt: -1});
     if (!stores) {
       const err = new Error('Something went wrong!');
       throw err;
@@ -16,7 +16,7 @@ export const GET = async () => {
         status: 'success',
         message: `Successfully fetched stores!`,
       },
-      {status: 200}
+      {status: 200, headers: {'Content-Type': 'application/json'}}
     );
   } catch (err) {
     if (!(err instanceof Error)) return;
@@ -30,6 +30,7 @@ export const GET = async () => {
 
 export const POST = async (req: NextRequest) => {
   try {
+    const userId = req.headers.get('X-USER-ID');
     const body = await req.formData();
     const data = Object.fromEntries(body);
     const {name, description, address, lat, lng} = data;
@@ -62,11 +63,13 @@ export const POST = async (req: NextRequest) => {
       const err = new Error('Something went wrong!');
       throw err;
     }
-    const res = await store.save();
+    const res = (await store.save()) as HydratedDocument<IStore> & {
+      _doc: HydratedDocument<IStore>;
+    };
 
     return NextResponse.json(
       {
-        ...store,
+        data: res._doc,
         status: 'success',
         message: `Successfully created ${res.name}!`,
       },

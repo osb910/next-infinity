@@ -7,16 +7,13 @@ import {getURL} from '@/utils/path';
 const EditStore = async ({params}: {params: {storeId: string}}) => {
   try {
     const res = await fetch(
-      getURL(`/api/next-stores/stores/${params.storeId}`),
-      {cache: 'no-store'}
+      getURL(`/api/next-stores/stores/${params.storeId}`)
     );
     const data = await res.json();
-    console.log(data);
     if (!data) return <Spinner />;
     const store = {...data, _id: data._id};
     return (
       <>
-        <h1 className={styles.title}>Edit {store.name}</h1>
         <StoreEditor store={store} />
       </>
     );

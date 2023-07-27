@@ -10,16 +10,17 @@
   width: 100%;
   inset-block-start: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  z-index: 5;
+  z-index: 2;
   left: 0;
 }
 
 .searchInput {
-  font-size: 30px;
-  background: none;
-  color: white;
   outline: 0;
   border: 0;
+  padding-inline: 0.25em;
+  font-size: 1.5rem;
+  background: none;
+  color: white;
 }
 
 .searchResult {

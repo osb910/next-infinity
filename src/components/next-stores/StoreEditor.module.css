@@ -1,65 +1,16 @@
-.form {
-  --border-radius: 6px;
-  inline-size: 90%;
-  max-inline-size: 650px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  background: white;
-  padding: 1.5em;
-  margin: 0 auto;
-  /* box-shadow: $grad; */
-}
-
-.form input,
-.form textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid gray;
-  border-radius: var(--border-radius);
-}
-
-.form .error {
-  border-color: red;
-}
-
-.form label {
-  padding: 10px 0;
-  display: block;
-  border-radius: var(--border-radius);
-}
-
-.form .tags {
+.tags {
   display: flex;
   align-content: center;
   flex-wrap: wrap;
   gap: 0.5em;
 }
 
-.form .tags .tag {
+.tags .tag {
   display: flex;
   align-items: center;
   white-space: pre;
   gap: 0.25em;
   border-radius: var(--border-radius);
-}
-
-.form .button {
-  padding-block: 0.5em;
-  padding-inline: 1em;
-  border: 0;
-  border-radius: var(--border-radius);
-  align-self: center;
-  background: orange;
-  color: black;
-  font-family: 'Panama';
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 250ms ease-in-out;
-}
-
-.form .button:where(:hover, :focus) {
-  background: yellow;
 }
 
 .tagChoice {
@@ -85,7 +36,7 @@
   background: yellow;
 }
 
-.form > img {
+/* img {
   inline-size: 100%;
   block-size: auto;
   max-inline-size: 400px;
@@ -93,9 +44,9 @@
   margin: 0 auto;
   object-fit: cover;
   border-radius: var(--border-radius);
-}
+} */
 
-.form .preview {
+.preview {
   border-inline-start: 6px solid rgba(10, 210, 10, 0.6);
   /* padding-inline-start: 1em; */
 }

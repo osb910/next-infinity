@@ -1,3 +1,12 @@
+.top {
+  position: sticky;
+  inset-block-start: 0;
+  isolation: isolate;
+  z-index: 1;
+  background-color: hsl(0, 0%, 13%, 0.9);
+  backdrop-filter: blur(2px);
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -15,7 +24,6 @@
   margin: 0;
   padding: 0;
   justify-content: space-between;
-  background: #222;
 }
 
 .navItem {
@@ -23,32 +31,30 @@
 }
 
 .navLink {
-  background: #222;
-  color: white;
+  padding: 0.5em 0.75em;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
-  text-transform: uppercase;
-  padding: 1em;
-  display: block;
+  border-block-end: 4px solid transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: white;
   transition: all 0.3s ease-in-out;
-  border-block-end: 5px solid transparent;
 }
 
 .navLink svg {
   flex-shrink: 0;
-  width: 40px;
+  font-size: 1.5rem;
   transition: all 0.2s;
-  fill: white;
-  margin-bottom: 1em;
 }
 
 .navLink:where(:hover, :focus),
 .navLinkActive {
-  border-bottom-color: rgba(0, 0, 0, 0.2);
-  border-right-color: rgba(0, 0, 0, 0.05);
+  border-block-end-color: rgba(20, 20, 60, 0.4);
+  border-inline-end-color: rgba(0, 0, 0, 0.15);
   background: linear-gradient(
     90deg,
     #48ded4 0% 10%,
@@ -84,10 +90,6 @@
 @media all and (max-width: 1200px) {
   .navLink {
     padding-inline: 1em;
-  }
-
-  .navLink svg {
-    width: 30px;
   }
 
   .navLinkLogo svg {

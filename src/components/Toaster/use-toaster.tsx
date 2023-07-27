@@ -1,6 +1,13 @@
 'use client';
 
-import {createContext, useMemo, ReactNode, useEffect, useContext} from 'react';
+import {
+  createContext,
+  useMemo,
+  ReactNode,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
 import {useImmer} from 'use-immer';
 import useHotKeys, {HotKey} from '../../hooks/useHotkeys';
 
@@ -63,7 +70,7 @@ export const ToastProvider = ({
     });
   };
 
-  const clearToasts = () => setToasts([]);
+  const clearToasts = useCallback(() => setToasts([]), [setToasts]);
 
   const keyboardShortcuts = useMemo((): HotKey[] => {
     return [
@@ -72,7 +79,7 @@ export const ToastProvider = ({
         run: () => clearToasts(),
       },
     ];
-  }, []);
+  }, [clearToasts]);
   useHotKeys(keyboardShortcuts);
 
   return (

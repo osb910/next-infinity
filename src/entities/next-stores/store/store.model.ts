@@ -1,6 +1,5 @@
 import {deleteOneObject} from '@/lib/s3';
 import {connectDBs} from '@/utils/database';
-import {getPath} from '@/utils/path';
 import {Schema, Model, Types} from 'mongoose';
 import slug from 'slug';
 
