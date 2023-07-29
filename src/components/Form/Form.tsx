@@ -1,26 +1,28 @@
 'use client';
 
-import {useState, FormEvent, ReactNode} from 'react';
+import {useState, FormEvent, ReactNode, ComponentProps} from 'react';
 import Spinner from '../Spinner';
 import styles from './Form.module.css';
 
-interface FormProps {
+interface FormProps extends ComponentProps<'form'> {
   title?: string;
-  onSubmit: (body: FormData) => Promise<void>;
-  onError?: (error: Error) => void;
+  submitHandler: (body: any) => Promise<void>;
+  errorHandler?: (error: Error) => void;
   submitText?: string;
   resetAfterSubmit?: boolean;
   children: ReactNode;
+  className?: string;
   [idx: string]: any;
 }
 
 const Form = ({
   title,
-  onSubmit,
+  submitHandler,
   submitText = 'Submit',
-  onError,
+  errorHandler,
   resetAfterSubmit = true,
   children,
+  className,
   ...delegated
 }: FormProps) => {
   const [submitting, setSubmitting] = useState(false);
@@ -29,18 +31,22 @@ const Form = ({
     setSubmitting(true);
     try {
       const body = new FormData(evt.currentTarget);
-      await onSubmit(body);
+      await submitHandler(body);
       if (resetAfterSubmit) evt.currentTarget.reset();
     } catch (err) {
       if (!(err instanceof Error)) return;
       console.error(err);
-      onError?.(err);
+      errorHandler?.(err);
     }
     setSubmitting(false);
   };
 
   return (
-    <form className={styles.form} onSubmit={submit} {...delegated}>
+    <form
+      className={`${className ?? ''} ${styles.form}`}
+      onSubmit={submit}
+      {...delegated}
+    >
       {title && <h2 className={styles.title}>{title}</h2>}
       {children}
       <button disabled={submitting} type='submit' className={styles.button}>

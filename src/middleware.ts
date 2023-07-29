@@ -36,18 +36,28 @@ export const middleware = async (req: NextRequest) => {
 
     const response = NextResponse.next();
 
+    if (/\/add/.test(pathname) && !token) {
+      return NextResponse.redirect(
+        new URL(
+          `/next-stores/login?error=bad_token&redirect=${pathname}`,
+          req.url
+        )
+      );
+    }
     if (!token) return response;
     try {
       const {sub} = await verifyJWT<{sub: string}>(
         token,
         process.env.NEXT_STORES_JWT_SECRET!
       );
-      response.headers.set('X-USER-ID', sub);
 
       if (req.url.includes('/login') && sub) {
         console.log('trying to login while logged in');
         return NextResponse.redirect(new URL('/next-stores', req.url));
       }
+
+      response.headers.set('X-USER-ID', sub);
+
       return response;
     } catch (err) {
       if (!(err instanceof Error)) return;

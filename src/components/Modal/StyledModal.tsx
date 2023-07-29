@@ -61,6 +61,7 @@ export const blurOut = keyframes`
 
 const Wrapper = styled.aside`
   position: fixed;
+  z-index: 2;
   inset: 0;
   display: grid;
   place-content: center;
@@ -79,11 +80,12 @@ const Wrapper = styled.aside`
   }
 
   & .modal {
-    inset-block-start: 0.5rem;
-    max-block-size: 90vh;
+    inset-block-start: 0.25rem;
+    max-block-size: 92vh;
     position: relative;
-    padding-block: 1.25em;
-    padding-inline: 1.25em;
+    isolation: isolate;
+    padding-block: 0.25em;
+    padding-inline: 0.25em;
     border-radius: 0.5rem;
     background: white;
     font-family: 'Atkinson', sans-serif;

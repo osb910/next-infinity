@@ -1,6 +1,7 @@
 'use client';
 
-import {useSearchParams, useRouter} from 'next/navigation';
+import {useSearchParams, useRouter, usePathname} from 'next/navigation';
+import {useEffect} from 'react';
 import ky from 'ky';
 import Form from '@/components/Form/Form';
 import Input from '@/components/Input';
@@ -10,12 +11,21 @@ import {emailRegex, stringifyRegex} from '@/lib/regex';
 import {getURL} from '@/utils/path';
 import {IUser} from '@/entities/next-stores/user/user.model';
 import Spinner from '@/components/Spinner';
+import styles from './LoginForm.module.css';
 
-const Login = () => {
+const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const {createToast} = useToaster();
+  const pathname = usePathname();
   const email = searchParams.get('email');
+  const error = searchParams.get('error');
+  const redirect = searchParams.get('redirect');
+  const {createToast} = useToaster();
+
+  useEffect(() => {
+    error === 'bad_token' &&
+      createToast('error', <p>You must be logged in.</p>, 2400);
+  }, []);
 
   const login = async (body: FormData) => {
     const res = await ky.post(getURL('/api/next-stores/auth/login'), {
@@ -28,7 +38,6 @@ const Login = () => {
       message: string;
       status: string;
     };
-    console.log(json);
     if (json.status === 'error') {
       createToast('error', <p>{json.message}</p>, 20000);
     }
@@ -36,18 +45,18 @@ const Login = () => {
       createToast(
         'success',
         <p>
-          {json.message} <Spinner size={20} />
+          {json.message} <Spinner />
         </p>,
-        2400
+        2800
       );
       setTimeout(() => {
-        router.push(`/next-stores`);
+        router.push(redirect ?? pathname);
       }, 2800);
     }
   };
 
   return (
-    <Form title='Login' onSubmit={login} submitText='Log In →'>
+    <Form className={styles.form} submitHandler={login} submitText='Log In →'>
       <Input
         name='email'
         label='Email Address'
@@ -69,4 +78,4 @@ const Login = () => {
     </Form>
   );
 };
-export default Login;
+export default LoginForm;

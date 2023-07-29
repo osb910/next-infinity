@@ -1,6 +1,7 @@
 import {Schema, Model} from 'mongoose';
 import {genSalt, hash, compare} from 'bcrypt';
 import {connectDBs} from '@/utils/database';
+import {Md5} from 'ts-md5';
 
 import validator from 'validator';
 const {isEmail} = validator;
@@ -17,24 +18,40 @@ interface IUserMethods {
 
 type UserModel = Model<IUser, {}, IUserMethods>;
 
-const userSchema = new Schema<IUser, UserModel, IUserMethods>({
-  email: {
-    type: String,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    validate: [isEmail, 'Invalid Email Address'],
-    required: [true, 'Please provide an email address'],
+const userSchema = new Schema<IUser, UserModel, IUserMethods>(
+  {
+    email: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: [isEmail, 'Invalid Email Address'],
+      required: [true, 'Please provide an email address'],
+    },
+    name: {
+      type: String,
+      required: [true, 'Please provide a name'],
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: [true, 'Please provide a password'],
+    },
   },
-  name: {
-    type: String,
-    required: [true, 'Please provide a name'],
-    trim: true,
-  },
-  password: {
-    type: String,
-    required: [true, 'Please provide a password'],
-  },
+  {
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true},
+    timestamps: true,
+  }
+);
+
+userSchema.virtual('domain').get(function () {
+  return this.email.slice(this.email.indexOf('@') + 1);
+});
+
+userSchema.virtual('gravatar').get(async function () {
+  const gravatarHash = Md5.hashStr(this.email.trim().toLowerCase()) as string;
+  return `https://www.gravatar.com/avatar/${gravatarHash}?s=200&d=retro`;
 });
 
 userSchema.pre('save', async function (): Promise<any> {

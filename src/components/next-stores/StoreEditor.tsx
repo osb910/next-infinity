@@ -135,7 +135,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
 
   return (
     <Form
-      onSubmit={submit}
+      submitHandler={submit}
       submitText='Save →'
       title={store ? `Edit ${store.name}` : 'Add Store'}
     >

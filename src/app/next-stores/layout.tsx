@@ -7,10 +7,12 @@ import {BiStore} from 'react-icons/bi';
 import {BsTags, BsTrophy} from 'react-icons/bs';
 import {MdOutlineAddBox} from 'react-icons/md';
 import {PiMapPinLine} from 'react-icons/pi';
+import {User, UserPlus, LogIn, LogOut, Heart} from 'react-feather';
 import styles from './HomePage.module.css';
 import NavLink from '../../components/next-stores/NavLink';
 import Search from '../../components/next-stores/Search';
 import {getURL} from '@/utils/path';
+import UserNav from '@/components/next-stores/UserNav';
 
 export const metadata: Metadata = {};
 
@@ -42,17 +44,20 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
   const cookieStore = cookies();
   const headersStore = headers();
   const userId = headersStore.get('X-USER-ID');
-  const loggedIn = cookieStore.get('next-stores-logged-in')?.value === 'true';
   let user;
-  try {
-    const res = await fetch(getURL(`/api/next-stores/users/me`), {
-      headers: {
-        'X-USER-ID': userId ?? '',
-      },
-    });
-    user = await res.json();
-  } catch (err) {
-    console.error(err);
+  if (!user) {
+    try {
+      const res = await fetch(getURL(`/api/next-stores/users/me`), {
+        headers: {
+          'X-USER-ID': userId ?? '',
+        },
+      });
+      const json = await res.json();
+      if (json.status === 'success') user = json.data;
+      console.log({user});
+    } catch (err) {
+      console.error(err);
+    }
   }
   return (
     <>
@@ -90,78 +95,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
           >
             <Search />
           </section>
-          <ul className={`${styles.navSection} ${styles.navSectionUser}`}>
-            {loggedIn ? (
-              <>
-                <li className={styles.navItem}>
-                  <NavLink
-                    activeClassName={styles.navLinkActive}
-                    className={styles.navLink}
-                    href='/hearts'
-                  >
-                    <Image
-                      src='/img/icons/heart.svg'
-                      alt='heart'
-                      width={32}
-                      height={32}
-                    />
-                    <span className='heart-count'>
-                      {user?.hearts && user.hearts.length}
-                    </span>
-                  </NavLink>
-                </li>
-                <li className={styles.navItem}>
-                  <NavLink
-                    activeClassName={styles.navLinkActive}
-                    className={styles.navLink}
-                    href='/api/next-stores/auth/logout'
-                  >
-                    <Image
-                      src='/img/icons/logout.svg'
-                      alt='logout'
-                      width={32}
-                      height={32}
-                    />
-                    <span>Logout</span>
-                  </NavLink>
-                </li>
-                <li className={styles.navItem}>
-                  <NavLink
-                    activeClassName={styles.navLinkActive}
-                    className={styles.navLink}
-                    href='/account'
-                  >
-                    <img
-                      className='avatar'
-                      alt='avatar'
-                      src={user?.gravatar + '&d=retro'}
-                    />
-                  </NavLink>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className={styles.navItem}>
-                  <NavLink
-                    activeClassName={styles.navLinkActive}
-                    className={styles.navLink}
-                    href='/next-stores/register'
-                  >
-                    Register
-                  </NavLink>
-                </li>
-                <li className={styles.navItem}>
-                  <NavLink
-                    activeClassName={styles.navLinkActive}
-                    className={styles.navLink}
-                    href='/next-stores/login'
-                  >
-                    Log In
-                  </NavLink>
-                </li>
-              </>
-            )}
-          </ul>
+          <UserNav user={user} />
         </nav>
       </header>
       <main className={styles.main}>{children}</main>

@@ -10,11 +10,22 @@ const Portal = ({lang, children}: {lang?: string; children: ReactNode}) => {
     const dir = lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr';
     const portal = new DOMParser().parseFromString(
       `
-      <div data-portal=${id} dir=${dir} class='${dir}'></div>
+      <div
+        data-portal=${id} dir=${dir} class='${dir}'
+        style='position: relative; z-index: 10;'
+      >
+      </div>
     `,
       'text/html'
     ).body.firstChild as HTMLElement;
-    document.body.append(portal);
+    const firstPortal = document.querySelector(`[data-portal]`);
+    const lastEl = document.querySelector(`body > :last-child`);
+    console.log({firstPortal, lastEl});
+    firstPortal
+      ? firstPortal.insertAdjacentElement('beforebegin', portal)
+      : lastEl
+      ? lastEl.insertAdjacentElement('afterend', portal)
+      : document.body.append(portal);
     setHost(portal);
 
     return () => portal.remove();

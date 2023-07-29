@@ -1,6 +1,6 @@
 'use client';
 
-import {useRouter} from 'next/navigation';
+import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
 import useToaster from '@/components/Toaster/use-toaster';
 import Form from '@/components/Form/Form';
@@ -9,6 +9,7 @@ import PasswordInput from '@/components/PasswordInput';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import {getURL} from '@/utils/path';
 import Spinner from '@/components/Spinner';
+import styles from './RegisterForm.module.css';
 
 export type Response =
   | {status: 'error'; errors?: {message: string}[]; message?: string}
@@ -23,9 +24,11 @@ export type Response =
       data: Record<string, any>;
     };
 
-const Register = async () => {
+const RegisterForm = () => {
   const {createToast} = useToaster();
   const router = useRouter();
+  const pathname = usePathname();
+  console.log(pathname);
 
   const signUp = async (body: FormData) => {
     try {
@@ -46,16 +49,13 @@ const Register = async () => {
       if (json.status === 'success') {
         createToast(
           'success',
-          <>
-            <p>{json.message}</p>
-            <p>
-              Redirecting... <Spinner />
-            </p>
-          </>,
+          <p>
+            {json.message} <Spinner />
+          </p>,
           2400
         );
         setTimeout(() => {
-          router.push(`/next-stores/login?email=${body.get('email')}`);
+          router.push(`${pathname}?auth-page=login&email=${body.get('email')}`);
         }, 2800);
       }
     } catch (err) {
@@ -64,7 +64,7 @@ const Register = async () => {
     }
   };
   return (
-    <Form onSubmit={signUp} submitText='Register' title='Register'>
+    <Form className={styles.form} submitHandler={signUp} submitText='Register'>
       <Input
         label='Name'
         name='name'
@@ -99,4 +99,4 @@ const Register = async () => {
     </Form>
   );
 };
-export default Register;
+export default RegisterForm;
