@@ -42,7 +42,7 @@
     "mapbox-gl": "^1.13.3",
     "moment": "^2.29.4",
     "mongoose": "^7.3.1",
-    "next": "^13.4.8",
+    "next": "^13.4.12",
     "nodemailer": "^6.9.4",
     "original-fs": "^1.2.0",
     "pretty-print-json": "^2.0.2",

@@ -39,11 +39,11 @@ const menu: MenuItem[] = [
 //         />
 
 const RootLayout = async ({children}: {children: ReactNode}) => {
-  const headersStore = headers();
-  const userId = headersStore.get('X-USER-ID');
-  let user: any | User;
-  if (!user) {
-    try {
+  try {
+    const headersStore = headers();
+    const userId = headersStore.get('X-USER-ID');
+    let user: any | User;
+    if (!user) {
       const res = await fetch(getURL(`/api/next-stores/users/me`), {
         headers: {
           'X-USER-ID': userId ?? '',
@@ -52,55 +52,55 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
       });
       const json = await res.json();
       if (json.status === 'success') user = json.data;
-    } catch (err) {
-      console.error(err);
     }
+    return (
+      <>
+        <header className={styles.top}>
+          <nav className={styles.nav}>
+            <section className={styles.navSection}>
+              <li className={styles.navItem}>
+                <Link
+                  className={`${styles.navLink} ${styles.navLinkLogo}`}
+                  href='/next-stores'
+                >
+                  <Image
+                    src='/img/icons/logo.svg'
+                    alt='Logo'
+                    width={64}
+                    height={64}
+                  />
+                </Link>
+              </li>
+              {menu.map((item, idx) => {
+                if (item.title === 'Add' && !user) return null;
+                return (
+                  <li className={styles.navItem} key={idx}>
+                    <NavLink
+                      activeClassName={styles.navLinkActive}
+                      className={`${styles.navLink}`}
+                      href={item.slug}
+                    >
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </section>
+            <section
+              className={`${styles.navSection} ${styles.navSectionSearch}`}
+            >
+              <Search />
+            </section>
+            <UserNav user={user} />
+          </nav>
+        </header>
+        <main className={styles.main}>{children}</main>
+      </>
+    );
+  } catch (err) {
+    console.error(err);
   }
-  return (
-    <>
-      <header className={styles.top}>
-        <nav className={styles.nav}>
-          <section className={styles.navSection}>
-            <li className={styles.navItem}>
-              <Link
-                className={`${styles.navLink} ${styles.navLinkLogo}`}
-                href='/next-stores'
-              >
-                <Image
-                  src='/img/icons/logo.svg'
-                  alt='Logo'
-                  width={64}
-                  height={64}
-                />
-              </Link>
-            </li>
-            {menu.map((item, idx) => {
-              if (item.title === 'Add' && !user) return null;
-              return (
-                <li className={styles.navItem} key={idx}>
-                  <NavLink
-                    activeClassName={styles.navLinkActive}
-                    className={`${styles.navLink}`}
-                    href={item.slug}
-                  >
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </NavLink>
-                </li>
-              );
-            })}
-          </section>
-          <section
-            className={`${styles.navSection} ${styles.navSectionSearch}`}
-          >
-            <Search />
-          </section>
-          <UserNav user={user} />
-        </nav>
-      </header>
-      <main className={styles.main}>{children}</main>
-    </>
-  );
 };
 
 export default RootLayout;
