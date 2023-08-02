@@ -31,8 +31,18 @@ const Form = ({
     setSubmitting(true);
     try {
       const body = new FormData(evt.currentTarget);
+      const elements = evt.currentTarget.elements;
+      const inputs = [...body.keys()].map(
+        k =>
+          elements.namedItem(k) as
+            | HTMLInputElement
+            | HTMLInputElement
+            | HTMLTextAreaElement
+      );
       await submitHandler(body);
-      if (resetAfterSubmit) evt.currentTarget.reset();
+      if (resetAfterSubmit) {
+        inputs.forEach(el => (el.value = ''));
+      }
     } catch (err) {
       if (!(err instanceof Error)) return;
       console.error(err);

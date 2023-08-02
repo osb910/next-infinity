@@ -52,7 +52,6 @@ const LoginForm = () => {
         2600
       );
       setTimeout(() => {
-        console.log(redirect);
         router.push(redirect ?? pathname);
       }, 2800);
     }

@@ -109,9 +109,6 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         body,
         timeout: 20000,
         throwHttpErrors: false,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
       }
     );
     const json = (await res.json()) as {
