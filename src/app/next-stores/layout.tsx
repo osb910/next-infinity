@@ -16,7 +16,7 @@ import {IUser} from '@/entities/next-stores/user/user.model';
 
 export const metadata: Metadata = {};
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 type User = IUser & {gravatar?: string; hearts?: any[]};
 interface MenuItem {
