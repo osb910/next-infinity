@@ -60,6 +60,7 @@ const Search = ({}: SearchProps) => {
         {
           timeout: 20000,
           throwHttpErrors: false,
+          cache: 'no-store',
         }
       );
       const {status, stores, message} = (await res.json()) as
