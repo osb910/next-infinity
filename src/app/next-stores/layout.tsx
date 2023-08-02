@@ -48,6 +48,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
         headers: {
           'X-USER-ID': userId ?? '',
         },
+        cache: 'no-store',
       });
       const json = await res.json();
       if (json.status === 'success') user = json.data;
