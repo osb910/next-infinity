@@ -55,7 +55,6 @@ export const ToastProvider = ({
     message: Toast['message'],
     delay?: number
   ) => {
-    console.log('createToast', variant, message, delay);
     setToasts(draft => {
       draft.unshift({id: crypto.randomUUID(), variant, message, delay});
     });
