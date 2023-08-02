@@ -2,7 +2,15 @@
 import {useState, useEffect, useId, ReactNode} from 'react';
 import {createPortal} from 'react-dom';
 
-const Portal = ({lang, children}: {lang?: string; children: ReactNode}) => {
+const Portal = ({
+  lang,
+  children,
+  style,
+}: {
+  lang?: string;
+  children: ReactNode;
+  style?: string;
+}) => {
   const [host, setHost] = useState<HTMLElement | null>(null);
   const id = useId();
 
@@ -12,7 +20,7 @@ const Portal = ({lang, children}: {lang?: string; children: ReactNode}) => {
       `
       <div
         data-portal=${id} dir=${dir} class='${dir}'
-        style='position: relative; z-index: 10;'
+        style='position: relative; ${style}'
       >
       </div>
     `,
@@ -20,7 +28,6 @@ const Portal = ({lang, children}: {lang?: string; children: ReactNode}) => {
     ).body.firstChild as HTMLElement;
     const firstPortal = document.querySelector(`[data-portal]`);
     const lastEl = document.querySelector(`body > :last-child`);
-    console.log({firstPortal, lastEl});
     firstPortal
       ? firstPortal.insertAdjacentElement('beforebegin', portal)
       : lastEl

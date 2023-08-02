@@ -61,7 +61,7 @@ export const blurOut = keyframes`
 
 const Wrapper = styled.aside`
   position: fixed;
-  z-index: 2;
+  z-index: 1;
   inset: 0;
   display: grid;
   place-content: center;

@@ -55,7 +55,7 @@ const RegisterForm = () => {
           2400
         );
         setTimeout(() => {
-          router.push(`${pathname}?auth-page=login&email=${body.get('email')}`);
+          router.push(`${pathname}?sub-page=login&email=${body.get('email')}`);
         }, 2800);
       }
     } catch (err) {

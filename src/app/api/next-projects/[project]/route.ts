@@ -8,7 +8,6 @@ export const PUT = async (
   try {
     const body = await req.json();
     const {title, description, people} = body;
-    console.log(body);
     if (title && title.length < 3) {
       return NextResponse.json(
         {
@@ -40,7 +39,6 @@ export const PUT = async (
     const res = await Project.findByIdAndUpdate(params.project, body, {
       new: true,
     });
-    console.log(res);
     if (!res) throw new Error('Project not found');
     return NextResponse.json(
       {

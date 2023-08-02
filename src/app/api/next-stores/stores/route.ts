@@ -58,6 +58,7 @@ export const POST = async (req: NextRequest) => {
           etag: file?.ETag,
         },
       }),
+      author: userId,
     });
     if (!store) {
       const err = new Error('Something went wrong!');

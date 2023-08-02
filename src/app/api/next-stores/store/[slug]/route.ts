@@ -7,7 +7,7 @@ export const GET = async (
 ) => {
   const {slug} = params;
   try {
-    const store = (await Store.findOne({slug})) as IStore & {
+    const store = (await Store.findOne({slug}).populate('author')) as IStore & {
       _doc: IStore;
     };
     if (!store) {

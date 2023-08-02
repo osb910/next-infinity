@@ -1,30 +1,26 @@
 import {Metadata} from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import {cookies, headers} from 'next/headers';
+import {headers} from 'next/headers';
 import {ReactNode, ComponentType} from 'react';
 import {BiStore} from 'react-icons/bi';
 import {BsTags, BsTrophy} from 'react-icons/bs';
 import {MdOutlineAddBox} from 'react-icons/md';
 import {PiMapPinLine} from 'react-icons/pi';
-import {User, UserPlus, LogIn, LogOut, Heart} from 'react-feather';
 import styles from './HomePage.module.css';
 import NavLink from '../../components/next-stores/NavLink';
 import Search from '../../components/next-stores/Search';
 import {getURL} from '@/utils/path';
 import UserNav from '@/components/next-stores/UserNav';
+import {IUser} from '@/entities/next-stores/user/user.model';
 
 export const metadata: Metadata = {};
 
+type User = IUser & {gravatar?: string; hearts?: any[]};
 interface MenuItem {
   slug: string;
   icon: string | ComponentType;
   title: string;
-}
-
-interface User {
-  hearts?: any[];
-  gravatar: string;
 }
 
 const menu: MenuItem[] = [
@@ -41,10 +37,9 @@ const menu: MenuItem[] = [
 //         />
 
 const RootLayout = async ({children}: {children: ReactNode}) => {
-  const cookieStore = cookies();
   const headersStore = headers();
   const userId = headersStore.get('X-USER-ID');
-  let user;
+  let user: any | User;
   if (!user) {
     try {
       const res = await fetch(getURL(`/api/next-stores/users/me`), {
@@ -72,23 +67,26 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
                 <Image
                   src='/img/icons/logo.svg'
                   alt='Logo'
-                  width={32}
-                  height={32}
+                  width={64}
+                  height={64}
                 />
               </Link>
             </li>
-            {menu.map((item, idx) => (
-              <li className={styles.navItem} key={idx}>
-                <NavLink
-                  activeClassName={styles.navLinkActive}
-                  className={`${styles.navLink}`}
-                  href={item.slug}
-                >
-                  <item.icon />
-                  <span>{item.title}</span>
-                </NavLink>
-              </li>
-            ))}
+            {menu.map((item, idx) => {
+              if (item.title === 'Add' && !user) return null;
+              return (
+                <li className={styles.navItem} key={idx}>
+                  <NavLink
+                    activeClassName={styles.navLinkActive}
+                    className={`${styles.navLink}`}
+                    href={item.slug}
+                  >
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </NavLink>
+                </li>
+              );
+            })}
           </section>
           <section
             className={`${styles.navSection} ${styles.navSectionSearch}`}

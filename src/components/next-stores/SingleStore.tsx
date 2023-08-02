@@ -18,7 +18,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         <section className={styles.storeHero}>
           <Image
             className={styles.storeImage}
-            src={`/api/next-stores/files/store.png`}
+            src={`/public/upload/store.png`}
             alt='Store Image'
             width={300}
             height={300}
@@ -58,7 +58,11 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
       <section className={styles.storeHero}>
         <Image
           className={styles.storeImage}
-          src={`/api/next-stores/files/${photo}`}
+          src={
+            photo?.key
+              ? `/api/next-stores/files/${photo?.key}`
+              : '/public/uploads/store.png'
+          }
           alt='Store Image'
           width={300}
           height={300}

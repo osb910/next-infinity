@@ -1,15 +1,18 @@
-import {Schema, Model} from 'mongoose';
+import {Schema, Model, connection} from 'mongoose';
 import {genSalt, hash, compare} from 'bcrypt';
-import {connectDBs} from '@/utils/database';
 import {Md5} from 'ts-md5';
 
 import validator from 'validator';
 const {isEmail} = validator;
 
+const db = connection.useDb('next-stores', {useCache: true});
 export interface IUser {
+  _id?: string;
   email: string;
   name: string;
   password: string;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 interface IUserMethods {
@@ -37,6 +40,8 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       type: String,
       required: [true, 'Please provide a password'],
     },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   {
     toJSON: {virtuals: true},
@@ -57,7 +62,6 @@ userSchema.virtual('gravatar').get(async function () {
 userSchema.pre('save', async function (): Promise<any> {
   if (!this.isModified('password')) return;
   try {
-    // const existingUser = await this.collection.findOne({email: this.email});
     const salt = await genSalt(12);
     this.password = await hash(this.password, salt);
   } catch (err) {
@@ -78,7 +82,5 @@ userSchema.method(
   }
 );
 
-const {storesDB} = await connectDBs();
-
-export default (storesDB.models?.User as Model<IUser, UserModel>) ||
-  storesDB.model('User', userSchema);
+export default (db.models.User as Model<IUser, UserModel>) ||
+  db.model('User', userSchema);

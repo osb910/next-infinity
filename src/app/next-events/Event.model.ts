@@ -1,5 +1,4 @@
-import {Schema, Model, Types} from 'mongoose';
-import {connectDBs} from '@/utils/database';
+import {Schema, Model, Types, connection} from 'mongoose';
 
 export type IEvent = {
   _id?: Types.ObjectId;
@@ -11,6 +10,8 @@ export type IEvent = {
   isFeatured: boolean;
   comments: Types.ObjectId[];
 };
+
+const db = connection.useDb('next-events', {useCache: true});
 
 const eventSchema = new Schema<IEvent>(
   {
@@ -57,7 +58,5 @@ const eventSchema = new Schema<IEvent>(
   {timestamps: true}
 );
 
-const {eventsDB} = await connectDBs();
-
-export default (eventsDB.models?.Event as Model<IEvent>) ||
-  eventsDB.model('Event', eventSchema);
+export default (db.models.Event as Model<IEvent>) ||
+  db.model('Event', eventSchema);

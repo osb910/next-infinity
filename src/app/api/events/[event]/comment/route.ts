@@ -26,6 +26,7 @@ export const PUT = async (
       );
     }
     const res = await Event.findByIdAndUpdate(params.event, {
+      // alternative to unshift: adds to the beginning of the array
       $push: {comments: {$each: [body], $position: 0}},
     });
 

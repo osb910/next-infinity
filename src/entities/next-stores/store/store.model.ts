@@ -1,10 +1,12 @@
 import {deleteOneObject} from '@/lib/s3';
-import {connectDBs} from '@/utils/database';
-import {Schema, Model, Types} from 'mongoose';
+import {Schema, Model, Types, connection} from 'mongoose';
 import slug from 'slug';
+import User from '../user/user.model';
+
+const db = connection.useDb('next-stores', {useCache: true});
 
 export interface IStore {
-  _id?: Types.ObjectId | string;
+  _id?: Types.ObjectId;
   name: string;
   slug: string;
   description: string;
@@ -23,6 +25,7 @@ export interface IStore {
     key: string;
     etag: string;
   };
+  author: Types.ObjectId;
 }
 
 interface IStoreMethods {}
@@ -69,6 +72,11 @@ const storeSchema = new Schema<IStore, StoreModel, IStoreMethods>(
       size: Number,
       readableSize: String,
     },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: User,
+      required: [true, 'You must supply an author'],
+    },
   },
   {
     timestamps: true,
@@ -79,6 +87,8 @@ const storeSchema = new Schema<IStore, StoreModel, IStoreMethods>(
     // },
   }
 );
+
+storeSchema.index({name: 'text', description: 'text'});
 
 storeSchema.pre('save', async function () {
   console.log(`saving ${this.name}...`);
@@ -131,7 +141,5 @@ storeSchema.static('getTagsList', async function () {
   ]);
 });
 
-const {storesDB} = await connectDBs();
-
-export default (storesDB.models?.Store as Model<IStore, StoreModel>) ||
-  storesDB.model('Store', storeSchema);
+export default (db.models.Store as Model<IStore, StoreModel>) ||
+  db.model('Store', storeSchema);

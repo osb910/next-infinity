@@ -38,7 +38,13 @@ export const GET = async (req: NextRequest, {params}: Params) => {
 };
 
 export const PUT = async (req: NextRequest, {params: {storeId}}: Params) => {
+  const userId = req.headers.get('X-USER-ID');
   try {
+    const store = (await Store.findById(storeId)) as IStore;
+    if (store.author.toString() !== userId) {
+      const err = new Error('You are not the author of this store!');
+      throw err;
+    }
     const body = await req.formData();
     const data = Object.fromEntries(body);
     const {name, description, address, lat, lng} = data;

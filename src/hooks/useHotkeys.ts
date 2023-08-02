@@ -1,5 +1,13 @@
 'use client';
-import {useEffect, useMemo, MutableRefObject, useRef} from 'react';
+
+import {
+  useEffect,
+  useMemo,
+  RefObject,
+  useRef,
+  KeyboardEvent,
+  ModifierKey,
+} from 'react';
 
 export type HotKey = {
   hotKey: string;
@@ -7,10 +15,7 @@ export type HotKey = {
   universal?: boolean;
 };
 
-const useHotKeys = <T>(
-  keyMap: HotKey[],
-  ref?: MutableRefObject<T>
-): string[] => {
+const useHotKeys = <T>(keyMap: HotKey[], ref?: RefObject<T>): string[] => {
   const keyActions = useRef<any>();
 
   const hotKeyRegex = useMemo(
@@ -73,11 +78,11 @@ const useHotKeys = <T>(
         const isHotKey = universal ? char === code : char === key;
         if (
           isHotKey &&
-          mods.every(({modKey}: {modKey: string}) =>
+          mods.every(({modKey}: {modKey: ModifierKey}) =>
             evt.getModifierState(modKey)
           )
         ) {
-          run();
+          run(evt);
           break;
         }
       }

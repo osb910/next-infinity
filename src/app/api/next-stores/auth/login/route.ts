@@ -81,6 +81,11 @@ export const POST = async (req: NextRequest) => {
         value: 'true',
         maxAge: tokenMaxAge,
       }),
+      response.cookies.set({
+        name: 'next-stores-user-id',
+        value: user._id.toString(),
+        maxAge: tokenMaxAge,
+      }),
     ]);
 
     return response;

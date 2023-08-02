@@ -62,7 +62,11 @@ const PasswordInput = ({
           id={appliedId}
           dir='auto'
         />
-        <span className={styles.eye} onClick={() => setShowPassword(is => !is)}>
+        <span
+          tabIndex={0}
+          className={styles.eye}
+          onClick={() => setShowPassword(is => !is)}
+        >
           {showPassword ? <EyeOff /> : <Eye />}
         </span>
       </span>

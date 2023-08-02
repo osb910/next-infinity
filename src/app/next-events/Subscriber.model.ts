@@ -1,9 +1,10 @@
-import {Schema, model, models, Model} from 'mongoose';
-import {connectDBs} from '@/utils/database';
+import {Schema, Model, connection} from 'mongoose';
 
 export type Subscriber = {
   email: string;
 };
+
+const db = connection.useDb('next-events', {useCache: true});
 
 const subscriberSchema = new Schema<Subscriber>(
   {
@@ -16,7 +17,5 @@ const subscriberSchema = new Schema<Subscriber>(
   {timestamps: true}
 );
 
-const {eventsDB} = await connectDBs();
-
-export default (eventsDB.models?.Subscriber as Model<Subscriber>) ||
-  eventsDB.model('Subscriber', subscriberSchema);
+export default (db.models.Subscriber as Model<Subscriber>) ||
+  db.model('Subscriber', subscriberSchema);

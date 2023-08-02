@@ -1,5 +1,4 @@
-import {Schema, Model, Types} from 'mongoose';
-import {connectDBs} from '@/utils/database';
+import {Schema, Model, Types, connection} from 'mongoose';
 
 export type IProject = {
   _id?: Types.ObjectId | string;
@@ -8,6 +7,8 @@ export type IProject = {
   people: number;
   type?: 'active' | 'finished';
 };
+
+const db = connection.useDb('next-projects', {useCache: true});
 
 const projectSchema = new Schema<IProject>(
   {
@@ -33,7 +34,5 @@ const projectSchema = new Schema<IProject>(
   {timestamps: true}
 );
 
-const {projectsDB} = await connectDBs();
-
-export default (projectsDB.models?.Event as Model<IProject>) ||
-  projectsDB.model('Project', projectSchema);
+export default (db.models?.Project as Model<IProject>) ||
+  db.model('Project', projectSchema);

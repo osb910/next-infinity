@@ -11,9 +11,6 @@ export const GET = async (
       const err = new Error('Something went wrong!');
       throw err;
     }
-    if (file.code === 'NoSuchKey' && file.statusCode === 404) {
-      file = await getOneObject(`next-stores/store.png`);
-    }
     const response = new NextResponse(file?.data?.transformToWebStream());
     response.headers.set('content-type', 'image/jpeg');
     return response;

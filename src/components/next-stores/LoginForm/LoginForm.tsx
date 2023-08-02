@@ -9,7 +9,6 @@ import PasswordInput from '@/components/PasswordInput';
 import useToaster from '@/components/Toaster/use-toaster';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import {getURL} from '@/utils/path';
-import {IUser} from '@/entities/next-stores/user/user.model';
 import Spinner from '@/components/Spinner';
 import styles from './LoginForm.module.css';
 
@@ -23,8 +22,12 @@ const LoginForm = () => {
   const {createToast} = useToaster();
 
   useEffect(() => {
-    error === 'bad_token' &&
-      createToast('error', <p>You must be logged in.</p>, 2400);
+    if (!error) return;
+    createToast(
+      'error',
+      <p>{error === 'bad_token' ? 'You must be logged in.' : error}</p>,
+      3200
+    );
   }, []);
 
   const login = async (body: FormData) => {
@@ -34,7 +37,6 @@ const LoginForm = () => {
       timeout: 20000,
     });
     const json = (await res.json()) as {
-      data: {nextStoresToken: string; nextStoresUserId: string};
       message: string;
       status: string;
     };
@@ -47,9 +49,10 @@ const LoginForm = () => {
         <p>
           {json.message} <Spinner />
         </p>,
-        2800
+        2600
       );
       setTimeout(() => {
+        console.log(redirect);
         router.push(redirect ?? pathname);
       }, 2800);
     }

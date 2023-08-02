@@ -4,7 +4,8 @@ import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
 
 export const middleware = async (req: NextRequest) => {
-  const {pathname} = req.nextUrl;
+  const {pathname, searchParams} = req.nextUrl;
+  const subPage = searchParams.get('sub-page');
   const origin = req.headers.get('origin');
   const authCookie = req.cookies.get('nextStoresToken');
   const authHeader = req.headers.get('Authorization');
@@ -36,10 +37,10 @@ export const middleware = async (req: NextRequest) => {
 
     const response = NextResponse.next();
 
-    if (/\/add/.test(pathname) && !token) {
+    if (!token && (/\/add/.test(pathname) || subPage === 'account')) {
       return NextResponse.redirect(
         new URL(
-          `/next-stores/login?error=bad_token&redirect=${pathname}`,
+          `${pathname}?error=bad_token&sub-page=login&redirect=${pathname}`,
           req.url
         )
       );
@@ -51,9 +52,11 @@ export const middleware = async (req: NextRequest) => {
         process.env.NEXT_STORES_JWT_SECRET!
       );
 
-      if (req.url.includes('/login') && sub) {
+      if (sub && subPage === 'login') {
         console.log('trying to login while logged in');
-        return NextResponse.redirect(new URL('/next-stores', req.url));
+        const newUrl = req.nextUrl.searchParams.delete('sub-page');
+        console.log({newUrl});
+        return NextResponse.redirect(new URL(pathname, req.url));
       }
 
       response.headers.set('X-USER-ID', sub);
@@ -70,7 +73,7 @@ export const middleware = async (req: NextRequest) => {
       }
 
       return NextResponse.redirect(
-        new URL(`/login?${new URLSearchParams({error: 'badauth'})}`, req.url)
+        new URL(`${pathname}?error=bad_token&sub-page=login`, req.url)
       );
     }
   }

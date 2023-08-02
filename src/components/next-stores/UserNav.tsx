@@ -4,7 +4,6 @@ import Image from 'next/image';
 import {useRouter, useSearchParams, usePathname} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {User, UserPlus, LogIn, LogOut, Heart} from 'react-feather';
-import * as Tabs from '@radix-ui/react-tabs';
 import Cookies from 'js-cookie';
 import Portal from '../Portal';
 import Modal from '../Modal';
@@ -13,44 +12,54 @@ import NavLink from './NavLink';
 import {IUser} from '@/entities/next-stores/user/user.model';
 import RegisterForm from '@/components/next-stores/RegisterForm';
 import LoginForm from '@/components/next-stores/LoginForm';
-import './styles.css';
+import Tabbed from '../Tabbed';
+import EditAccountForm from './EditAccountForm';
+import ForgotPassForm from './ForgotPassForm';
+import ChangePasswordForm from './ChangePasswordForm';
 
 interface UserNavProps {
   user: (IUser & {gravatar?: string; hearts?: any[]}) | null;
 }
 
-// export function NavigationEvents() {
-//   const pathname = usePathname();
-//   const searchParams = useSearchParams();
-
-//   useEffect(() => {
-//     const url = `${pathname}?${searchParams}`;
-//     console.log(url);
-//     // You can now use the current URL
-//     // ...
-//   }, [pathname, searchParams]);
-
-//   return null;
-// }
-
 const UserNav = ({user}: UserNavProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [authPage, setAuthPage] = useState<string | null>(() =>
-    searchParams.get('auth-page')
+  const [subPage, setSubPage] = useState<string | null>(() =>
+    searchParams.get('sub-page')
   );
+  const [userData, setUserData] = useState<IUser | null>(user);
+  const resetToken = searchParams.get('reset-token');
 
-  const dismissAuthForm = () => {
-    setAuthPage(null);
+  const dismissSubPage = () => {
+    setSubPage(null);
     router.replace(pathname);
   };
 
   const isLoggedIn = Cookies.get('next-stores-logged-in') === 'true';
+  const userId = Cookies.get('next-stores-user-id');
 
   useEffect(() => {
-    setAuthPage(searchParams.get('auth-page'));
+    setSubPage(searchParams.get('sub-page'));
   }, [searchParams]);
+
+  useEffect(() => {
+    if (userData || !userId) return;
+    const getUser = async () => {
+      try {
+        const res = await fetch(`/api/next-stores/users/me`, {
+          headers: {
+            'X-USER-ID': userId,
+          },
+        });
+        const json = await res.json();
+        if (json.status === 'success') setUserData(json.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getUser();
+  }, [userId]);
 
   return (
     <ul className={`${styles.navSection} ${styles.navSectionUser}`}>
@@ -60,7 +69,7 @@ const UserNav = ({user}: UserNavProps) => {
             <NavLink
               activeClassName={styles.navLinkActive}
               className={styles.navLink}
-              href='/hearts'
+              href='/next-stores/hearts'
             >
               <Heart />
               <span className={styles.heartCount}>
@@ -79,10 +88,12 @@ const UserNav = ({user}: UserNavProps) => {
             </NavLink>
           </li>
           <li className={styles.navItem}>
-            <NavLink
-              activeClassName={styles.navLinkActive}
+            <button
               className={styles.navLink}
-              href='/next-stores/account'
+              onClick={() => {
+                setSubPage('account');
+                router.replace(`${pathname}?sub-page=account`);
+              }}
             >
               {user?.gravatar ? (
                 <Image
@@ -98,7 +109,7 @@ const UserNav = ({user}: UserNavProps) => {
                   <span>Account</span>
                 </>
               )}
-            </NavLink>
+            </button>
           </li>
         </>
       ) : (
@@ -107,8 +118,8 @@ const UserNav = ({user}: UserNavProps) => {
             <button
               className={styles.navLink}
               onClick={() => {
-                setAuthPage('register');
-                router.replace(`${pathname}?auth-page=register`);
+                setSubPage('register');
+                router.replace(`${pathname}?sub-page=register`);
               }}
             >
               <UserPlus />
@@ -119,8 +130,8 @@ const UserNav = ({user}: UserNavProps) => {
             <button
               className={styles.navLink}
               onClick={() => {
-                setAuthPage('login');
-                router.replace(`${pathname}?auth-page=login`);
+                setSubPage('login');
+                router.replace(`${pathname}?sub-page=login`);
               }}
             >
               <LogIn />
@@ -129,55 +140,55 @@ const UserNav = ({user}: UserNavProps) => {
           </li>
         </>
       )}
-      {(authPage === 'register' || authPage === 'login') && (
+      {subPage && (
         <Portal>
           <Modal
-            title={authPage === 'register' ? 'Register' : 'Login'}
+            title={subPage[0].toUpperCase() + subPage.slice(1)}
             dismissText={`Dismiss ${
-              authPage === 'register' ? 'Register' : 'Login'
+              subPage[0].toUpperCase() + subPage.slice(1)
             } Form`}
-            dismiss={dismissAuthForm}
+            dismiss={dismissSubPage}
           >
-            <Tabs.Root className='TabsRoot' defaultValue={authPage}>
-              <Tabs.List className='TabsList' aria-label='Authentication'>
-                <Tabs.Trigger className='TabsTrigger' value='login'>
-                  Login
-                </Tabs.Trigger>
-                <Tabs.Trigger className='TabsTrigger' value='register'>
-                  Register
-                </Tabs.Trigger>
-              </Tabs.List>
-              <Tabs.Content className='TabsContent' value='login'>
-                <LoginForm />
-              </Tabs.Content>
-              <Tabs.Content className='TabsContent' value='register'>
-                <RegisterForm />
-              </Tabs.Content>
-            </Tabs.Root>
+            {subPage === 'account' && (
+              <EditAccountForm user={userData as IUser} />
+            )}
+
+            {subPage === 'reset-password' && (
+              <ChangePasswordForm
+                resetPassword
+                title='Reset Password'
+                resetToken={resetToken ?? ''}
+              />
+            )}
+
+            {(subPage === 'register' || subPage === 'login') && (
+              <Tabbed
+                title='Authentication'
+                tabs={[
+                  {
+                    label: 'Login',
+                    value: 'login',
+                    component: (
+                      <>
+                        <LoginForm />
+                        <ForgotPassForm />
+                      </>
+                    ),
+                  },
+                  {
+                    label: 'Register',
+                    value: 'register',
+                    component: <RegisterForm />,
+                  },
+                ]}
+                defaultTab={subPage}
+              />
+            )}
           </Modal>
         </Portal>
       )}
     </ul>
   );
 };
-
-{
-  /* <Tabs.Root className='TabsRoot' defaultValue='tab1'>
-  <Tabs.List className='TabsList' aria-label='Manage your account'>
-    <Tabs.Trigger className='TabsTrigger' value='tab1'>
-      Login
-    </Tabs.Trigger>
-    <Tabs.Trigger className='TabsTrigger' value='tab2'>
-      Register
-    </Tabs.Trigger>
-  </Tabs.List>
-  <Tabs.Content className='TabsContent' value='tab1'>
-    
-  </Tabs.Content>
-  <Tabs.Content className='TabsContent' value='tab2'>
-    
-  </Tabs.Content>
-</Tabs.Root>; */
-}
 
 export default UserNav;

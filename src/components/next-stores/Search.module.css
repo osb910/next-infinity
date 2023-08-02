@@ -5,13 +5,15 @@
 }
 
 .searchResults {
-  background: white;
   position: absolute;
-  width: 100%;
-  inset-block-start: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 2;
-  left: 0;
+  inset-block-start: 100%;
+  inset-inline-start: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .searchInput {
@@ -24,11 +26,54 @@
 }
 
 .searchResult {
-  padding: 10px;
+  padding: 0.5em 1em;
   display: block;
   border-bottom: 1px solid #ececec;
+  color: black;
+}
+
+.searchResult:where(:hover, :focus) {
+  background: #f1f1f1;
 }
 
 .searchResultActive {
   background: #f1f1f1;
+}
+
+.centered {
+  align-self: center;
+  margin: 0 auto;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control input[type='checkbox'] {
+  display: none;
+}
+
+.control input[type='checkbox'] + label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em;
+  /* border: 1px solid #ccc; */
+  border-radius: 0.25em;
+  cursor: pointer;
+}
+
+.control input[type='checkbox'] + label svg {
+  color: #ccc;
+  font-size: 1.25rem;
+}
+
+.control input[type='checkbox'] + label:where(:hover, :focus) {
+  background: #666;
+}
+
+.control input[type='checkbox']:checked + label {
+  background: #000;
 }

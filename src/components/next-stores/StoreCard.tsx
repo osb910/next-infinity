@@ -1,3 +1,4 @@
+import {headers} from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Store.module.css';
@@ -8,6 +9,8 @@ interface StoreProps {
 }
 
 const StoreCard = ({store}: StoreProps) => {
+  const headersList = headers();
+  const userId = headersList.get('X-USER-ID');
   const truncatedDescription = store.description
     .split(' ')
     .slice(0, 25)
@@ -20,21 +23,24 @@ const StoreCard = ({store}: StoreProps) => {
           <section
             className={`${styles.storeAction} ${styles.storeActionEdit}`}
           >
-            <Link href={`/next-stores/stores/${store._id}/edit`}>
-              <Image
-                alt='Pencil icon'
-                src='/img/icons/pencil.svg'
-                width={48}
-                height={48}
-              />
-            </Link>
+            {store.author.toString() === userId && (
+              <Link href={`/next-stores/stores/${store._id}/edit`}>
+                <Image
+                  alt='Pencil icon'
+                  src='/img/icons/pencil.svg'
+                  width={48}
+                  height={48}
+                />
+              </Link>
+            )}
           </section>
         </section>
         <Image
           className={styles.storeImage}
           src={
-            `/api/next-stores/files/${store?.photo?.key || 'store.png'}` ??
-            '/api/next-stores/files/store.png'
+            store?.photo?.key
+              ? `/api/next-stores/files/${store?.photo?.key}`
+              : '/public/uploads/store.png'
           }
           alt='Store Image'
           width={360}
