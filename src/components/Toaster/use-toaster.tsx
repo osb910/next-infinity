@@ -59,10 +59,10 @@ export const ToastProvider = ({
     setToasts(draft => {
       draft.unshift({id: crypto.randomUUID(), variant, message, delay});
     });
-    // const btn = document.querySelector('.toaster .btn') as
-    //   | HTMLButtonElement
-    //   | HTMLAnchorElement;
-    // btn?.focus();
+    const btn = document.querySelector('.toaster .btn') as
+      | HTMLButtonElement
+      | HTMLAnchorElement;
+    btn?.focus();
   };
 
   const dismissToast = (idx: number) => {
