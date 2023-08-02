@@ -116,18 +116,18 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       status: 'success' | 'warning' | 'error' | 'notice';
       message: string;
     };
-    console.log(json);
-    createToast(
-      json.status,
-      <>
-        <p>{json.message}</p>
-        <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
-          View Store →
-        </Link>
-      </>,
-      30000
-    );
-    // photoRef.current!.removeAttribute('class');
+    console.log(json.data._id);
+    // createToast(
+    //   json.status,
+    //   <>
+    //     <p>{json.message}</p>
+    //     <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
+    //       View Store →
+    //     </Link>
+    //   </>,
+    //   30000
+    // );
+    photoRef.current!.removeAttribute('class');
   };
 
   return (
