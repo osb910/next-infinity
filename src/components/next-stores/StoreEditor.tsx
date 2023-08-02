@@ -121,16 +121,13 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       json.status,
       <>
         <p>{json.message}</p>
-        <Link
-          className='btn'
-          href={`/next-stores/stores/${json.data._id?.toString()}`}
-        >
+        <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
           View Store →
         </Link>
       </>,
       30000
     );
-    photoRef.current!.removeAttribute('class');
+    // photoRef.current!.removeAttribute('class');
   };
 
   return (
