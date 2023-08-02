@@ -30,9 +30,7 @@ const SearchForm = ({children, searchPath, ...delegated}: SearchFormProps) => {
     const filters = Object.fromEntries(formData);
     const searchParams = formData.map(([k, v]) => `${k}=${v}`).join('&');
     setFilters(filters);
-    router.push(`${searchPath}?${searchParams}`, {
-      query: filters,
-    });
+    router.push(`${searchPath}?${searchParams}`);
   };
   return (
     <form onSubmit={submit} ref={formRef} {...delegated}>
