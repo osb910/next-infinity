@@ -36,7 +36,6 @@ const Home = async () => {
     name => name !== 'mini-apps' && name !== 'api'
   );
   // .map(async name => ({name, size: await dirSize(getPath(`./app/${name}`))}));
-  console.log(projects);
   const miniApps = await getFolderNames('./app/mini-apps');
   return (
     <>
