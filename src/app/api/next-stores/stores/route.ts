@@ -2,9 +2,11 @@ import {NextRequest, NextResponse} from 'next/server';
 import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {processUploadImage} from '@/lib/file.middleware';
 import {HydratedDocument} from 'mongoose';
+import {connectDB} from '@/utils/database';
 
 export const GET = async () => {
   try {
+    await connectDB();
     const stores = await Store.find().skip(0).limit(10).sort({createdAt: -1});
     if (!stores) {
       const err = new Error('Something went wrong!');
