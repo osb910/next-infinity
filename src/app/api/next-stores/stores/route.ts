@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from 'next/server';
 import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {processUploadImage} from '@/lib/file.middleware';
 import {HydratedDocument} from 'mongoose';
-import {connectDB} from '@/utils/database';
+import {connectDB} from '@/lib/database';
 
 export const GET = async () => {
   try {

@@ -1,4 +1,4 @@
-import {mongoConnect} from '@/utils/database';
+import {mongoConnect} from '@/lib/database';
 import mongoose from 'mongoose';
 
 const mongoUri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.l774dlz.mongodb.net/next-events?retryWrites=true&w=majority`;

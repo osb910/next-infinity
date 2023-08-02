@@ -2,7 +2,7 @@ import StoreCard from '@/components/next-stores/StoreCard';
 import TagsCrumbs from '@/components/next-stores/TagsCrumbs';
 import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import styles from './Tags.module.css';
-import {connectDB} from '@/utils/database';
+import {connectDB} from '@/lib/database';
 
 interface TagsProps {
   searchParams: {
