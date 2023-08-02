@@ -5,13 +5,13 @@ import {HydratedDocument} from 'mongoose';
 export const dynamic = 'force-dynamic';
 
 export const GET = async (req: NextRequest) => {
-  const userId = req.headers.get('X-USER-ID');
-  if (!userId)
-    return NextResponse.json(
-      {status: 'error', message: 'No user id'},
-      {status: 401}
-    );
   try {
+    const userId = req.headers.get('X-USER-ID');
+    if (!userId)
+      return NextResponse.json(
+        {status: 'error', message: 'No user id'},
+        {status: 401}
+      );
     const user = (await User.findById(userId)) as HydratedDocument<IUser> & {
       _doc: HydratedDocument<IUser>;
     };
