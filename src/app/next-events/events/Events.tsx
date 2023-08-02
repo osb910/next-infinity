@@ -4,6 +4,7 @@ import styles from './Events.module.css';
 import {IEvent} from '../Event.model';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
+import {connectDB} from '@/utils/database';
 
 export const metadata: Metadata = {
   title: 'All Events',
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 const AllEvents = async () => {
   try {
+    await connectDB();
     const res = await fetch(getURL('/api/events'), {
       next: {revalidate: 1800}, // 30 minutes
     });

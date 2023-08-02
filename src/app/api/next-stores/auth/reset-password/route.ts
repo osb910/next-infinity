@@ -78,7 +78,6 @@ export const GET = async (req: NextRequest) => {
 export const PATCH = async (req: NextRequest) => {
   try {
     const {newPassword, confirmNewPassword, resetToken} = await req.json();
-    console.log({newPassword, confirmNewPassword, resetToken});
     if (newPassword !== confirmNewPassword) {
       return NextResponse.json(
         {status: 'error', message: 'Passwords do not match.'},

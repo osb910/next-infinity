@@ -16,6 +16,8 @@ import {IUser} from '@/entities/next-stores/user/user.model';
 
 export const metadata: Metadata = {};
 
+export const dynamic = 'force-dynamic';
+
 type User = IUser & {gravatar?: string; hearts?: any[]};
 interface MenuItem {
   slug: string;
@@ -49,7 +51,6 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
       });
       const json = await res.json();
       if (json.status === 'success') user = json.data;
-      console.log({user});
     } catch (err) {
       console.error(err);
     }
