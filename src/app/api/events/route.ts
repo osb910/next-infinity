@@ -4,7 +4,7 @@ import {connectDB} from '@/utils/database';
 
 export const GET = async () => {
   try {
-    await connectDB();
+    await connectDB('next-events');
     // const isFeatured = req.nextUrl.searchParams.has('featured');
     // const filter = isFeatured ? {isFeatured: true} : {};
     const res = await Event.find().sort({date: 1});

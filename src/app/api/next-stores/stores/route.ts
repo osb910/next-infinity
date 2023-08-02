@@ -6,7 +6,7 @@ import {connectDB} from '@/utils/database';
 
 export const GET = async () => {
   try {
-    await connectDB();
+    await connectDB('next-stores');
     const stores = await Store.find().skip(0).limit(20).sort({createdAt: -1});
     if (!stores) {
       const err = new Error('Something went wrong!');

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const AllEvents = async () => {
   try {
-    await connectDB();
+    await connectDB('next-events');
     const res = await fetch(getURL('/api/events'), {
       next: {revalidate: 1800}, // 30 minutes
     });

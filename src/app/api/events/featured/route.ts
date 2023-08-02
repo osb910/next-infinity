@@ -4,7 +4,7 @@ import Event from '@/app/next-events/Event.model';
 
 export const GET = async () => {
   try {
-    await connectDB();
+    await connectDB('next-events');
     const res = await Event.find({isFeatured: true}).sort({date: 1});
     if (!res) throw new Error('Events not found');
     return NextResponse.json(res, {status: 200});

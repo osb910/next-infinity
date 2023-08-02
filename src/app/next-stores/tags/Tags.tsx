@@ -12,7 +12,7 @@ interface TagsProps {
 
 const Tags = async ({searchParams: {tag}}: TagsProps) => {
   try {
-    await connectDB();
+    await connectDB('next-stores');
     // @ts-ignore
     const tagsPromise = Store.getTagsList();
     const storesPromise = Store.find({tags: tag ?? {$exists: true}});
