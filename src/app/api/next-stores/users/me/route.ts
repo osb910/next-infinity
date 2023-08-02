@@ -2,6 +2,8 @@ import {NextRequest, NextResponse} from 'next/server';
 import User, {IUser} from '@/entities/next-stores/user/user.model';
 import {HydratedDocument} from 'mongoose';
 
+export const dynamic = 'force-dynamic';
+
 export const GET = async (req: NextRequest) => {
   const userId = req.headers.get('X-USER-ID');
   if (!userId)

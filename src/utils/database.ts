@@ -10,7 +10,6 @@ const nextInfinityUri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.M
 
 const mongoConnect = async (uri: string, dbName?: string): Promise<void> => {
   const db = connection?.db;
-  // console.log(db);
   if (db) {
     console.log('Already connected to MongoDB!');
     return;
