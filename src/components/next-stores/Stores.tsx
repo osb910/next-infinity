@@ -10,7 +10,7 @@ const Stores = ({stores}: StoresProps) => {
   return (
     <ul className={styles.stores}>
       {stores.map((store: IStore) => (
-        <StoreCard store={store} key={store._id?.toString()} />
+        <StoreCard store={store} key={store._id?.toString?.()} />
       ))}
     </ul>
   );

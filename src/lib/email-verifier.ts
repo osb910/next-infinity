@@ -5,7 +5,8 @@ export type EmailVerifierResponse =
 const emailVerifier = async (email: string) => {
   try {
     const res = await fetch(
-      `https://verifier.meetchopra.com/verify/${email}?token=${process.env.EMAIL_VERIFIER_TOKEN}`
+      `https://verifier.meetchopra.com/verify/${email}?token=${process.env.EMAIL_VERIFIER_TOKEN}`,
+      {cache: 'no-store'}
     );
     const json = await res.json();
     return json as EmailVerifierResponse;

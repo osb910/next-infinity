@@ -9,52 +9,59 @@ interface StoreProps {
 }
 
 const StoreCard = ({store}: StoreProps) => {
-  const headersList = headers();
-  const userId = headersList.get('X-USER-ID');
-  const truncatedDescription = store.description
-    .split(' ')
-    .slice(0, 25)
-    .join(' ');
+  const id = typeof store._id === 'object' ? store._id.toString() : store._id;
+  const author =
+    typeof store.author === 'object' ? store.author.toString() : store.author;
+  try {
+    const headersList = headers();
+    const userId = headersList.get('X-USER-ID');
+    const truncatedDescription = store.description
+      .split(' ')
+      .slice(0, 25)
+      .join(' ');
 
-  return (
-    <li className={styles.store}>
-      <section className={styles.storeHero}>
-        <section className={styles.storeActions}>
-          <section
-            className={`${styles.storeAction} ${styles.storeActionEdit}`}
-          >
-            {store.author.toString() === userId && (
-              <Link href={`/next-stores/stores/${store._id}/edit`}>
-                <Image
-                  alt='Pencil icon'
-                  src='/img/icons/pencil.svg'
-                  width={48}
-                  height={48}
-                />
-              </Link>
-            )}
+    return (
+      <li className={styles.store}>
+        <section className={styles.storeHero}>
+          <section className={styles.storeActions}>
+            <section
+              className={`${styles.storeAction} ${styles.storeActionEdit}`}
+            >
+              {author === userId && (
+                <Link href={`/next-stores/stores/${id}/edit`}>
+                  <Image
+                    alt='Pencil icon'
+                    src='/img/icons/pencil.svg'
+                    width={48}
+                    height={48}
+                  />
+                </Link>
+              )}
+            </section>
           </section>
+          <Image
+            className={styles.storeImage}
+            src={
+              store?.photo?.key
+                ? `/api/next-stores/files/${store.photo.key}`
+                : '/public/uploads/store.png'
+            }
+            alt='Store Image'
+            width={360}
+            height={360}
+          />
+          <h2 className={styles.title}>
+            <Link href={`/next-stores/store/${store.slug}`}>{store.name}</Link>
+          </h2>
         </section>
-        <Image
-          className={styles.storeImage}
-          src={
-            store?.photo?.key
-              ? `/api/next-stores/files/${store?.photo?.key}`
-              : '/public/uploads/store.png'
-          }
-          alt='Store Image'
-          width={360}
-          height={360}
-        />
-        <h2 className={styles.title}>
-          <Link href={`/next-stores/store/${store.slug}`}>{store.name}</Link>
-        </h2>
-      </section>
-      <section className={styles.storeDetails}>
-        <p>{truncatedDescription}</p>
-      </section>
-    </li>
-  );
+        <section className={styles.storeDetails}>
+          <p>{truncatedDescription}</p>
+        </section>
+      </li>
+    );
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default StoreCard;
