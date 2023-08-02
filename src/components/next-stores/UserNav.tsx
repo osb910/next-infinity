@@ -59,7 +59,7 @@ const UserNav = ({user}: UserNavProps) => {
       }
     };
     getUser();
-  }, [userId]);
+  }, [userId, userData]);
 
   return (
     <ul className={`${styles.navSection} ${styles.navSectionUser}`}>

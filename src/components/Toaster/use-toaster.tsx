@@ -55,13 +55,14 @@ export const ToastProvider = ({
     message: Toast['message'],
     delay?: number
   ) => {
+    console.log('createToast', variant, message, delay);
     setToasts(draft => {
       draft.unshift({id: crypto.randomUUID(), variant, message, delay});
     });
-    const btn = document.querySelector('.toaster .btn') as
-      | HTMLButtonElement
-      | HTMLAnchorElement;
-    btn?.focus();
+    // const btn = document.querySelector('.toaster .btn') as
+    //   | HTMLButtonElement
+    //   | HTMLAnchorElement;
+    // btn?.focus();
   };
 
   const dismissToast = (idx: number) => {
