@@ -86,7 +86,7 @@ export const PUT = async (req: NextRequest, {params: {storeId}}: Params) => {
 
     return NextResponse.json(
       {
-        ...res._doc,
+        data: res._doc,
         status: 'success',
         message: `Successfully updated ${res.name}!`,
       },
