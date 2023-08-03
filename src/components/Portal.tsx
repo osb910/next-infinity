@@ -20,7 +20,7 @@ const Portal = ({
       `
       <div
         data-portal=${id} dir=${dir} class='${dir}'
-        style='position: relative; ${style}'
+        style='position: relative; ${style ?? ''}'
       >
       </div>
     `,
@@ -36,7 +36,7 @@ const Portal = ({
     setHost(portal);
 
     return () => portal.remove();
-  }, [id, lang]);
+  }, [id, lang, style]);
 
   return host ? createPortal(children, host) : null;
 };

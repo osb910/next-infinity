@@ -124,9 +124,8 @@
 .title {
   word-wrap: break-word;
   position: relative;
-  z-index: 2;
   margin: 0;
-  z-index: 2;
+  z-index: 1;
   -webkit-transform: skew(0, -3deg);
   -ms-transform: skew(0, -3deg);
   transform: skew(0, -3deg);

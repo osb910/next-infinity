@@ -10,7 +10,7 @@ import styles from './Toaster.module.css';
 const Toaster = ({lang}: {lang?: string}) => {
   const {toasts, dismissToast} = useToaster();
   return (
-    <Portal lang={lang ?? 'en'} style='z-index: 2;'>
+    <Portal lang={lang ?? 'en'} style='z-index: 3;'>
       <StyledToaster
         className={`toaster`}
         role='region'
