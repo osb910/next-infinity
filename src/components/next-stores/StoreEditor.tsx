@@ -120,9 +120,9 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       json.status,
       <p>
         {json.message}
-        <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
-          View Store →
-        </Link>
+        {/* <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
+          View Store
+        </Link> */}
       </p>,
       30000
     );
