@@ -3,7 +3,7 @@
 import {useEffect, ReactNode, useState, useCallback} from 'react';
 import {AlertOctagon, AlertTriangle, CheckCircle, Info, X} from 'react-feather';
 import StyledToast from './StyledToast';
-import {motion, AnimatePresence} from 'framer-motion';
+import {motion} from 'framer-motion';
 // @ts-ignore';
 import styles from './Toast.module.css';
 

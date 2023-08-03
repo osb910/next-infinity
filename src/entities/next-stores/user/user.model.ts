@@ -13,6 +13,8 @@ export interface IUser {
   password: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  gravatar?: string;
+  domain?: string;
 }
 
 interface IUserMethods {
@@ -55,7 +57,7 @@ userSchema.virtual('domain').get(function () {
 });
 
 userSchema.virtual('gravatar').get(async function () {
-  const gravatarHash = Md5.hashStr(this.email.trim().toLowerCase()) as string;
+  const gravatarHash = Md5.hashStr(this.email.trim().toLowerCase());
   return `https://www.gravatar.com/avatar/${gravatarHash}?s=200&d=retro`;
 });
 

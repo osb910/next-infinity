@@ -4,6 +4,8 @@ import FocusLock from 'react-focus-lock';
 import {RemoveScroll} from 'react-remove-scroll';
 import VisuallyHidden from '../VisuallyHidden';
 import Wrapper from './StyledModal';
+import styles from './Modal.module.css';
+import {motion} from 'framer-motion';
 
 export interface ModalProps {
   title: string;
@@ -38,39 +40,57 @@ const Modal = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [dismiss]);
+  }, [dismiss, smoothlyDismiss]);
 
-  const style: {[key: string]: any} = {
-    '--animation-duration': animationDuration,
-  };
+  const blurKeyframes = exiting
+    ? ['blur(3px)', 'blur(0px)']
+    : ['blur(0px)', 'blur(3px)'];
+  const backgroundColorKeyframes = exiting
+    ? ['hsl(0deg 0% 0% / 0.5)', 'hsl(0deg 0% 0% / 0%)']
+    : ['hsl(0deg 0% 0% / 0%)', 'hsl(0deg 0% 0% / 0.5)'];
+
+  const opacityKeyframes = exiting ? [1, 0] : [0, 1];
+  const scaleKeyframes = exiting ? [1, 0.5] : [0.7, 1];
 
   return (
     <FocusLock returnFocus={true}>
       <RemoveScroll>
-        <Wrapper style={style}>
-          <div
-            className={`backdrop ${exiting ? 'exiting' : ''}`}
+        <motion.aside className={styles.aside}>
+          <motion.div
+            className={`backdrop ${styles.backdrop} ${
+              exiting ? styles.exiting : ''
+            } ${exiting ? 'exiting' : ''}`}
             onClick={smoothlyDismiss}
+            animate={{
+              backdropFilter: blurKeyframes,
+              backgroundColor: backgroundColorKeyframes,
+            }}
+            transition={{duration: 1.2, type: 'spring', bounce: 0.4}}
           />
-          <div
-            className={`modal ${exiting ? 'exiting' : ''} ${
-              lang === 'ar' ? 'rtl' : 'ltr'
-            }`}
+          <motion.div
+            className={`modal ${styles.modal} ${
+              exiting ? styles.exiting : ''
+            } ${exiting ? 'exiting' : ''} ${lang === 'ar' ? 'rtl' : 'ltr'}`}
             role='dialog'
             aria-modal='true'
             aria-label={title}
+            animate={{
+              opacity: opacityKeyframes,
+              scale: scaleKeyframes,
+            }}
+            transition={{duration: 1.2, type: 'spring', bounce: 0.5}}
           >
             <button
               type='button'
-              className='dismissBtn'
+              className={`dismissBtn ${styles.dismissBtn}`}
               onClick={smoothlyDismiss}
             >
               <VisuallyHidden>{dismissText}</VisuallyHidden>
               <Close />
             </button>
             {children}
-          </div>
-        </Wrapper>
+          </motion.div>
+        </motion.aside>
       </RemoveScroll>
     </FocusLock>
   );

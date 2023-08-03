@@ -18,7 +18,7 @@ import ForgotPassForm from './ForgotPassForm';
 import ChangePasswordForm from './ChangePasswordForm';
 
 interface UserNavProps {
-  user: (IUser & {gravatar?: string; hearts?: any[]}) | null;
+  user: (IUser & {hearts?: any[]}) | null;
 }
 
 const UserNav = ({user}: UserNavProps) => {
@@ -95,11 +95,11 @@ const UserNav = ({user}: UserNavProps) => {
                 router.replace(`${pathname}?sub-page=account`);
               }}
             >
-              {user?.gravatar ? (
+              {userData?.gravatar ? (
                 <Image
                   className={styles.avatar}
                   alt='avatar'
-                  src={user?.gravatar ?? ''}
+                  src={userData?.gravatar ?? ''}
                   width={200}
                   height={200}
                 />

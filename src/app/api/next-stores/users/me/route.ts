@@ -12,14 +12,18 @@ export const GET = async (req: NextRequest) => {
         {status: 'error', message: 'No user id'},
         {status: 401}
       );
-    const user = (await User.findById(userId)) as HydratedDocument<IUser> & {
+    const user = (await User.findById(
+      userId,
+      'email name'
+    )) as HydratedDocument<IUser> & {
       _doc: HydratedDocument<IUser>;
+      gravatar: Promise<string>;
     };
     return NextResponse.json(
       {
         status: 'success',
         message: `Successfully fetched user!`,
-        data: user._doc,
+        data: {...user._doc, gravatar: await user.gravatar},
       },
       {status: 200, headers: {'Content-Type': 'application/json'}}
     );
