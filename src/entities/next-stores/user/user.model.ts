@@ -5,7 +5,7 @@ import {Md5} from 'ts-md5';
 import validator from 'validator';
 const {isEmail} = validator;
 
-const db = connection.useDb('next-stores', {useCache: true});
+const db = connection.useDb('next-stores');
 export interface IUser {
   _id?: string;
   email: string;

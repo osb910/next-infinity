@@ -3,7 +3,7 @@ import {Schema, Model, Types, connection} from 'mongoose';
 import slug from 'slug';
 import User from '../user/user.model';
 
-const db = connection.useDb('next-stores', {useCache: true});
+const db = connection.useDb('next-stores');
 
 export interface IStore {
   _id?: Types.ObjectId;
