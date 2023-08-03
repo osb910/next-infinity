@@ -120,18 +120,11 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       json.status,
       <p>
         {json.message}
-        {/* <Link className='btn' href={`/next-stores/stores/${json.data._id}`}>
-          View Store
-        </Link> */}
+        <a className='btn' href={`/next-stores/stores/${json.data._id}`}>
+          View Store →
+        </a>
       </p>,
-      6000
-    );
-    createToast(
-      json.status,
-      <a className='btn' href={`/next-stores/stores/${json.data._id}`}>
-        View Store
-      </a>,
-      30000
+      20000
     );
     photoRef.current!.removeAttribute('class');
   };
