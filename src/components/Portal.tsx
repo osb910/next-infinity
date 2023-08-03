@@ -20,7 +20,7 @@ const Portal = ({
       `
       <div
         data-portal=${id} dir=${dir} class='${dir}'
-        style='position: relative; ${style ?? ''}'
+        style='position: relative; ${style ?? 'z-index: 3;'}'
       >
       </div>
     `,
