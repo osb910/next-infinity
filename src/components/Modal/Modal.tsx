@@ -65,7 +65,7 @@ const Modal = ({
               backdropFilter: blurKeyframes,
               backgroundColor: backgroundColorKeyframes,
             }}
-            transition={{duration: 1.2, type: 'spring', bounce: 0.4}}
+            transition={{duration: 1.2, type: 'spring', bounce: 0.5}}
           />
           <motion.div
             className={`modal ${styles.modal} ${
@@ -80,14 +80,20 @@ const Modal = ({
             }}
             transition={{duration: 1.2, type: 'spring', bounce: 0.5}}
           >
-            <button
+            <motion.button
               type='button'
               className={`dismissBtn ${styles.dismissBtn}`}
               onClick={smoothlyDismiss}
+              whileHover={{
+                transform: 'scale(1.2) rotate(-90deg)',
+              }}
+              whileFocus={{
+                transform: 'scale(1.2) rotate(-90deg)',
+              }}
             >
               <VisuallyHidden>{dismissText}</VisuallyHidden>
               <Close />
-            </button>
+            </motion.button>
             {children}
           </motion.div>
         </motion.aside>
