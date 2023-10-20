@@ -7,6 +7,7 @@ import {MapPin} from 'react-feather';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './InteractiveMap.module.css';
 import {getURL} from '@/utils/path';
+import {getCoords} from '@/utils/numbers';
 
 interface InteractiveMapProps {
   lng: number;
@@ -18,6 +19,11 @@ const InteractiveMap = ({lng, lat, token}: InteractiveMapProps) => {
   const Map = ReactMapboxGl({
     accessToken: token,
   });
+  if (!lng || !lat) {
+    console.log('lng or lat is not defined');
+  }
+
+  const userLocation = getCoords();
 
   return (
     <figure className={styles.map}>
@@ -30,7 +36,13 @@ const InteractiveMap = ({lng, lat, token}: InteractiveMapProps) => {
         className={styles.map}
       >
         <Layer type='symbol' id='marker' layout={{'icon-image': 'map-marker'}}>
-          <Feature coordinates={[lng, lat]} />
+          <Feature
+            coordinates={
+              lng && lat
+                ? [lng, lat]
+                : [+userLocation?.lng! ?? 0, +userLocation?.lat! ?? 0]
+            }
+          />
         </Layer>
         <Image
           id={'map-marker'}

@@ -89,6 +89,7 @@ const storeSchema = new Schema<IStore, StoreModel, IStoreMethods>(
 );
 
 storeSchema.index({name: 'text', description: 'text'});
+storeSchema.index({location: '2dsphere'});
 
 storeSchema.pre('save', async function () {
   console.log(`saving ${this.name}...`);

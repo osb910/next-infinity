@@ -16,3 +16,39 @@ export const range = (
 
 export const pluralize = (word: string, num: number) =>
   num === 1 ? `1 ${word}` : `${num} ${word}s`;
+
+export const getCoords = () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  const coords = {
+    lat: 0,
+    lng: 0,
+  };
+
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+
+  const success = (pos: any) => {
+    const crd = pos.coords;
+
+    console.log(`Longitude: ${crd.longitude}`);
+    console.log(`Latitude : ${crd.latitude}`);
+
+    coords.lng = crd.longitude;
+    coords.lat = crd.latitude;
+  };
+
+  navigator.geolocation.getCurrentPosition(
+    success,
+    (err: any): void => {
+      console.warn(`ERROR: ${err.message}`);
+    },
+    options
+  );
+
+  return coords;
+};

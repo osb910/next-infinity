@@ -28,7 +28,7 @@ const LoginForm = () => {
       <p>{error === 'bad_token' ? 'You must be logged in.' : error}</p>,
       3200
     );
-  }, []);
+  }, [error, createToast]);
 
   const login = async (body: FormData) => {
     const res = await ky.post(getURL('/api/next-stores/auth/login'), {

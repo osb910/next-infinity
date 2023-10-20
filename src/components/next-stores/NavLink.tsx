@@ -15,11 +15,7 @@ const NavLink = ({
   activeClassName,
   className,
   ...rest
-}: {
-  children: ReactNode;
-  className?: string;
-  activeClassName: string;
-} & LinkProps) => {
+}: NavLinkProps) => {
   const {href} = rest;
   const pathName = usePathname();
 

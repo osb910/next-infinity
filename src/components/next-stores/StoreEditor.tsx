@@ -1,16 +1,15 @@
 'use client';
 
-import {useState, useRef, ChangeEvent} from 'react';
+import {useRef, ChangeEvent} from 'react';
 import Image from 'next/image';
 import ky from 'ky';
-import Link from 'next/link';
-import Select from 'react-select';
 import {IStore} from '@/entities/next-stores/store/store.model';
 import {getURL} from '@/utils/path';
 import styles from './StoreEditor.module.css';
 import useToaster from '../Toaster/use-toaster';
 import Form from '../Form/Form';
 import Input from '../Input';
+import AutoCompleter from '../AutoCompleter';
 
 interface StoreEditorProps {
   store?: IStore;
@@ -33,10 +32,6 @@ const StoreEditor = ({store}: StoreEditorProps) => {
     'Licensed',
   ];
 
-  const [address, setAddress] = useState(store?.location?.address ?? '');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [addressLoading, setAddressLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
   const photoRef = useRef<HTMLImageElement>(null);
   const lngRef = useRef<HTMLInputElement>(null);
   const latRef = useRef<HTMLInputElement>(null);
@@ -44,42 +39,19 @@ const StoreEditor = ({store}: StoreEditorProps) => {
 
   const tags = store?.tags ?? [];
 
-  const changeAddress = async (newValue: string) => {
-    setAddress(newValue);
-    if (newValue.length < 3) return;
-    setAddressLoading(true);
-    try {
-      const res = await fetch(
-        getURL(`/api/next-stores/map/search?place=${address}`),
-        {
-          cache: 'no-store',
-        }
-      );
-      const data = await res.json();
-      if (data.error) {
-        setError(data.error);
-        return;
-      }
-      const newSuggestions = data.features.map(
-        ({
-          id,
-          properties: {name, place_formatted},
-          geometry,
-        }: any): AddressOption => ({
-          id,
-          value: `${name}${place_formatted ? `, ${place_formatted}` : ''}`,
-          label: `${name}${place_formatted ? `, ${place_formatted}` : ''}`,
-          coordinates: geometry.coordinates,
-        })
-      );
-      setSuggestions(newSuggestions);
-    } catch (err) {
-      if (!(err instanceof Error)) return;
-      setError(err.message);
-      return;
-    }
-    setAddressLoading(false);
-  };
+  const generateAddressSuggestions = (data: any) =>
+    data.features.map(
+      ({
+        id,
+        properties: {name, place_formatted},
+        geometry,
+      }: any): AddressOption => ({
+        id,
+        value: `${name}${place_formatted ? `, ${place_formatted}` : ''}`,
+        label: `${name}${place_formatted ? `, ${place_formatted}` : ''}`,
+        coordinates: geometry.coordinates,
+      })
+    );
 
   const changeSelectedAddress = (option: AddressOption) => {
     if (!option) return;
@@ -116,6 +88,10 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       status: 'success' | 'warning' | 'error' | 'notice';
       message: string;
     };
+    if (json.status === 'error') {
+      createToast(json.status, json.message);
+      return;
+    }
     createToast(
       json.status,
       <>
@@ -164,25 +140,16 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         height={200}
         ref={photoRef}
       />
-      <div>
-        <label htmlFor='address'>Address</label>
-        <Select
-          inputId='address'
-          name='address'
-          placeholder='Enter a location'
-          required
-          inputValue={address}
-          options={suggestions}
-          onInputChange={changeAddress}
-          // @ts-ignore
-          onChange={changeSelectedAddress}
-          menuIsOpen={suggestions.length > 0 && address.length > 2}
-          isLoading={addressLoading}
-          closeMenuOnSelect
-          isClearable
-          isSearchable
-        />
-      </div>
+      <AutoCompleter
+        endpoint='/api/next-stores/map/search?place='
+        generateSuggestions={generateAddressSuggestions}
+        label='Address'
+        name='address'
+        placeholder='Enter a location'
+        required
+        changeSelected={changeSelectedAddress}
+        defaultValue={store?.location?.address ?? ''}
+      />
       <p>
         <label htmlFor='lng'>Address Longitude</label>
         <input

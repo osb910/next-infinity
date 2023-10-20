@@ -14,7 +14,6 @@ interface EditAccountFormProps {
 const EditAccountForm = ({user}: EditAccountFormProps) => {
   const {createToast} = useToaster();
 
-  console.log(user);
   const updateAccount = async (body: FormData) => {
     const res = await ky.put('/api/next-stores/users/me', {
       json: Object.fromEntries(body.entries()),

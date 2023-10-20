@@ -1,11 +1,6 @@
 .map {
-  position: relative;
-  top: -0.5em;
-  z-index: 1;
-  width: calc(90% + 6rem);
+  width: 100%;
   max-width: none;
-  margin-top: -3em;
-  margin-left: -3em;
   margin-inline: auto;
   border-radius: 6px;
 }
