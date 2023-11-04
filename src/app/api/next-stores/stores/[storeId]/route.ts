@@ -3,7 +3,7 @@ import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {HydratedDocument} from 'mongoose';
 import {processUploadImage} from '@/lib/file.middleware';
 
-type Params = {
+export type Params = {
   params: {
     storeId: string;
   };
@@ -86,8 +86,9 @@ export const PUT = async (req: NextRequest, {params: {storeId}}: Params) => {
 
     return NextResponse.json(
       {
-        data: res._doc,
         status: 'success',
+        code: 201,
+        data: res._doc,
         message: `Successfully updated ${res.name}!`,
       },
       {status: 201}

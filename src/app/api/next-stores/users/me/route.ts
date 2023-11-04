@@ -1,29 +1,48 @@
 import {NextRequest, NextResponse} from 'next/server';
 import User, {IUser} from '@/entities/next-stores/user/user.model';
 import {HydratedDocument} from 'mongoose';
+import Store from '@/entities/next-stores/store/store.model';
 
 export const dynamic = 'force-dynamic';
 
 export const GET = async (req: NextRequest) => {
+  const userId = req.headers.get('X-USER-ID');
+  if (!userId)
+    return NextResponse.json(
+      {status: 'error', message: 'No user id'},
+      {status: 401}
+    );
+  const {searchParams} = req.nextUrl;
+  const populateFavorites = searchParams.get('populateFavorites') === 'true';
   try {
-    const userId = req.headers.get('X-USER-ID');
-    if (!userId)
-      return NextResponse.json(
-        {status: 'error', message: 'No user id'},
-        {status: 401}
-      );
-    const user = (await User.findById(
+    let user = (await User.findById(
       userId,
-      'email name'
-    )) as HydratedDocument<IUser> & {
-      _doc: HydratedDocument<IUser>;
-      gravatar: Promise<string>;
+      '-password -resetPasswordToken -resetPasswordExpires -__v'
+    )) as
+      | any
+      | (HydratedDocument<IUser> & {
+          _doc: IUser;
+          gravatar: Promise<string>;
+        });
+    if (!user) {
+      return NextResponse.json(
+        {status: 'error', error: 'User not found!', code: 404},
+        {status: 404}
+      );
+    }
+    user = {
+      ...user._doc,
+      favorites: populateFavorites
+        ? await Store.find({_id: {$in: user.favorites}})
+        : user.favorites,
+      gravatar: await user.gravatar,
     };
     return NextResponse.json(
       {
         status: 'success',
+        code: 200,
         message: `Successfully fetched user!`,
-        data: {...user._doc, gravatar: await user.gravatar},
+        data: user,
       },
       {status: 200, headers: {'Content-Type': 'application/json'}}
     );

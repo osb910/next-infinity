@@ -16,50 +16,27 @@ import Tabbed from '../Tabbed';
 import EditAccountForm from './EditAccountForm';
 import ForgotPassForm from './ForgotPassForm';
 import ChangePasswordForm from './ChangePasswordForm';
+import useUser from './useUser';
 
-interface UserNavProps {
-  user: (IUser & {hearts?: any[]}) | null;
-}
-
-const UserNav = ({user}: UserNavProps) => {
+const UserNav = ({user}: {user: IUser | null}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [subPage, setSubPage] = useState<string | null>(() =>
     searchParams.get('sub-page')
   );
-  const [userData, setUserData] = useState<IUser | null>(user);
   const resetToken = searchParams.get('reset-token');
-
+  const {userData} = useUser();
   const dismissSubPage = () => {
     setSubPage(null);
     router.replace(pathname);
   };
 
   const isLoggedIn = Cookies.get('next-stores-logged-in') === 'true';
-  const userId = Cookies.get('next-stores-user-id');
 
   useEffect(() => {
     setSubPage(searchParams.get('sub-page'));
   }, [searchParams]);
-
-  useEffect(() => {
-    if (userData || !userId) return;
-    const getUser = async () => {
-      try {
-        const res = await fetch(`/api/next-stores/users/me`, {
-          headers: {
-            'X-USER-ID': userId,
-          },
-        });
-        const json = await res.json();
-        if (json.status === 'success') setUserData(json.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getUser();
-  }, [userId, userData]);
 
   return (
     <ul className={`${styles.navSection} ${styles.navSectionUser}`}>
@@ -69,11 +46,11 @@ const UserNav = ({user}: UserNavProps) => {
             <NavLink
               activeClassName={styles.navLinkActive}
               className={styles.navLink}
-              href='/next-stores/hearts'
+              href='/next-stores/favorites'
             >
               <Heart />
               <span className={styles.heartCount}>
-                {user?.hearts?.length ?? 0}
+                {userData?.favorites?.length ?? user?.favorites?.length ?? 0}
               </span>
             </NavLink>
           </li>
@@ -100,8 +77,8 @@ const UserNav = ({user}: UserNavProps) => {
                   className={styles.avatar}
                   alt='avatar'
                   src={userData?.gravatar ?? ''}
-                  width={200}
-                  height={200}
+                  width={180}
+                  height={180}
                 />
               ) : (
                 <>

@@ -134,7 +134,11 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         onChange={previewPhoto}
       />
       <Image
-        src={`/api/next-stores/files/${store?.photo?.key ?? 'store.png'}`}
+        src={
+          store?.photo?.key
+            ? `/api/next-stores/files/${store.photo.key}`
+            : '/public/uploads/store.png'
+        }
         alt={store?.name ?? 'store'}
         width={200}
         height={200}

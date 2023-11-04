@@ -13,12 +13,13 @@ import Search from '../../components/next-stores/Search';
 import {getURL} from '@/utils/path';
 import UserNav from '@/components/next-stores/UserNav';
 import {IUser} from '@/entities/next-stores/user/user.model';
+import {UserProvider} from '@/components/next-stores/useUser';
 
 export const metadata: Metadata = {};
 
 export const dynamic = 'force-dynamic';
 
-type User = IUser & {gravatar?: string; hearts?: any[]};
+type User = IUser & {gravatar?: string};
 interface MenuItem {
   slug: string;
   icon: string | ComponentType;
@@ -54,7 +55,10 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
       if (json.status === 'success') user = json.data;
     }
     return (
-      <>
+      <UserProvider
+        userEndpoint='/api/next-stores/users/me'
+        userIdCookie='next-stores-user-id'
+      >
         <header className={styles.top}>
           <nav className={styles.nav}>
             <section className={styles.navSection}>
@@ -96,7 +100,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
           </nav>
         </header>
         <main className={styles.main}>{children}</main>
-      </>
+      </UserProvider>
     );
   } catch (err) {
     console.error(err);

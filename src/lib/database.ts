@@ -1,7 +1,9 @@
 import {connect, connection} from 'mongoose';
 
 const oldMongoOptions =
-  '?ssl=true&replicaSet=atlas-i4i6o3-shard-0&authSource=admin&retryWrites=true&w=majority';
+  '?ssl=true&replicaSet=atlas-6yp1ss-shard-0&authSource=admin&retryWrites=true&w=majority';
+
+const nextInfinityOldUri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ac-x8gslet-shard-00-00.ugcdgqg.mongodb.net:27017,ac-x8gslet-shard-00-01.ugcdgqg.mongodb.net:27017,ac-x8gslet-shard-00-02.ugcdgqg.mongodb.net:27017/`;
 
 const nextInfinityUri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}.ugcdgqg.mongodb.net/`;
 
@@ -14,7 +16,8 @@ const mongoConnect = async (uri: string, dbName?: string): Promise<any> => {
   try {
     console.log('Connecting to MongoDB...');
     const client = await connect(
-      `${uri}${dbName ?? ''}?retryWrites=true&w=majority`,
+      // `${uri}${dbName ?? ''}?retryWrites=true&w=majority`,
+      `${uri}${dbName ?? ''}${oldMongoOptions}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -35,7 +38,7 @@ const mongoConnect = async (uri: string, dbName?: string): Promise<any> => {
 
 const connectDB = async (dbName?: string): Promise<any> => {
   try {
-    await mongoConnect(nextInfinityUri, dbName);
+    await mongoConnect(nextInfinityOldUri, dbName);
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(`Connecting to the database failed! ${err.message}`);

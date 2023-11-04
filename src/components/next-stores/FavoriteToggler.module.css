@@ -1,0 +1,27 @@
+.heart {
+  position: relative;
+  background: none;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
+
+.heart span {
+  position: absolute;
+  top: 0;
+  left: 35%;
+  opacity: 0;
+  font-size: 1.25rem;
+  pointer-events: none;
+}
+
+.heart svg {
+  fill: #93939395;
+}
+
+.favored svg {
+  fill: #b01e28;
+}
+.heart span {
+  color: #3e3e3e;
+}

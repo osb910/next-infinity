@@ -33,7 +33,7 @@ const EditStoreLoading = () => {
         />
       </p>
       <Image
-        src={`/api/next-stores/files/store.png`}
+        src='/public/uploads/store.png'
         alt='store'
         width={200}
         height={200}

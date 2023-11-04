@@ -11,6 +11,7 @@ export interface IUser {
   email: string;
   name: string;
   password: string;
+  favorites: string[];
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   gravatar?: string;
@@ -44,6 +45,12 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Store',
+      },
+    ],
   },
   {
     toJSON: {virtuals: true},
@@ -58,7 +65,7 @@ userSchema.virtual('domain').get(function () {
 
 userSchema.virtual('gravatar').get(async function () {
   const gravatarHash = Md5.hashStr(this.email.trim().toLowerCase());
-  return `https://www.gravatar.com/avatar/${gravatarHash}?s=200&d=retro`;
+  return `https://www.gravatar.com/avatar/${gravatarHash}?s=150&d=retro`;
 });
 
 userSchema.pre('save', async function (): Promise<any> {

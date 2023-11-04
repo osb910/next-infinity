@@ -1,8 +1,10 @@
 import {headers} from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
+import {Edit} from 'react-feather';
 import styles from './Store.module.css';
 import {IStore} from '@/entities/next-stores/store/store.model';
+import FavoriteToggler from './FavoriteToggler';
 
 interface StoreProps {
   store: IStore;
@@ -24,20 +26,12 @@ const StoreCard = ({store}: StoreProps) => {
       <li className={styles.store}>
         <section className={styles.storeHero}>
           <section className={styles.storeActions}>
-            <section
-              className={`${styles.storeAction} ${styles.storeActionEdit}`}
-            >
-              {author === userId && (
-                <Link href={`/next-stores/stores/${id}/edit`}>
-                  <Image
-                    alt='Pencil icon'
-                    src='/img/icons/pencil.svg'
-                    width={48}
-                    height={48}
-                  />
-                </Link>
-              )}
-            </section>
+            {userId && <FavoriteToggler favoredId={id!} />}
+            {author === userId && (
+              <Link href={`/next-stores/stores/${id}/edit`}>
+                <Edit size={32} />
+              </Link>
+            )}
           </section>
           <Image
             className={styles.storeImage}
@@ -54,9 +48,7 @@ const StoreCard = ({store}: StoreProps) => {
             <Link href={`/next-stores/store/${store.slug}`}>{store.name}</Link>
           </h2>
         </section>
-        <section className={styles.storeDetails}>
-          <p>{truncatedDescription}</p>
-        </section>
+        <p className={styles.storeDescription}>{truncatedDescription}</p>
       </li>
     );
   } catch (err) {

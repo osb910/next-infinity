@@ -1,13 +1,16 @@
 .stores {
+  padding-inline: 0.5em;
+  border-radius: 2px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 4em 1.25em;
+  gap: 2em 1.25em;
   margin: 0;
 }
 
 .store {
   background: white;
-  inline-size: calc(33.3333% - 1.25em);
+  max-inline-size: 350px;
   /* box-shadow: $shad; */
 }
 
@@ -15,47 +18,20 @@
   inline-size: 100%;
 }
 
-.storeActions {
-  position: relative;
-  z-index: 2;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
-  margin-bottom: 50px;
-  padding-top: 10px;
-  padding-bottom: 20px;
-  display: flex;
-  color: white;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.storeAction {
-  font-size: 10px;
-}
-
-.storeAction img {
-  inline-size: 25px;
-  fill: white;
-}
-
-.storeActionEdit a {
-  border-bottom: 0;
-}
-
 .singleStore {
   inline-size: 100%;
 }
 
 .storeHero {
-  height: 500px;
+  min-block-size: 150px;
+  min-inline-size: 240px;
   position: relative;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2vw), 0% 100%);
-  padding: 0 10px 0 10px;
-  text-align: right;
 }
 
 .storeHero::before {
@@ -91,6 +67,22 @@
   clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
 }
 
+.storeActions {
+  position: relative;
+  z-index: 1;
+  margin-block-start: 0.5em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
+  display: flex;
+  color: white;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.storeActionEdit a {
+  border-bottom: 0;
+}
+
 .storeHero img {
   /* height: 100%; */
   inline-size: 100%;
@@ -101,17 +93,6 @@
   object-fit: cover;
   clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
 }
-
-.storeHero {
-  block-size: 500px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2vw), 0% 100%);
-}
-
 .storeImage {
   inline-size: 100%;
   block-size: 100%;
@@ -121,13 +102,23 @@
   position: absolute;
 }
 
+.storeDescription {
+  line-height: 1.7;
+  padding-block: 0.5em;
+  padding-inline: 0.5em;
+}
+
 .title {
-  word-wrap: break-word;
   position: relative;
   margin: 0;
   z-index: 1;
-  -webkit-transform: skew(0, -3deg);
-  -ms-transform: skew(0, -3deg);
+  margin-inline-end: 0.25em;
+  margin-block-end: 0.75em;
+  align-self: end;
+  word-wrap: break-word;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
   transform: skew(0, -3deg);
 }
 
@@ -137,19 +128,18 @@
 
 .title::before {
   content: '';
-  width: 50px;
+  position: absolute;
   left: 0;
   top: 0;
+  width: 50px;
   height: 100%;
-  display: block;
-  position: absolute;
   z-index: -1;
-  -webkit-transform: skew(-5deg);
-  -ms-transform: skew(-5deg);
+  display: block;
   transform: skew(-5deg);
 }
 
 .title a {
+  padding-block: 0.125em;
   border-bottom: 0;
   background-image: -webkit-gradient(
     linear,
@@ -168,6 +158,8 @@
     rgba(255, 196, 14, 0.8) 100%,
     rgba(255, 196, 14, 0.8) 50%
   );
+  text-decoration: none;
+  color: rgb(var(--color-gray-100));
 }
 
 .singleTitle {
