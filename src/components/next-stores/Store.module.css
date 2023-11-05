@@ -122,6 +122,33 @@
   transform: skew(0, -3deg);
 }
 
+.title:where(:hover, :focus) {
+  animation: expand1 400ms ease-in-out both;
+}
+
+.title:where(:hover, :focus) a {
+  animation: expand2 400ms ease-in-out both;
+}
+
+@keyframes expand1 {
+  0% {
+    margin-inline-end: 0.25em;
+  }
+
+  100% {
+    margin-inline-end: 0;
+  }
+}
+
+@keyframes expand2 {
+  0% {
+    padding-inline-start: 0;
+  }
+  100% {
+    padding-inline-start: 0.5em;
+  }
+}
+
 .title--long {
   font-size: 30px;
 }

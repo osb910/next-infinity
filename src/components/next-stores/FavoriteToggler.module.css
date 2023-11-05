@@ -16,12 +16,14 @@
 }
 
 .heart svg {
-  fill: #93939395;
+  fill: hsl(0 0% 75%);
+  stroke: hsla(356 71% 40% / 0.95);
 }
 
 .favored svg {
-  fill: #b01e28;
+  fill: hsl(356 71% 40%);
+  stroke: hsla(0deg 0% 75% / 0.95);
 }
 .heart span {
-  color: #3e3e3e;
+  color: hsl(0 0% 24%);
 }

@@ -134,6 +134,19 @@ storeSchema.pre('findOneAndUpdate', async function () {
   }
 });
 
+export const postDeleteStore = async (store: IStore) => {
+  console.log(`store ${store.slug} deleted`);
+  try {
+    await User.updateMany({_id: store.author}, {$pull: {favorites: store._id}});
+  } catch (err) {
+    throw err;
+  }
+};
+
+storeSchema.post('findOneAndDelete', async function (doc: IStore) {
+  await postDeleteStore(doc);
+});
+
 storeSchema.static('getTagsList', async function () {
   return await this.aggregate([
     {$unwind: '$tags'},

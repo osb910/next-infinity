@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 import {ReactNode} from 'react';
 import useSound from 'use-sound';
 import useSoundEnabled from '../SoundToggler/sound-enabled';
@@ -29,17 +30,21 @@ const IconButton = ({
 
   return (
     // @ts-ignore
-    <button
-      className={`${className ?? ''} bump ${styles.button}`}
+    <motion.button
+      className={`${className ?? ''} ${styles.button}`}
       onClick={() => clickHandler?.()}
       onMouseDown={() => playActive()}
       onMouseUp={() => playOn()}
       key={highlightDeps?.join('')}
+      whileHover={{scale: 1.1}}
+      whileFocus={{scale: 1.1}}
+      whileTap={{scale: 0.95}}
+      transition={{duration: 0.6, type: 'spring', bounce: 0.5}}
       {...delegated}
     >
       {icon}
       {children}
-    </button>
+    </motion.button>
   );
 };
 

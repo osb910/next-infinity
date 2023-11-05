@@ -5,6 +5,7 @@ import {Edit} from 'react-feather';
 import styles from './Store.module.css';
 import {IStore} from '@/entities/next-stores/store/store.model';
 import FavoriteToggler from './FavoriteToggler';
+import Eraser from './Eraser';
 
 interface StoreProps {
   store: IStore;
@@ -23,14 +24,17 @@ const StoreCard = ({store}: StoreProps) => {
       .join(' ');
 
     return (
-      <li className={styles.store}>
+      <li className={styles.store} data-item={id}>
         <section className={styles.storeHero}>
           <section className={styles.storeActions}>
             {userId && <FavoriteToggler favoredId={id!} />}
             {author === userId && (
-              <Link href={`/next-stores/stores/${id}/edit`}>
-                <Edit size={32} />
-              </Link>
+              <>
+                <Link href={`/next-stores/stores/${id}/edit`}>
+                  <Edit size={28} />
+                </Link>
+                <Eraser itemId={id!} />
+              </>
             )}
           </section>
           <Image
@@ -48,7 +52,10 @@ const StoreCard = ({store}: StoreProps) => {
             <Link href={`/next-stores/store/${store.slug}`}>{store.name}</Link>
           </h2>
         </section>
-        <p className={styles.storeDescription}>{truncatedDescription}</p>
+        <p className={styles.storeDescription}>
+          {truncatedDescription}
+          {store.description.length > 25 && '...'}
+        </p>
       </li>
     );
   } catch (err) {
