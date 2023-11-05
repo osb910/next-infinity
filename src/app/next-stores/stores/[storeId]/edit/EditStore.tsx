@@ -17,6 +17,7 @@ const EditStore = async ({params}: {params: {storeId: string}}) => {
       message?: string;
       status?: string;
     };
+    console.log({author: data.author.toString(), userId});
     if (data.author.toString() !== userId) {
       return (
         <ErrorAlert>

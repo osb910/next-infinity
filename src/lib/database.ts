@@ -17,11 +17,7 @@ const mongoConnect = async (uri: string, dbName?: string): Promise<any> => {
     console.log('Connecting to MongoDB...');
     const client = await connect(
       // `${uri}${dbName ?? ''}?retryWrites=true&w=majority`,
-      `${uri}${dbName ?? ''}${oldMongoOptions}`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      } as any
+      `${uri}${dbName ?? ''}${oldMongoOptions}`
     );
 
     if (dbName) {
