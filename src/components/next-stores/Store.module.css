@@ -9,69 +9,25 @@
 }
 
 .store {
+  max-inline-size: 22.5rem;
+  border-radius: 4px;
   background: white;
-  max-inline-size: 350px;
-  /* box-shadow: $shad; */
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+  transition: all 400ms ease-in-out;
+}
+
+.store:where(:hover, :focus) {
+  transform: translateY(-2px);
 }
 
 .storeWide {
   inline-size: 100%;
 }
 
-.singleStore {
-  inline-size: 100%;
-}
-
-.storeHero {
-  min-block-size: 150px;
-  min-inline-size: 240px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2vw), 0% 100%);
-}
-
-.storeHero::before {
-  display: block;
-  content: '';
-  position: absolute;
-  height: 100%;
-  inline-size: 100%;
-  inset-block-start: 0;
-  inset-inline-end: 0;
-  background: linear-gradient(
-      45deg,
-      hsla(190, 95%, 43%, 0.4) 0%,
-      hsla(190, 95%, 43%, 0) 70%
-    ),
-    linear-gradient(
-      135deg,
-      hsla(219, 93%, 48%, 0.4) 10%,
-      hsla(219, 93%, 48%, 0) 80%
-    ),
-    linear-gradient(
-      225deg,
-      hsla(293, 93%, 48%, 0.4) 10%,
-      hsla(293, 93%, 48%, 0) 80%
-    ),
-    linear-gradient(
-      315deg,
-      hsla(130, 96%, 45%, 0.4) 100%,
-      hsla(130, 96%, 45%, 0) 70%
-    );
-  opacity: 0.6;
-  z-index: 1;
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
-}
-
 .storeActions {
   position: relative;
   z-index: 1;
   margin-block-start: 0.5em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
   display: flex;
   color: white;
@@ -79,27 +35,35 @@
   gap: 0.5em;
 }
 
-.storeActionEdit a {
+.storeActions a {
+  width: 20px;
   border-bottom: 0;
+  color: #1111aa;
+  transition: all 250ms ease-in-out;
 }
 
-.storeHero img {
-  /* height: 100%; */
-  inline-size: 100%;
-  /* inset-block-start: 0;
-  inset-inline-end: 0;
-  position: absolute;
-  inset-inline-start: 0; */
-  object-fit: cover;
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+.storeActions a:where(:hover, :focus) {
+  scale: 1.1;
 }
-.storeImage {
-  inline-size: 100%;
-  block-size: 100%;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  object-fit: cover;
-  position: absolute;
+
+.storeActions a:active {
+  scale: 0.95;
+}
+
+.storeActions a svg {
+  fill: hsl(0 0% 75%);
+}
+
+@media (min-width: 24rem) {
+  .storeActions a {
+    width: 1.5rem;
+  }
+}
+
+@media (min-width: 72rem) {
+  .storeActions a {
+    width: 1.75rem;
+  }
 }
 
 .storeDescription {
@@ -113,20 +77,24 @@
   margin: 0;
   z-index: 1;
   margin-inline-end: 0.25em;
-  margin-block-end: 0.75em;
+  margin-block-end: 1.35rem;
   align-self: end;
   word-wrap: break-word;
   font-size: 1.5rem;
   font-weight: 700;
   text-transform: uppercase;
-  transform: skew(0, -3deg);
+  transform: skew(0, -4deg);
 }
 
-.title:where(:hover, :focus) {
+.store .title {
+  text-align: end;
+}
+
+.store .title:where(:hover, :focus) {
   animation: expand1 400ms ease-in-out both;
 }
 
-.title:where(:hover, :focus) a {
+.store .title:where(:hover, :focus) a {
   animation: expand2 400ms ease-in-out both;
 }
 
@@ -168,37 +136,86 @@
 .title a {
   padding-block: 0.125em;
   border-bottom: 0;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    color-stop(100%, rgba(255, 196, 14, 0.8)),
-    color-stop(50%, rgba(255, 196, 14, 0.8))
-  );
-  background-image: -o-linear-gradient(
-    left,
-    rgba(255, 196, 14, 0.8) 100%,
-    rgba(255, 196, 14, 0.8) 50%
-  );
   background-image: linear-gradient(
     to right,
-    rgba(255, 196, 14, 0.8) 100%,
-    rgba(255, 196, 14, 0.8) 50%
+    rgba(255, 196, 14, 0.7) 100%,
+    rgba(255, 196, 14, 0.7) 50%
   );
   text-decoration: none;
   color: rgb(var(--color-gray-100));
+  transition: all 400ms ease-in-out;
+}
+
+.title a:where(:hover, :focus) {
+  padding-inline: 0.5em;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 196, 14, 1) 100%,
+    rgba(255, 196, 14, 1) 50%
+  );
+}
+
+.store .storeImage {
+  border-start-start-radius: 4px;
+  border-start-end-radius: 4px;
+}
+
+.singleStore {
+  inline-size: 100%;
+}
+
+.storeHero {
+  min-block-size: 16rem;
+  position: relative;
+  min-inline-size: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2vw), 0% 100%);
+}
+
+.storeHero::before {
+  display: block;
+  content: '';
+  position: absolute;
+  height: 100%;
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  background: linear-gradient(
+      45deg,
+      hsla(190, 95%, 43%, 0.4) 0%,
+      hsla(190, 95%, 43%, 0) 70%
+    ),
+    linear-gradient(
+      135deg,
+      hsla(219, 93%, 48%, 0.4) 10%,
+      hsla(219, 93%, 48%, 0) 80%
+    ),
+    linear-gradient(
+      225deg,
+      hsla(293, 93%, 48%, 0.4) 10%,
+      hsla(293, 93%, 48%, 0) 80%
+    ),
+    linear-gradient(
+      315deg,
+      hsla(130, 96%, 45%, 0.4) 100%,
+      hsla(130, 96%, 45%, 0) 70%
+    );
+  opacity: 0.5;
+  z-index: 1;
+  /* clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%); */
 }
 
 .singleTitle {
   position: absolute;
   width: 100%;
-  font-weight: 700;
-  margin-top: 1.5em;
-  margin-inline: auto;
-  padding-inline: 0.5em;
-  font-size: 3.5rem;
+  margin-block-start: 2em;
+  padding-inline: 0.25em;
+  font-size: 2rem;
   text-align: center;
-  line-height: 1.25;
+  line-height: 1.33;
 }
 
 .singleTitle a {
@@ -206,34 +223,32 @@
   color: rgb(var(--bg-default-rbg));
 }
 
+.storeImage {
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  object-fit: cover;
+  /* clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%); */
+}
+
 .storeDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5em;
-  background: white;
-  /* clip-path: polygon(0px 2vw, 100% 0, 100% calc(100% - 2vw), 0% 100%); */
-  margin-top: -5rem;
-  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  margin-block-start: -2rem;
   margin-inline: auto;
   margin-block-end: 2em;
   padding-block-end: 2em;
-  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  /* clip-path: polygon(0px 2vw, 100% 0, 100% calc(100% - 2vw), 0% 100%); */
+  background: white;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
 }
 
 .storeDetails figure {
   position: relative;
-  top: -0.5em;
-  z-index: 1;
-  width: calc(90% + 6rem);
-  max-width: none;
-  margin-top: -3em;
-  margin-left: -3em;
-  margin-inline: auto;
-}
-
-.storeDetails > *:not(figure) {
-  padding-inline: 1.5em;
-  font-size: 1.125rem;
 }
 
 .storeDetails p {
@@ -243,12 +258,10 @@
 
 .storeLocation {
   position: relative;
-  z-index: 2;
-  margin: 0;
-  margin-block-start: -5em;
-  margin-inline-end: -3.5em;
-  padding: 1em;
-  padding-inline-end: 2em;
+  margin-block-start: -1.5em;
+  margin-inline-end: 0;
+  padding-block: 0.5em;
+  padding-inline: 0.75em;
   border-start-start-radius: 6px;
   border-end-start-radius: 6px;
   display: inline-block;
@@ -257,22 +270,44 @@
   color: white;
 }
 
-@media (min-width: 500px) {
-  .singleTitle {
-    font-size: 4.5rem;
-  }
+.storeDetails .storeDescription {
+  padding-inline-start: 1em;
 }
 
-@media all and (max-inline-size: 850px) {
-  .store {
-    inline-size: calc(50% - 1.25em);
+@media (min-width: 500px) {
+  .singleTitle {
+    margin-block-start: 1.5em;
+    font-size: 2.5rem;
   }
 
   .storeLocation {
-    margin-inline-end: 0;
+    padding: 1em;
+    padding-inline-end: 1.5em;
+    margin-inline-end: -2.25em;
+  }
+
+  .storeDetails :where(p, li) {
+    font-size: 1.125rem;
   }
 }
-@media all and (max-inline-size: 550px) {
+
+@media (min-width: 768px) {
+  .singleTitle {
+    font-size: 3rem;
+  }
+
+  .storeLocation {
+    padding-inline-end: 2em;
+    margin-inline-end: -2.75em;
+  }
+}
+
+@media all and (max-width: 850px) {
+  .store {
+    inline-size: calc(50% - 1.25em);
+  }
+}
+@media all and (max-width: 550px) {
   .store {
     inline-size: 100%;
   }

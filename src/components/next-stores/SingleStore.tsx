@@ -1,9 +1,13 @@
-import {IStore} from '@/entities/next-stores/store/store.model';
-import styles from './Store.module.css';
-import Tags from './TagsList';
 import Image from 'next/image';
 import Link from 'next/link';
+import {headers} from 'next/headers';
+import {Edit} from 'react-feather';
+import {IStore} from '@/entities/next-stores/store/store.model';
 import InteractiveMap from './InteractiveMap';
+import FavoriteToggler from './FavoriteToggler';
+import Eraser from './Eraser';
+import Tags from './TagsList';
+import styles from './Store.module.css';
 
 interface SingleStoreProps {
   store?: IStore;
@@ -18,7 +22,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         <section className={styles.storeHero}>
           <Image
             className={styles.storeImage}
-            src={`/public/upload/store.png`}
+            src={`/public/uploads/store.png`}
             alt='Store Image'
             width={300}
             height={300}
@@ -39,6 +43,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
     );
 
   const {
+    _id,
     name,
     slug,
     description,
@@ -50,12 +55,30 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
     photo,
   } = store;
 
+  const id = typeof store._id === 'object' ? store._id.toString() : store._id;
+  const author =
+    typeof store.author === 'object' ? store.author.toString() : store.author;
+
+  const headersList = headers();
+  const userId = headersList.get('X-USER-ID');
+
   return (
     <article className={styles.singleStore}>
       <h2 className={`${styles.title} ${styles.singleTitle}`}>
         <Link href={`/next-stores/store/${slug}`}>{name}</Link>
       </h2>
       <section className={styles.storeHero}>
+        <section className={styles.storeActions}>
+          {userId && <FavoriteToggler favoredId={id!} />}
+          {author === userId && (
+            <>
+              <Link href={`/next-stores/stores/${id}/edit`}>
+                <Edit size={28} />
+              </Link>
+              <Eraser itemId={id!} />
+            </>
+          )}
+        </section>
         <Image
           className={styles.storeImage}
           src={
@@ -75,7 +98,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
           token={process.env.MAPBOX_PUBLIC_TOKEN!}
         />
         <p className={styles.storeLocation}>{address}</p>
-        <p>{description}</p>
+        <p className={styles.storeDescription}>{description}</p>
         {store.tags && <Tags tags={tags} />}
       </section>
     </article>

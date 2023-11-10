@@ -51,11 +51,12 @@ const Eraser = ({itemId}: EraserProps) => {
           <Trash2
             size={28}
             strokeWidth={1.2}
-            fill='hsl(0 0% 75%)'
+            fill='currentColor'
             stroke='hsl(356 71% 40%)'
           />
         )
       }
+      title='Delete'
     />
   );
 };

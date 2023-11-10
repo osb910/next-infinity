@@ -7,12 +7,14 @@ export const GET = async (
 ) => {
   const {slug} = params;
   try {
-    const store = (await Store.findOne({slug}).populate('author')) as IStore & {
+    const store = (await Store.findOne({slug})) as IStore & {
       _doc: IStore;
     };
     if (!store) {
-      const err = new Error('Something went wrong!');
-      throw err;
+      return NextResponse.json(
+        {status: 'error', message: `No store found with slug ${slug}`},
+        {status: 404}
+      );
     }
     return NextResponse.json(
       {
@@ -26,7 +28,7 @@ export const GET = async (
     if (!(err instanceof Error)) return;
     console.error(err);
     return NextResponse.json(
-      {status: 'error', message: err.message},
+      {status: 'error', message: err.message, code: 500},
       {status: 500}
     );
   }

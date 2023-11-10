@@ -7,9 +7,24 @@ import {getURL} from '@/utils/path';
 
 const Store = async ({params}: {params: {slug: string}}) => {
   try {
-    const store = await fetch(getURL(`/api/next-stores/store/${params.slug}`));
-    const data = await store.json();
-    return <SingleStore store={data} />;
+    const res = await fetch(getURL(`/api/next-stores/store/${params.slug}`));
+    const store = await res.json();
+    if (
+      store?.status === 'error' &&
+      store?.code === 500 &&
+      /ENOTFOUND|timed out/.test(store?.message)
+    ) {
+      return (
+        <ErrorAlert>
+          <p>Couldn&apos;t connect to the server</p>
+          <small>Check your internet connection</small>
+        </ErrorAlert>
+      );
+    }
+    if (store?.status === 'error') {
+      throw new Error(store.message);
+    }
+    return <SingleStore store={store} />;
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(err);

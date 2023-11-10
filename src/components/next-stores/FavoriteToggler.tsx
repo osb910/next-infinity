@@ -39,6 +39,7 @@ const FavoriteToggler = ({favoredId}: FavoriteTogglerProps) => {
         />
       }
       animate={{color: isFavored ? 'hsl(356 71% 40%)' : 'hsl(0 0% 75%)'}}
+      title={isFavored ? 'Remove from favorites' : 'Add to favorites'}
     >
       <motion.span
         animate={{
