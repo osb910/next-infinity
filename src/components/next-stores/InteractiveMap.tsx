@@ -1,24 +1,20 @@
 'use client';
 
-import ReactMapboxGl, {Layer, Feature, Image} from 'react-mapbox-gl';
-import {Marker} from 'react-mapbox-gl';
-import {MapPin} from 'react-feather';
-
-import 'mapbox-gl/dist/mapbox-gl.css';
+import {fromLonLat} from 'ol/proj';
+import {Point} from 'ol/geom';
+import {RMap, ROSM, RLayerVector, RFeature, ROverlay, RStyle} from 'rlayers';
+import 'ol/ol.css';
+// import {MapPin} from 'react-feather';
 import styles from './InteractiveMap.module.css';
-import {getURL} from '@/utils/path';
 import {getCoords} from '@/utils/numbers';
 
 interface InteractiveMapProps {
   lng: number;
   lat: number;
-  token: string;
+  className?: string;
 }
 
-const InteractiveMap = ({lng, lat, token}: InteractiveMapProps) => {
-  const Map = ReactMapboxGl({
-    accessToken: token,
-  });
+const InteractiveMap = ({lng, lat, className}: InteractiveMapProps) => {
   if (!lng || !lat) {
     console.log('lng or lat is not defined');
   }
@@ -26,34 +22,39 @@ const InteractiveMap = ({lng, lat, token}: InteractiveMapProps) => {
   const userLocation = getCoords();
 
   return (
-    <figure className={styles.map}>
-      <Map
-        style='mapbox://styles/mapbox/streets-v12'
-        containerStyle={{
-          height: '16rem',
-          // width: 'calc(100% + 6rem)',
+    <figure className={className ?? ''}>
+      <RMap
+        className={`${styles.map}`}
+        initial={{
+          center: fromLonLat(
+            lng && lat
+              ? [lng, lat]
+              : [+userLocation?.lng! ?? 0, +userLocation?.lat! ?? 0]
+          ),
+          zoom: 12,
         }}
-        className={styles.map}
       >
-        <Layer type='symbol' id='marker' layout={{'icon-image': 'map-marker'}}>
-          <Feature
-            coordinates={
-              lng && lat
-                ? [lng, lat]
-                : [+userLocation?.lng! ?? 0, +userLocation?.lat! ?? 0]
+        <ROSM />
+        <RLayerVector zIndex={12}>
+          <RStyle.RStyle>
+            <RStyle.RIcon
+              color={[0, 0, 255, 0.8]}
+              size={[32, 32]}
+              src={'/img/icons/marker.svg'}
+              anchor={[0.5, 0.8]}
+            />
+          </RStyle.RStyle>
+          <RFeature
+            geometry={new Point(fromLonLat([lng, lat]))}
+            onClick={(e: any) =>
+              e.map.getView().fit(e.target.getGeometry().getExtent(), {
+                duration: 250,
+                maxZoom: 15,
+              })
             }
-          />
-        </Layer>
-        <Image
-          id={'map-marker'}
-          url={'/img/icons/map-pin.svg'}
-          // url={'/api/next-stores/files/map-pin.svg'}
-          alt=''
-        />
-        {/* <Marker coordinates={[lng, lat]} anchor='bottom'>
-          <MapPin size={20} color='#fff' />
-        </Marker> */}
-      </Map>
+          ></RFeature>
+        </RLayerVector>
+      </RMap>
     </figure>
   );
 };

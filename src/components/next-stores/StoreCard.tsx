@@ -42,7 +42,7 @@ const StoreCard = ({store}: StoreProps) => {
             src={
               store?.photo?.key
                 ? `/api/next-stores/files/${store.photo.key}`
-                : '/public/uploads/store.png'
+                : '/uploads/store.png'
             }
             alt='Store Image'
             width={360}

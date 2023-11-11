@@ -33,7 +33,7 @@ const EditStoreLoading = () => {
         />
       </p>
       <Image
-        src='/public/uploads/store.png'
+        src='/uploads/store.png'
         alt='store'
         width={200}
         height={200}

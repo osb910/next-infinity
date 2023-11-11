@@ -22,7 +22,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         <section className={styles.storeHero}>
           <Image
             className={styles.storeImage}
-            src={`/public/uploads/store.png`}
+            src='/uploads/store.png'
             alt='Store Image'
             width={300}
             height={300}
@@ -53,11 +53,11 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
     },
     tags,
     photo,
+    author,
   } = store;
 
-  const id = typeof store._id === 'object' ? store._id.toString() : store._id;
-  const author =
-    typeof store.author === 'object' ? store.author.toString() : store.author;
+  const id = typeof _id === 'object' ? _id.toString() : _id;
+  const authorId = typeof author === 'object' ? author.toString() : author;
 
   const headersList = headers();
   const userId = headersList.get('X-USER-ID');
@@ -70,7 +70,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
       <section className={styles.storeHero}>
         <section className={styles.storeActions}>
           {userId && <FavoriteToggler favoredId={id!} />}
-          {author === userId && (
+          {authorId === userId && (
             <>
               <Link href={`/next-stores/stores/${id}/edit`}>
                 <Edit size={28} />
@@ -84,7 +84,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
           src={
             photo?.key
               ? `/api/next-stores/files/${photo?.key}`
-              : '/public/uploads/store.png'
+              : '/uploads/store.png'
           }
           alt='Store Image'
           width={300}
@@ -92,11 +92,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         />
       </section>
       <section className={styles.storeDetails}>
-        <InteractiveMap
-          lng={lng}
-          lat={lat}
-          token={process.env.MAPBOX_PUBLIC_TOKEN!}
-        />
+        <InteractiveMap lng={lng} lat={lat} />
         <p className={styles.storeLocation}>{address}</p>
         <p className={styles.storeDescription}>{description}</p>
         {store.tags && <Tags tags={tags} />}

@@ -137,7 +137,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         src={
           store?.photo?.key
             ? `/api/next-stores/files/${store.photo.key}`
-            : '/public/uploads/store.png'
+            : '/uploads/store.png'
         }
         alt={store?.name ?? 'store'}
         width={200}
