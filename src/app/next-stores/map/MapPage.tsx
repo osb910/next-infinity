@@ -33,11 +33,7 @@ const MapPage = async ({searchParams}: MapPageProps) => {
             name='geolocate'
             placeholder='Search for anything'
           />
-          <InteractiveMap
-            lng={+lng}
-            lat={+lat}
-            token={process.env.MAPBOX_PUBLIC_TOKEN!}
-          />
+          <InteractiveMap lng={+lng} lat={+lat} />
         </section>
       </>
     );
