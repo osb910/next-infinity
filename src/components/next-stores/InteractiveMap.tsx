@@ -4,7 +4,6 @@ import {fromLonLat} from 'ol/proj';
 import {Point} from 'ol/geom';
 import {RMap, ROSM, RLayerVector, RFeature, ROverlay, RStyle} from 'rlayers';
 import 'ol/ol.css';
-// import {MapPin} from 'react-feather';
 import styles from './InteractiveMap.module.css';
 import {getCoords} from '@/utils/numbers';
 
@@ -38,8 +37,8 @@ const InteractiveMap = ({lng, lat, className}: InteractiveMapProps) => {
         <RLayerVector zIndex={12}>
           <RStyle.RStyle>
             <RStyle.RIcon
-              color={[0, 0, 255, 0.8]}
-              size={[32, 32]}
+              color={'rgba(30, 30, 220, 0.9)'}
+              size={[40, 40]}
               src={'/img/icons/marker.svg'}
               anchor={[0.5, 0.8]}
             />
