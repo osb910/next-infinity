@@ -17,6 +17,7 @@ export const GET = async () => {
         stores,
         status: 'success',
         message: `Successfully fetched stores!`,
+        code: 200,
       },
       {status: 200, headers: {'Content-Type': 'application/json'}}
     );
@@ -67,7 +68,7 @@ export const POST = async (req: NextRequest) => {
       throw err;
     }
     const res = (await store.save()) as HydratedDocument<IStore> & {
-      _doc: HydratedDocument<IStore>;
+      _doc: IStore;
     };
 
     return NextResponse.json(
@@ -75,6 +76,7 @@ export const POST = async (req: NextRequest) => {
         data: res._doc,
         status: 'success',
         message: `Successfully created ${res.name}!`,
+        code: 201,
       },
       {status: 201}
     );

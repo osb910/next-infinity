@@ -10,8 +10,7 @@ export type Params = {
   };
 };
 
-export const GET = async (req: NextRequest, {params}: Params) => {
-  const {storeId} = params;
+export const GET = async (req: NextRequest, {params: {storeId}}: Params) => {
   const storeQuery = getModelQuery(storeId);
   try {
     const store = (await Store.findOne(storeQuery)) as IStore & {

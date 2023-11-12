@@ -24,14 +24,6 @@ const reviewSchema = new Schema<IReview, ReviewModel>(
       min: 1,
       max: 5,
     },
-    photo: {
-      title: String,
-      ext: String,
-      mimeType: String,
-      size: Number,
-      readableSize: String,
-      key: String,
-    },
   },
   {timestamps: true}
 );
