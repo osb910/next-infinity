@@ -1,9 +1,7 @@
-import styles from './Store.module.css';
+import SingleStore from '@/components/next-stores/SingleStore';
 
 const StoreLoading = () => {
-  return (
-    <></>
-  );
-}
+  return <SingleStore isPlaceholder={true} />;
+};
 
 export default StoreLoading;

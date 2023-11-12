@@ -49,7 +49,7 @@ const StoreCard = ({store}: StoreProps) => {
             height={360}
           />
           <h2 className={styles.title}>
-            <Link href={`/next-stores/store/${store.slug}`}>{store.name}</Link>
+            <Link href={`/next-stores/stores/${store.slug}`}>{store.name}</Link>
           </h2>
         </section>
         <p className={styles.storeDescription}>

@@ -65,7 +65,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
   return (
     <article className={styles.singleStore}>
       <h2 className={`${styles.title} ${styles.singleTitle}`}>
-        <Link href={`/next-stores/store/${slug}`}>{name}</Link>
+        <Link href={`/next-stores/stores/${slug}`}>{name}</Link>
       </h2>
       <section className={styles.storeHero}>
         <section className={styles.storeActions}>

@@ -1,16 +1,29 @@
-import ErrorAlert from '@/components/ErrorAlert';
-import PrettyDump from '@/components/PrettyDump';
+import SingleStore from '@/components/next-stores/SingleStore';
 import {getURL} from '@/utils/path';
-import {NextResponse} from 'next/server';
+import ErrorAlert from '@/components/ErrorAlert';
 
 const Store = async ({params}: {params: {storeId: string}}) => {
   try {
-    const store = await fetch(
+    const res = await fetch(
       getURL(`/api/next-stores/stores/${params.storeId}`)
     );
-    const data = await store.json();
-    NextResponse.json(data);
-    return <PrettyDump data={data} />;
+    const store = await res.json();
+    if (
+      store?.status === 'error' &&
+      store?.code === 500 &&
+      /ENOTFOUND|timed out/.test(store?.message)
+    ) {
+      return (
+        <ErrorAlert>
+          <p>Couldn&apos;t connect to the server</p>
+          <small>Check your internet connection</small>
+        </ErrorAlert>
+      );
+    }
+    if (store?.status === 'error') {
+      throw new Error(store.message);
+    }
+    return <SingleStore store={store} />;
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(err);

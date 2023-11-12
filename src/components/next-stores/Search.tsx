@@ -112,7 +112,7 @@ const Search = ({}: SearchProps) => {
               className='search-result'
             >
               <Link
-                href={`/next-stores/store/${store.slug}`}
+                href={`/next-stores/stores/${store.slug}`}
                 className={`${styles.searchResult}`}
               >
                 <strong>{store.name}</strong>
