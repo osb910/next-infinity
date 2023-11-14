@@ -1,0 +1,60 @@
+.reviewForm {
+  flex-direction: column;
+  /* align-items: center; */
+  margin: 0 auto;
+  /* max-width: 40em; */
+}
+
+.reviewForm .reviewText.reviewText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-size: 1.125rem;
+}
+
+.reviewText label {
+  font-size: 1.25rem;
+}
+
+.reviewText textarea {
+  border: 0;
+  line-height: 1.5;
+}
+
+.reviewForm .loginText {
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.reviewForm .loginText button {
+  background-color: chocolate;
+}
+
+.reviewForm .loginText button:where(:hover, :focus) {
+  background-color: #e37a2f;
+}
+
+@media (min-width: 28rem) {
+  .reviewForm {
+    inline-size: 80%;
+  }
+
+  .reviewForm .reviewText.reviewText {
+    display: flex;
+    gap: 0.25em;
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 45rem) {
+  .reviewForm .reviewText.reviewText {
+    display: flex;
+    gap: 0.25em;
+    font-size: 1.75rem;
+  }
+
+  .reviewForm .loginText {
+    gap: 0.25em;
+  }
+}

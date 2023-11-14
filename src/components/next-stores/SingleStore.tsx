@@ -8,6 +8,7 @@ import FavoriteToggler from './FavoriteToggler';
 import Eraser from './Eraser';
 import Tags from './TagsList';
 import styles from './Store.module.css';
+import ReviewForm from './ReviewForm';
 
 interface SingleStoreProps {
   store?: IStore;
@@ -17,8 +18,11 @@ interface SingleStoreProps {
 const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
   if (isPlaceholder || !store)
     return (
-      <article style={{fontFamily: 'var(--font-family-loading)'}}>
-        <h2 className={`${styles.title} ${styles.singleTitle}`}>Title</h2>
+      <article
+        className={styles.singleStore}
+        style={{fontFamily: 'var(--font-family-loading)'}}
+      >
+        <h1 className={`${styles.title} ${styles.singleTitle}`}>Title</h1>
         <section className={styles.storeHero}>
           <Image
             className={styles.storeImage}
@@ -64,9 +68,9 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
 
   return (
     <article className={styles.singleStore}>
-      <h2 className={`${styles.title} ${styles.singleTitle}`}>
+      <h1 className={`${styles.title} ${styles.singleTitle}`}>
         <Link href={`/next-stores/stores/${slug}`}>{name}</Link>
-      </h2>
+      </h1>
       <section className={styles.storeHero}>
         <section className={styles.storeActions}>
           {userId && <FavoriteToggler favoredId={id!} />}
@@ -96,6 +100,13 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         <p className={styles.storeLocation}>{address}</p>
         <p className={styles.storeDescription}>{description}</p>
         {store.tags && <Tags tags={tags} />}
+      </section>
+      <section className={styles.reviews}>
+        <h2 className={styles.reviewsTitle}>Reviews</h2>
+        <ReviewForm
+          userId={userId ?? ''}
+          endpoint={`/api/next-stores/stores/${store._id!.toString()}/reviews`}
+        />
       </section>
     </article>
   );
