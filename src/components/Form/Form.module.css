@@ -1,66 +1,94 @@
 .form {
   --border-radius: 6px;
-  inline-size: 90%;
-  min-inline-size: 320px;
-  max-inline-size: 600px;
-  padding: 0.5em 1em;
+  min-inline-size: 280px;
+  max-inline-size: 720px;
+  inline-size: fit-content;
+  padding: 0.75em;
   margin: 0 auto;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
   gap: 0.75em;
   background: white;
+  color: rgb(var(--bg-default-rgb));
 }
 
-.form p {
+.title {
+  margin-block: 0.25em;
+  margin-block-end: 0.125em;
+  margin-inline: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.form label {
+  padding: 0.25em 0;
+  border-radius: var(--border-radius);
+}
+
+.form
+  p:not(:has(:where(input[type='radio'], input[type='checkbox'], textarea))) {
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-}
-
-.title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  gap: 0.5em;
+  justify-content: space-between;
 }
 
 .form input,
 .form textarea {
-  padding: 0.5em;
+  inline-size: 100%;
+  padding-block: 0.25em;
+  padding-inline: 0.5em;
   border: 1px solid gray;
   border-radius: var(--border-radius);
+  font: inherit;
+  line-height: 1.5;
+}
+
+.form p > input {
+  max-inline-size: 24rem;
+  flex: 1 1 auto;
 }
 
 .error {
   border-color: red;
 }
 
-.form label {
-  padding: 10px 0;
-  display: block;
-  border-radius: var(--border-radius);
-}
-
-.button {
-  padding-block: 1em;
-  padding-inline: 1.5em;
+.form button {
+  padding-block: 0.5em;
+  padding-inline: 1em;
   border: 0;
   border-radius: var(--border-radius);
   display: flex;
   align-items: center;
-  gap: 0.25em;
+  gap: 0.5em;
   align-self: center;
-  background: orange;
-  color: black;
+  color: rgb(var(--bg-default-rgb));
   font-weight: 600;
   cursor: pointer;
   filter: drop-shadow(0 0 0 10px rgba(10, 10, 20, 0.2));
   transition: all 250ms ease-in-out;
 }
 
-.form .button:where(:hover, :focus) {
-  background: yellow;
+.submit {
+  padding-block: 0.75em;
+  padding-inline: 1.25em;
+  margin-block-start: 0.25em;
+  background: hsl(42 85% 55%);
+  color: rgb(var(--bg-default-rgb));
+  font-weight: 700;
+}
+
+.submit:where(:hover, :focus) {
+  background: hsl(51 100% 50%);
+}
+
+.submit[disabled] {
+  background: var(--color-gray-500);
+  cursor: not-allowed;
 }
 
 .form > img {
@@ -71,4 +99,37 @@
   margin: 0 auto;
   object-fit: cover;
   border-radius: var(--border-radius);
+}
+
+@media (min-width: 28rem) {
+  .form {
+    padding: 1em;
+  }
+
+  .form
+    p:not(:has(:where(input[type='radio'], input[type='checkbox'], textarea))) {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.75em;
+    font-size: 1.125rem;
+  }
+
+  /* .form p label {
+    flex: 1 0 5rem;
+  } */
+
+  .submit {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 45rem) {
+  .form p:not(:has(input[type='radio'])) {
+    gap: 1em;
+    font-size: 1.25rem;
+  }
+
+  /* .form p label {
+    flex: 1 0 9rem;
+  } */
 }

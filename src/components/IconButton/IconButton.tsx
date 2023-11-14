@@ -39,7 +39,7 @@ const IconButton = ({
       whileHover={{scale: 1.1}}
       whileFocus={{scale: 1.1}}
       whileTap={{scale: 0.95}}
-      transition={{duration: 0.25, bounce: 0.4}}
+      transition={{duration: 0.2, bounce: 0.3}}
       {...delegated}
     >
       {icon}

@@ -32,6 +32,7 @@ export const GET = async (req: NextRequest, {params: {storeId}}: Params) => {
         reviews,
         status: 'success',
         message: `Successfully fetched ${store.name}!`,
+        code: 200,
       },
       {status: 200}
     );
@@ -54,12 +55,12 @@ export const POST = async (req: NextRequest, {params: {storeId}}: Params) => {
       const err = new Error('You are not the author of this store!');
       throw err;
     }
-    const {text, rating} = await req.json();
+    const {reviewText, rating} = await req.json();
     const review = new Review({
       author: userId,
       store: store._id?.toString(),
-      text,
-      rating,
+      text: reviewText,
+      rating: +rating,
     });
     if (!review) {
       const err = new Error('Something went wrong!');
@@ -72,7 +73,7 @@ export const POST = async (req: NextRequest, {params: {storeId}}: Params) => {
       {
         data: res._doc,
         status: 'success',
-        message: `Successfully created ${res._id}!`,
+        message: 'Review saved!',
         code: 201,
       },
       {status: 201}

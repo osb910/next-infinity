@@ -1,2 +1,2 @@
-export * from './Store';
-export {default} from './Store';
+export * from './StorePage';
+export {default} from './StorePage';

@@ -1,2 +1,2 @@
-export * from './Tags';
-export {default} from './Tags';
+export * from './TagsPage';
+export {default} from './TagsPage';

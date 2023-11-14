@@ -1,11 +1,11 @@
 .stores {
-  padding-inline: 0.5em;
+  margin: 1em auto;
+  padding-inline: 0;
   border-radius: 2px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 2em 1.25em;
-  margin: 0;
+  gap: 2em 1em;
 }
 
 .store {
@@ -27,7 +27,7 @@
 .storeActions {
   position: relative;
   z-index: 1;
-  margin-block-start: 0.5em;
+  margin-block-start: 1em;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
   display: flex;
   color: white;
@@ -91,11 +91,11 @@
 }
 
 .store .title:where(:hover, :focus) {
-  animation: expand1 400ms ease-in-out both;
+  animation: expand1 300ms ease-in-out both;
 }
 
 .store .title:where(:hover, :focus) a {
-  animation: expand2 400ms ease-in-out both;
+  animation: expand2 300ms ease-in-out both;
 }
 
 @keyframes expand1 {
@@ -162,6 +162,7 @@
 
 .singleStore {
   inline-size: 100%;
+  margin-block-start: -1em;
 }
 
 .storeHero {
@@ -208,17 +209,19 @@
   /* clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%); */
 }
 
-.singleTitle {
+.singleStore .singleTitle {
   position: absolute;
   width: 100%;
-  margin-block-start: 2em;
+  margin-block-start: 2.5em;
+  margin-inline: unset;
+  border: 0;
   padding-inline: 0.25em;
   font-size: 2rem;
   text-align: center;
   line-height: 1.33;
 }
 
-.singleTitle a {
+.singleStore .singleTitle a {
   text-decoration: none;
   color: rgb(var(--bg-default-rbg));
 }
@@ -233,7 +236,7 @@
   /* clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%); */
 }
 
-.storeDetails {
+.singleStore .storeDetails {
   width: 90%;
   margin-block-start: -2rem;
   margin-inline: auto;
@@ -247,16 +250,16 @@
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
 }
 
-.storeDetails figure {
+.singleStore .storeDetails figure {
   position: relative;
 }
 
-.storeDetails p {
+.singleStore .storeDetails p {
   line-height: 1.2;
   margin-bottom: 0;
 }
 
-.storeLocation {
+.singleStore .storeLocation {
   position: relative;
   margin-block-start: -0.75em;
   margin-inline-end: 0;
@@ -270,13 +273,26 @@
   color: white;
 }
 
-.storeDetails .storeDescription {
+.singleStore .storeDetails .storeDescription {
   padding-inline-start: 1em;
 }
 
+.singleStore .reviewsTitle {
+  margin-block-start: 0;
+  margin-block-end: 0.75em;
+  padding-block: 0.5em;
+  padding-inline: 1.5em;
+  border-inline-start: 10px solid rgba(250, 170, 30, 1);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: white;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+}
+
 @media (min-width: 500px) {
-  .singleTitle {
-    margin-block-start: 1.5em;
+  .singleStore .singleTitle {
+    margin-block-start: 2em;
     font-size: 2.5rem;
   }
 

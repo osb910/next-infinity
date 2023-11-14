@@ -62,8 +62,8 @@
   z-index: 3;
   inset: 0;
   display: grid;
-  place-content: center;
-  padding: 1em;
+  align-items: center;
+  padding: 0.5em;
 }
 
 .backdrop {
@@ -74,10 +74,13 @@
 .modal {
   inset-block-start: 0.25rem;
   max-block-size: 92vh;
+  inline-size: 95%;
+  max-inline-size: 50rem;
   position: relative;
   isolation: isolate;
   padding-block: 0.25em;
   padding-inline: 0.25em;
+  margin-inline: auto;
   border-radius: 0.5rem;
   background: white;
   font-family: 'Atkinson', sans-serif;
@@ -98,4 +101,11 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+@media (min-width: 28rem) {
+  .modal {
+    inline-size: fit-content;
+    padding-inline: 0.5em;
+  }
 }

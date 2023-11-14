@@ -7,22 +7,23 @@ import styles from './Form.module.css';
 interface FormProps extends ComponentProps<'form'> {
   title?: string;
   submitHandler: (body: any) => Promise<void>;
-  errorHandler?: (error: Error) => void;
-  submitText?: string;
-  resetAfterSubmit?: boolean;
   children: ReactNode;
   className?: string;
-  [idx: string]: any;
+  submitText?: string;
+  errorHandler?: (error: Error) => void;
+  resetAfterSubmit?: boolean;
+  buttonDisabled?: boolean;
 }
 
 const Form = ({
   title,
   submitHandler,
+  children,
+  className,
   submitText = 'Submit',
   errorHandler,
   resetAfterSubmit = true,
-  children,
-  className,
+  buttonDisabled,
   ...delegated
 }: FormProps) => {
   const [submitting, setSubmitting] = useState(false);
@@ -59,9 +60,13 @@ const Form = ({
     >
       {title && <h2 className={styles.title}>{title}</h2>}
       {children}
-      <button disabled={submitting} type='submit' className={styles.button}>
+      <button
+        type='submit'
+        disabled={submitting || buttonDisabled}
+        className={styles.submit}
+      >
         {submitText}
-        {submitting && <Spinner size={20} />}
+        {submitting && <Spinner size={22} />}
       </button>
     </form>
   );

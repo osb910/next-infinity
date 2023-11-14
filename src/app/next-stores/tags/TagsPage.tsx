@@ -3,6 +3,7 @@ import TagsCrumbs from '@/components/next-stores/TagsCrumbs';
 import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import styles from './Tags.module.css';
 import {connectDB} from '@/lib/database';
+import Stores from '@/components/next-stores/Stores';
 
 interface TagsProps {
   searchParams: {
@@ -23,11 +24,7 @@ const Tags = async ({searchParams: {tag}}: TagsProps) => {
       <>
         <h1 className={styles.title}>{tag ?? 'Tags'}</h1>
         <TagsCrumbs active={tag} tags={tags} />
-        <ul className={styles.stores}>
-          {stores.map((store: IStore) => (
-            <StoreCard key={store?._id?.toString()} store={store} />
-          ))}
-        </ul>
+        <Stores stores={stores} />
       </>
     );
   } catch (err) {

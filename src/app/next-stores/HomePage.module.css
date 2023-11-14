@@ -7,17 +7,6 @@
   backdrop-filter: blur(2px);
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: center;
-  flex: 1 1 auto;
-  font-family: var(--fn-atkinson);
-  /* max-inline-size: 900px; */
-  background-color: #ddd;
-}
-
 .nav {
   display: flex;
   list-style: none;
@@ -95,6 +84,40 @@
 
 .navSectionSearch {
   flex: 1 1 auto;
+}
+
+.main {
+  padding-block: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  flex: 1 1 auto;
+  font-family: var(--fn-atkinson);
+  background-color: #ddd;
+}
+
+.main h1 {
+  margin-block: 0.25em;
+  margin-inline: 2em;
+  border-inline-start: 0.25em solid rgba(250, 170, 30, 0.7);
+  border-start-start-radius: 4px;
+  border-end-start-radius: 4px;
+  padding-inline: 0.5em;
+  padding-block: 0.25em;
+  align-self: baseline;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: default;
+  transition: all 300ms ease-in-out;
+}
+
+.main h1:where(:hover, :focus) {
+  border-inline-start: 0.5em solid rgba(250, 170, 30, 1);
+  padding-inline-start: 0.25em;
+  padding-inline-end: 1em;
 }
 
 @media all and (max-width: 1200px) {

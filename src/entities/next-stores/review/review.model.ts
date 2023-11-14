@@ -30,6 +30,6 @@ const reviewSchema = new Schema<IReview, ReviewModel>(
 
 const Review =
   (db.models.Review as Model<IReview, ReviewModel>) ||
-  db.model('Store', reviewSchema);
+  db.model('Review', reviewSchema);
 
 export default Review;

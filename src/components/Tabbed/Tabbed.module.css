@@ -56,7 +56,7 @@
 
 .TabsContent {
   flex-grow: 1;
-  padding: 0.25em;
+  padding: 0.25em 0;
   background-color: transparent;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;

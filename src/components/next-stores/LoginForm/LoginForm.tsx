@@ -62,7 +62,7 @@ const LoginForm = () => {
     <Form className={styles.form} submitHandler={login} submitText='Log In →'>
       <Input
         name='email'
-        label='Email Address'
+        label='Email'
         type='email'
         placeholder='Your email'
         aria-label='Your email'

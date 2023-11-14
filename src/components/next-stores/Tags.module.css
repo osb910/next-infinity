@@ -1,5 +1,5 @@
 .tags {
-  margin: 1em auto;
+  margin-block: 0.5em;
   padding-inline: 1em;
   list-style: none;
   display: flex;

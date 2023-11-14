@@ -17,7 +17,7 @@ const Input = ({
   ...delegated
 }: InputProps) => {
   const generatedId = useId();
-  const appliedId = `${label.toLowerCase()}-${generatedId}`;
+  const appliedId = `${label.toLowerCase()}${generatedId}`;
 
   return (
     <p className={className ?? ''} style={{position: 'relative'}}>
