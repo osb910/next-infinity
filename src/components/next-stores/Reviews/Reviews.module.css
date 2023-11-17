@@ -1,0 +1,8 @@
+.reviews {
+  inline-size: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  margin: 0 auto;
+}

@@ -6,7 +6,7 @@ import VisuallyHidden from '@/components/VisuallyHidden';
 import {pluralize, range} from '@/utils/numbers';
 import styles from './RatingStars.module.css';
 
-interface RatingStarsProps extends ComponentProps<'input'> {
+export interface RatingStarsProps extends ComponentProps<'input'> {
   starsCount?: number;
   starCounter?: (star: number) => string;
   className?: string;
@@ -24,7 +24,7 @@ const RatingStars = ({
   const appliedId = `rating${useId()}`;
 
   return (
-    <p className={`${className ?? ''} ${styles.ratingStars}`}>
+    <div className={`${className ?? ''} ${styles.ratingStars}`}>
       {stars.map(star => (
         <>
           <input
@@ -42,7 +42,7 @@ const RatingStars = ({
         </>
       ))}
       {children}
-    </p>
+    </div>
   );
 };
 

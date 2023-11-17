@@ -7,11 +7,11 @@ const Store = async ({params}: {params: {storeId: string}}) => {
     const res = await fetch(
       getURL(`/api/next-stores/stores/${params.storeId}`)
     );
-    const store = await res.json();
+    const json = await res.json();
     if (
-      store?.status === 'error' &&
-      store?.code === 500 &&
-      /ENOTFOUND|timed out/.test(store?.message)
+      json?.status === 'error' &&
+      json?.code === 500 &&
+      /ENOTFOUND|timed out/.test(json?.message)
     ) {
       return (
         <ErrorAlert>
@@ -20,10 +20,10 @@ const Store = async ({params}: {params: {storeId: string}}) => {
         </ErrorAlert>
       );
     }
-    if (store?.status === 'error') {
-      throw new Error(store.message);
+    if (json?.status === 'error') {
+      throw new Error(json.message);
     }
-    return <SingleStore store={store} />;
+    return <SingleStore store={json.data} />;
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(err);

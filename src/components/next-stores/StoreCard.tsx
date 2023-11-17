@@ -30,10 +30,16 @@ const StoreCard = ({store}: StoreProps) => {
             {userId && <FavoriteToggler favoredId={id!} />}
             {author === userId && (
               <>
-                <Link href={`/next-stores/stores/${id}/edit`}>
+                <Link
+                  href={`/next-stores/stores/${id}/edit`}
+                  title={`Edit ${store.name}`}
+                >
                   <Edit size={28} />
                 </Link>
-                <Eraser itemId={id!} />
+                <Eraser
+                  itemId={id!}
+                  endpoint={`/api/next-stores/stores/${id}`}
+                />
               </>
             )}
           </section>

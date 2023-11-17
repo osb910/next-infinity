@@ -3,6 +3,9 @@ import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {HydratedDocument} from 'mongoose';
 import {processUploadImage} from '@/lib/file.middleware';
 import {getModelQuery} from '@/entities/models.middleware';
+import Review from '@/entities/next-stores/review';
+import {IReview} from '@/entities/next-stores/review/review.types';
+import User, {IUser} from '@/entities/next-stores/user/user.model';
 
 export type Params = {
   params: {
@@ -26,9 +29,37 @@ export const GET = async (req: NextRequest, {params: {storeId}}: Params) => {
         {status: 404}
       );
     }
+    let reviews = (await Review.find({store: store._id}).sort({
+      updatedAt: -1,
+    })) as Array<HydratedDocument<IReview>>;
+    reviews = await Promise.all(
+      reviews.map(async r => {
+        let user = (await User.findById(
+          r.author,
+          '-password -resetPasswordToken -resetPasswordExpires -__v'
+        )) as
+          | any
+          | (HydratedDocument<IUser> & {
+              _doc: IUser;
+              gravatar: Promise<string>;
+            });
+        user = {
+          ...user._doc,
+          gravatar: await user.gravatar,
+        };
+        return {
+          // @ts-ignore
+          ...r._doc,
+          author: user,
+        };
+      })
+    );
     return NextResponse.json(
       {
-        ...store._doc,
+        data: {
+          ...store._doc,
+          reviews,
+        },
         status: 'success',
         message: `Successfully fetched ${store.name}!`,
       },

@@ -3,15 +3,16 @@ import Link from 'next/link';
 import {headers} from 'next/headers';
 import {Edit} from 'react-feather';
 import {IStore} from '@/entities/next-stores/store/store.model';
+import {IReview} from '@/entities/next-stores/review/review.types';
 import InteractiveMap from './InteractiveMap';
 import FavoriteToggler from './FavoriteToggler';
 import Eraser from './Eraser';
 import Tags from './TagsList';
+import Reviews from './Reviews';
 import styles from './Store.module.css';
-import ReviewForm from './ReviewForm';
 
 interface SingleStoreProps {
-  store?: IStore;
+  store?: IStore & {reviews?: Array<IReview>};
   isPlaceholder?: boolean;
 }
 
@@ -79,7 +80,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
               <Link href={`/next-stores/stores/${id}/edit`}>
                 <Edit size={28} />
               </Link>
-              <Eraser itemId={id!} />
+              <Eraser itemId={id!} endpoint={`/api/next-stores/stores/${id}`} />
             </>
           )}
         </section>
@@ -99,13 +100,13 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         <InteractiveMap lng={lng} lat={lat} />
         <p className={styles.storeLocation}>{address}</p>
         <p className={styles.storeDescription}>{description}</p>
-        {store.tags && <Tags tags={tags} />}
+        {tags && <Tags tags={tags} />}
       </section>
       <section className={styles.reviews}>
         <h2 className={styles.reviewsTitle}>Reviews</h2>
-        <ReviewForm
-          userId={userId ?? ''}
-          endpoint={`/api/next-stores/stores/${store._id!.toString()}/reviews`}
+        <Reviews
+          endpoint={`/api/next-stores/stores/${id}/reviews`}
+          reviews={store.reviews ?? []}
         />
       </section>
     </article>

@@ -1,5 +1,6 @@
 import {Schema, Model, connection} from 'mongoose';
 import {IReview, ReviewModel} from './review.types';
+import User from '../user/user.model';
 
 const db = connection.useDb('next-stores');
 
@@ -7,7 +8,7 @@ const reviewSchema = new Schema<IReview, ReviewModel>(
   {
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: User,
       required: [true, 'Please provide an author'],
     },
     store: {

@@ -1,11 +1,14 @@
 import {Model, Types} from 'mongoose';
+import {IUser} from '../user/user.model';
 
 export interface IReview {
   _id?: Types.ObjectId;
-  author: Types.ObjectId;
+  author: Types.ObjectId | IUser;
   store: Types.ObjectId;
   text: string;
   rating?: number;
 }
 
-export type ReviewModel = Model<IReview>;
+interface IReviewMethods {}
+
+export type ReviewModel = Model<IReview, {}, IReviewMethods>;

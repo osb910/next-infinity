@@ -7,19 +7,22 @@ import Form from '@/components/Form';
 import useToaster from '@/components/Toaster/use-toaster';
 import styles from './ReviewForm.module.css';
 import RatingStars from '@/components/RatingStars';
+import {IUser} from '@/entities/next-stores/user/user.model';
 
 interface ReviewFormProps extends ComponentProps<'form'> {
-  userId: string;
+  user: Omit<IUser, 'password'> | null;
   endpoint: string;
+  addReview: (review: any) => void;
   children?: ReactNode;
   className?: string;
 }
 
 const ReviewForm = ({
-  userId,
+  user,
   endpoint,
   children,
   className,
+  addReview,
   ...delegated
 }: ReviewFormProps) => {
   const {createToast} = useToaster();
@@ -27,27 +30,42 @@ const ReviewForm = ({
   const pathname = usePathname();
 
   const submitReview = async (body: FormData) => {
-    const res = await ky.post(endpoint, {
-      json: Object.fromEntries(body.entries()),
-      headers: {
-        'X-USER-ID': userId,
-      },
-      timeout: 20000,
-    });
-    const json = (await res.json()) as {
-      status: 'success' | 'warning' | 'error' | 'notice';
-      message: string;
-    };
+    try {
+      const json = (await ky
+        .post(endpoint, {
+          json: Object.fromEntries(body.entries()),
+          headers: {
+            'X-USER-ID': user?._id?.toString() ?? '',
+          },
+          timeout: 20000,
+          throwHttpErrors: false,
+        })
+        .json()) as {
+        status: 'success' | 'warning' | 'error' | 'notice';
+        message: string;
+        data: any;
+      };
 
-    console.log(json);
-    createToast(json.status, <p>{json.message}</p>, 5000);
+      if (json.status === 'success') {
+        addReview({...json.data, author: user});
+        createToast('success', <p>{json.message}</p>, 5000);
+      } else if (json.status === 'error') {
+        throw new Error(json.message);
+      } else {
+        createToast(json.status, <p>{json.message}</p>, 5000);
+      }
+    } catch (err) {
+      if (!(err instanceof Error)) return;
+      console.error(err);
+      createToast('error', <p>{err.message}</p>, 5000);
+    }
   };
 
   return (
     <Form
       submitHandler={submitReview}
       className={`${className ?? ''} ${styles.reviewForm}`}
-      buttonDisabled={!userId}
+      buttonDisabled={!user}
       {...delegated}
     >
       <p className={styles.reviewText}>
@@ -57,11 +75,11 @@ const ReviewForm = ({
           name='reviewText'
           rows={2}
           placeholder='Did you try this place? Have something to say? Leave a review...'
-          disabled={!userId}
+          disabled={!user}
         />
       </p>
-      <RatingStars disabled={!userId} />
-      {!userId && (
+      <RatingStars disabled={!user} />
+      {!user && (
         <p className={styles.loginText}>
           Not logged in.{' '}
           <button

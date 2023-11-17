@@ -28,11 +28,11 @@
 }
 
 .reviewForm .loginText button {
-  background-color: chocolate;
+  background-color: hsl(28, 90%, 70%);
 }
 
 .reviewForm .loginText button:where(:hover, :focus) {
-  background-color: #e37a2f;
+  background-color: hsl(28, 94%, 80%);
 }
 
 @media (min-width: 28rem) {

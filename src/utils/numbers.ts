@@ -35,9 +35,6 @@ export const getCoords = () => {
   const success = (pos: any) => {
     const crd = pos.coords;
 
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`Latitude : ${crd.latitude}`);
-
     coords.lng = crd.longitude;
     coords.lat = crd.latitude;
   };

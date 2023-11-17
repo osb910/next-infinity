@@ -27,14 +27,22 @@
   border-radius: var(--border-radius);
 }
 
-.form
-  p:not(:has(:where(input[type='radio'], input[type='checkbox'], textarea))) {
-  width: 100%;
+.form p {
   margin: 0 auto;
   display: flex;
+  gap: 0.25em;
+  justify-content: space-between;
+}
+
+.form
+  p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
+  inline-size: 100%;
   flex-direction: column;
   gap: 0.5em;
-  justify-content: space-between;
+}
+
+.form p:has(textarea) {
+  inline-size: 100%;
 }
 
 .form input,
@@ -49,7 +57,7 @@
 }
 
 .form p > input {
-  max-inline-size: 24rem;
+  max-inline-size: 28rem;
   flex: 1 1 auto;
 }
 
@@ -106,17 +114,18 @@
     padding: 1em;
   }
 
-  .form
-    p:not(:has(:where(input[type='radio'], input[type='checkbox'], textarea))) {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 0.75em;
+  .form p {
+    flex-direction: column;
+    gap: 0.25em;
     font-size: 1.125rem;
   }
 
-  /* .form p label {
-    flex: 1 0 5rem;
-  } */
+  .form
+    p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.75em;
+  }
 
   .submit {
     font-size: 1.25rem;
@@ -124,12 +133,17 @@
 }
 
 @media (min-width: 45rem) {
-  .form p:not(:has(input[type='radio'])) {
+  .form {
     gap: 1em;
+  }
+
+  .form p {
+    gap: 0.5em;
     font-size: 1.25rem;
   }
 
-  /* .form p label {
-    flex: 1 0 9rem;
-  } */
+  .form
+    p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
+    gap: 1em;
+  }
 }

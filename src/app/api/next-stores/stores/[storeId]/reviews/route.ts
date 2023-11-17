@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import Review from '@/entities/next-stores/review';
-import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {IReview} from '@/entities/next-stores/review/review.types';
+import Store, {IStore} from '@/entities/next-stores/store/store.model';
 import {HydratedDocument} from 'mongoose';
 import {getModelQuery} from '@/entities/models.middleware';
 import {Params} from '../route';
@@ -51,11 +51,17 @@ export const POST = async (req: NextRequest, {params: {storeId}}: Params) => {
   const storeQuery = getModelQuery(storeId);
   try {
     const store = (await Store.findOne(storeQuery)) as IStore;
-    if (store.author.toString() !== userId) {
-      const err = new Error('You are not the author of this store!');
-      throw err;
-    }
     const {reviewText, rating} = await req.json();
+    if (!rating || !reviewText) {
+      return NextResponse.json(
+        {
+          status: 'error',
+          message: 'Please provide both a rating and a review text!',
+          code: 400,
+        },
+        {status: 400}
+      );
+    }
     const review = new Review({
       author: userId,
       store: store._id?.toString(),
