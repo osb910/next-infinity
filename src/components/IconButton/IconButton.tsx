@@ -1,16 +1,18 @@
 import {ReactNode, ComponentProps} from 'react';
+import {MotionProps} from 'framer-motion';
 import {motion} from 'framer-motion';
 import useSound from 'use-sound';
 import useSoundEnabled from '../SoundToggler/sound-enabled';
 import styles from './IconButton.module.css';
 
-export interface IconButtonProps extends ComponentProps<'button'> {
-  icon: JSX.Element;
-  children?: ReactNode;
-  className?: string;
-  clickHandler?: Function;
-  highlightDeps?: any[];
-}
+export type IconButtonProps = ComponentProps<'button'> &
+  MotionProps & {
+    icon: JSX.Element;
+    children?: ReactNode;
+    className?: string;
+    clickHandler?: Function;
+    highlightDeps?: any[];
+  };
 
 const IconButton = ({
   icon,
