@@ -30,40 +30,38 @@ const ReviewForm = ({
   const pathname = usePathname();
 
   const submitReview = async (body: FormData) => {
-    try {
-      const json = (await ky
-        .post(endpoint, {
-          json: Object.fromEntries(body.entries()),
-          headers: {
-            'X-USER-ID': user?._id?.toString() ?? '',
-          },
-          timeout: 20000,
-          throwHttpErrors: false,
-        })
-        .json()) as {
-        status: 'success' | 'warning' | 'error' | 'notice';
-        message: string;
-        data: any;
-      };
+    const json = (await ky
+      .post(endpoint, {
+        json: Object.fromEntries(body.entries()),
+        headers: {
+          'X-USER-ID': user?._id?.toString() ?? '',
+        },
+        timeout: 20000,
+        throwHttpErrors: false,
+      })
+      .json()) as {
+      status: 'success' | 'warning' | 'error' | 'notice';
+      message: string;
+      data: any;
+    };
 
-      if (json.status === 'success') {
-        addReview({...json.data, author: user});
-        createToast('success', <p>{json.message}</p>, 5000);
-      } else if (json.status === 'error') {
-        throw new Error(json.message);
-      } else {
-        createToast(json.status, <p>{json.message}</p>, 5000);
-      }
-    } catch (err) {
-      if (!(err instanceof Error)) return;
-      console.error(err);
-      createToast('error', <p>{err.message}</p>, 5000);
+    if (json.status === 'success') {
+      addReview({...json.data, author: user});
+      createToast('success', <p>{json.message}</p>, 5000);
+    } else if (json.status === 'error') {
+      throw new Error(json.message);
+    } else {
+      createToast(json.status, <p>{json.message}</p>, 5000);
     }
   };
+
+  const throwError = (err: Error) =>
+    createToast('error', <p>{err.message}</p>, 5000);
 
   return (
     <Form
       submitHandler={submitReview}
+      errorHandler={throwError}
       className={`${className ?? ''} ${styles.reviewForm}`}
       buttonDisabled={!user}
       {...delegated}

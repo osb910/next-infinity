@@ -89,6 +89,20 @@
   white-space: pre-wrap;
 }
 
+.reviewEditForm {
+  inline-size: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.editButton {
+  margin-inline-start: auto;
+}
+
+.editButton svg {
+  stroke: hsl(220, 90%, 40%);
+}
+
 @media (min-width: 28rem) {
   .reviewAuthor {
     flex-direction: row;
@@ -101,6 +115,10 @@
 
   .reviewTime {
     font-size: 1.25rem;
+  }
+
+  .reviewEditForm {
+    flex-flow: row wrap;
   }
 }
 

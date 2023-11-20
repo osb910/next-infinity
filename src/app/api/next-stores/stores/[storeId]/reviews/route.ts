@@ -53,6 +53,7 @@ export const POST = async (req: NextRequest, {params: {storeId}}: Params) => {
     const store = (await Store.findOne(storeQuery)) as IStore;
     const {reviewText, rating} = await req.json();
     if (!rating || !reviewText) {
+      console.log('no rating or review text');
       return NextResponse.json(
         {
           status: 'error',

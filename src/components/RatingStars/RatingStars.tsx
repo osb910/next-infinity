@@ -9,6 +9,7 @@ import styles from './RatingStars.module.css';
 export interface RatingStarsProps extends ComponentProps<'input'> {
   starsCount?: number;
   starCounter?: (star: number) => string;
+  selectedRating?: number;
   className?: string;
   children?: ReactNode;
 }
@@ -16,6 +17,7 @@ export interface RatingStarsProps extends ComponentProps<'input'> {
 const RatingStars = ({
   starsCount = 5,
   starCounter = star => pluralize('star', star),
+  selectedRating,
   className,
   children,
   ...delegated
@@ -30,6 +32,7 @@ const RatingStars = ({
           <input
             key={star}
             name='rating'
+            defaultChecked={selectedRating === star}
             {...delegated}
             value={star}
             type='radio'

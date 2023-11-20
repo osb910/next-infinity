@@ -1,6 +1,5 @@
 import {ReactNode, ComponentProps} from 'react';
-import {MotionProps} from 'framer-motion';
-import {motion} from 'framer-motion';
+import {motion, MotionProps} from 'framer-motion';
 import useSound from 'use-sound';
 import useSoundEnabled from '../SoundToggler/sound-enabled';
 import styles from './IconButton.module.css';

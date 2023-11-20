@@ -7,6 +7,8 @@ export interface IReview {
   store: Types.ObjectId;
   text: string;
   rating?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface IReviewMethods {}

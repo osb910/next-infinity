@@ -14,6 +14,11 @@ interface ReviewsProps {
 const Reviews = ({reviews, endpoint}: ReviewsProps) => {
   const [reviewList, setReviewList] = useState(reviews);
   const {userData} = useUser();
+
+  const sortedReviews = reviewList.sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+
   return (
     <>
       <ReviewForm
@@ -24,11 +29,25 @@ const Reviews = ({reviews, endpoint}: ReviewsProps) => {
         }}
       />
       <ul className={styles.reviews}>
-        {reviewList.map(review => (
+        {sortedReviews.map(review => (
           <Review
             key={review._id}
             review={review}
             userId={userData?._id ?? ''}
+            editReview={updatedReview => {
+              setReviewList(current =>
+                current.map(item =>
+                  item._id === updatedReview._id
+                    ? {
+                        ...item,
+                        text: updatedReview.text,
+                        rating: updatedReview.rating,
+                        updatedAt: updatedReview.updatedAt,
+                      }
+                    : item
+                )
+              );
+            }}
             removeReview={() => {
               setReviewList(current =>
                 current.filter(item => item._id !== review._id)
