@@ -96,7 +96,10 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
             >
               <Search />
             </section>
-            <UserNav user={user} />
+            <UserNav
+              user={user}
+              logoutEndpoint='/api/next-stores/auth/logout'
+            />
           </nav>
         </header>
         <main className={styles.main}>{children}</main>

@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const user = (await User.findOne({email})) as HydratedDocument<IUser> & {
-      _doc: HydratedDocument<IUser>;
+      _doc: IUser;
     };
 
     if (!user) {
@@ -55,6 +55,7 @@ export const POST = async (req: NextRequest) => {
       JSON.stringify({
         status: 'success',
         message: `Welcome back, ${user.name}!`,
+        data: {...user._doc, password: undefined},
       }),
       {
         status: 200,
@@ -77,11 +78,6 @@ export const POST = async (req: NextRequest) => {
     await Promise.all([
       response.cookies.set(cookieOptions),
       response.cookies.set({
-        name: 'next-stores-logged-in',
-        value: 'true',
-        maxAge: tokenMaxAge,
-      }),
-      response.cookies.set({
         name: 'next-stores-user-id',
         value: user._id.toString(),
         maxAge: tokenMaxAge,
@@ -92,7 +88,6 @@ export const POST = async (req: NextRequest) => {
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(err);
-    // return sendError<Error>('error', 500, err.message, err);
     return NextResponse.json(
       {message: err.message, status: 'error'},
       {status: 500}

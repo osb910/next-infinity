@@ -3,35 +3,51 @@
 import {useSearchParams, useRouter, usePathname} from 'next/navigation';
 import {useEffect} from 'react';
 import ky from 'ky';
-import Form from '@/components/Form/Form';
+import useUser from '../useUser';
+import useToaster from '@/components/Toaster/use-toaster';
+import Form, {FormProps} from '@/components/Form';
 import Input from '@/components/Input';
 import PasswordInput from '@/components/PasswordInput';
-import useToaster from '@/components/Toaster/use-toaster';
+import Spinner from '@/components/Spinner';
+import {IUser} from '@/entities/next-stores/user/user.model';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import {getURL} from '@/utils/path';
-import Spinner from '@/components/Spinner';
 import styles from './LoginForm.module.css';
 
-const LoginForm = () => {
+export interface LoginFormProps
+  extends Omit<FormProps, 'submitHandler' | 'children'> {
+  endpoint?: string;
+  badTokenMessage?: string;
+}
+
+const LoginForm = ({
+  endpoint = '/api/auth/login',
+  badTokenMessage = 'You must be logged in.',
+  ...delegated
+}: LoginFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const {setUserData} = useUser();
   const email = searchParams.get('email');
   const error = searchParams.get('error');
   const redirect = searchParams.get('redirect');
+  const success = searchParams.get('success');
   const {createToast} = useToaster();
 
   useEffect(() => {
     if (!error) return;
-    createToast(
-      'error',
-      <p>{error === 'bad_token' ? 'You must be logged in.' : error}</p>,
-      3200
-    );
-  }, [error, createToast]);
+    error &&
+      createToast(
+        'error',
+        <p>{error === 'bad_token' ? badTokenMessage : error}</p>,
+        4800
+      );
+    success && createToast('success', <p>{success}</p>, 5000);
+  }, [createToast, error, success, badTokenMessage]);
 
   const login = async (body: FormData) => {
-    const res = await ky.post(getURL('/api/next-stores/auth/login'), {
+    const res = await ky.post(getURL(endpoint), {
       json: Object.fromEntries(body.entries()),
       throwHttpErrors: false,
       timeout: 20000,
@@ -39,9 +55,10 @@ const LoginForm = () => {
     const json = (await res.json()) as {
       message: string;
       status: string;
+      data: Omit<IUser, 'password'>;
     };
     if (json.status === 'error') {
-      createToast('error', <p>{json.message}</p>, 20000);
+      throw new Error(json.message);
     }
     if (json.status === 'success') {
       createToast(
@@ -51,15 +68,24 @@ const LoginForm = () => {
         </p>,
         2600
       );
-      setTimeout(() => {
-        router.replace(redirect ?? pathname);
-        router.refresh();
-      }, 2800);
+      setUserData(json.data);
+      router.replace(redirect ?? pathname);
+      router.refresh();
     }
   };
 
+  const throwError = (error: Error) => {
+    createToast('error', <p>{error.message}</p>, 10000);
+  };
+
   return (
-    <Form className={styles.form} submitHandler={login} submitText='Log In →'>
+    <Form
+      className={styles.form}
+      submitHandler={login}
+      errorHandler={throwError}
+      submitText='Log In →'
+      {...delegated}
+    >
       <Input
         name='email'
         label='Email'

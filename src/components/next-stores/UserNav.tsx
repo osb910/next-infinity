@@ -1,46 +1,86 @@
 'use client';
 
-import Image from 'next/image';
 import {useRouter, useSearchParams, usePathname} from 'next/navigation';
+import Image from 'next/image';
 import {useEffect, useState} from 'react';
 import {User, UserPlus, LogIn, LogOut, Heart} from 'react-feather';
-import Cookies from 'js-cookie';
-import Portal from '../Portal';
-import Modal from '../Modal';
-import styles from './UserNav.module.css';
-import NavLink from './NavLink';
-import {IUser} from '@/entities/next-stores/user/user.model';
+import ky from 'ky';
+import useUser from './useUser';
+import useToaster from '../Toaster/use-toaster';
 import RegisterForm from '@/components/next-stores/RegisterForm';
 import LoginForm from '@/components/next-stores/LoginForm';
-import Tabbed from '../Tabbed';
 import EditAccountForm from './EditAccountForm';
 import ForgotPassForm from './ForgotPassForm';
 import ChangePasswordForm from './ChangePasswordForm';
-import useUser from './useUser';
+import Tabbed from '../Tabbed';
+import NavLink from './NavLink';
+import Portal from '../Portal';
+import Modal from '../Modal';
+import Spinner from '../Spinner';
+import {IUser} from '@/entities/next-stores/user/user.model';
+import styles from './UserNav.module.css';
 
-const UserNav = ({user}: {user: IUser | null}) => {
+const UserNav = ({
+  user,
+  logoutEndpoint = '/api/auth/logout',
+}: {
+  user: IUser | null;
+  logoutEndpoint?: string;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const {userData, setUserData} = useUser();
+  const {createToast} = useToaster();
   const [subPage, setSubPage] = useState<string | null>(() =>
     searchParams.get('sub-page')
   );
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return !!(userData ?? user);
+  });
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   const resetToken = searchParams.get('reset-token');
-  const {userData} = useUser();
+
   const dismissSubPage = () => {
     setSubPage(null);
     router.replace(pathname);
   };
 
-  const isLoggedIn = Cookies.get('next-stores-logged-in') === 'true';
+  const logout = async () => {
+    setIsLoggingOut(true);
+    try {
+      const json = (await ky.post(logoutEndpoint).json()) as {
+        status: 'success' | 'error';
+        message: string;
+      };
+      if (json.status === 'success') {
+        setUserData(null);
+        setIsLoggedIn(false);
+        createToast('success', <p>{json.message}</p>, 3000);
+        router.refresh();
+      } else {
+        throw new Error(json.message);
+      }
+    } catch (err) {
+      if (!(err instanceof Error)) return;
+      console.error(err);
+      createToast('error', <p>{err.message}</p>, 5000);
+    }
+    setIsLoggingOut(false);
+  };
 
   useEffect(() => {
     setSubPage(searchParams.get('sub-page'));
   }, [searchParams]);
 
+  useEffect(() => {
+    setIsLoggedIn(!!userData);
+  }, [userData]);
+
   return (
     <ul className={`${styles.navSection} ${styles.navSectionUser}`}>
-      {user || isLoggedIn ? (
+      {isLoggedIn ? (
         <>
           <li className={styles.navItem}>
             <NavLink
@@ -55,14 +95,10 @@ const UserNav = ({user}: {user: IUser | null}) => {
             </NavLink>
           </li>
           <li className={styles.navItem}>
-            <NavLink
-              activeClassName={styles.navLinkActive}
-              className={styles.navLink}
-              href='/api/next-stores/auth/logout'
-            >
+            <button className={styles.navLink} onClick={logout}>
               <LogOut />
-              <span>Logout</span>
-            </NavLink>
+              {isLoggingOut ? <Spinner /> : <span>Logout</span>}
+            </button>
           </li>
           <li className={styles.navItem}>
             <button
@@ -147,7 +183,7 @@ const UserNav = ({user}: {user: IUser | null}) => {
                     value: 'login',
                     component: (
                       <>
-                        <LoginForm />
+                        <LoginForm endpoint='/api/next-stores/auth/login' />
                         <ForgotPassForm />
                       </>
                     ),
