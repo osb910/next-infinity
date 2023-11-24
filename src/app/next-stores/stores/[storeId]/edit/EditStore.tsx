@@ -19,10 +19,11 @@ const EditStore = async ({params}: {params: {storeId: string}}) => {
       message?: string;
       status?: string;
       data: IStore & {
-        author: IUser;
+        author: string;
       } & {reviews: Array<IReview>};
     };
-    if (json.author._id.toString() !== userId) {
+    console.log(json.data);
+    if (json.data.author !== userId) {
       return (
         <ErrorAlert>
           <p>You are not the owner of this store!</p>
@@ -30,10 +31,9 @@ const EditStore = async ({params}: {params: {storeId: string}}) => {
       );
     }
     if (!json) return <Spinner />;
-    const store = {...json, _id: json._id};
     return (
       <>
-        <StoreEditor store={store} />
+        <StoreEditor store={json.data} />
       </>
     );
   } catch (err) {
