@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
 import moment from 'moment';
 import ky from 'ky';
@@ -26,8 +26,25 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
   const {createToast} = useToaster();
+  const [reviewTime, setReviewTime] = useState(
+    moment(review.updatedAt).fromNow()
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setReviewTime(moment(review.updatedAt).fromNow());
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [review.updatedAt]);
 
   const updateReview = async (body: FormData) => {
+    if (
+      body.get('reviewText') === review.text &&
+      +(body.get('rating') ?? '') === review.rating
+    ) {
+      setIsEditing(false);
+      return;
+    }
     const json = (await ky
       .put(`/api/next-stores/stores/${review.store}/reviews/${review._id}`, {
         json: Object.fromEntries(body.entries()),
@@ -58,13 +75,20 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
     <motion.li
       className={styles.review}
       data-item={review._id}
-      animate={
-        isEdited && {
+      key={+isEdited}
+      initial={{
+        scale: 0.8,
+        opacity: 0.6,
+      }}
+      animate={{
+        scale: 1,
+        opacity: 1,
+        ...(isEdited && {
           scale: [1, 1.05, 1],
           boxShadow: '0 0 1px 2px rgba(20, 220, 20, 0.6)',
           border: '1px solid rgba(20, 220, 20, 0.6)',
-        }
-      }
+        }),
+      }}
       transition={{duration: 0.8}}
     >
       <header className={styles.reviewHeader}>
@@ -89,7 +113,7 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
           <span>({review.rating}/5)</span>
         </p>
         <time dateTime={review.updatedAt} className={styles.reviewTime}>
-          {moment(review.updatedAt).fromNow()}
+          {reviewTime}
         </time>
       </header>
       <section className={styles.reviewBody}>

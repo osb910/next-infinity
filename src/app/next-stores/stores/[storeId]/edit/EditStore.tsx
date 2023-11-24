@@ -5,6 +5,8 @@ import StoreEditor from '@/components/next-stores/StoreEditor';
 import styles from './EditStore.module.css';
 import {getURL} from '@/utils/path';
 import {IStore} from '@/entities/next-stores/store/store.model';
+import {IUser} from '@/entities/next-stores/user/user.model';
+import {IReview} from '@/entities/next-stores/review/review.types';
 
 const EditStore = async ({params}: {params: {storeId: string}}) => {
   const headerList = headers();
@@ -13,19 +15,22 @@ const EditStore = async ({params}: {params: {storeId: string}}) => {
     const res = await fetch(
       getURL(`/api/next-stores/stores/${params.storeId}`)
     );
-    const data = (await res.json()) as IStore & {
+    const json = (await res.json()) as IStore & {
       message?: string;
       status?: string;
+      data: IStore & {
+        author: IUser;
+      } & {reviews: Array<IReview>};
     };
-    if (data.author.toString() !== userId) {
+    if (json.author._id.toString() !== userId) {
       return (
         <ErrorAlert>
           <p>You are not the owner of this store!</p>
         </ErrorAlert>
       );
     }
-    if (!data) return <Spinner />;
-    const store = {...data, _id: data._id};
+    if (!json) return <Spinner />;
+    const store = {...json, _id: json._id};
     return (
       <>
         <StoreEditor store={store} />

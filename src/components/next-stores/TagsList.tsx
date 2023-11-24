@@ -4,12 +4,12 @@ interface TagsProps {
   tags: string[];
 }
 
-const TagsList = ({tags}: TagsProps) => {
+const Tags = ({tags}: TagsProps) => {
   return (
     <ul className={styles.tags}>
       {tags.map((tag, index) => (
         <li className={styles.tag} key={index}>
-          <a className={styles.tagLink} href={`/next-stores/tags/${tag}`}>
+          <a className={styles.tagLink} href={`/next-stores/tags?tag=${tag}`}>
             <span className={styles.tagText}>#{tag}</span>
           </a>
         </li>
@@ -18,4 +18,4 @@ const TagsList = ({tags}: TagsProps) => {
   );
 };
 
-export default TagsList;
+export default Tags;
