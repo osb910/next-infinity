@@ -51,6 +51,7 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
         headers: {
           'X-USER-ID': userId,
         },
+        throwHttpErrors: false,
       })
       .json()) as {
       status: 'success' | 'warning' | 'error' | 'notice';
