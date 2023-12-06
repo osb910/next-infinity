@@ -1,6 +1,6 @@
 import StoreCard from '@/components/next-stores/StoreCard';
 import TagsCrumbs from '@/components/next-stores/TagsCrumbs';
-import Store, {IStore} from '@/entities/next-stores/store/store.model';
+import Store, {IStore} from '@/models/next-stores/store/store.model';
 import styles from './Tags.module.css';
 import {connectDB} from '@/lib/database';
 import Stores from '@/components/next-stores/Stores';

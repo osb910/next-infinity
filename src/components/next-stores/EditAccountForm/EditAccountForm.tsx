@@ -2,7 +2,7 @@
 
 import Form from '@/components/Form';
 import Input from '@/components/Input';
-import {IUser} from '@/entities/next-stores/user/user.model';
+import {IUser} from '@/models/next-stores/user/user.model';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import ky from 'ky';
 import useToaster from '@/components/Toaster/use-toaster';

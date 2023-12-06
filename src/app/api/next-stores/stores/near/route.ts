@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Store from '@/entities/next-stores/store/store.model';
+import Store from '@/models/next-stores/store/store.model';
 
 export const GET = async (req: NextRequest) => {
   const {searchParams} = req.nextUrl;

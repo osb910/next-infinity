@@ -17,7 +17,7 @@ import NavLink from './NavLink';
 import Portal from '../Portal';
 import Modal from '../Modal';
 import Spinner from '../Spinner';
-import {IUser} from '@/entities/next-stores/user/user.model';
+import {IUser} from '@/models/next-stores/user/user.model';
 import styles from './UserNav.module.css';
 
 const UserNav = ({

@@ -1,4 +1,4 @@
-import User, {IUser} from '@/entities/next-stores/user/user.model';
+import User, {IUser} from '@/models/next-stores/user/user.model';
 import {NextRequest, NextResponse} from 'next/server';
 import {registerValidator} from '@/lib/validators';
 import {MongoServerError} from 'mongodb';

@@ -9,7 +9,7 @@ import Form, {FormProps} from '@/components/Form';
 import Input from '@/components/Input';
 import PasswordInput from '@/components/PasswordInput';
 import Spinner from '@/components/Spinner';
-import {IUser} from '@/entities/next-stores/user/user.model';
+import {IUser} from '@/models/next-stores/user/user.model';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import {getURL} from '@/utils/path';
 import styles from './LoginForm.module.css';

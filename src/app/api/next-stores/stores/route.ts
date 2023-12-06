@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Store, {IStore} from '@/entities/next-stores/store/store.model';
+import Store, {IStore} from '@/models/next-stores/store/store.model';
 import {processUploadImage} from '@/lib/file.middleware';
 import {HydratedDocument} from 'mongoose';
 import {connectDB} from '@/lib/database';

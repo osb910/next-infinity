@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {HydratedDocument} from 'mongoose';
-import User, {IUser} from '@/entities/next-stores/user/user.model';
+import User, {IUser} from '@/models/next-stores/user/user.model';
 import {signJWT} from '@/lib/token';
 import {loginValidator} from '@/lib/validators';
 import {env} from '@/lib/helpers';

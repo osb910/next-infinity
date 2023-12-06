@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import User from '@/entities/next-stores/user/user.model';
+import User from '@/models/next-stores/user/user.model';
 import {randomBytes} from 'crypto';
 import sendEmail from '@/lib/email-sender';
 import ResetPasswordEmail from '@/components/email-templates/ResetPasswordEmail';

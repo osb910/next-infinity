@@ -1,5 +1,5 @@
 import Stores from '@/components/next-stores/Stores';
-import Store from '@/entities/next-stores/store/store.model';
+import Store from '@/models/next-stores/store/store.model';
 import {getURL} from '@/utils/path';
 
 const StoresPage = async () => {

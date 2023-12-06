@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {Edit} from 'react-feather';
 import styles from './Store.module.css';
-import {IStore} from '@/entities/next-stores/store/store.model';
+import {IStore} from '@/models/next-stores/store/store.model';
 import FavoriteToggler from './FavoriteToggler';
 import Eraser from './Eraser';
 

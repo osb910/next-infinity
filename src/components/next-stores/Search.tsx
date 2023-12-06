@@ -6,7 +6,7 @@ import styles from './Search.module.css';
 import ky from 'ky';
 import Link from 'next/link';
 import Spinner from '../Spinner';
-import {IStore} from '@/entities/next-stores/store/store.model';
+import {IStore} from '@/models/next-stores/store/store.model';
 import {VscCaseSensitive} from 'react-icons/vsc';
 interface SearchProps {}
 

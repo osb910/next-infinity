@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import User, {IUser} from '@/entities/next-stores/user/user.model';
+import User, {IUser} from '@/models/next-stores/user/user.model';
 import {Params} from '../route';
 import {HydratedDocument} from 'mongoose';
 

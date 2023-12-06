@@ -1,4 +1,4 @@
-import Store from '@/entities/next-stores/store/store.model';
+import Store from '@/models/next-stores/store/store.model';
 import {NextRequest, NextResponse} from 'next/server';
 
 export const dynamic = 'force-dynamic';

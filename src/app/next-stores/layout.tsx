@@ -12,7 +12,7 @@ import NavLink from '../../components/next-stores/NavLink';
 import Search from '../../components/next-stores/Search';
 import {getURL} from '@/utils/path';
 import UserNav from '@/components/next-stores/UserNav';
-import {IUser} from '@/entities/next-stores/user/user.model';
+import {IUser} from '@/models/next-stores/user/user.model';
 import {UserProvider} from '@/components/next-stores/useUser';
 
 export const metadata: Metadata = {};

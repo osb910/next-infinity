@@ -1,9 +1,9 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Review from '@/entities/next-stores/review';
-import {IReview} from '@/entities/next-stores/review/review.types';
-import Store, {IStore} from '@/entities/next-stores/store/store.model';
+import Review from '@/models/next-stores/review';
+import {IReview} from '@/models/next-stores/review/review.types';
+import Store, {IStore} from '@/models/next-stores/store/store.model';
 import {HydratedDocument} from 'mongoose';
-import {getModelQuery} from '@/entities/models.middleware';
+import {getModelQuery} from '@/models/models.middleware';
 import {Params} from '../route';
 
 export const POST = async (req: NextRequest, {params: {storeId}}: Params) => {

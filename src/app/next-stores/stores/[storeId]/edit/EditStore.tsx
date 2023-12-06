@@ -4,9 +4,9 @@ import Spinner from '@/components/Spinner/Spinner';
 import StoreEditor from '@/components/next-stores/StoreEditor';
 import styles from './EditStore.module.css';
 import {getURL} from '@/utils/path';
-import {IStore} from '@/entities/next-stores/store/store.model';
-import {IUser} from '@/entities/next-stores/user/user.model';
-import {IReview} from '@/entities/next-stores/review/review.types';
+import {IStore} from '@/models/next-stores/store/store.model';
+import {IUser} from '@/models/next-stores/user/user.model';
+import {IReview} from '@/models/next-stores/review/review.types';
 
 const EditStore = async ({params}: {params: {storeId: string}}) => {
   const headerList = headers();

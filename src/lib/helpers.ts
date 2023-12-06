@@ -11,6 +11,25 @@ const env = (key: string): string => {
   return value;
 };
 
+const getPagination = (
+  currentPage?: number | string | null,
+  perPage?: number | string | null
+): {
+  skip: number;
+  limit: number;
+  page: number;
+} => {
+  const page = Math.abs(+(currentPage ?? 1));
+  const limit = Math.abs(+(perPage ?? 10));
+  const skip = (page - 1) * limit;
+
+  return {
+    skip,
+    limit,
+    page,
+  };
+};
+
 const sendError = <T>(
   status: string = 'error',
   code: number = 500,
@@ -30,4 +49,4 @@ const sendError = <T>(
   );
 };
 
-export {env, sendError};
+export {env, getPagination, sendError};

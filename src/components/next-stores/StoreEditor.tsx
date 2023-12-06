@@ -3,7 +3,7 @@
 import {useRef, ChangeEvent} from 'react';
 import Image from 'next/image';
 import ky from 'ky';
-import {IStore} from '@/entities/next-stores/store/store.model';
+import {IStore} from '@/models/next-stores/store/store.model';
 import {getURL} from '@/utils/path';
 import styles from './StoreEditor.module.css';
 import useToaster from '../Toaster/use-toaster';

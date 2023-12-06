@@ -7,7 +7,7 @@ import Form from '@/components/Form';
 import useToaster from '@/components/Toaster/use-toaster';
 import styles from './ReviewForm.module.css';
 import RatingStars from '@/components/RatingStars';
-import {IUser} from '@/entities/next-stores/user/user.model';
+import {IUser} from '@/models/next-stores/user/user.model';
 
 interface ReviewFormProps extends ComponentProps<'form'> {
   user: Omit<IUser, 'password'> | null;

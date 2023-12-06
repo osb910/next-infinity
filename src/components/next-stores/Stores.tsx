@@ -1,4 +1,4 @@
-import {IStore} from '@/entities/next-stores/store/store.model';
+import {IStore} from '@/models/next-stores/store/store.model';
 import styles from './Store.module.css';
 import StoreCard from './StoreCard';
 

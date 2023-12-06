@@ -1,11 +1,11 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Store, {IStore} from '@/entities/next-stores/store/store.model';
+import Store, {IStore} from '@/models/next-stores/store/store.model';
 import {HydratedDocument} from 'mongoose';
 import {processUploadImage} from '@/lib/file.middleware';
-import {getModelQuery} from '@/entities/models.middleware';
-import Review from '@/entities/next-stores/review';
-import {IReview} from '@/entities/next-stores/review/review.types';
-import User, {IUser} from '@/entities/next-stores/user/user.model';
+import {getModelQuery} from '@/models/models.middleware';
+import Review from '@/models/next-stores/review';
+import {IReview} from '@/models/next-stores/review/review.types';
+import User, {IUser} from '@/models/next-stores/user/user.model';
 
 export type Params = {
   params: {

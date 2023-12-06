@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Review from '@/entities/next-stores/review';
-import {IReview} from '@/entities/next-stores/review/review.types';
+import Review from '@/models/next-stores/review';
+import {IReview} from '@/models/next-stores/review/review.types';
 
 export type Params = {
   params: {
