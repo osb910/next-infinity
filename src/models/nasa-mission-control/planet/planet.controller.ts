@@ -1,4 +1,4 @@
-import {createReadStream} from 'fs';
+import fs from 'fs';
 import {parse} from 'csv-parse';
 import Planet from './planet.model';
 import {IPlanet} from './planet.types';
@@ -39,7 +39,7 @@ export const getAllPlanets = async () => {
 
 export const loadPlanetsData = () => {
   return new Promise((resolve, reject) => {
-    createReadStream(getPath('./data/kepler_data.csv'))
+    fs.createReadStream(getPath('./data/kepler_data.csv'))
       .pipe(
         parse({
           comment: '#',

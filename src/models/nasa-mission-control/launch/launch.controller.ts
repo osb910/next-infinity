@@ -103,7 +103,7 @@ export const loadLaunchesData = async () => {
 };
 
 export const scheduleNewLaunch = async (launch: ILaunch) => {
-  const planet = await Launch.findOne({
+  const planet = await Planet.findOne({
     keplerName: launch.target,
   });
 
