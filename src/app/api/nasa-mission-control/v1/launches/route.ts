@@ -2,31 +2,21 @@ import {NextRequest, NextResponse} from 'next/server';
 import {
   getAllLaunches,
   scheduleNewLaunch,
-} from '@/models/nasa-mission-control/launch';
-import {getPagination} from '@/lib/helpers';
-import loadNASAData from '@/models/nasa-mission-control/nasa.middleware';
+} from '@/services/nasa-mission-control/launch';
+import loadNASAData from '@/services/nasa-mission-control/nasa.middleware';
 
-export const GET = async (req: NextRequest) => {
-  const {searchParams} = req.nextUrl;
-  const currentPage = searchParams.get('currentPage');
-  const perPage = searchParams.get('perPage');
-  const {skip, limit, page} = getPagination(currentPage, perPage);
+export const GET = async ({nextUrl: {searchParams}}: NextRequest) => {
+  const page = searchParams.get('p');
+  const limit = searchParams.get('limit');
   try {
     await loadNASAData();
-    const launches = await getAllLaunches(skip, limit);
-    const count = launches.length;
-    const pages = Math.ceil(count / limit);
+    const {launches, p8n} = await getAllLaunches(page, limit);
     return NextResponse.json(
       {
         status: 'success',
         code: 200,
         message: 'Launches retrieved',
-        count,
-        limit,
-        page,
-        pages,
-        previous: page - 1 > 0 ? page - 1 : null,
-        next: page + 1 <= pages ? page + 1 : null,
+        ...p8n,
         data: launches,
       },
       {status: 200}

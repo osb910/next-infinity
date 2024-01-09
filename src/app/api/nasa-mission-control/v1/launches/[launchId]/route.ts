@@ -1,8 +1,8 @@
 import {
   abortLaunchById,
   getLaunchById,
-} from '@/models/nasa-mission-control/launch';
-import loadNASAData from '@/models/nasa-mission-control/nasa.middleware';
+} from '@/services/nasa-mission-control/launch';
+import loadNASAData from '@/services/nasa-mission-control/nasa.middleware';
 import {NextRequest, NextResponse} from 'next/server';
 
 type Params = {params: {launchId: string}};

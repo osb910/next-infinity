@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {getAllPlanets} from '@/models/nasa-mission-control/planet';
-import loadNASAData from '@/models/nasa-mission-control/nasa.middleware';
+import {getAllPlanets} from '@/services/nasa-mission-control/planet';
+import loadNASAData from '@/services/nasa-mission-control/nasa.middleware';
 
 export const GET = async (req: NextRequest) => {
   try {
