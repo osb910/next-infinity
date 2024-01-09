@@ -1,36 +1,37 @@
+import {GetP8n} from '@/types';
 import {NextResponse} from 'next/server';
 
-const env = (key: string): string => {
+export const env = (key: string): string | null => {
   const value = process.env[key];
 
   if (!value || value.length === 0) {
     console.error(`The environment variable ${key} is not set.`);
-    throw new Error(`The environment variable ${key} is not set.`);
   }
 
-  return value;
+  return value || null;
 };
 
-const getPagination = (
-  currentPage?: number | string | null,
-  perPage?: number | string | null
-): {
-  skip: number;
-  limit: number;
-  page: number;
-} => {
-  const page = Math.abs(+(currentPage ?? 1));
-  const limit = Math.abs(+(perPage ?? 10));
+export const getP8n: GetP8n = (count, currentPage, perPage) => {
+  const limit = Math.abs(+(perPage ?? env('DEFAULT_PAGE_LIMIT') ?? 10)) || 10;
+  const pages = Math.ceil(count / limit);
+  let page = Math.abs(+(currentPage ?? 1)) || 1;
+  if (page > pages) page = pages;
   const skip = (page - 1) * limit;
+  const previous = page - 1 || null;
+  const next = page < pages ? page + 1 : null;
 
   return {
+    count,
     skip,
     limit,
+    pages,
     page,
+    previous,
+    next,
   };
 };
 
-const sendError = <T>(
+export const sendError = <T>(
   status: string = 'error',
   code: number = 500,
   message: string,
@@ -48,5 +49,3 @@ const sendError = <T>(
     }
   );
 };
-
-export {env, getPagination, sendError};

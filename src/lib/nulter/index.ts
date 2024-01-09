@@ -1,6 +1,7 @@
-import {writeFile} from '../../utils/file';
-import {getPath} from '../../utils/path';
+import {writeFile} from '@/utils/file';
+import {getPath} from '@/utils/path';
 import {Types} from 'mongoose';
+import resize from '../resize';
 
 export interface FileObject {
   fieldName: string;
@@ -28,7 +29,7 @@ export type StorageAndDest =
       dest: string;
     };
 
-export type ParserOptions = StorageAndDest & {field?: string};
+export type ParserOptions = StorageAndDest & {field?: string; resize?: boolean};
 
 export type FileParser = (
   file: File,
@@ -37,6 +38,7 @@ export type FileParser = (
 
 export type NulterOptions = {
   field: string;
+  resize?: boolean;
 } & StorageAndDest;
 
 export type Nulter = (
@@ -77,6 +79,10 @@ export const parseFile: FileParser = async (file, options) => {
       readableSize,
       buffer,
     };
+
+    if (options?.resize) {
+      data = await resize(data);
+    }
 
     if (options.storage === 'disk') {
       const destination = getPath(options.dest).replace(/\\/g, '/');

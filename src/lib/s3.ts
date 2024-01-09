@@ -3,6 +3,7 @@ import {
   PutObjectCommandInput,
   S3ServiceException,
 } from '@aws-sdk/client-s3';
+import {extname} from 'path';
 
 export type FileMetaData = {
   key: string;
@@ -11,7 +12,6 @@ export type FileMetaData = {
   ext: string;
   folder: string;
   bucket: string;
-  eTag: string;
   lastModified: Date;
   size: number;
 };
@@ -47,11 +47,11 @@ const getOneObject = async (fileKey: string) => {
     });
     return {
       key: fileKey,
+      ext: extname(fileKey).split('.').pop(),
       data: fileObject.Body,
       contentType: fileObject.ContentType,
       lastModified: fileObject.LastModified ?? new Date(),
       size: fileObject.ContentLength ?? 0,
-      eTag: fileObject.ETag ?? '',
       statusCode: fileObject.$metadata.httpStatusCode,
     };
   } catch (err) {
@@ -60,6 +60,7 @@ const getOneObject = async (fileKey: string) => {
     return {
       // @ts-ignore
       key: err.Key ?? fileKey,
+      ext: extname(fileKey).split('.').pop(),
       fault: err.$fault,
       statusCode: err.$metadata.httpStatusCode,
       code: err.name,
@@ -132,7 +133,6 @@ const listFileObjects = async (): Promise<
           ext,
           folder,
           bucket: process.env.AWS_BUCKET_NAME!,
-          eTag: ETag ?? '',
           lastModified: LastModified ?? new Date(),
           size: Size ?? 0,
         };

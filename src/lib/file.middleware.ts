@@ -1,10 +1,17 @@
 import nulter from './nulter';
-import resize from './resize';
 import {uploadOneObject} from './s3';
 
-const processUploadImage = async (
+export const processUploadFile = async (
   body: FormData,
-  field: string = 'image'
+  {
+    field = 'image',
+    folder = '',
+    noDiskStorage = false,
+  }: {
+    field?: string;
+    folder?: string;
+    noDiskStorage?: boolean;
+  }
 ): Promise<any> => {
   let file: File | any = body.get(field) as File;
   if (!file || file.name === 'undefined') return;
@@ -12,20 +19,26 @@ const processUploadImage = async (
   try {
     // Parse file
     file = await nulter(body, {
-      field: 'photo',
+      field,
+      resize: true,
+      ...(noDiskStorage
+        ? {
+            storage: 'memory',
+          }
+        : {
+            storage: 'disk',
+            dest: `../public/uploads${folder && `/${folder}`}`,
+          }),
     });
-
-    // Resize image
-    file = await resize(file);
 
     // Upload to S3
     const uploaded = await uploadOneObject(
-      `next-stores/${file?.fileName}`,
+      `${folder && `${folder}/`}${file?.fileName}`,
       file?.buffer!
     );
 
     if (!uploaded || uploaded.$metadata.httpStatusCode !== 200) {
-      const err = new Error('Image upload failed');
+      const err = new Error('File upload failed');
       throw err;
     }
 
@@ -36,5 +49,3 @@ const processUploadImage = async (
     console.error(err);
   }
 };
-
-export {processUploadImage};

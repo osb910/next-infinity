@@ -6,7 +6,7 @@ const signJWT = async (
   options: {exp: string}
 ) => {
   try {
-    const secret = new TextEncoder().encode(env(payload.key));
+    const secret = new TextEncoder().encode(env(payload.key) ?? '');
     const alg = 'HS256';
     return new SignJWT(payload)
       .setProtectedHeader({alg})
