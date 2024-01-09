@@ -32,10 +32,15 @@ export const middleware = async (req: NextRequest) => {
     });
   }
 
+  const response = NextResponse.next();
+  response.headers.set('x-url', req.url);
+  console.log('middleware', req.ip, req.headers.get('x-forwarded-for'));
+  response.headers.set(
+    'x-ip',
+    req.ip ?? req.headers.get('x-forwarded-for') ?? ''
+  );
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
     console.log('middleware', req.method, pathname);
-
-    const response = NextResponse.next();
 
     if (!token && (/\/add/.test(pathname) || subPage === 'account')) {
       return NextResponse.redirect(
@@ -77,7 +82,7 @@ export const middleware = async (req: NextRequest) => {
       );
     }
   }
-  return NextResponse.next();
+  return response;
 };
 
 // See "Matching Paths" below to learn more
