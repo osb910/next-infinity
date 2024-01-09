@@ -1,15 +1,24 @@
 import fs from 'fs/promises';
 import {getPath} from './path';
+import {extname} from 'path';
 
-const readFile = async (pathFromRoot: string): Promise<any> => {
+const readFile = async (
+  pathFromRoot: string,
+  encoding?: BufferEncoding,
+  fallback?: string
+): Promise<any> => {
   const filePath = getPath(pathFromRoot);
-  const ext = pathFromRoot.split('.').pop();
-  const data: string = await fs.readFile(filePath, 'utf8');
+  const ext = extname(filePath).split('.').pop();
   try {
-    return ext ? JSON.parse(data) : data;
+    const data = await fs.readFile(filePath, {encoding});
+    return {data, ext};
   } catch (err) {
-    console.error(err);
-    return data;
+    if (!(err instanceof Error)) return;
+    if (fallback) {
+      return readFile(fallback, encoding);
+    }
+    console.error(err.message);
+    return {data: null, ext, message: err.message, code: err.name};
   }
 };
 
@@ -38,17 +47,16 @@ const getFolderNames = async (pathFromRoot: string): Promise<string[]> => {
 const writeFile = async (
   pathFromRoot: string,
   content: any,
-  {log = false, stringify = false}: {log?: boolean; stringify?: boolean} = {}
+  {
+    stringify = false,
+    encoding,
+    log = false,
+  }: {log?: boolean; stringify?: boolean; encoding?: BufferEncoding} = {}
 ): Promise<void> => {
   const path = getPath(pathFromRoot);
-  const body =
-    typeof content === 'string' || !stringify
-      ? content
-      : JSON.stringify(content, null, 2);
+  const body = stringify ? JSON.stringify(content, null, 2) : content;
   try {
-    await fs.writeFile(path, body, {
-      encoding: 'utf8',
-    });
+    await fs.writeFile(path, body, {encoding});
     log && console.log(`Wrote ${body} to ${pathFromRoot}`);
   } catch (err) {
     console.error(err);
