@@ -1,0 +1,187 @@
+import {NextRequest} from 'next/server';
+import {isValidObjectId, type Model, type HydratedDocument} from 'mongoose';
+import {Md5} from 'ts-md5';
+import slug from 'slug';
+import {genSalt, hash, compare} from 'bcrypt';
+import {getP8n} from '@/lib/helpers';
+import {P8n} from '@/types';
+import {getLocationFromIp} from '@/lib/geo';
+import {type Request} from 'request-ip';
+
+export const getModelQuery = (
+  prop: string,
+  {
+    slugProp = 'slug',
+    numberProp = 'id',
+  }: {slugProp?: string; numberProp?: string} = {}
+) => {
+  const isObjectId = isValidObjectId(prop);
+  const isNumber = /^\d+$/.test(prop);
+  return {
+    [isObjectId ? '_id' : isNumber ? numberProp : slugProp]: isObjectId
+      ? prop
+      : isNumber
+      ? +prop
+      : {$regex: `^${prop}`, $options: 'i'},
+  };
+};
+
+export const getDomain = (email: string) => {
+  return email.split('@')[1];
+};
+
+export const getGravatar = (email: string) => {
+  const gravatarHash: string = Md5.hashStr(email.trim().toLowerCase());
+  return `https://www.gravatar.com/avatar/${gravatarHash}?s=150&d=retro`;
+};
+
+export const preSaveDoc = async <T>(
+  doc: HydratedDocument<any & T>,
+  {
+    nameProp = 'name',
+    saltRounds = 12,
+  }: {
+    nameProp?: string;
+    saltRounds?: number;
+  } = {}
+) => {
+  console.log(`saving ${doc?.[nameProp] ?? doc?.title ?? doc._id}...`);
+  if (doc.isModified(nameProp)) {
+    const newSlug = slug(doc[nameProp]);
+    const slugRegex = new RegExp(`^${doc.slug}((-\\d*$)?)$`, 'i');
+    try {
+      const count = await doc.constructor.countDocuments({
+        slug: slugRegex,
+      });
+      doc.slug = count ? `${newSlug}-${count + 1}` : newSlug;
+    } catch (err) {
+      if (!(err instanceof Error)) return;
+      console.error(err);
+    }
+  }
+
+  if (doc.isModified('password')) {
+    try {
+      const salt = await genSalt(saltRounds);
+      doc.password = await hash(doc.password, salt);
+    } catch (err) {
+      if (!(err instanceof Error)) return;
+      console.error(err);
+    }
+  }
+};
+
+export const comparePassword = async (password: string, hash: string) => {
+  try {
+    const match: boolean = await compare(password, hash);
+    return match;
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(err);
+    return false;
+  }
+};
+
+export const getFieldList = async (Model: Model<any>, field: string) => {
+  return await Model.aggregate([
+    {$unwind: `$${field}`},
+    {$group: {_id: `$${field}`, count: {$sum: 1}}},
+    {$sort: {count: -1, _id: 1}},
+  ]);
+};
+
+export const getTopRated = async (
+  Model: Model<any>,
+  {
+    page,
+    limit,
+    foreignField,
+    collection = 'reviews',
+    addedField = 'averageRating',
+  }: {
+    page?: number | string | null;
+    limit?: number | string | null;
+    foreignField: string;
+    collection?: string;
+    addedField?: string;
+  }
+): Promise<{docs: Array<any>; p8n: P8n}> => {
+  const pipeline = [
+    {
+      $lookup: {
+        from: collection,
+        localField: '_id',
+        foreignField,
+        as: collection,
+      },
+    },
+    {
+      $match: {
+        [`${collection}.1`]: {$exists: true},
+      },
+    },
+  ];
+  try {
+    const [{count}] = (await Model.aggregate(pipeline).count(
+      'count'
+    )) as Array<{
+      count: number;
+    }>;
+
+    const p8n = getP8n(count, page, limit);
+
+    const docs = await Model.aggregate(pipeline)
+      .addFields({
+        [addedField]: {
+          $avg: `${collection}.rating`,
+        },
+      })
+      .sort(`-${addedField}`)
+      .skip(p8n.skip)
+      .limit(p8n.limit);
+    return {docs, p8n};
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const getNearby = async (
+  Model: Model<any>,
+  req: NextRequest & Request
+) => {
+  const {
+    nextUrl: {searchParams},
+  } = req;
+  let lng = searchParams.get('lng');
+  let lat = searchParams.get('lat');
+  const maxDistance = searchParams.get('max-distance');
+  const limit = searchParams.get('limit');
+  try {
+    if (!lng || lng === 'undefined' || !lat || lat === 'undefined') {
+      const loc = await getLocationFromIp(req);
+      lng = loc.longitude.toString();
+      lat = loc.latitude.toString();
+    }
+    const docs = await Model.find({
+      location: {
+        $near: {
+          $maxDistance: maxDistance || 10000,
+          $geometry: {
+            type: 'Point',
+            coordinates: [lng ? +lng : 0, lat ? +lat : 0],
+          },
+        },
+      },
+    }).limit(limit ? +limit : 10);
+    return {
+      status: 'success',
+      message: `Fetched nearby ${Model.modelName}.`,
+      code: 200,
+      data: docs,
+    };
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
