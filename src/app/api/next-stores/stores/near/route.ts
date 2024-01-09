@@ -1,39 +1,19 @@
-import {NextRequest, NextResponse} from 'next/server';
-import Store from '@/models/next-stores/store/store.model';
+import {type NextRequest, NextResponse} from 'next/server';
+import Store from '@/services/next-stores/store';
+import {getNearby} from '@/services/services.lib';
+import {type Request} from 'request-ip';
 
-export const GET = async (req: NextRequest) => {
-  const {searchParams} = req.nextUrl;
-  const lng = searchParams.get('lng');
-  const lat = searchParams.get('lat');
-  const maxDistance = searchParams.get('max-distance');
-  const limit = searchParams.get('limit');
-
-  if (!lng || !lat) {
-    return NextResponse.json(
-      {message: 'Please provide lng and lat!'},
-      {status: 400}
-    );
-  }
-
+export const GET = async (req: NextRequest & Request) => {
   try {
-    const stores = await Store.find(
-      {
-        location: {
-          $near: {
-            $maxDistance: maxDistance || 10000,
-            $geometry: {
-              type: 'Point',
-              coordinates: [lng, lat],
-            },
-          },
-        },
-      },
-      'name slug description author'
-    ).limit(limit ? +limit : 10);
+    const json = await getNearby(Store, req);
 
-    return NextResponse.json(stores, {status: 200});
+    return NextResponse.json(json, {status: json.code});
   } catch (err) {
+    if (!(err instanceof Error)) return;
     console.error(err);
-    return NextResponse.json({message: 'Something went wrong!'}, {status: 500});
+    return NextResponse.json(
+      {status: 'error', code: 500, message: err.message},
+      {status: 500}
+    );
   }
 };

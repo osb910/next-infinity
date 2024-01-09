@@ -1,12 +1,12 @@
-import Store from '@/models/next-stores/store/store.model';
+import Store from '@/services/next-stores/store/store.model';
 import {NextRequest, NextResponse} from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export const GET = async (req: NextRequest) => {
+export const GET = async ({nextUrl: {searchParams}}: NextRequest) => {
   try {
-    const q = req.nextUrl.searchParams.get('q');
-    const caseSensitive = req.nextUrl.searchParams.get('case-sensitive');
+    const q = searchParams.get('q');
+    const caseSensitive = searchParams.get('case-sensitive');
     if (!q) {
       return NextResponse.json(
         {

@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
-import User, {IUser} from '@/models/next-stores/user/user.model';
+import User, {type IUser} from '@/services/next-stores/user';
 import {HydratedDocument} from 'mongoose';
-import Store from '@/models/next-stores/store/store.model';
+import Store from '@/services/next-stores/store/store.model';
 
 export const dynamic = 'force-dynamic';
 

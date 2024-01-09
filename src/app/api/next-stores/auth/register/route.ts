@@ -1,8 +1,8 @@
-import User, {IUser} from '@/models/next-stores/user/user.model';
-import {NextRequest, NextResponse} from 'next/server';
+import {type NextRequest, NextResponse} from 'next/server';
+import User, {type IUser} from '@/services/next-stores/user';
 import {registerValidator} from '@/lib/validators';
 import {MongoServerError} from 'mongodb';
-import {HydratedDocument} from 'mongoose';
+import {type HydratedDocument} from 'mongoose';
 
 export const POST = async (req: NextRequest) => {
   const [body, errors] = await registerValidator(await req.json());
@@ -12,10 +12,9 @@ export const POST = async (req: NextRequest) => {
 
   const user = new User({email, name, password});
   try {
-    const res = (await user.save()) as HydratedDocument<IUser> & {
-      _doc: HydratedDocument<IUser>;
-    };
+    const res = (await user.save()) as HydratedDocument<IUser>;
     return NextResponse.json(
+      // @ts-ignore
       {status: 'success', message: 'User created', data: res._doc},
       {
         status: 201,

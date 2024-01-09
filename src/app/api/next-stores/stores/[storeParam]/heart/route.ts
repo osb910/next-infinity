@@ -1,9 +1,9 @@
 import {NextRequest, NextResponse} from 'next/server';
-import User, {IUser} from '@/models/next-stores/user/user.model';
+import User, {type IUser} from '@/services/next-stores/user';
+import {type HydratedDocument} from 'mongoose';
 import {Params} from '../route';
-import {HydratedDocument} from 'mongoose';
 
-export const GET = async (req: NextRequest, {params: {storeId}}: Params) => {
+export const GET = async (req: NextRequest, {params: {storeParam}}: Params) => {
   const userId = req.headers.get('X-USER-ID');
   try {
     const user = (await User.findById(userId)) as HydratedDocument<IUser> & {
@@ -15,10 +15,10 @@ export const GET = async (req: NextRequest, {params: {storeId}}: Params) => {
         {status: 404}
       );
     }
-    const isFavorite = user.favorites.includes(storeId);
+    const isFavorite = user.favorites.includes(storeParam);
     const updatedUser = await User.findByIdAndUpdate(
       user._id.toString(),
-      {[isFavorite ? '$pull' : '$addToSet']: {favorites: storeId}},
+      {[isFavorite ? '$pull' : '$addToSet']: {favorites: storeParam}},
       {
         projection: {password: 0, __v: 0},
         new: true,

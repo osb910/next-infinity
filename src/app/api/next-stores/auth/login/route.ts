@@ -1,6 +1,6 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {HydratedDocument} from 'mongoose';
-import User, {IUser} from '@/models/next-stores/user/user.model';
+import {type NextRequest, NextResponse} from 'next/server';
+import {type HydratedDocument} from 'mongoose';
+import User, {type IUser} from '@/services/next-stores/user';
 import {signJWT} from '@/lib/token';
 import {loginValidator} from '@/lib/validators';
 import {env} from '@/lib/helpers';
@@ -65,8 +65,8 @@ export const POST = async (req: NextRequest) => {
       }
     );
 
-    const tokenMaxAge = parseInt(env('JWT_EXPIRES_IN')) * 60;
-    const cookieOptions = {
+    const tokenMaxAge = +(env('JWT_EXPIRES_IN') ?? '') * 60;
+    const tokenCookie = {
       name: 'nextStoresToken',
       value: nextStoresToken,
       httpOnly: true,
@@ -74,14 +74,15 @@ export const POST = async (req: NextRequest) => {
       secure: process.env.NODE_ENV !== 'development',
       maxAge: tokenMaxAge,
     };
+    const userIdCookie = {
+      name: 'next-stores-user-id',
+      value: user._id.toString(),
+      maxAge: tokenMaxAge,
+    };
 
     await Promise.all([
-      response.cookies.set(cookieOptions),
-      response.cookies.set({
-        name: 'next-stores-user-id',
-        value: user._id.toString(),
-        maxAge: tokenMaxAge,
-      }),
+      response.cookies.set(tokenCookie),
+      response.cookies.set(userIdCookie),
     ]);
 
     return response;

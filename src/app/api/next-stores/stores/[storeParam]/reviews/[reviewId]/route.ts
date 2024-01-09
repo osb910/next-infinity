@@ -1,10 +1,9 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Review from '@/models/next-stores/review';
-import {IReview} from '@/models/next-stores/review/review.types';
+import Review, {IReview} from '@/services/next-stores/review';
 
 export type Params = {
   params: {
-    storeId: string;
+    storeParam: string;
     reviewId: string;
   };
 };
