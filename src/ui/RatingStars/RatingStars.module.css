@@ -1,0 +1,33 @@
+.ratingStars {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.ratingStars input {
+  display: none;
+}
+
+.ratingStars input ~ label {
+  color: var(--color-gray-500);
+  cursor: pointer;
+  transition: all 250ms ease-in-out;
+}
+
+.ratingStars
+  input
+  + label:where(:hover, :focus, :hover ~ label, :focus ~ label) {
+  color: hsl(50 80% 40%);
+}
+
+.ratingStars input:checked ~ label {
+  color: hsl(51 100% 50%);
+}
+
+@media (min-width: 45rem) {
+  .ratingStars label svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}

@@ -1,0 +1,74 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  align-self: stretch;
+  flex: 2 1 auto;
+  inline-size: 100%;
+  transition: all 250ms ease-in-out;
+}
+
+@media (min-width: 48rem) {
+  .wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.25em;
+  }
+}
+
+.wrapper:fullscreen {
+  position: absolute;
+  height: 100%;
+}
+
+.map {
+  inline-size: 100%;
+  height: var(--height);
+  margin-inline: auto;
+  border-radius: 6px;
+}
+
+.wrapper:fullscreen .map {
+  position: absolute;
+  z-index: 3;
+  inline-size: 100vw;
+}
+
+.map .ol-viewport {
+  border-radius: 6px;
+}
+
+.overlay {
+  user-select: none;
+  /* pointer-events: none; */
+  position: absolute;
+  width: max-content;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 0.5em;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  scale: 0.9;
+  transform-origin: top left;
+}
+
+.centerBtn {
+  inset-block-start: 1em;
+  inset-inline-end: 0.5em;
+}
+
+.fullscreenToggler {
+  inset-block-start: 3em;
+  inset-inline-end: 0.5em;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  filter: drop-shadow(0 0 0.75rem #000);
+}

@@ -1,0 +1,90 @@
+.pagination {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75em;
+  flex: 1 0 100%;
+  inline-size: 100%;
+  margin: auto;
+  font-size: 1.125rem;
+}
+
+@media (min-width: 36rem) {
+  .pagination {
+    flex-direction: row;
+    gap: 0.75em;
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .pagination {
+    gap: 1em;
+    font-size: 1.5rem;
+  }
+}
+
+.pageNumbers {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  list-style: none;
+}
+
+.pageNumber {
+  flex: 1 0 auto;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 600;
+  color: rgba(var(--bg-default-rgb));
+}
+
+.pageLink {
+  padding-block: 0.125em;
+  padding-inline: 0.375em;
+  border-radius: 50%;
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  transition: all 250ms ease-in-out;
+}
+
+.pageLink.active {
+  background-color: rgba(var(--color-accent-rgb), 0.9);
+  box-shadow: 0 0 0 2px currentColor, 0 0 12px 1px rgba(31, 33, 37, 0.3);
+}
+
+.pageLink:where(:hover, :focus) {
+  background-color: rgba(var(--color-accent-rgb), 0.6);
+}
+
+.arrow {
+  margin-inline: -0.25em;
+}
+
+.arrow a {
+  padding: 0.25em;
+}
+
+.ellipsis {
+  font-size: 0.75em;
+  opacity: 0.75;
+  cursor: default;
+}
+
+.pagination form {
+  min-inline-size: fit-content;
+  margin: 0;
+  padding: 0.25em;
+  flex-direction: row;
+  align-items: center;
+  background-color: transparent;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.2);
+}
+
+.navForm > p {
+  flex-direction: row;
+}
