@@ -2,20 +2,22 @@ import {Metadata} from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import {headers} from 'next/headers';
-import {ReactNode, ComponentType} from 'react';
+import {type ReactNode, type ComponentType} from 'react';
 import {BiStore} from 'react-icons/bi';
 import {BsTags, BsTrophy} from 'react-icons/bs';
 import {MdOutlineAddBox} from 'react-icons/md';
 import {PiMapPinLine} from 'react-icons/pi';
-import styles from './HomePage.module.css';
 import NavLink from '../../components/next-stores/NavLink';
 import Search from '../../components/next-stores/Search';
 import {getURL} from '@/utils/path';
 import UserNav from '@/components/next-stores/UserNav';
-import {IUser} from '@/models/next-stores/user/user.model';
+import {type IUser} from '@/services/next-stores/user';
 import {UserProvider} from '@/components/next-stores/useUser';
+import styles from './HomePage.module.css';
 
-export const metadata: Metadata = {};
+export const metadata: Metadata = {
+  title: 'Next Stores | Your Delicious Dining Places',
+};
 
 export const dynamic = 'force-dynamic';
 
