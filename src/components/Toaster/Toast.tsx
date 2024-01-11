@@ -7,7 +7,7 @@ import {motion} from 'framer-motion';
 // @ts-ignore';
 import styles from './Toast.module.css';
 
-import VisuallyHidden from '../VisuallyHidden';
+import VisuallyHidden from '@/ui/VisuallyHidden';
 
 const ICONS_BY_VARIANT = {
   notice: Info,

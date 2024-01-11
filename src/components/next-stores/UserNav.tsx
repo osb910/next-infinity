@@ -14,10 +14,10 @@ import ForgotPassForm from './ForgotPassForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Tabbed from '../Tabbed';
 import NavLink from './NavLink';
-import Portal from '../Portal';
+import Portal from '../../ui/Portal';
 import Modal from '../Modal';
-import Spinner from '../Spinner';
-import {IUser} from '@/models/next-stores/user/user.model';
+import Spinner from '../../ui/Spinner';
+import {type IUser} from '@/services/next-stores/user';
 import styles from './UserNav.module.css';
 
 const UserNav = ({

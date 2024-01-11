@@ -27,9 +27,11 @@
 .storeActions {
   position: relative;
   z-index: 1;
+  inline-size: 90%;
   margin-block-start: 1em;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.2);
   display: flex;
+  justify-content: space-evenly;
   color: white;
   align-items: center;
   gap: 0.5em;
@@ -39,7 +41,7 @@
   width: 20px;
   border-bottom: 0;
   color: #1111aa;
-  transition: all 250ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
 
 .storeActions a:where(:hover, :focus) {
@@ -52,6 +54,16 @@
 
 .storeActions a svg {
   fill: hsl(0 0% 75%);
+}
+
+.storeActions .reviewCount {
+  display: flex;
+  gap: 0.125em;
+}
+
+.storeActions .reviewCount sub {
+  align-self: flex-end;
+  font-size: 0.825em;
 }
 
 @media (min-width: 24rem) {
@@ -318,11 +330,6 @@
   }
 }
 
-@media all and (max-width: 850px) {
-  .store {
-    inline-size: calc(50% - 1.25em);
-  }
-}
 @media all and (max-width: 550px) {
   .store {
     inline-size: 100%;

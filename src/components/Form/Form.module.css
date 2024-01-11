@@ -84,7 +84,6 @@
 .submit {
   padding-block: 0.75em;
   padding-inline: 1.25em;
-  margin-block-start: 0.25em;
   background: hsl(42 85% 55%);
   color: rgb(var(--bg-default-rgb));
   font-weight: 700;

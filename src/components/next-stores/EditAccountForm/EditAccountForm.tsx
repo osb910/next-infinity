@@ -1,8 +1,8 @@
 'use client';
 
 import Form from '@/components/Form';
-import Input from '@/components/Input';
-import {IUser} from '@/models/next-stores/user/user.model';
+import Input from '@/ui/Input';
+import {type IUser} from '@/services/next-stores/user';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import ky from 'ky';
 import useToaster from '@/components/Toaster/use-toaster';

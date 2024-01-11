@@ -1,6 +1,6 @@
 'use client';
 
-import {IUser} from '@/models/next-stores/user/user.model';
+import {type IUser} from '@/services/next-stores/user';
 import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import Cookies from 'js-cookie';
 

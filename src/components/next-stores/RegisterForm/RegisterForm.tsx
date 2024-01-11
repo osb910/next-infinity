@@ -4,11 +4,11 @@ import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
 import useToaster from '@/components/Toaster/use-toaster';
 import Form from '@/components/Form/Form';
-import Input from '@/components/Input';
-import PasswordInput from '@/components/PasswordInput';
+import Input from '@/ui/Input';
+import PasswordInput from '@/ui/PasswordInput';
 import {emailRegex, stringifyRegex} from '@/lib/regex';
 import {getURL} from '@/utils/path';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/ui/Spinner';
 import styles from './RegisterForm.module.css';
 
 export type Response =

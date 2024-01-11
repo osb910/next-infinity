@@ -1,6 +1,6 @@
 'use client';
 
-import Portal from '../Portal';
+import Portal from '@/ui/Portal';
 import Toast from './Toast';
 import useToaster from './use-toaster';
 import StyledToaster from './StyledToaster';

@@ -2,13 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {headers} from 'next/headers';
 import {Edit} from 'react-feather';
-import {IStore} from '@/models/next-stores/store/store.model';
-import {IReview} from '@/models/next-stores/review/review.types';
-import InteractiveMap from './InteractiveMap';
+import Reviews from './Reviews';
+import InteractiveMap from '@/ui/InteractiveMap';
 import FavoriteToggler from './FavoriteToggler';
 import Eraser from './Eraser';
 import Tags from './TagsList';
-import Reviews from './Reviews';
+import {type IStore} from '@/services/next-stores/store';
+import {type IReview} from '@/services/next-stores/review';
 import styles from './Store.module.css';
 
 interface SingleStoreProps {
@@ -86,20 +86,23 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         </section>
         <Image
           className={styles.storeImage}
-          src={
-            photo?.key
-              ? `/api/next-stores/files/${photo?.key}`
-              : '/uploads/store.png'
-          }
+          src={`/api/next-stores/files/${photo?.key}`}
           alt='Store Image'
           width={300}
           height={300}
         />
       </section>
       <section className={styles.storeDetails}>
-        <InteractiveMap lng={lng} lat={lat} />
+        <InteractiveMap
+          locations={[{lng, lat, id: _id}]}
+          useAttribution={false}
+          useScaleLine={false}
+          useZoomSlider={false}
+        />
         <p className={styles.storeLocation}>{address}</p>
-        <p className={styles.storeDescription}>{description}</p>
+        <p className={styles.storeDescription} dir='auto'>
+          {description}
+        </p>
         {tags && <Tags tags={tags} />}
       </section>
       <section className={styles.reviews}>

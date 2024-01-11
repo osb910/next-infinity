@@ -3,12 +3,12 @@
 import {useRef, ChangeEvent} from 'react';
 import Image from 'next/image';
 import ky from 'ky';
-import {IStore} from '@/models/next-stores/store/store.model';
+import {IStore} from '@/services/next-stores/store';
 import {getURL} from '@/utils/path';
 import styles from './StoreEditor.module.css';
 import useToaster from '../Toaster/use-toaster';
 import Form from '../Form/Form';
-import Input from '../Input';
+import Input from '../../ui/Input';
 import AutoCompleter from '../AutoCompleter';
 
 interface StoreEditorProps {
@@ -124,6 +124,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
           name='description'
           placeholder='How does it feel like?'
           defaultValue={store?.description ?? ''}
+          dir='auto'
         />
       </p>
       <Input
@@ -134,11 +135,7 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         onChange={previewPhoto}
       />
       <Image
-        src={
-          store?.photo?.key
-            ? `/api/next-stores/files/${store.photo.key}`
-            : '/uploads/store.png'
-        }
+        src={`/api/next-stores/files/${store?.photo?.key}`}
         alt={store?.name ?? 'store'}
         width={200}
         height={200}

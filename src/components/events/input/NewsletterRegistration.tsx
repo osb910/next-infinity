@@ -3,7 +3,7 @@
 import {FormEvent, useState} from 'react';
 import styles from './NewsletterRegistration.module.css';
 import useInput from '@/hooks/useInput';
-import Spinner from '../../Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import useToaster from '../../Toaster/use-toaster';
 import {isEmail} from '@/utils/validators';
 import ky from 'ky';

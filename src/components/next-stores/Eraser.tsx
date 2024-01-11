@@ -6,7 +6,7 @@ import {Trash2} from 'react-feather';
 import useUser from './useUser';
 import styles from './Eraser.module.css';
 import IconButton from '../IconButton';
-import Spinner from '../Spinner';
+import Spinner from '../../ui/Spinner';
 import useToaster from '../Toaster/use-toaster';
 
 interface EraserProps {

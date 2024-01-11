@@ -2,7 +2,7 @@
 import {FormEvent, useRef, useState} from 'react';
 import styles from './NewComment.module.css';
 import useToaster from '../../Toaster/use-toaster';
-import Spinner from '@/components/Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import {isEmail} from '@/utils/validators';
 
 export type Comment = {

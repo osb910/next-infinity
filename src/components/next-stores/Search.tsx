@@ -5,8 +5,8 @@ import {useState, useRef, ChangeEvent, KeyboardEvent} from 'react';
 import styles from './Search.module.css';
 import ky from 'ky';
 import Link from 'next/link';
-import Spinner from '../Spinner';
-import {IStore} from '@/models/next-stores/store/store.model';
+import Spinner from '../../ui/Spinner';
+import {IStore} from '@/services/next-stores/store';
 import {VscCaseSensitive} from 'react-icons/vsc';
 interface SearchProps {}
 

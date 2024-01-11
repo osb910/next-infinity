@@ -4,7 +4,7 @@ import {useState} from 'react';
 import styled from 'styled-components';
 import IconButton from '../IconButton/IconButton';
 import Modal from '../Modal/Modal';
-import Portal from '../Portal';
+import Portal from '@/ui/Portal';
 import SoundToggler from '../SoundToggler/SoundToggler';
 import {Info} from 'react-feather';
 import styles from './Header.module.css';
@@ -27,13 +27,12 @@ const Header = ({children}: {children?: React.ReactNode}) => {
           title='Help'
         />
       </section>
-      {showHelp && (
+      {/* {showHelp && (
         <Portal>
           <Modal title='Help' dismiss={closeHelp} dismissText='Dismiss'>
-            {/* <Help /> */}
           </Modal>
         </Portal>
-      )}
+      )} */}
     </StyledHeader>
   );
 };

@@ -2,7 +2,7 @@ import {useState, useEffect, ReactNode, useCallback} from 'react';
 import {X as Close} from 'react-feather';
 import FocusLock from 'react-focus-lock';
 import {RemoveScroll} from 'react-remove-scroll';
-import VisuallyHidden from '../VisuallyHidden';
+import VisuallyHidden from '@/ui/VisuallyHidden';
 import Wrapper from './StyledModal';
 import styles from './Modal.module.css';
 import {motion} from 'framer-motion';

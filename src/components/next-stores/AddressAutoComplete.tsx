@@ -1,5 +1,6 @@
 'use client';
 
+import {usePathname, useRouter, useSearchParams} from 'next/navigation';
 import AutoCompleter from '../AutoCompleter';
 
 interface AddressAutoCompleteProps {
@@ -18,6 +19,9 @@ const AddressAutoComplete = ({
   name,
   ...delegated
 }: AddressAutoCompleteProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const generateAddressSuggestions = (data: any) =>
     data.features.map(
       ({
@@ -31,10 +35,19 @@ const AddressAutoComplete = ({
         coordinates: geometry.coordinates,
       })
     );
+  const changeAddress = (option: AddressOption) => {
+    if (!option) return;
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    current.set('lng', `${option.coordinates[0]}`);
+    current.set('lat', `${option.coordinates[1]}`);
+    const search = current.toString();
+    router.push(`${pathname}${search ? `?${search}` : ''}`);
+  };
   return (
     <AutoCompleter
       endpoint='/api/next-stores/map/search?place='
       generateSuggestions={generateAddressSuggestions}
+      changeSelected={changeAddress}
       name={name}
       {...delegated}
     />

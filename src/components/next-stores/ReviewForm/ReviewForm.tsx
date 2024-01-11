@@ -1,13 +1,13 @@
 'use client';
 
-import {ReactNode, ComponentProps} from 'react';
+import {type ReactNode, type ComponentProps} from 'react';
 import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
 import Form from '@/components/Form';
 import useToaster from '@/components/Toaster/use-toaster';
 import styles from './ReviewForm.module.css';
-import RatingStars from '@/components/RatingStars';
-import {IUser} from '@/models/next-stores/user/user.model';
+import RatingStars from '@/ui/RatingStars';
+import {type IUser} from '@/services/next-stores/user';
 
 interface ReviewFormProps extends ComponentProps<'form'> {
   user: Omit<IUser, 'password'> | null;

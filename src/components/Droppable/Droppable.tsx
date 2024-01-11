@@ -1,7 +1,7 @@
 'use client';
 import {useState, ReactNode, DragEvent} from 'react';
 import styles from './Droppable.module.css';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '@/ui/Spinner';
 
 interface DroppableProps {
   as?: string;

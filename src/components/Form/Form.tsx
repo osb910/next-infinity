@@ -1,15 +1,19 @@
 'use client';
 
-import {useState, FormEvent, ReactNode, ComponentProps} from 'react';
-import Spinner from '@/components/Spinner';
+import {
+  useState,
+  type FormEvent,
+  type ReactNode,
+  type ComponentProps,
+} from 'react';
+import Spinner from '@/ui/Spinner';
 import styles from './Form.module.css';
 
 export interface FormProps extends ComponentProps<'form'> {
-  submitHandler: (body: any) => Promise<void>;
   children: ReactNode;
+  submitHandler?: (body: FormData) => Promise<void>;
   errorHandler?: (error: Error) => void;
   title?: string;
-  className?: string;
   useSubmitButton?: boolean;
   submitText?: string;
   resetAfterSubmit?: boolean;
@@ -20,7 +24,6 @@ const Form = ({
   title,
   submitHandler,
   children,
-  className,
   useSubmitButton = true,
   submitText = 'Submit',
   errorHandler,
@@ -44,7 +47,7 @@ const Form = ({
     );
 
     try {
-      await submitHandler(body);
+      await submitHandler?.(body);
 
       if (resetAfterSubmit) {
         inputs.forEach(el => {
@@ -69,9 +72,10 @@ const Form = ({
 
   return (
     <form
-      className={`${className ?? ''} ${styles.form}`}
-      onSubmit={submit}
+      {...(delegated.action && {action: delegated.action})}
+      {...(submitHandler && {onSubmit: submit})}
       {...delegated}
+      className={`${styles.form} ${delegated.className ?? ''}`}
     >
       {title && <h2 className={styles.title}>{title}</h2>}
       {children}

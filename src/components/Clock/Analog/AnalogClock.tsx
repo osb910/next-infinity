@@ -3,7 +3,7 @@ import useTime from '@/hooks/useTime';
 import {useMemo} from 'react';
 import styles from './AnalogClock.module.css';
 import {range} from '@/utils/numbers';
-import Spinner from '@/components/Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import SecondHand from './SecondHand';
 // import clockFace from '/img/AnalogClock_still_frame.svg';
 
