@@ -1,0 +1,65 @@
+.table {
+  inline-size: 100%;
+}
+
+.table tr {
+  border-bottom: 2px solid #bbb;
+}
+
+.table tr :where(th, td) {
+  text-align: start;
+  vertical-align: middle;
+}
+
+.table :where(th, td) {
+  padding: 0.25em;
+}
+
+.table th {
+  border-inline-end: 2px solid #fff;
+}
+
+.table td {
+  border-inline-end: 2px solid #ddd;
+}
+
+.table tr:nth-child(even) {
+  background-color: #fff;
+}
+
+.table tr:nth-child(odd):not(:first-child) {
+  background-color: #f2f2f2;
+}
+
+.table tr a {
+  font-weight: 600;
+  color: #222;
+  text-decoration: none;
+  transition: all 250ms ease-in-out;
+}
+
+.table tr a:where(:hover, :focus) {
+  transform: scale(1.05);
+  color: #555;
+}
+
+.table thead tr {
+  background-color: #222;
+  color: #fff;
+}
+
+@media (min-width: 36rem) {
+  .table {
+    display: table;
+    inline-size: 90%;
+  }
+
+  .table tr {
+    display: table-row;
+  }
+
+  .table tr :where(th, td) {
+    display: table-cell;
+    font-size: 1.125rem;
+  }
+}

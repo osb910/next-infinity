@@ -1,4 +1,3 @@
-import {Metadata} from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import {headers} from 'next/headers';
@@ -14,9 +13,30 @@ import UserNav from '@/components/next-stores/UserNav';
 import {type IUser} from '@/services/next-stores/user';
 import {UserProvider} from '@/components/next-stores/useUser';
 import styles from './HomePage.module.css';
+import {type Metadata} from 'next';
 
 export const metadata: Metadata = {
-  title: 'Next Stores | Your Delicious Dining Places',
+  title: {
+    template: '%s | Next Stores',
+    default: 'Next Stores',
+  },
+  metadataBase: new URL('https://next-infinity.vercel.app/next-stores'),
+  openGraph: {
+    title: {
+      template: '%s | Next Stores',
+      default: 'Next Stores',
+    },
+    url: 'https://next-infinity.vercel.app/next-stores',
+    siteName: 'Next Stores',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    title: {
+      template: '%s | Next Stores',
+      default: 'Next Stores',
+    },
+  },
 };
 
 export const dynamic = 'force-dynamic';

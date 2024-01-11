@@ -2,7 +2,7 @@
 
 import {useCallback, useEffect, useState} from 'react';
 import ky from 'ky';
-import Form from '../../Form';
+import Form from '@/components/Form';
 import useIsOnscreen from '@/hooks/useIsOnscreen';
 import Spinner from '@/ui/Spinner';
 import {P8nProps} from '../types';

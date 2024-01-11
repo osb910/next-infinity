@@ -2,7 +2,7 @@
 import {useState, useMemo, SetStateAction} from 'react';
 import QuestionForm from './QuestionForm';
 import Modal from '@/components/Modal';
-import Portal from '@/components/Portal';
+import Portal from '@/ui/Portal';
 
 interface FilterInventorsFormProps {
   setData: SetStateAction<any>;

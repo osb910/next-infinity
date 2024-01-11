@@ -6,6 +6,12 @@ import {getURL} from '@/utils/path';
 import {P8n} from '@/types';
 import {IStore} from '@/services/next-stores/store';
 import {IReview} from '@/services/next-stores/review/review.types';
+import {type Metadata} from 'next';
+
+export const metadata: Metadata = {
+  title: 'Next Stores',
+  description: 'Your Delicious Dining Places',
+};
 
 const HomePage = async () => {
   const userId = headers().get('X-USER-ID') ?? '';

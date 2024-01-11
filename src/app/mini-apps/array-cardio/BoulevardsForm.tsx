@@ -4,8 +4,8 @@ import useSWR from 'swr';
 import {getHTMLPage} from '@/utils/promises';
 import QuestionForm from './QuestionForm';
 import Modal from '@/components/Modal';
-import Portal from '@/components/Portal';
-import Spinner from '@/components/Spinner/Spinner';
+import Portal from '@/ui/Portal';
+import Spinner from '@/ui/Spinner/Spinner';
 
 interface BoulevardsFormProps {
   setData: SetStateAction<any>;

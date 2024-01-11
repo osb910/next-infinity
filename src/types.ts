@@ -1,3 +1,8 @@
+export interface PageProps {
+  params: Record<string, string>;
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
 export interface P8n {
   count: number;
   skip: number;

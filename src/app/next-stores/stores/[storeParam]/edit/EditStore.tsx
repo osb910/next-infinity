@@ -1,20 +1,19 @@
 import {headers} from 'next/headers';
 import ErrorAlert from '@/components/ErrorAlert';
-import Spinner from '@/components/Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import StoreEditor from '@/components/next-stores/StoreEditor';
-import styles from './EditStore.module.css';
 import {getURL} from '@/utils/path';
-import {IStore} from '@/models/next-stores/store/store.model';
-import {IUser} from '@/models/next-stores/user/user.model';
-import {IReview} from '@/models/next-stores/review/review.types';
+import type {IStore} from '@/services/next-stores/store';
+import type {IUser} from '@/services/next-stores/user';
+import type {IReview} from '@/services/next-stores/review';
+import {StorePageProps} from '../StorePage';
+import styles from './EditStore.module.css';
 
-const EditStore = async ({params}: {params: {storeId: string}}) => {
+const EditStore = async ({params: {storeParam}}: StorePageProps) => {
   const headerList = headers();
   const userId = headerList.get('X-USER-ID');
   try {
-    const res = await fetch(
-      getURL(`/api/next-stores/stores/${params.storeId}`)
-    );
+    const res = await fetch(getURL(`/api/next-stores/stores/${storeParam}`));
     const json = (await res.json()) as IStore & {
       message?: string;
       status?: string;
@@ -31,11 +30,7 @@ const EditStore = async ({params}: {params: {storeId: string}}) => {
       );
     }
     if (!json) return <Spinner />;
-    return (
-      <>
-        <StoreEditor store={json.data} />
-      </>
-    );
+    return <StoreEditor store={json.data} />;
   } catch (err) {
     if (!(err instanceof Error)) return;
     console.error(err);

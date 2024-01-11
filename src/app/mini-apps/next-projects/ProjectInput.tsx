@@ -4,7 +4,7 @@ import {useState, FormEvent} from 'react';
 import styles from './ProjectInput.module.css';
 import ky from 'ky';
 import {getURL} from '@/utils/path';
-import Spinner from '@/components/Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import {IProject} from './Project.model';
 
 interface Validatable {

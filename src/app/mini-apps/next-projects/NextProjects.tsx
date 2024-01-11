@@ -8,7 +8,7 @@ import styles from './NextProjects.module.css';
 import ProjectInput from './ProjectInput';
 import PrjList from './PrjList';
 import {getURL} from '@/utils/path';
-import Spinner from '@/components/Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import {IProject} from './Project.model';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
 

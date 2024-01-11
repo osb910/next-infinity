@@ -1,4 +1,4 @@
-import Spinner from '@/components/Spinner/Spinner';
+import Spinner from '@/ui/Spinner/Spinner';
 import EventContent from '@/components/events/event-detail/EventContent';
 import EventLogistics from '@/components/events/event-detail/EventLogistics';
 import EventSummary from '@/components/events/event-detail/EventSummary';
