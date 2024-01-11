@@ -4,12 +4,11 @@ import Spinner from '@/ui/Spinner/Spinner';
 import StoreEditor from '@/components/next-stores/StoreEditor';
 import {getURL} from '@/utils/path';
 import type {IStore} from '@/services/next-stores/store';
-import type {IUser} from '@/services/next-stores/user';
 import type {IReview} from '@/services/next-stores/review';
-import {StorePageProps} from '../StorePage';
 import styles from './EditStore.module.css';
+import type {PageProps} from '@/types';
 
-const EditStore = async ({params: {storeParam}}: StorePageProps) => {
+const EditStore = async ({params: {storeParam}}: PageProps) => {
   const headerList = headers();
   const userId = headerList.get('X-USER-ID');
   try {

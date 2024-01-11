@@ -2,7 +2,7 @@
 import {useState} from 'react';
 import {Switch, Route} from 'react-router-dom';
 // @ts-ignore
-import {Frame, withSounds, withStyles} from 'arwes';
+import {Frame} from 'arwes';
 import Centered from '@/components/nasa-mission-control/Centered';
 import Header from '@/components/nasa-mission-control/Header';
 import Footer from '@/components/nasa-mission-control/Footer';
@@ -100,4 +100,4 @@ const Home = ({sounds, classes}: HomeProps) => {
   );
 };
 
-export default withSounds()(withStyles(styles)(Home));
+export default Home;
