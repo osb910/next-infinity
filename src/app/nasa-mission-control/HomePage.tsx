@@ -20,6 +20,7 @@ import Home from '@/components/nasa-mission-control/pages/Home';
 const HomePage = () => {
   try {
     return (
+      <h1>Frontend Coming Soon</h1>
       // <ThemeProvider theme={createTheme(theme)}>
       //   <SoundsProvider sounds={createSounds(sounds)}>
       //     <Arwes
@@ -34,9 +35,9 @@ const HomePage = () => {
       // </Arwes>
       // </SoundsProvider>
       // </ThemeProvider> */}
-      <Home
+      // <Home
       // show={anim.entered}
-      />
+      // />
     );
   } catch (err) {
     if (!(err instanceof Error)) return;
