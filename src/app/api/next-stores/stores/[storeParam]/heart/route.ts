@@ -1,14 +1,12 @@
-import {NextRequest, NextResponse} from 'next/server';
+import {NextResponse} from 'next/server';
 import User, {type IUser} from '@/services/next-stores/user';
-import {type HydratedDocument} from 'mongoose';
-import {Params} from '../route';
+import {type StoreRoute} from '../route';
+import type {HDoc} from '@/types';
 
-export const GET = async (req: NextRequest, {params: {storeParam}}: Params) => {
+export const GET: StoreRoute = async (req, {params: {storeParam}}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
-    const user = (await User.findById(userId)) as HydratedDocument<IUser> & {
-      _doc: IUser;
-    };
+    const user = (await User.findById(userId)) as HDoc<IUser>;
     if (!user) {
       return NextResponse.json(
         {status: 'error', message: 'User not found!'},

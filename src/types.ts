@@ -1,7 +1,23 @@
-export interface PageProps {
-  params: Record<string, string>;
-  searchParams: Record<string, string | string[] | undefined>;
+import {type NextRequest} from 'next/server';
+import {type HydratedDocument} from 'mongoose';
+
+export interface PageProps<
+  T = Record<string, string>,
+  K = Record<string, string | string[] | undefined>
+> {
+  params: T;
+  searchParams: K;
 }
+
+export type AppPage<
+  T = Record<string, string>,
+  K = Record<string, string | string[] | undefined>
+> = (props: PageProps<T, K>) => Promise<any>;
+
+export type AppRoute<T = Record<string, string>> = (
+  req: NextRequest,
+  {params}: {params: T}
+) => Promise<any>;
 
 export interface P8n {
   count: number;
@@ -18,3 +34,7 @@ export type GetP8n = (
   currentPage?: number | string | null,
   perPage?: number | string | null
 ) => P8n;
+
+export type HDoc<T> = HydratedDocument<T> & {
+  _doc: T;
+};

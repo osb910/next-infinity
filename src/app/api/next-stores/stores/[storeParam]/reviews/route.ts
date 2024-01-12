@@ -1,15 +1,11 @@
-import {NextRequest, NextResponse} from 'next/server';
-import Review from '@/services/next-stores/review';
-import {IReview} from '@/services/next-stores/review/review.types';
-import Store, {IStore} from '@/services/next-stores/store';
-import {HydratedDocument} from 'mongoose';
+import {NextResponse} from 'next/server';
+import Review, {type IReview} from '@/services/next-stores/review';
+import Store, {type IStore} from '@/services/next-stores/store';
 import {getModelQuery} from '@/services/services.lib';
-import {Params} from '../route';
+import {type HydratedDocument} from 'mongoose';
+import {type StoreRoute} from '../route';
 
-export const POST = async (
-  req: NextRequest,
-  {params: {storeParam}}: Params
-) => {
+export const POST: StoreRoute = async (req, {params: {storeParam}}) => {
   const userId = req.headers.get('X-USER-ID');
   const storeQuery = getModelQuery(storeParam);
   try {

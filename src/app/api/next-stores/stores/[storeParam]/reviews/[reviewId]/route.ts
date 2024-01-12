@@ -1,14 +1,10 @@
-import {NextRequest, NextResponse} from 'next/server';
-import Review, {IReview} from '@/services/next-stores/review';
+import {NextResponse} from 'next/server';
+import Review, {type IReview} from '@/services/next-stores/review';
+import {type StoreRoute} from '../../route';
 
-export type Params = {
-  params: {
-    storeParam: string;
-    reviewId: string;
-  };
-};
+type ReviewRoute = StoreRoute<{reviewId: string}>;
 
-export const PUT = async (req: NextRequest, {params: {reviewId}}: Params) => {
+export const PUT: ReviewRoute = async (req, {params: {reviewId}}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
     const {reviewText, rating} = await req.json();
@@ -59,10 +55,7 @@ export const PUT = async (req: NextRequest, {params: {reviewId}}: Params) => {
   }
 };
 
-export const DELETE = async (
-  req: NextRequest,
-  {params: {reviewId}}: Params
-) => {
+export const DELETE: ReviewRoute = async (req, {params: {reviewId}}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
     const res = (await Review.findOneAndDelete({

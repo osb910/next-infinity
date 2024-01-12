@@ -5,7 +5,7 @@ import InteractiveMap from '@/ui/InteractiveMap';
 import {getURL} from '@/utils/path';
 import {type Metadata} from 'next';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
-import type {PageProps} from '@/types';
+import type {AppPage} from '@/types';
 import styles from './MapPage.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -15,10 +15,16 @@ export const metadata: Metadata = {
   description: 'Find stores near you or anywhere in the world',
 };
 
-const MapPage = async ({searchParams: {lng, lat, selected}}: PageProps) => {
+type SearchParams = {lng: string; lat: string; selected: string};
+
+const MapPage: AppPage<{}, SearchParams> = async ({
+  searchParams: {lng, lat, selected},
+}) => {
   try {
     const res = await fetch(
-      getURL(`/api/next-stores/stores/near?lng=${lng}&lat=${lat}`)
+      getURL(
+        `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=14000`
+      )
     );
     const json = (await res.json()) as {
       status: string;

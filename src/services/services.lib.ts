@@ -166,7 +166,7 @@ export const getNearby = async (
     const docs = await Model.find({
       location: {
         $near: {
-          $maxDistance: maxDistance || 10000,
+          $maxDistance: +(maxDistance ?? 0) || 10000,
           $geometry: {
             type: 'Point',
             coordinates: [lng ? +lng : 0, lat ? +lat : 0],

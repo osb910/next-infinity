@@ -1,18 +1,19 @@
-import {type NextRequest, NextResponse} from 'next/server';
+import {NextResponse} from 'next/server';
 import Store, {
   getStore,
   updateStore,
   type IStore,
 } from '@/services/next-stores/store';
 import {getModelQuery} from '@/services/services.lib';
+import type {AppRoute} from '@/types';
 
-export type Params = {
-  params: {
+export type StoreRoute<T = Record<string, string>> = AppRoute<
+  {
     storeParam: string;
-  };
-};
+  } & T
+>;
 
-export const GET = async (req: NextRequest, {params: {storeParam}}: Params) => {
+export const GET: StoreRoute = async (_, {params: {storeParam}}) => {
   try {
     const json = await getStore(storeParam);
     return NextResponse.json(json, {status: json.code});
@@ -26,7 +27,7 @@ export const GET = async (req: NextRequest, {params: {storeParam}}: Params) => {
   }
 };
 
-export const PUT = async (req: NextRequest, {params: {storeParam}}: Params) => {
+export const PUT: StoreRoute = async (req, {params: {storeParam}}) => {
   try {
     const json = await updateStore(req, storeParam);
     return NextResponse.json(json, {status: json.code});
@@ -40,10 +41,7 @@ export const PUT = async (req: NextRequest, {params: {storeParam}}: Params) => {
   }
 };
 
-export const DELETE = async (
-  req: NextRequest,
-  {params: {storeParam}}: Params
-) => {
+export const DELETE: StoreRoute = async (req, {params: {storeParam}}) => {
   const userId = req.headers.get('X-USER-ID');
   const storeQuery = getModelQuery(storeParam);
   try {
