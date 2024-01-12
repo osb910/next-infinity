@@ -7,6 +7,7 @@ import {
   useCallback,
   type ComponentProps,
   type ReactNode,
+  useMemo,
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
 import {Point} from 'ol/geom';
@@ -56,13 +57,12 @@ const InteractiveMap = ({
 }: InteractiveMapProps) => {
   const userCoords = getCoords();
   const [first, ...rest] = locations;
-  const origin = [
+  const [loc, setLoc] = useState([
     first?.lng ?? userCoords?.lng ?? 0,
     first?.lat ?? userCoords?.lat ?? 0,
-  ];
-  const [loc, setLoc] = useState(origin);
+  ]);
   const initial: RView = {
-    center: fromLonLat(origin),
+    center: fromLonLat(loc),
     zoom: 12,
   };
   const [view, setView] = useState(initial);
@@ -71,12 +71,28 @@ const InteractiveMap = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+    const newLoc = [
+      first?.lng ?? userCoords?.lng ?? 0,
+      first?.lat ?? userCoords?.lat ?? 0,
+    ];
+    setLoc(newLoc);
+    setView({
+      center: fromLonLat(newLoc),
+      zoom: 12,
+    });
+  }, [first?.lng, first?.lat, userCoords?.lng, userCoords?.lat]);
 
   const selectItem = (itemId: string) => {
+    if (!itemId) return;
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.set('selected', itemId);
     const search = current.toString();
     router.push(`${pathname}${search ? `?${search}` : ''}`);
+    router.refresh();
   };
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
@@ -108,96 +124,98 @@ const InteractiveMap = ({
       className={`${styles.wrapper} ${delegated.className ?? ''}`}
       id='interactive-map'
     >
-      <RMap
-        className={styles.map}
-        initial={initial}
-        view={[view, setView]}
-        noDefaultControls
-        // onClick={changeView}
-      >
-        <ROSM
-        // onTileLoadStart={evt => {
-        //   evt.stopPropagation();
-        //   console.log('onTileLoadStart', evt);
-        //   setIsLoading(current => current + 1);
-        // }}
-        // onTileLoadEnd={evt => {
-        //   evt.stopPropagation();
+      {(!!isLoading || !domLoaded) && (
+        <div className={styles.loader}>
+          <Spinner size={36} />
+        </div>
+      )}
+      {domLoaded && (
+        <RMap
+          className={styles.map}
+          initial={initial}
+          view={[view, setView]}
+          noDefaultControls
+          // onClick={changeView}
+        >
+          <ROSM
+          // onTileLoadStart={evt => {
+          //   evt.stopPropagation();
+          //   console.log('onTileLoadStart', evt);
+          //   setIsLoading(current => current + 1);
+          // }}
+          // onTileLoadEnd={evt => {
+          //   evt.stopPropagation();
 
-        //   console.log('onTileLoadEnd', evt);
-        //   setIsLoading(current => current - 1);
-        // }}
-        />
-        {(useAttribution || isFullScreen) && <RControl.RAttribution />}
-        {(useScaleLine || isFullScreen) && <RControl.RScaleLine />}
-        {(useZoom || isFullScreen) && <RControl.RZoom />}
-        {(useZoomSlider || isFullScreen) && <RControl.RZoomSlider />}
-        {(useFullScreen || isFullScreen) && (
-          <RControl.RFullScreen
-            className={styles.fullscreenToggler}
-            source='interactive-map'
-            label='&#x6269;'
-            labelActive='&#x564f;'
+          //   console.log('onTileLoadEnd', evt);
+          //   setIsLoading(current => current - 1);
+          // }}
           />
-        )}
-        {(useCenterBtn || isFullScreen) && (
-          <RControl.RCustom className={styles.centerBtn}>
-            <button
+          {(useAttribution || isFullScreen) && <RControl.RAttribution />}
+          {(useScaleLine || isFullScreen) && <RControl.RScaleLine />}
+          {(useZoom || isFullScreen) && <RControl.RZoom />}
+          {(useZoomSlider || isFullScreen) && <RControl.RZoomSlider />}
+          {(useFullScreen || isFullScreen) && (
+            <RControl.RFullScreen
+              className={styles.fullscreenToggler}
+              source='interactive-map'
+              label='&#x6269;'
+              labelActive='&#x564f;'
+            />
+          )}
+          {(useCenterBtn || isFullScreen) && (
+            <RControl.RCustom className={styles.centerBtn}>
+              <button
+                onClick={(evt: any) => {
+                  console.log(evt);
+                  setView({...view, center: fromLonLat(loc)});
+                }}
+              >
+                o
+              </button>
+            </RControl.RCustom>
+          )}
+          <RLayerVector zIndex={12}>
+            <RStyle.RStyle>
+              <RStyle.RIcon
+                color={'rgba(30, 30, 220, 0.9)'}
+                size={[40, 40]}
+                src={'/img/icons/marker.svg'}
+                anchor={[0.5, 0.8]}
+              />
+            </RStyle.RStyle>
+            <RFeature
+              geometry={new Point(fromLonLat(loc))}
               onClick={(evt: any) => {
-                console.log(evt);
-                setView({...view, center: fromLonLat(loc)});
+                evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
+                  duration: 300,
+                  maxZoom: 15,
+                });
+                selectItem(first?.id ?? '');
               }}
             >
-              o
-            </button>
-          </RControl.RCustom>
-        )}
-        <RLayerVector zIndex={12}>
-          <RStyle.RStyle>
-            <RStyle.RIcon
-              color={'rgba(30, 30, 220, 0.9)'}
-              size={[40, 40]}
-              src={'/img/icons/marker.svg'}
-              anchor={[0.5, 0.8]}
-            />
-          </RStyle.RStyle>
-          <RFeature
-            geometry={new Point(fromLonLat(loc))}
-            onClick={(evt: any) => {
-              evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
-                duration: 300,
-                maxZoom: 15,
-              });
-              selectItem(first.id);
-            }}
-          >
-            {/* {items &&
+              {/* {items &&
               ItemComponent &&
               selectedItem?._id === items?.[0]?._id && (
                 <ROverlay className={styles.overlay}>
                   <ItemComponent item={items[0] ?? {}} />
                 </ROverlay>
               )} */}
-          </RFeature>
-          {rest?.map(({lng, lat, id}, i) => (
-            <RFeature
-              geometry={new Point(fromLonLat([lng, lat]))}
-              onClick={(evt: any) => {
-                evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
-                  duration: 300,
-                  maxZoom: 15,
-                });
-                selectItem(id);
-              }}
-              key={`marker-${i + 2}`}
-            ></RFeature>
-          ))}
-        </RLayerVector>
-      </RMap>
-      {!!isLoading && (
-        <div className={styles.loader}>
-          <Spinner size={36} />
-        </div>
+            </RFeature>
+            {rest?.map(({lng, lat, id}, i) => (
+              <RFeature
+                geometry={new Point(fromLonLat([lng, lat]))}
+                onClick={(evt: any) => {
+                  evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
+                    duration: 300,
+                    maxZoom: 15,
+                  });
+                  selectItem(id ?? '');
+                }}
+                key={`marker-${i + 2}`}
+              ></RFeature>
+            ))}
+          </RLayerVector>
+        </RMap>
       )}
       {children}
     </figure>
