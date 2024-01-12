@@ -6,14 +6,11 @@ import {Edit} from 'react-feather';
 import {MdOutlineRateReview} from 'react-icons/md';
 import FavoriteToggler from './FavoriteToggler';
 import Eraser from './Eraser';
-import {IStore} from '@/services/next-stores/store';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
 import styles from './Store.module.css';
-import {IReview} from '@/services/next-stores/review/review.types';
 
 export interface StoreProps {
-  item: IStore & {
-    reviews: Array<IReview>;
-  };
+  item: IStoreWithReviews;
   userId: string;
 }
 

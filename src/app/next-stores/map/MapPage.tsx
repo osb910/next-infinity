@@ -3,22 +3,19 @@ import AddressAutoComplete from '@/components/next-stores/AddressAutoComplete';
 import ErrorAlert from '@/components/ErrorAlert';
 import InteractiveMap from '@/ui/InteractiveMap';
 import {getURL} from '@/utils/path';
-import {type IStore} from '@/services/next-stores/store';
-import {type IReview} from '@/services/next-stores/review';
 import {type Metadata} from 'next';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
+import type {PageProps} from '@/types';
 import styles from './MapPage.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
-  title: 'Map | Next Stores',
+  title: 'Map',
   description: 'Find stores near you or anywhere in the world',
 };
 
-export interface MapPageProps {
-  searchParams: {lng: string; lat: string; selected: string};
-}
-
-const MapPage = async ({searchParams}: MapPageProps) => {
-  const {lng, lat, selected} = searchParams;
+const MapPage = async ({searchParams: {lng, lat, selected}}: PageProps) => {
   try {
     const res = await fetch(
       getURL(`/api/next-stores/stores/near?lng=${lng}&lat=${lat}`)
@@ -27,7 +24,7 @@ const MapPage = async ({searchParams}: MapPageProps) => {
       status: string;
       code: number;
       message: string;
-      data: Array<IStore & {reviews: Array<IReview>}>;
+      data: Array<IStoreWithReviews>;
     };
     if (json?.status === 'error') {
       throw new Error(json.message);
