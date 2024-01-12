@@ -10,10 +10,10 @@ import NavLink from '../../components/next-stores/NavLink';
 import Search from '../../components/next-stores/Search';
 import {getURL} from '@/utils/path';
 import UserNav from '@/components/next-stores/UserNav';
-import {type IUser} from '@/services/next-stores/user';
 import {UserProvider} from '@/components/next-stores/useUser';
-import styles from './HomePage.module.css';
 import {type Metadata} from 'next';
+import {type IUser} from '@/services/next-stores/user';
+import styles from './HomePage.module.css';
 
 export const metadata: Metadata = {
   title: {

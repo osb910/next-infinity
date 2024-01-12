@@ -1,22 +1,18 @@
 import {headers} from 'next/headers';
 import Stores from '@/components/next-stores/Stores';
 import ErrorAlert from '@/components/ErrorAlert';
+import {getURL} from '@/utils/path';
+import {type Metadata} from 'next';
 import {type IStore} from '@/services/next-stores/store';
 import {type IReview} from '@/services/next-stores/review';
-import type {P8n} from '@/types';
-import {getURL} from '@/utils/path';
-import {Metadata} from 'next';
+import type {AppPage, P8n} from '@/types';
 
 export const metadata: Metadata = {
-  title: 'Stores | Next Stores',
-  description: 'Stores page',
+  title: 'Stores',
+  description: 'Browse all stores',
 };
 
-interface StoresPageProps {
-  searchParams: {p: string; limit: string};
-}
-
-const StoresPage = async ({searchParams: {p, limit}}: StoresPageProps) => {
+const StoresPage: AppPage<{}, {p: string}> = async ({searchParams: {p}}) => {
   const userId = headers().get('X-USER-ID') ?? '';
   try {
     const res = await fetch(getURL(`/api/next-stores/stores?p=${p}&limit=6`), {

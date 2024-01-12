@@ -1,4 +1,5 @@
 import {type NextRequest} from 'next/server';
+import {type Metadata, type ResolvingMetadata} from 'next';
 import {type HydratedDocument} from 'mongoose';
 
 export interface PageProps<
@@ -13,6 +14,11 @@ export type AppPage<
   T = Record<string, string>,
   K = Record<string, string | string[] | undefined>
 > = (props: PageProps<T, K>) => Promise<any>;
+
+export type GetMetadata<T extends (...args: any) => any = AppPage> = (
+  props: Parameters<T>[0],
+  parent: ResolvingMetadata
+) => Promise<Metadata>;
 
 export type AppRoute<T = Record<string, string>> = (
   req: NextRequest,
@@ -38,3 +44,10 @@ export type GetP8n = (
 export type HDoc<T> = HydratedDocument<T> & {
   _doc: T;
 };
+
+export interface JsonRes<T = any> extends Partial<P8n> {
+  status: 'status' | 'error' | 'warning' | 'notice';
+  code: number;
+  message: string;
+  data?: T;
+}

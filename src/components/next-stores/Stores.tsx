@@ -1,12 +1,11 @@
 import StoreCard from './StoreCard';
 import Pagination from '@/ui/Pagination';
-import {type IStore} from '@/services/next-stores/store';
-import {type IReview} from '@/services/next-stores/review';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {P8n} from '@/types';
 import styles from './Store.module.css';
 
 type StoresProps = Pick<P8n, 'count' | 'pages' | 'page'> & {
-  stores: Array<IStore & {reviews: Array<IReview>}>;
+  stores: Array<IStoreWithReviews>;
   userId: string;
   paginate?: boolean;
 };

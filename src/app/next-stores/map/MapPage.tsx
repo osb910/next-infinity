@@ -5,7 +5,7 @@ import InteractiveMap from '@/ui/InteractiveMap';
 import {getURL} from '@/utils/path';
 import {type Metadata} from 'next';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
-import type {AppPage} from '@/types';
+import type {AppPage, JsonRes} from '@/types';
 import styles from './MapPage.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -26,12 +26,7 @@ const MapPage: AppPage<{}, SearchParams> = async ({
         `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=14000`
       )
     );
-    const json = (await res.json()) as {
-      status: string;
-      code: number;
-      message: string;
-      data: Array<IStoreWithReviews>;
-    };
+    const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
     if (json?.status === 'error') {
       throw new Error(json.message);
     }

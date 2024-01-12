@@ -1,32 +1,31 @@
 import SingleStore from '@/components/next-stores/SingleStore';
 import {getURL} from '@/utils/path';
 import ErrorAlert from '@/components/ErrorAlert';
-import type {Metadata, ResolvingMetadata} from 'next';
-import type {PageProps} from '@/types';
+import type {AppPage, GetMetadata} from '@/types';
 
-export const generateMetadata = async (
-  {params: {storeParam}}: PageProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> => {
+export type StorePg = AppPage<{storeParam: string}>;
+
+export const generateMetadata: GetMetadata<StorePg> = async (
+  {params: {storeParam}},
+  parent
+) => {
   const res = await fetch(getURL(`/api/next-stores/stores/${storeParam}`));
   const json = await res.json();
   console.log(json);
-  const metadata: Metadata =
+  const metadata =
     json?.status === 'error'
       ? {
-          title: 'Error | Next Stores',
+          title: 'Error',
           description: json.message,
         }
       : {
-          title: `${json.data.name} | Next Stores`,
-          description: `${json.data.description}`,
+          title: json.data.name,
+          description: json.data.description,
         };
-  const previous = await parent;
-  console.log(previous);
   return metadata;
 };
 
-const Store = async ({params: {storeParam}}: PageProps) => {
+const Store: StorePg = async ({params: {storeParam}}) => {
   try {
     const res = await fetch(getURL(`/api/next-stores/stores/${storeParam}`));
     const json = await res.json();

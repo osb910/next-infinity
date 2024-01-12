@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import {IReview} from '@/services/next-stores/review/review.types';
-import {IStore} from '@/services/next-stores/store';
 import {getURL} from '@/utils/path';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
+import type {JsonRes} from '@/types';
 import styles from './TopPage.module.css';
 
 const TopPage = async () => {
@@ -13,10 +13,9 @@ const TopPage = async () => {
         Accept: 'application/json, text/plain, */*',
       },
     });
-    const json = (await res.json()) as {
-      count: number;
-      data: Array<IStore & {reviews: Array<IReview>; averageRating: number}>;
-    };
+    const json = (await res.json()) as JsonRes<
+      Array<IStoreWithReviews & {averageRating: number}>
+    >;
     return (
       <>
         <h1>Top {json.count} Stores</h1>
@@ -31,7 +30,7 @@ const TopPage = async () => {
             </tr>
           </thead>
           <tbody>
-            {json.data.map((store, idx) => (
+            {json?.data?.map((store, idx) => (
               <tr key={store._id}>
                 <td>
                   <Link href={`stores/${store.slug}`}>
