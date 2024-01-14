@@ -7,7 +7,6 @@ import {
   useCallback,
   type ComponentProps,
   type ReactNode,
-  useMemo,
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
 import {Point} from 'ol/geom';
@@ -20,17 +19,19 @@ import {
   RStyle,
   RControl,
 } from 'rlayers';
-import {type MapBrowserEvent} from 'ol';
-import {type RView} from 'rlayers/RMap';
 import Spinner from '@/ui/Spinner';
 import {getCoords} from '@/utils/numbers';
 import {IS_SERVER} from '@/utils/path';
+import {type MapBrowserEvent} from 'ol';
+import {type RView} from 'rlayers/RMap';
+import type {GeoLocation} from '@/types';
 import 'rlayers/control/layers.css';
 import 'ol/ol.css';
 import styles from './InteractiveMap.module.css';
 
 export interface InteractiveMapProps extends ComponentProps<'figure'> {
   locations: Array<{lng: number; lat: number; id: string}>;
+  userLocation?: GeoLocation;
   height?: string;
   children?: ReactNode;
   items?: Array<any>;
@@ -44,6 +45,7 @@ export interface InteractiveMapProps extends ComponentProps<'figure'> {
 
 const InteractiveMap = ({
   locations,
+  userLocation,
   height,
   items,
   children,
@@ -55,12 +57,16 @@ const InteractiveMap = ({
   useCenterBtn = true,
   ...delegated
 }: InteractiveMapProps) => {
-  const userCoords = getCoords();
+  console.log({userLocation});
   const [first, ...rest] = locations;
-  const [loc, setLoc] = useState([
-    first?.lng ?? userCoords?.lng ?? 0,
-    first?.lat ?? userCoords?.lat ?? 0,
-  ]);
+  const getOrigin = useCallback(() => {
+    const userCoords = getCoords();
+    return [
+      first?.lng ?? userLocation?.longitude ?? userCoords?.lng ?? 0,
+      first?.lat ?? userLocation?.latitude ?? userCoords?.lat ?? 0,
+    ];
+  }, [first?.lng, userLocation?.longitude, first?.lat, userLocation?.latitude]);
+  const [loc, setLoc] = useState(getOrigin);
   const initial: RView = {
     center: fromLonLat(loc),
     zoom: 12,
@@ -75,16 +81,13 @@ const InteractiveMap = ({
 
   useEffect(() => {
     setDomLoaded(true);
-    const newLoc = [
-      first?.lng ?? userCoords?.lng ?? 0,
-      first?.lat ?? userCoords?.lat ?? 0,
-    ];
+    const newLoc = getOrigin();
     setLoc(newLoc);
     setView({
       center: fromLonLat(newLoc),
       zoom: 12,
     });
-  }, [first?.lng, first?.lat, userCoords?.lng, userCoords?.lat]);
+  }, [getOrigin]);
 
   const selectItem = (itemId: string) => {
     if (!itemId) return;
@@ -192,6 +195,7 @@ const InteractiveMap = ({
                 });
                 selectItem(first?.id ?? '');
               }}
+              key={'marker-1'}
             >
               {/* {items &&
               ItemComponent &&

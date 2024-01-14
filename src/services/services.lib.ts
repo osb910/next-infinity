@@ -153,36 +153,35 @@ export const getNearby = async (
   const {
     nextUrl: {searchParams},
   } = req;
-  let lng = searchParams.get('lng');
-  let lat = searchParams.get('lat');
+  const lng = searchParams.get('lng');
+  const lat = searchParams.get('lat');
   const page = searchParams.get('p');
   const maxDistance = searchParams.get('max-distance');
   const limit = searchParams.get('limit');
   try {
     const loc = await getLocationFromIp(req);
-    if (!lng || lng === 'undefined' || !lat || lat === 'undefined') {
-      lng = loc.longitude.toString();
-      lat = loc.latitude.toString();
-    }
+    const longitude = !lng || lng === 'undefined' ? loc?.longitude ?? 0 : +lng;
+    const latitude = !lat || lat === 'undefined' ? loc?.latitude ?? 0 : +lat;
     const query = {
       location: {
         $near: {
           $maxDistance: +(maxDistance ?? 0) || 10000,
           $geometry: {
             type: 'Point',
-            coordinates: [lng ? +lng : 0, lat ? +lat : 0],
+            coordinates: [longitude, latitude],
           },
         },
       },
     };
-    const count = await Model.countDocuments(query);
-    const p8n = getP8n(count, page, limit);
-    const docs = await Model.find(query).skip(p8n.skip).limit(p8n.limit);
+    // const count = await Model.countDocuments(query);
+    // const p8n = getP8n(count, page, limit);
+    // console.log(p8n);
+    const docs = await Model.find(query).limit(limit ? +limit : 10);
     return {
       status: 'success',
       message: `Fetched nearby ${Model.modelName}.`,
       code: 200,
-      ...p8n,
+      // ...p8n,
       data: {userLocation: loc, stores: docs},
     };
   } catch (err) {

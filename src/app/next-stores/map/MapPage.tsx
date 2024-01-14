@@ -26,18 +26,23 @@ const MapPage: AppPage<{}, SearchParams> = async ({
         `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=14000`
       )
     );
-    const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
+    const json = (await res.json()) as JsonRes<{
+      stores: Array<IStoreWithReviews>;
+      userLocation: any;
+    }>;
     if (json?.status === 'error') {
       throw new Error(json.message);
     }
     const locations =
-      json?.data?.map(store => ({
+      json?.data?.stores?.map(store => ({
         lng: store.location.coordinates[0],
         lat: store.location.coordinates[1],
         id: store._id,
       })) ?? [];
 
-    const selectedItem = json?.data?.find(store => store._id === selected);
+    const selectedItem = json?.data?.stores?.find(
+      store => store._id === selected
+    );
 
     return (
       <>
@@ -48,9 +53,10 @@ const MapPage: AppPage<{}, SearchParams> = async ({
             placeholder='Search for anywhere'
           />
           <InteractiveMap
+            userLocation={json?.data?.userLocation}
             locations={locations}
             height='60vh'
-            items={json?.data ?? []}
+            items={json?.data?.stores ?? []}
           >
             {selectedItem && <StoreCard item={selectedItem} userId='' />}
           </InteractiveMap>

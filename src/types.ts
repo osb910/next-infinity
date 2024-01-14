@@ -51,3 +51,19 @@ export interface JsonRes<T = any> extends Partial<P8n> {
   message: string;
   data?: T;
 }
+
+export interface GeoLocation {
+  ip: string | undefined;
+  country: string | undefined;
+  countryCode?: string;
+  region: string | undefined;
+  city: string | undefined;
+  longitude: number | undefined;
+  latitude: number | undefined;
+  zipCode?: string;
+  timeZone?: string;
+  isp?: string;
+  asn?: string;
+  as?: string;
+  isProxy?: boolean;
+}

@@ -3,10 +3,9 @@ import Link from 'next/link';
 import ErrorAlert from '@/components/ErrorAlert';
 import Stores from '@/components/next-stores/Stores';
 import {getURL} from '@/utils/path';
-import {P8n} from '@/types';
-import {IStore} from '@/services/next-stores/store';
-import {IReview} from '@/services/next-stores/review/review.types';
 import {type Metadata} from 'next';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
+import type {JsonRes} from '@/types';
 
 export const metadata: Metadata = {
   title: 'Next Stores',
@@ -22,20 +21,16 @@ const HomePage = async () => {
         Accept: 'application/json, text/plain, */*',
       },
     });
-    const json = (await res.json()) as {
-      status: string;
-      message: string;
-      data: Array<IStore & {reviews: Array<IReview>}>;
-    } & P8n;
+    const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
     return (
       <>
         <h1>Stores</h1>
         <Stores
-          stores={json.data}
+          stores={json?.data ?? []}
           userId={userId}
-          pages={json.pages}
-          page={json.page}
-          count={json.count}
+          pages={json?.pages ?? 1}
+          page={json?.page ?? 1}
+          count={json?.count ?? 0}
           paginate={false}
         />
         <Link href='/next-stores/stores'>View all stores &rarr;</Link>
