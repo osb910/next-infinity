@@ -18,6 +18,7 @@ const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
     ),
     {
       cache: 'no-store',
+      next: {revalidate: 0},
     }
   );
   const json = (await res.json()) as JsonRes<{
@@ -28,6 +29,7 @@ const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
 };
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const generateMetadata: GetMetadata<MapPg> = async ({
   searchParams: {lng, lat},
