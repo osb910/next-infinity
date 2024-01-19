@@ -66,4 +66,5 @@ export interface GeoLocation {
   asn?: string;
   as?: string;
   isProxy?: boolean;
+  source?: string;
 }

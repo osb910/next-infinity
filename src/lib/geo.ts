@@ -13,9 +13,15 @@ export const getIp = async (req: NextRequest & Request) => {
   return ip;
 };
 
-export const getLocationFromIp = async (req: NextRequest & Request) => {
+export const getLocationFromIp = async (
+  req: NextRequest & Request,
+  source?: string
+) => {
   let loc: GeoLocation;
-  if (req.geo?.longitude && req.geo?.latitude) {
+  if (
+    (req.geo?.longitude && req.geo?.latitude && source !== 'ip2location') ||
+    source === 'vercel'
+  ) {
     loc = {
       ip: req?.ip,
       country: req.geo?.country,
@@ -23,6 +29,7 @@ export const getLocationFromIp = async (req: NextRequest & Request) => {
       city: req.geo?.city,
       longitude: req.geo?.longitude ? +req.geo?.longitude : undefined,
       latitude: req.geo?.latitude ? +req.geo?.latitude : undefined,
+      source: 'Vercel',
     };
     return loc;
   } else {
@@ -48,6 +55,7 @@ export const getLocationFromIp = async (req: NextRequest & Request) => {
         asn: locFromIp.asn === '-' ? undefined : locFromIp.asn,
         as: locFromIp.as === '-' ? undefined : locFromIp.as,
         isProxy: locFromIp.is_proxy === '-' ? undefined : locFromIp.is_proxy,
+        source: 'IP2Location',
       };
       return loc;
     } catch (err) {

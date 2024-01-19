@@ -10,6 +10,7 @@ import {
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
 import {Point} from 'ol/geom';
+import {boundingExtent, getCenter} from 'ol/extent';
 import {
   RMap,
   ROSM,
@@ -35,6 +36,7 @@ export interface InteractiveMapProps extends ComponentProps<'figure'> {
   height?: string;
   children?: ReactNode;
   items?: Array<any>;
+  useSelection?: boolean;
   useAttribution?: boolean;
   useScaleLine?: boolean;
   useZoom?: boolean;
@@ -49,6 +51,7 @@ const InteractiveMap = ({
   height,
   items,
   children,
+  useSelection = false,
   useAttribution = true,
   useScaleLine = true,
   useZoom = true,
@@ -67,9 +70,13 @@ const InteractiveMap = ({
     ];
   }, [first?.lng, userLocation?.longitude, first?.lat, userLocation?.latitude]);
   const [loc, setLoc] = useState(getOrigin);
+  const extent = boundingExtent(
+    locations.map(({lng, lat}) => fromLonLat([lng, lat]))
+  );
+  const center = locations.length ? getCenter(extent) : fromLonLat(loc);
   const initial: RView = {
-    center: fromLonLat(loc),
-    zoom: 12,
+    center,
+    zoom: 13,
   };
   const [view, setView] = useState(initial);
   const [isLoading, setIsLoading] = useState(0);
@@ -83,14 +90,12 @@ const InteractiveMap = ({
     setDomLoaded(true);
     const newLoc = getOrigin();
     setLoc(newLoc);
-    setView({
-      center: fromLonLat(newLoc),
-      zoom: 12,
-    });
-  }, [getOrigin]);
+    const center = locations.length ? getCenter(extent) : fromLonLat(newLoc);
+    setView({center, zoom: 13});
+  }, []);
 
   const selectItem = (itemId: string) => {
-    if (!itemId) return;
+    if (!itemId || !useSelection) return;
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.set('selected', itemId);
     const search = current.toString();
@@ -138,6 +143,7 @@ const InteractiveMap = ({
           initial={initial}
           view={[view, setView]}
           noDefaultControls
+          // extent={extent}
           // onClick={changeView}
         >
           <ROSM
@@ -167,12 +173,7 @@ const InteractiveMap = ({
           )}
           {(useCenterBtn || isFullScreen) && (
             <RControl.RCustom className={styles.centerBtn}>
-              <button
-                onClick={(evt: any) => {
-                  console.log(evt);
-                  setView({...view, center: fromLonLat(loc)});
-                }}
-              >
+              <button onClick={(evt: any) => setView({...view, center})}>
                 o
               </button>
             </RControl.RCustom>
@@ -191,7 +192,7 @@ const InteractiveMap = ({
               onClick={(evt: any) => {
                 evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
                   duration: 300,
-                  maxZoom: 15,
+                  maxZoom: 16,
                 });
                 selectItem(first?.id ?? '');
               }}
@@ -211,7 +212,7 @@ const InteractiveMap = ({
                 onClick={(evt: any) => {
                   evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
                     duration: 300,
-                    maxZoom: 15,
+                    maxZoom: 16,
                   });
                   selectItem(id ?? '');
                 }}

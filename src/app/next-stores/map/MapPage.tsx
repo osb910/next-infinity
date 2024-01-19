@@ -3,36 +3,48 @@ import AddressAutoComplete from '@/components/next-stores/AddressAutoComplete';
 import ErrorAlert from '@/components/ErrorAlert';
 import InteractiveMap from '@/ui/InteractiveMap';
 import {getURL} from '@/utils/path';
-import {type Metadata} from 'next';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
 import styles from './MapPage.module.css';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Map',
-  description: 'Find stores near you or anywhere in the world',
+type SearchParams = {lng: string; lat: string; selected: string};
+type MapPg = AppPage<{}, SearchParams>;
+
+const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
+  const res = await fetch(
+    getURL(
+      `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=14000`
+    )
+  );
+  const json = (await res.json()) as JsonRes<{
+    stores: Array<IStoreWithReviews>;
+    userLocation: GeoLocation;
+  }>;
+  return json;
 };
 
-type SearchParams = {lng: string; lat: string; selected: string};
-
-const MapPage: AppPage<{}, SearchParams> = async ({
-  searchParams: {lng, lat, selected},
+export const generateMetadata: GetMetadata<MapPg> = async ({
+  searchParams: {lng, lat},
 }) => {
+  const json = await fetcher({lng, lat});
+  const region = json.data?.userLocation?.region;
+
+  return {
+    title: `Map${!lng && !lat && region ? ` - ${region}` : ''}`,
+    description: 'Find stores near you or anywhere in the world',
+  };
+};
+
+const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
   try {
-    const res = await fetch(
-      getURL(
-        `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=14000`
-      )
-    );
-    const json = (await res.json()) as JsonRes<{
-      stores: Array<IStoreWithReviews>;
-      userLocation: any;
-    }>;
+    const json = await fetcher({lng, lat});
+
     if (json?.status === 'error') {
       throw new Error(json.message);
     }
+
     const locations =
       json?.data?.stores?.map(store => ({
         lng: store.location.coordinates[0],
@@ -53,10 +65,13 @@ const MapPage: AppPage<{}, SearchParams> = async ({
             placeholder='Search for anywhere'
           />
           <InteractiveMap
-            userLocation={json?.data?.userLocation}
             locations={locations}
+            userLocation={json?.data?.userLocation}
             height='60vh'
             items={json?.data?.stores ?? []}
+            useSelection
+            useAttribution
+            useZoomSlider
           >
             {selectedItem && <StoreCard item={selectedItem} userId='' />}
           </InteractiveMap>
