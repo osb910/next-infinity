@@ -7,16 +7,17 @@ import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
 import styles from './MapPage.module.css';
 
-export const dynamic = 'force-dynamic';
-
 type SearchParams = {lng: string; lat: string; selected: string};
 type MapPg = AppPage<{}, SearchParams>;
 
 const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
   const res = await fetch(
     getURL(
-      `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=14000`
-    )
+      `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=12000`
+    ),
+    {
+      cache: 'no-store',
+    }
   );
   const json = (await res.json()) as JsonRes<{
     stores: Array<IStoreWithReviews>;
@@ -24,6 +25,8 @@ const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
   }>;
   return json;
 };
+
+export const dynamic = 'force-dynamic';
 
 export const generateMetadata: GetMetadata<MapPg> = async ({
   searchParams: {lng, lat},
