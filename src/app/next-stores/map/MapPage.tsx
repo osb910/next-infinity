@@ -1,3 +1,4 @@
+import {headers} from 'next/headers';
 import StoreCard from '@/components/next-stores/StoreCard';
 import AddressAutoComplete from '@/components/next-stores/AddressAutoComplete';
 import ErrorAlert from '@/components/ErrorAlert';
@@ -34,6 +35,7 @@ export const revalidate = 0;
 export const generateMetadata: GetMetadata<MapPg> = async ({
   searchParams: {lng, lat},
 }) => {
+  const headerList = headers();
   noStore();
   const json = await fetcher({lng, lat});
   const region = json.data?.userLocation?.region;
