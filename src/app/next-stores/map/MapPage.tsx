@@ -6,6 +6,7 @@ import {getURL} from '@/utils/path';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
 import styles from './MapPage.module.css';
+import {unstable_noStore as noStore} from 'next/cache';
 
 type SearchParams = {lng: string; lat: string; selected: string};
 type MapPg = AppPage<{}, SearchParams>;
@@ -31,6 +32,7 @@ export const dynamic = 'force-dynamic';
 export const generateMetadata: GetMetadata<MapPg> = async ({
   searchParams: {lng, lat},
 }) => {
+  noStore();
   const json = await fetcher({lng, lat});
   const region = json.data?.userLocation?.region;
   console.log(json);
@@ -42,6 +44,7 @@ export const generateMetadata: GetMetadata<MapPg> = async ({
 };
 
 const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
+  noStore();
   try {
     const json = await fetcher({lng, lat});
 
