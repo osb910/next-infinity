@@ -12,6 +12,7 @@
     "@arwes/react": "^1.0.0-alpha.23",
     "@aws-sdk/client-s3": "^3.373.0",
     "@aws-sdk/signature-v4-crt": "^3.370.0",
+    "@maxmind/geoip2-node": "^5.0.0",
     "@radix-ui/react-tabs": "^1.0.4",
     "@types/adm-zip": "^0.5.0",
     "@types/archiver": "^5.3.2",

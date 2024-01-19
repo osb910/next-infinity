@@ -1,16 +1,134 @@
 import {type NextRequest} from 'next/server';
 import requestIp, {type Request} from 'request-ip';
+import {WebServiceClient} from '@maxmind/geoip2-node';
 import {env} from './helpers';
 import {GeoLocation} from '@/types';
+
+const nullLocation = {
+  ip: undefined,
+  country: undefined,
+  countryCode: undefined,
+  region: undefined,
+  city: undefined,
+  longitude: undefined,
+  latitude: undefined,
+};
+
+export const getGeoLocationAbstract = async (): Promise<GeoLocation> => {
+  try {
+    const abstractIPRes = await fetch(
+      `https://ipgeolocation.abstractapi.com/v1/?api_key=${env(
+        'ABSTRACT_API_KEY'
+      )}`
+    );
+    const json = await abstractIPRes.json();
+    if (json.error) {
+      throw new Error(json.error.message);
+    }
+    const offset = json.timezone?.gmt_offset;
+    const location = {
+      ip: json.ip_address,
+      country: json.country,
+      countryCode: json.country_code,
+      region: json.region,
+      city: json.city,
+      longitude: json.longitude,
+      latitude: json.latitude,
+      source: 'Abstract',
+      as: json.connection.autonomous_system_organization,
+      asn: `${json.connection.autonomous_system_number}`,
+      isp: json.connection.isp_name,
+      timeZone: `${offset > 0 ? '+' : offset === 0 ? '' : '-'}${offset.padStart(
+        2,
+        '0'
+      )}:00 - ${json.timezone.name}`,
+    };
+    return location;
+  } catch (err) {
+    console.error(err);
+    return nullLocation;
+  }
+};
 
 export const getIp = async (req: NextRequest & Request) => {
   const {headers, ip: nextIp} = req;
   let ip = nextIp ?? headers.get('x-ip') ?? requestIp.getClientIp(req);
   if (!ip || ip === 'undefined') {
+    const location = await getGeoLocationAbstract();
+    ip = location.ip ?? '';
+  }
+  if (!ip) {
     const ipRes = await fetch('https://api.ipify.org?format=json');
     ip = (await ipRes.json()).ip;
   }
   return ip;
+};
+
+export const getGeoLocationIP2Location = async (
+  ip: string
+): Promise<GeoLocation> => {
+  try {
+    const locFromIpRes = await fetch(
+      `https://api.ip2location.io/?key=${env('IP2LOCATION_API_KEY')}&ip=${ip}`
+    );
+    const json = await locFromIpRes.json();
+    const location = {
+      ip: json.ip === '-' ? undefined : json.ip,
+      country: json.country_name === '-' ? undefined : json.country_name,
+      countryCode: json.country_code === '-' ? undefined : json.country_code,
+      region: json.region_name === '-' ? undefined : json.region_name,
+      city: json.city_name === '-' ? undefined : json.city_name,
+      longitude: json.longitude,
+      latitude: json.latitude,
+      zipCode: json.zip_code === '-' ? undefined : json.zip_code,
+      timeZone: json.time_zone === '-' ? undefined : json.time_zone,
+      asn: json.asn === '-' ? undefined : json.asn,
+      as: json.as === '-' ? undefined : json.as,
+      isProxy: json.is_proxy === '-' ? undefined : json.is_proxy,
+      source: 'IP2Location',
+    };
+    return location;
+  } catch (err) {
+    console.error(err);
+    return {
+      ...nullLocation,
+      ip,
+    };
+  }
+};
+
+export const getGeoLocationMaxMind = async (
+  ip: string
+): Promise<GeoLocation> => {
+  const client = new WebServiceClient(
+    env('MAXMIND_ACCOUNT_ID') ?? '',
+    env('MAXMIND_LICENSE_KEY') ?? '',
+    {host: 'geolite.info'}
+  );
+  try {
+    const location = await client.city(ip ?? '');
+    return {
+      ip: location.traits.ipAddress,
+      country: location.country?.names.en,
+      countryCode: location.country?.isoCode,
+      region: location.city?.names.en,
+      city: location.subdivisions?.[0].names.en,
+      longitude: location.location?.longitude,
+      latitude: location.location?.latitude,
+      zipCode: location.postal?.code,
+      source: 'MaxMind',
+      as: location.traits.autonomousSystemOrganization,
+      asn: `${location.traits.autonomousSystemNumber}`,
+      isProxy: location.traits.isPublicProxy,
+      timeZone: location.location?.timeZone,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      ...nullLocation,
+      ip,
+    };
+  }
 };
 
 export const getLocationFromIp = async (
@@ -19,8 +137,11 @@ export const getLocationFromIp = async (
 ) => {
   let loc: GeoLocation;
   if (
-    (req.geo?.longitude && req.geo?.latitude && source !== 'ip2location') ||
-    source === 'vercel'
+    (req.geo?.longitude &&
+      req.geo?.latitude &&
+      source !== 'IP2Location' &&
+      source !== 'MaxMind') ||
+    source === 'Vercel'
   ) {
     loc = {
       ip: req?.ip,
@@ -34,29 +155,13 @@ export const getLocationFromIp = async (
     return loc;
   } else {
     try {
+      loc = await getGeoLocationAbstract();
+      if (loc.country) return loc;
       const ip = await getIp(req);
-      const locFromIpRes = await fetch(
-        `https://api.ip2location.io/?key=${env('IP2LOCATION_API_KEY')}&ip=${ip}`
-      );
-      const locFromIp = await locFromIpRes.json();
-      loc = {
-        ip: locFromIp.ip === '-' ? undefined : locFromIp.ip,
-        country:
-          locFromIp.country_name === '-' ? undefined : locFromIp.country_name,
-        countryCode:
-          locFromIp.country_code === '-' ? undefined : locFromIp.country_code,
-        region:
-          locFromIp.region_name === '-' ? undefined : locFromIp.region_name,
-        city: locFromIp.city_name === '-' ? undefined : locFromIp.city_name,
-        longitude: locFromIp.longitude,
-        latitude: locFromIp.latitude,
-        zipCode: locFromIp.zip_code === '-' ? undefined : locFromIp.zip_code,
-        timeZone: locFromIp.time_zone === '-' ? undefined : locFromIp.time_zone,
-        asn: locFromIp.asn === '-' ? undefined : locFromIp.asn,
-        as: locFromIp.as === '-' ? undefined : locFromIp.as,
-        isProxy: locFromIp.is_proxy === '-' ? undefined : locFromIp.is_proxy,
-        source: 'IP2Location',
-      };
+      loc = await getGeoLocationIP2Location(ip ?? '');
+      if (!loc.country) {
+        loc = await getGeoLocationMaxMind(ip ?? '');
+      }
       return loc;
     } catch (err) {
       console.error(err);

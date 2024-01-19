@@ -35,10 +35,12 @@ export const middleware = async (req: NextRequest) => {
   const response = NextResponse.next();
   response.headers.set('x-url', req.url);
   console.log('middleware', req.ip, req.headers.get('x-forwarded-for'));
-  response.headers.set(
-    'x-ip',
-    req.ip ?? req.headers.get('x-forwarded-for') ?? ''
-  );
+  let ipAddress = req.ip ?? req.headers.get('x-forwarded-for') ?? '';
+  // if (!ipAddress) {
+  //   const ipRes = await fetch('https://api.ipify.org?format=json');
+  //   ipAddress = (await ipRes.json()).ip;
+  // }
+  response.headers.set('x-ip', ipAddress);
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
     console.log('middleware', req.method, pathname);
 

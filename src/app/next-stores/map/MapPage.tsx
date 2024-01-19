@@ -30,6 +30,7 @@ export const generateMetadata: GetMetadata<MapPg> = async ({
 }) => {
   const json = await fetcher({lng, lat});
   const region = json.data?.userLocation?.region;
+  console.log(json);
 
   return {
     title: `Map${!lng && !lat && region ? ` - ${region}` : ''}`,
