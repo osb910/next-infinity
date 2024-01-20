@@ -2,7 +2,7 @@ import {type NextRequest} from 'next/server';
 import requestIp, {type Request} from 'request-ip';
 import {WebServiceClient} from '@maxmind/geoip2-node';
 import {env} from './helpers';
-import {GeoLocation} from '@/types';
+import type {GeoLocation} from '@/types';
 
 const nullLocation = {
   ip: undefined,
@@ -16,12 +16,12 @@ const nullLocation = {
 
 export const getGeoLocationAbstract = async (): Promise<GeoLocation> => {
   try {
-    const abstractIPRes = await fetch(
+    const res = await fetch(
       `https://ipgeolocation.abstractapi.com/v1/?api_key=${env(
         'ABSTRACT_API_KEY'
       )}`
     );
-    const json = await abstractIPRes.json();
+    const json = await res.json();
     if (json.error) {
       throw new Error(json.error.message);
     }
@@ -52,16 +52,58 @@ export const getGeoLocationAbstract = async (): Promise<GeoLocation> => {
 
 export const getIp = async (req: NextRequest & Request) => {
   const {headers, ip: nextIp} = req;
-  let ip = nextIp ?? headers.get('x-ip') ?? requestIp.getClientIp(req);
-  if (!ip || ip === 'undefined') {
-    const location = await getGeoLocationAbstract();
-    ip = location.ip ?? '';
+  let ipAddress = {
+    ip: nextIp,
+    ipSource: 'Vercel',
+  };
+  if (!ipAddress.ip || ipAddress.ip === 'undefined') {
+    ipAddress = {
+      ip: headers.get('x-ip') ?? '',
+      ipSource: 'headers',
+    };
   }
-  if (!ip) {
+  if (!ipAddress.ip) {
+    ipAddress = {
+      ip: requestIp.getClientIp(req) ?? '',
+      ipSource: 'request-ip',
+    };
+  }
+  if (!ipAddress.ip || ipAddress.ip === 'undefined') {
     const ipRes = await fetch('https://api.ipify.org?format=json');
-    ip = (await ipRes.json()).ip;
+    ipAddress = {
+      ip: (await ipRes.json()).ip,
+      ipSource: 'ipify',
+    };
   }
-  return ip;
+  return ipAddress;
+};
+
+export const getGeoLocationIPInfo = async (
+  ip: string
+): Promise<GeoLocation> => {
+  try {
+    const res = await fetch(
+      `https://ipinfo.io/${ip}?token=${env('IPINFO_API_KEY')}`
+    );
+    const json = await res.json();
+    const location = {
+      ip: json.ip,
+      country: json.country,
+      region: json.region,
+      city: json.city,
+      longitude: +json.loc.split(',')[1],
+      latitude: +json.loc.split(',')[0],
+      countryCode: json.country,
+      isp: json.org.split(' ')[1],
+      asn: json.org.split(' ')[0].replace(/^AS/, ''),
+      source: 'IPInfo',
+      timeZone: json.timezone,
+    };
+    return location;
+  } catch (err) {
+    console.error(err);
+    return nullLocation;
+  }
 };
 
 export const getGeoLocationIP2Location = async (
@@ -155,13 +197,18 @@ export const getLocationFromIp = async (
     return loc;
   } else {
     try {
-      loc = await getGeoLocationAbstract();
-      if (loc.country) return loc;
-      const ip = await getIp(req);
-      loc = await getGeoLocationIP2Location(ip ?? '');
+      const {ip, ipSource} = await getIp(req);
+      console.log('ip source', ipSource);
+      loc = await getGeoLocationIPInfo(ip ?? '');
+
+      if (!loc.country) {
+        loc = await getGeoLocationIP2Location(ip ?? '');
+      }
+
       if (!loc.country) {
         loc = await getGeoLocationMaxMind(ip ?? '');
       }
+
       return loc;
     } catch (err) {
       console.error(err);

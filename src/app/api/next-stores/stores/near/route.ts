@@ -3,7 +3,8 @@ import Store from '@/services/next-stores/store';
 import {getNearby} from '@/services/services.lib';
 import {type Request} from 'request-ip';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const GET = async (req: NextRequest & Request) => {
   try {

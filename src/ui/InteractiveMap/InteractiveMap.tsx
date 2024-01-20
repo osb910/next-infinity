@@ -19,6 +19,7 @@ import {
   ROverlay,
   RStyle,
   RControl,
+  type RFeatureUIEvent,
 } from 'rlayers';
 import Spinner from '@/ui/Spinner';
 import {getCoords} from '@/utils/numbers';
@@ -60,7 +61,6 @@ const InteractiveMap = ({
   useCenterBtn = true,
   ...delegated
 }: InteractiveMapProps) => {
-  console.log({userLocation});
   const [first, ...rest] = locations;
   const getOrigin = useCallback(() => {
     const userCoords = getCoords();
@@ -70,6 +70,7 @@ const InteractiveMap = ({
     ];
   }, [first?.lng, userLocation?.longitude, first?.lat, userLocation?.latitude]);
   const [loc, setLoc] = useState(getOrigin);
+  console.log({loc, userLocation});
   const extent = boundingExtent(
     locations.map(({lng, lat}) => fromLonLat([lng, lat]))
   );
@@ -189,8 +190,9 @@ const InteractiveMap = ({
             </RStyle.RStyle>
             <RFeature
               geometry={new Point(fromLonLat(loc))}
-              onClick={(evt: any) => {
-                evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
+              onClick={(evt: RFeatureUIEvent) => {
+                console.log(evt);
+                evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
                   duration: 300,
                   maxZoom: 16,
                 });
@@ -209,8 +211,8 @@ const InteractiveMap = ({
             {rest?.map(({lng, lat, id}, i) => (
               <RFeature
                 geometry={new Point(fromLonLat([lng, lat]))}
-                onClick={(evt: any) => {
-                  evt.map.getView().fit(evt.target.getGeometry().getExtent(), {
+                onClick={(evt: RFeatureUIEvent) => {
+                  evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
                     duration: 300,
                     maxZoom: 16,
                   });

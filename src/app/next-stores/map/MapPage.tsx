@@ -35,11 +35,10 @@ export const revalidate = 0;
 export const generateMetadata: GetMetadata<MapPg> = async ({
   searchParams: {lng, lat},
 }) => {
-  const headerList = headers();
   noStore();
   const json = await fetcher({lng, lat});
   const region = json.data?.userLocation?.region;
-  console.log(json);
+  console.log(json.data?.userLocation);
 
   return {
     title: `Map${!lng && !lat && region ? ` - ${region}` : ''}`,
@@ -51,6 +50,7 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
   noStore();
   try {
     const json = await fetcher({lng, lat});
+    console.log(json.data?.userLocation);
 
     if (json?.status === 'error') {
       throw new Error(json.message);
