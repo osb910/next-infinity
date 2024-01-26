@@ -69,38 +69,13 @@ const InteractiveMap = ({
     let coords = [first?.lng, first?.lat];
     if (!first?.lng && !first?.lat) {
       const userCoords = getCoords();
-      console.log({userLocation, userCoords});
-      if (
-        userLocation?.longitude &&
-        userCoords?.lng &&
-        Math.abs(userLocation?.longitude - userCoords?.lng) >= 1.5 &&
-        userLocation?.latitude &&
-        userCoords?.lat &&
-        Math.abs(userLocation?.latitude - userCoords?.lat) >= 1.5
-      ) {
-        console.log('far server location');
-        const current = new URLSearchParams(Array.from(searchParams.entries()));
-        current.set('lng', `${userCoords.lng}`);
-        current.set('lat', `${userCoords.lat}`);
-        const search = current.toString();
-        router.push(`${pathname}${search ? `?${search}` : ''}`);
-        router.refresh();
-      }
       coords = [
         userLocation?.longitude ?? userCoords?.lng ?? 0,
         userLocation?.latitude ?? userCoords?.lat ?? 0,
       ];
     }
     return coords;
-  }, [
-    first?.lng,
-    userLocation?.longitude,
-    first?.lat,
-    userLocation?.latitude,
-    pathname,
-    router,
-    searchParams,
-  ]);
+  }, [first?.lng, userLocation?.longitude, first?.lat, userLocation?.latitude]);
   const [loc, setLoc] = useState(getOrigin);
   console.log({loc, userLocation});
   const extent = boundingExtent(
@@ -126,6 +101,23 @@ const InteractiveMap = ({
   };
 
   useEffect(() => {
+    const userCoords = getCoords();
+    if (
+      userLocation?.longitude &&
+      userCoords?.lng &&
+      Math.abs(userLocation?.longitude - userCoords?.lng) >= 1.5 &&
+      userLocation?.latitude &&
+      userCoords?.lat &&
+      Math.abs(userLocation?.latitude - userCoords?.lat) >= 1.5
+    ) {
+      console.log('far server location');
+      const current = new URLSearchParams(Array.from(searchParams.entries()));
+      current.set('lng', `${userCoords.lng}`);
+      current.set('lat', `${userCoords.lat}`);
+      const search = current.toString();
+      router.push(`${pathname}${search ? `?${search}` : ''}`);
+      router.refresh();
+    }
     setDomLoaded(true);
     const newLoc = getOrigin();
     setLoc(newLoc);
