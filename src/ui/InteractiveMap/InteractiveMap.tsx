@@ -115,7 +115,13 @@ const InteractiveMap = ({
   }, []);
 
   useEffect(() => {
-    if (!domLoaded || !userCoords || !userCoords?.lng || !userCoords?.lat)
+    if (
+      !domLoaded ||
+      !first ||
+      !userCoords ||
+      !userCoords?.lng ||
+      !userCoords?.lat
+    )
       return;
     console.log(Math.abs((userLocation?.longitude ?? 0) - userCoords?.lng));
     console.log(Math.abs((userLocation?.latitude ?? 0) - userCoords?.lat));
@@ -125,14 +131,26 @@ const InteractiveMap = ({
     ) {
       console.log('far server location');
       const current = new URLSearchParams(Array.from(searchParams.entries()));
+      if (current.has('lng') || current.has('lat')) return;
       current.set('lng', `${userCoords?.lng}`);
       current.set('lat', `${userCoords?.lat}`);
       const search = current.toString();
       router.push(`${pathname}${search ? `?${search}` : ''}`);
-      router.refresh();
-      location.reload();
+      if (current.has('lng') && current.has('lat')) {
+        router.refresh();
+        // location.reload();
+      }
     }
-  }, [domLoaded, userCoords]);
+  }, [
+    domLoaded,
+    userCoords,
+    first,
+    router,
+    pathname,
+    searchParams,
+    userLocation?.longitude,
+    userLocation?.latitude,
+  ]);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
     const coords = evt.map.getCoordinateFromPixel(evt.pixel);
