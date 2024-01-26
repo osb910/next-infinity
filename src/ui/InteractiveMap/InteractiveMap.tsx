@@ -62,22 +62,28 @@ const InteractiveMap = ({
   ...delegated
 }: InteractiveMapProps) => {
   const [first, ...rest] = locations;
+  const userCoords = getCoords();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const getOrigin = useCallback(() => {
     let coords = [first?.lng, first?.lat];
     if (!first?.lng && !first?.lat) {
-      const userCoords = getCoords();
       coords = [
         userLocation?.longitude ?? userCoords?.lng ?? 0,
         userLocation?.latitude ?? userCoords?.lat ?? 0,
       ];
     }
     return coords;
-  }, [first?.lng, userLocation?.longitude, first?.lat, userLocation?.latitude]);
+  }, [
+    first?.lng,
+    userLocation?.longitude,
+    first?.lat,
+    userLocation?.latitude,
+    userCoords,
+  ]);
   const [loc, setLoc] = useState(getOrigin);
-  console.log({loc, userLocation});
+  console.log({loc, userLocation, userCoords});
   const extent = boundingExtent(
     locations.map(({lng, lat}) => fromLonLat([lng, lat]))
   );
@@ -110,7 +116,6 @@ const InteractiveMap = ({
 
   useEffect(() => {
     if (!domLoaded) return;
-    const userCoords = getCoords();
     console.log(
       Math.abs(userLocation?.longitude ?? 0 - (userCoords?.lng ?? 0))
     );
@@ -129,7 +134,7 @@ const InteractiveMap = ({
       router.push(`${pathname}${search ? `?${search}` : ''}`);
       router.refresh();
     }
-  }, [domLoaded]);
+  }, [domLoaded, userCoords, router, pathname, searchParams]);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
     const coords = evt.map.getCoordinateFromPixel(evt.pixel);
