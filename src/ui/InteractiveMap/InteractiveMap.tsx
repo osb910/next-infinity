@@ -124,7 +124,9 @@ const InteractiveMap = ({
     );
     if (
       Math.abs(userLocation?.longitude ?? 0 - (userCoords?.lng ?? 0)) >= 1.5 &&
-      Math.abs((userLocation?.latitude ?? 0) - (userCoords?.lat ?? 0)) >= 1.5
+      Math.abs((userLocation?.latitude ?? 0) - (userCoords?.lat ?? 0)) >= 1.5 &&
+      userCoords?.lng !== 0 &&
+      userCoords?.lat !== 0
     ) {
       console.log('far server location');
       const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -134,7 +136,7 @@ const InteractiveMap = ({
       router.push(`${pathname}${search ? `?${search}` : ''}`);
       router.refresh();
     }
-  }, [domLoaded, userCoords, router, pathname, searchParams]);
+  }, [domLoaded, userCoords]);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
     const coords = evt.map.getCoordinateFromPixel(evt.pixel);
