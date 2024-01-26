@@ -137,10 +137,10 @@ const InteractiveMap = ({
       current.set('lng', `${userCoords?.lng}`);
       current.set('lat', `${userCoords?.lat}`);
       const search = current.toString();
-      router.push(`${pathname}${search ? `?${search}` : ''}`);
       if (current.has('lng') && current.has('lat')) {
+        router.push(`${pathname}${search ? `?${search}` : ''}`);
         router.refresh();
-        location.reload();
+        location.href = `${pathname}${search ? `?${search}` : ''}`;
       }
     }
   }, [
