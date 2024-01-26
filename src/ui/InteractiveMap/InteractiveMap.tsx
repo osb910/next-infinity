@@ -67,10 +67,9 @@ const InteractiveMap = ({
   const searchParams = useSearchParams();
   const getOrigin = useCallback(() => {
     let coords = [first?.lng, first?.lat];
-    console.log('getting origin', first);
     if (!first?.lng && !first?.lat) {
-      console.log('no specific location');
       const userCoords = getCoords();
+      console.log({userLocation, userCoords});
       if (
         userLocation?.longitude &&
         userCoords?.lng &&
