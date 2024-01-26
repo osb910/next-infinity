@@ -117,7 +117,7 @@ const InteractiveMap = ({
   useEffect(() => {
     if (
       !domLoaded ||
-      !first ||
+      first ||
       !userCoords ||
       !userCoords?.lng ||
       !userCoords?.lat
