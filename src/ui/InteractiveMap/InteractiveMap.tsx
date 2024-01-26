@@ -123,12 +123,14 @@ const InteractiveMap = ({
       !userCoords?.lat
     )
       return;
-    console.log(Math.abs((userLocation?.longitude ?? 0) - userCoords?.lng));
-    console.log(Math.abs((userLocation?.latitude ?? 0) - userCoords?.lat));
-    if (
-      Math.abs(userLocation?.longitude ?? 0 - userCoords?.lng) >= 1.5 &&
-      Math.abs((userLocation?.latitude ?? 0) - userCoords?.lat) >= 1.5
-    ) {
+    const lngDiff = Math.abs(
+      Math.abs(userLocation?.longitude ?? 0) - Math.abs(userCoords?.lng)
+    );
+    const latDiff = Math.abs(
+      Math.abs(userLocation?.latitude ?? 0) - Math.abs(userCoords?.lat)
+    );
+    console.log({lngDiff, latDiff});
+    if (lngDiff >= 1.5 && latDiff >= 1.5) {
       console.log('far server location');
       const current = new URLSearchParams(Array.from(searchParams.entries()));
       if (current.has('lng') || current.has('lat')) return;
@@ -138,7 +140,7 @@ const InteractiveMap = ({
       router.push(`${pathname}${search ? `?${search}` : ''}`);
       if (current.has('lng') && current.has('lat')) {
         router.refresh();
-        // location.reload();
+        location.reload();
       }
     }
   }, [
