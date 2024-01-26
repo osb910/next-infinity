@@ -32,11 +32,12 @@ import 'ol/ol.css';
 import styles from './InteractiveMap.module.css';
 
 export interface InteractiveMapProps extends ComponentProps<'figure'> {
-  locations: Array<{lng: number; lat: number; id: string}>;
+  locations: Array<{lng: number; lat: number; id: string; title?: string}>;
   userLocation?: GeoLocation;
   height?: string;
   children?: ReactNode;
   items?: Array<any>;
+  fixDefaultLocation?: boolean;
   useSelection?: boolean;
   useAttribution?: boolean;
   useScaleLine?: boolean;
@@ -52,11 +53,12 @@ const InteractiveMap = ({
   height,
   items,
   children,
+  fixDefaultLocation = false,
   useSelection = false,
-  useAttribution = true,
-  useScaleLine = true,
+  useAttribution = false,
+  useScaleLine = false,
   useZoom = true,
-  useZoomSlider = true,
+  useZoomSlider = false,
   useFullScreen = true,
   useCenterBtn = true,
   ...delegated
@@ -83,7 +85,6 @@ const InteractiveMap = ({
     userCoords,
   ]);
   const [loc, setLoc] = useState(getOrigin);
-  console.log({loc, userLocation, userCoords});
   const extent = boundingExtent(
     locations.map(({lng, lat}) => fromLonLat([lng, lat]))
   );
@@ -112,10 +113,12 @@ const InteractiveMap = ({
     setLoc(newLoc);
     const center = locations.length ? getCenter(extent) : fromLonLat(newLoc);
     setView({center, zoom: 13});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (
+      !fixDefaultLocation ||
       !domLoaded ||
       first ||
       !userCoords ||
@@ -129,9 +132,7 @@ const InteractiveMap = ({
     const latDiff = Math.abs(
       Math.abs(userLocation?.latitude ?? 0) - Math.abs(userCoords?.lat)
     );
-    console.log({lngDiff, latDiff});
     if (lngDiff >= 1.5 && latDiff >= 1.5) {
-      console.log('far server location');
       const current = new URLSearchParams(Array.from(searchParams.entries()));
       if (current.has('lng') || current.has('lat')) return;
       current.set('lng', `${userCoords?.lng}`);
@@ -152,6 +153,7 @@ const InteractiveMap = ({
     searchParams,
     userLocation?.longitude,
     userLocation?.latitude,
+    fixDefaultLocation,
   ]);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {

@@ -1,13 +1,12 @@
-import {NextResponse} from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
 const endpoint = 'https://api.mapbox.com/search/geocode/v6';
 const token = process.env.MAPBOX_SECRET_TOKEN;
 
-export const GET = async (req: Request) => {
+export const GET = async ({nextUrl: {searchParams}}: NextRequest) => {
   try {
-    const {searchParams} = new URL(req.url);
     const place = searchParams.get('place');
     const res = await fetch(
       `${endpoint}/forward?q=${place}&proximity=ip&access_token=${token}`

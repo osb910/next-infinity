@@ -215,3 +215,33 @@ export const getLocationFromIp = async (
     }
   }
 };
+
+export const geocodeForward = async ({q}: {q: string}) => {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=geojson&q=${q}`
+    );
+    const json = await res.json();
+    return json;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const geocodeReverse = async ({
+  lng,
+  lat,
+}: {
+  lng: string;
+  lat: string;
+}) => {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=geojson&lon=${lng}&lat=${lat}`
+    );
+    const json = await res.json();
+    return json;
+  } catch (err) {
+    console.error(err);
+  }
+};

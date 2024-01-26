@@ -1,4 +1,3 @@
-import {headers} from 'next/headers';
 import StoreCard from '@/components/next-stores/StoreCard';
 import AddressAutoComplete from '@/components/next-stores/AddressAutoComplete';
 import ErrorAlert from '@/components/ErrorAlert';
@@ -7,7 +6,6 @@ import {getURL} from '@/utils/path';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
 import styles from './MapPage.module.css';
-import {unstable_noStore as noStore} from 'next/cache';
 
 type SearchParams = {lng: string; lat: string; selected: string};
 type MapPg = AppPage<{}, SearchParams>;
@@ -35,19 +33,35 @@ export const revalidate = 0;
 export const generateMetadata: GetMetadata<MapPg> = async ({
   searchParams: {lng, lat},
 }) => {
-  noStore();
-  const json = await fetcher({lng, lat});
+  const pgLocationPromise = fetch(
+    getURL(`/api/geocode/reverse?lng=${lng}&lat=${lat}`),
+    {
+      cache: 'no-store',
+      headers: {
+        'User-Agent': '*',
+        Accept: 'application/json, text/plain, */*',
+      },
+    }
+  );
+  const [json, pgLocationRes] = await Promise.all([
+    fetcher({lng, lat}),
+    pgLocationPromise,
+  ]);
+  const pgLocationJson = await pgLocationRes.json();
+  console.log({pgLocationJson});
   const region = json.data?.userLocation?.region;
   console.log(json.data?.userLocation);
+  const title = pgLocationJson?.features
+    ? `Map - ${pgLocationJson.features[0].properties.address.state}`
+    : `Map${!lng && !lat && region ? ` - ${region}` : ''}`;
 
   return {
-    title: `Map${!lng && !lat && region ? ` - ${region}` : ''}`,
+    title,
     description: 'Find stores near you or anywhere in the world',
   };
 };
 
 const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
-  noStore();
   try {
     const json = await fetcher({lng, lat});
     console.log(json.data?.userLocation);
@@ -61,6 +75,7 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
         lng: store.location.coordinates[0],
         lat: store.location.coordinates[1],
         id: store._id,
+        title: store.name,
       })) ?? [];
 
     const selectedItem = json?.data?.stores?.find(
@@ -83,6 +98,8 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
             useSelection
             useAttribution
             useZoomSlider
+            useScaleLine
+            fixDefaultLocation
           >
             {selectedItem && <StoreCard item={selectedItem} userId='' />}
           </InteractiveMap>
