@@ -115,26 +115,22 @@ const InteractiveMap = ({
   }, []);
 
   useEffect(() => {
-    if (!domLoaded) return;
-    console.log(
-      Math.abs(userLocation?.longitude ?? 0 - (userCoords?.lng ?? 0))
-    );
-    console.log(
-      Math.abs((userLocation?.latitude ?? 0) - (userCoords?.lat ?? 0))
-    );
+    if (!domLoaded || !userCoords || !userCoords?.lng || !userCoords?.lat)
+      return;
+    console.log(Math.abs((userLocation?.longitude ?? 0) - userCoords?.lng));
+    console.log(Math.abs((userLocation?.latitude ?? 0) - userCoords?.lat));
     if (
-      Math.abs(userLocation?.longitude ?? 0 - (userCoords?.lng ?? 0)) >= 1.5 &&
-      Math.abs((userLocation?.latitude ?? 0) - (userCoords?.lat ?? 0)) >= 1.5 &&
-      userCoords?.lng !== 0 &&
-      userCoords?.lat !== 0
+      Math.abs(userLocation?.longitude ?? 0 - userCoords?.lng) >= 1.5 &&
+      Math.abs((userLocation?.latitude ?? 0) - userCoords?.lat) >= 1.5
     ) {
       console.log('far server location');
       const current = new URLSearchParams(Array.from(searchParams.entries()));
-      current.set('lng', `${userCoords?.lng ?? 0}`);
-      current.set('lat', `${userCoords?.lat ?? 0}`);
+      current.set('lng', `${userCoords?.lng}`);
+      current.set('lat', `${userCoords?.lat}`);
       const search = current.toString();
       router.push(`${pathname}${search ? `?${search}` : ''}`);
       router.refresh();
+      location.reload();
     }
   }, [domLoaded, userCoords]);
 
