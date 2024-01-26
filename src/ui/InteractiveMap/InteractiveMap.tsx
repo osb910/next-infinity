@@ -101,12 +101,16 @@ const InteractiveMap = ({
   };
 
   useEffect(() => {
-    const userCoords = getCoords();
     setDomLoaded(true);
     const newLoc = getOrigin();
     setLoc(newLoc);
     const center = locations.length ? getCenter(extent) : fromLonLat(newLoc);
     setView({center, zoom: 13});
+  }, []);
+
+  useEffect(() => {
+    if (!domLoaded) return;
+    const userCoords = getCoords();
     console.log('effect ran');
     if (
       userLocation?.longitude &&
@@ -124,7 +128,7 @@ const InteractiveMap = ({
       router.push(`${pathname}${search ? `?${search}` : ''}`);
       router.refresh();
     }
-  }, []);
+  }, [domLoaded]);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
     const coords = evt.map.getCoordinateFromPixel(evt.pixel);
