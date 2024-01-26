@@ -62,13 +62,44 @@ const InteractiveMap = ({
   ...delegated
 }: InteractiveMapProps) => {
   const [first, ...rest] = locations;
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const getOrigin = useCallback(() => {
-    const userCoords = getCoords();
-    return [
-      first?.lng ?? userLocation?.longitude ?? userCoords?.lng ?? 0,
-      first?.lat ?? userLocation?.latitude ?? userCoords?.lat ?? 0,
-    ];
-  }, [first?.lng, userLocation?.longitude, first?.lat, userLocation?.latitude]);
+    let coords = [first?.lng, first?.lat];
+    if (!first?.lng && !first?.lat) {
+      const userCoords = getCoords();
+      if (
+        userLocation?.longitude &&
+        userCoords?.lng &&
+        Math.abs(userLocation?.longitude - userCoords?.lng) >= 1.5 &&
+        userLocation?.latitude &&
+        userCoords?.lat &&
+        Math.abs(userLocation?.latitude - userCoords?.lat) >= 1.5
+      ) {
+        console.log('far server location');
+        const current = new URLSearchParams(Array.from(searchParams.entries()));
+        current.set('lng', `${userCoords.lng}`);
+        current.set('lat', `${userCoords.lat}`);
+        const search = current.toString();
+        router.push(`${pathname}${search ? `?${search}` : ''}`);
+        router.refresh();
+      }
+      coords = [
+        userLocation?.longitude ?? userCoords?.lng ?? 0,
+        userLocation?.latitude ?? userCoords?.lat ?? 0,
+      ];
+    }
+    return coords;
+  }, [
+    first?.lng,
+    userLocation?.longitude,
+    first?.lat,
+    userLocation?.latitude,
+    pathname,
+    router,
+    searchParams,
+  ]);
   const [loc, setLoc] = useState(getOrigin);
   console.log({loc, userLocation});
   const extent = boundingExtent(
@@ -82,18 +113,7 @@ const InteractiveMap = ({
   const [view, setView] = useState(initial);
   const [isLoading, setIsLoading] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [domLoaded, setDomLoaded] = useState(false);
-
-  useEffect(() => {
-    setDomLoaded(true);
-    const newLoc = getOrigin();
-    setLoc(newLoc);
-    const center = locations.length ? getCenter(extent) : fromLonLat(newLoc);
-    setView({center, zoom: 13});
-  }, []);
 
   const selectItem = (itemId: string) => {
     if (!itemId || !useSelection) return;
@@ -103,6 +123,14 @@ const InteractiveMap = ({
     router.push(`${pathname}${search ? `?${search}` : ''}`);
     router.refresh();
   };
+
+  useEffect(() => {
+    setDomLoaded(true);
+    const newLoc = getOrigin();
+    setLoc(newLoc);
+    const center = locations.length ? getCenter(extent) : fromLonLat(newLoc);
+    setView({center, zoom: 13});
+  }, []);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
     const coords = evt.map.getCoordinateFromPixel(evt.pixel);
