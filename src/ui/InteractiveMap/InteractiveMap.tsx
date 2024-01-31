@@ -30,6 +30,7 @@ import type {GeoLocation} from '@/types';
 import 'rlayers/control/layers.css';
 import 'ol/ol.css';
 import styles from './InteractiveMap.module.css';
+import useRedirect from '@/hooks/useRedirect';
 
 export interface InteractiveMapProps extends ComponentProps<'figure'> {
   locations: Array<{lng: number; lat: number; id: string; title?: string}>;
@@ -65,9 +66,10 @@ const InteractiveMap = ({
 }: InteractiveMapProps) => {
   const [first, ...rest] = locations;
   const userCoords = getCoords();
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
+  const {setUrl} = useRedirect();
   const getOrigin = useCallback(() => {
     let coords = [first?.lng, first?.lat];
     if (!first?.lng && !first?.lat) {
@@ -100,11 +102,12 @@ const InteractiveMap = ({
 
   const selectItem = (itemId: string) => {
     if (!itemId || !useSelection) return;
-    const current = new URLSearchParams(Array.from(searchParams.entries()));
-    current.set('selected', itemId);
-    const search = current.toString();
-    router.push(`${pathname}${search ? `?${search}` : ''}`);
-    router.refresh();
+    // const current = new URLSearchParams(Array.from(searchParams.entries()));
+    setUrl([['selected', itemId]]);
+    // current.set('selected', itemId);
+    // const search = current.toString();
+    // router.push(`${pathname}${search ? `?${search}` : ''}`);
+    // router.refresh();
   };
 
   useEffect(() => {
@@ -133,27 +136,35 @@ const InteractiveMap = ({
       Math.abs(userLocation?.latitude ?? 0) - Math.abs(userCoords?.lat)
     );
     if (lngDiff >= 1.5 && latDiff >= 1.5) {
-      const current = new URLSearchParams(Array.from(searchParams.entries()));
-      if (current.has('lng') || current.has('lat')) return;
-      current.set('lng', `${userCoords?.lng}`);
-      current.set('lat', `${userCoords?.lat}`);
-      const search = current.toString();
-      if (current.has('lng') && current.has('lat')) {
-        router.push(`${pathname}${search ? `?${search}` : ''}`);
-        router.refresh();
-        location.href = `${pathname}${search ? `?${search}` : ''}`;
-      }
+      // const current = new URLSearchParams(Array.from(searchParams.entries()));
+      // if (current.has('lng') || current.has('lat')) return;
+      setUrl(
+        [
+          ['lng', `${userCoords?.lng}`],
+          ['lat', `${userCoords?.lat}`],
+        ],
+        {
+          reload: true,
+          noReplace: true,
+        }
+      );
+      // current.set('lng', `${userCoords?.lng}`);
+      // current.set('lat', `${userCoords?.lat}`);
+      // const search = current.toString();
+      // router.push(`${pathname}${search ? `?${search}` : ''}`);
+      // router.refresh();
+      // if (current.has('lng') && current.has('lat')) {
+      //   location.href = `${pathname}${search ? `?${search}` : ''}`;
+      // }
     }
   }, [
     domLoaded,
     userCoords,
     first,
-    router,
-    pathname,
-    searchParams,
     userLocation?.longitude,
     userLocation?.latitude,
     fixDefaultLocation,
+    setUrl,
   ]);
 
   const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
