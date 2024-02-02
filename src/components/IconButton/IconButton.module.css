@@ -84,7 +84,7 @@
 } */
 
 .button svg {
-  width: 1.25rem;
+  font-size: 1.5em;
   margin: 0;
   /* stroke: var(--hex-color); */
   stroke: rgb(var(--bg-elevated-rgb));
@@ -114,7 +114,7 @@
   transform: rotate(calc(var(--rotation-deg) * -1)) translate(-55%, 20%);
 } */
 
-@media (min-width: 24rem) {
+/* @media (min-width: 24rem) {
   .button svg {
     width: 1.5rem;
   }
@@ -124,4 +124,4 @@
   .button svg {
     width: 1.75rem;
   }
-}
+} */

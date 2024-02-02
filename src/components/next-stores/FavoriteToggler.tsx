@@ -26,7 +26,7 @@ const FavoriteToggler = ({favoredId}: FavoriteTogglerProps) => {
   const isFavored = userData?.favorites?.includes(favoredId);
   return (
     <IconButton
-      clickHandler={() => toggleHeart(favoredId, user)}
+      onClick={() => toggleHeart(favoredId, user)}
       className={`${styles.heart} ${isFavored ? styles.favored : ''}`}
       icon={
         <Heart

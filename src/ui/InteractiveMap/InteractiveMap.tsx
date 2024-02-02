@@ -1,12 +1,13 @@
 'use client';
 
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
 import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   type ComponentProps,
   type ReactNode,
+  type MouseEvent,
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
 import {Point} from 'ol/geom';
@@ -20,7 +21,14 @@ import {
   RStyle,
   RControl,
   type RFeatureUIEvent,
+  RPopup,
 } from 'rlayers';
+import {FaLocationCrosshairs} from 'react-icons/fa6';
+import {MdCenterFocusWeak} from 'react-icons/md';
+import {BsArrowsFullscreen} from 'react-icons/bs';
+import {AiOutlineFullscreenExit} from 'react-icons/ai';
+import {TbLiveView} from 'react-icons/tb';
+import useRedirect from '@/hooks/useRedirect';
 import Spinner from '@/ui/Spinner';
 import {getCoords} from '@/utils/numbers';
 import {IS_SERVER} from '@/utils/path';
@@ -30,7 +38,10 @@ import type {GeoLocation} from '@/types';
 import 'rlayers/control/layers.css';
 import 'ol/ol.css';
 import styles from './InteractiveMap.module.css';
-import useRedirect from '@/hooks/useRedirect';
+import useFullscreen from '@/hooks/useFullscreen';
+import {Coordinate} from 'ol/coordinate';
+import {delay} from '@/utils/promises';
+import IconButton from '@/components/IconButton';
 
 export interface InteractiveMapProps extends ComponentProps<'figure'> {
   locations: Array<{lng: number; lat: number; id: string; title?: string}>;
@@ -44,7 +55,8 @@ export interface InteractiveMapProps extends ComponentProps<'figure'> {
   useScaleLine?: boolean;
   useZoom?: boolean;
   useZoomSlider?: boolean;
-  useFullScreen?: boolean;
+  useLiveLocation?: boolean;
+  useFullscreenBtn?: boolean;
   useCenterBtn?: boolean;
 }
 
@@ -60,15 +72,14 @@ const InteractiveMap = ({
   useScaleLine = false,
   useZoom = true,
   useZoomSlider = false,
-  useFullScreen = true,
+  useFullscreenBtn = true,
   useCenterBtn = true,
+  useLiveLocation = false,
   ...delegated
 }: InteractiveMapProps) => {
   const [first, ...rest] = locations;
+  const map = useRef<RMap>(null);
   const userCoords = getCoords();
-  // const router = useRouter();
-  // const pathname = usePathname();
-  // const searchParams = useSearchParams();
   const {setUrl} = useRedirect();
   const getOrigin = useCallback(() => {
     let coords = [first?.lng, first?.lat];
@@ -97,18 +108,13 @@ const InteractiveMap = ({
   };
   const [view, setView] = useState(initial);
   const [isLoading, setIsLoading] = useState(0);
-  const [isFullScreen, setIsFullScreen] = useState(false);
   const [domLoaded, setDomLoaded] = useState(false);
 
-  const selectItem = (itemId: string) => {
-    if (!itemId || !useSelection) return;
-    // const current = new URLSearchParams(Array.from(searchParams.entries()));
-    setUrl([['selected', itemId]]);
-    // current.set('selected', itemId);
-    // const search = current.toString();
-    // router.push(`${pathname}${search ? `?${search}` : ''}`);
-    // router.refresh();
-  };
+  const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
+    const coords = evt.map.getCoordinateFromPixel(evt.pixel);
+    const lonlat = toLonLat(coords);
+    setLoc(lonlat);
+  }, []);
 
   useEffect(() => {
     setDomLoaded(true);
@@ -136,8 +142,6 @@ const InteractiveMap = ({
       Math.abs(userLocation?.latitude ?? 0) - Math.abs(userCoords?.lat)
     );
     if (lngDiff >= 1.5 && latDiff >= 1.5) {
-      // const current = new URLSearchParams(Array.from(searchParams.entries()));
-      // if (current.has('lng') || current.has('lat')) return;
       setUrl(
         [
           ['lng', `${userCoords?.lng}`],
@@ -148,14 +152,6 @@ const InteractiveMap = ({
           noReplace: true,
         }
       );
-      // current.set('lng', `${userCoords?.lng}`);
-      // current.set('lat', `${userCoords?.lat}`);
-      // const search = current.toString();
-      // router.push(`${pathname}${search ? `?${search}` : ''}`);
-      // router.refresh();
-      // if (current.has('lng') && current.has('lat')) {
-      //   location.href = `${pathname}${search ? `?${search}` : ''}`;
-      // }
     }
   }, [
     domLoaded,
@@ -167,26 +163,48 @@ const InteractiveMap = ({
     setUrl,
   ]);
 
-  const changeView = useCallback((evt: MapBrowserEvent<UIEvent>) => {
-    const coords = evt.map.getCoordinateFromPixel(evt.pixel);
-    const lonlat = toLonLat(coords);
-    setLoc(lonlat);
-  }, []);
-
-  useEffect(() => {
-    const toggleFullScreen = () =>
-      setIsFullScreen(!!document.fullscreenElement);
-
-    document.addEventListener('fullscreenchange', toggleFullScreen);
-
-    return () =>
-      document.removeEventListener('fullscreenchange', toggleFullScreen);
-  }, [height]);
+  const isFullscreen = useFullscreen();
 
   if (IS_SERVER) return null;
 
+  const selectItem = (itemId: string) => {
+    if (!itemId || !useSelection) return;
+    setUrl([['selected', itemId]]);
+  };
+
+  const fitView = async (
+    coordinate: Coordinate,
+    {ms, zoom}: {ms?: number; zoom?: number} = {}
+  ) => {
+    if (coordinate[0] === view.center[0] && coordinate[1] === view.center[1])
+      return;
+    const point = new Point(coordinate);
+    const currentZoom = view.zoom;
+    map.current?.ol.getView().fit(point.getExtent(), {
+      duration: (ms ?? 1000) / 2,
+      maxZoom: (zoom ?? currentZoom) - 1,
+    });
+    await delay((ms ?? 1000) / 2);
+    map.current?.ol.getView().fit(point.getExtent(), {
+      duration: (ms ?? 1000) / 2,
+      maxZoom: zoom ?? currentZoom,
+    });
+    return new Promise(resolve =>
+      resolve(
+        setTimeout(
+          () => setView({center: coordinate, zoom: zoom ?? currentZoom}),
+          ms ?? 1000
+        )
+      )
+    );
+  };
+
   const style: {[key: string]: string} = {
-    '--height': isFullScreen ? '100vh' : height ?? '40vh',
+    '--height': isFullscreen ? '100vh' : height ?? '40vh',
+  };
+
+  const btnOnHover = {
+    color: 'rgba(20, 20, 20)',
   };
 
   return (
@@ -209,6 +227,7 @@ const InteractiveMap = ({
           noDefaultControls
           // extent={extent}
           // onClick={changeView}
+          ref={map}
         >
           <ROSM
           // onTileLoadStart={evt => {
@@ -223,25 +242,47 @@ const InteractiveMap = ({
           //   setIsLoading(current => current - 1);
           // }}
           />
-          {(useAttribution || isFullScreen) && <RControl.RAttribution />}
-          {(useScaleLine || isFullScreen) && <RControl.RScaleLine />}
-          {(useZoom || isFullScreen) && <RControl.RZoom />}
-          {(useZoomSlider || isFullScreen) && <RControl.RZoomSlider />}
-          {(useFullScreen || isFullScreen) && (
+          {(useAttribution || isFullscreen) && <RControl.RAttribution />}
+          {(useScaleLine || isFullscreen) && <RControl.RScaleLine />}
+          {(useZoom || isFullscreen) && <RControl.RZoom />}
+          {(useZoomSlider || isFullscreen) && <RControl.RZoomSlider />}
+          {(useFullscreenBtn || isFullscreen) && (
             <RControl.RFullScreen
-              className={styles.fullscreenToggler}
+              className={`${styles.fullscreenBtn}`}
               source='interactive-map'
-              label='&#x6269;'
-              labelActive='&#x564f;'
-            />
+              // label='&#x6269;'
+              // labelActive='&#x564f;'
+            >
+              &#x6269;
+            </RControl.RFullScreen>
           )}
-          {(useCenterBtn || isFullScreen) && (
-            <RControl.RCustom className={styles.centerBtn}>
-              <button onClick={(evt: any) => setView({...view, center})}>
-                o
-              </button>
-            </RControl.RCustom>
-          )}
+          <RControl.RCustom className={`${styles.mapButtons}`}>
+            {(useCenterBtn || isFullscreen) && (
+              <IconButton
+                icon={<MdCenterFocusWeak width={20} />}
+                className={styles.mapButton}
+                onClick={(evt: MouseEvent<HTMLButtonElement>) =>
+                  fitView(center)
+                }
+                whileHover={btnOnHover}
+                whileFocus={btnOnHover}
+              />
+            )}
+            {(useLiveLocation || isFullscreen) && (
+              <IconButton
+                icon={<FaLocationCrosshairs width={20} />}
+                className={styles.mapButton}
+                onClick={async (evt: MouseEvent<HTMLButtonElement>) => {
+                  if (!userCoords) return;
+                  const center = fromLonLat([userCoords.lng, userCoords.lat]);
+                  await fitView(center);
+                }}
+                whileHover={btnOnHover}
+                whileFocus={btnOnHover}
+              />
+            )}
+          </RControl.RCustom>
+
           <RLayerVector zIndex={12}>
             <RStyle.RStyle>
               <RStyle.RIcon
@@ -251,10 +292,26 @@ const InteractiveMap = ({
                 anchor={[0.5, 0.8]}
               />
             </RStyle.RStyle>
+            {/* <RStyle.RStyle>
+              <RStyle.RIcon
+                color={'rgba(30, 30, 220, 0.9)'}
+                size={[40, 40]}
+                src={'/img/icons/marker.svg'}
+                anchor={[0.5, 0.8]}
+              />
+            </RStyle.RStyle> */}
+            <RFeature
+              geometry={
+                new Point(
+                  fromLonLat([userCoords?.lng ?? 0, userCoords?.lat ?? 0])
+                )
+              }
+              key={`marker-0`}
+            ></RFeature>
             <RFeature
               geometry={new Point(fromLonLat(loc))}
               onClick={(evt: RFeatureUIEvent) => {
-                console.log(evt);
+                console.log(evt.target.getGeometry());
                 evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
                   duration: 300,
                   maxZoom: 16,
@@ -263,6 +320,18 @@ const InteractiveMap = ({
               }}
               key={'marker-1'}
             >
+              <RPopup trigger={'click'} className='example-overlay'>
+                <div className='card'>
+                  {first?.title && (
+                    <p className='card-header'>
+                      <strong>{first.title}</strong>
+                    </p>
+                  )}
+                  <p className='card-body text-center'>
+                    {first?.lng}, {first?.lat}
+                  </p>
+                </div>
+              </RPopup>
               {/* {items &&
               ItemComponent &&
               selectedItem?._id === items?.[0]?._id && (

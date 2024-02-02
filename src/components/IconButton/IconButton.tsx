@@ -1,46 +1,72 @@
-import {ReactNode, ComponentProps} from 'react';
-import {motion, MotionProps} from 'framer-motion';
+import type {ReactNode, ComponentProps, MouseEvent} from 'react';
+import {type AnimationProps, motion, type MotionProps} from 'framer-motion';
 import useSound from 'use-sound';
 import useSoundEnabled from '../SoundToggler/sound-enabled';
 import styles from './IconButton.module.css';
 
 export type IconButtonProps = ComponentProps<'button'> &
-  MotionProps & {
+  MotionProps &
+  AnimationProps & {
     icon: JSX.Element;
+    noSfx?: boolean;
     children?: ReactNode;
-    className?: string;
-    clickHandler?: Function;
     highlightDeps?: any[];
   };
 
 const IconButton = ({
   icon,
+  noSfx = false,
   children,
-  className,
-  clickHandler,
   highlightDeps,
   ...delegated
 }: IconButtonProps) => {
   const {soundEnabled} = useSoundEnabled();
+  const sfxOn = noSfx || soundEnabled;
   const [playActive] = useSound('/sfx/pop-down.mp3', {
-    soundEnabled,
+    soundEnabled: sfxOn,
     volume: 0.25,
   });
-  const [playOn] = useSound('/sfx/pop-up-on.mp3', {soundEnabled, volume: 0.25});
+  const [playOn] = useSound('/sfx/pop-up-on.mp3', {
+    soundEnabled: sfxOn,
+    volume: 0.25,
+  });
+  const whileHover = {
+    scale: 1.1,
+    ...(delegated.whileHover as Record<string, any>),
+  };
+  const whileFocus = {
+    scale: 1.1,
+    ...(delegated.whileFocus as Record<string, any>),
+  };
+  const whileTap = {
+    scale: 0.95,
+    ...(delegated.whileTap as Record<string, any>),
+  };
+  const transition = {
+    duration: 0.1,
+    bounce: 0.3,
+    ...delegated.transition,
+  };
 
   return (
     // @ts-ignore
     <motion.button
-      className={`${className ?? ''} ${styles.button}`}
-      onClick={() => clickHandler?.()}
-      onMouseDown={() => playActive()}
-      onMouseUp={() => playOn()}
+      type='button'
       key={highlightDeps?.join('')}
-      whileHover={{scale: 1.1}}
-      whileFocus={{scale: 1.1}}
-      whileTap={{scale: 0.95}}
-      transition={{duration: 0.2, bounce: 0.3}}
       {...delegated}
+      onMouseDown={(evt: MouseEvent<HTMLButtonElement>) => {
+        delegated.onMouseDown?.(evt);
+        playActive();
+      }}
+      onMouseUp={(evt: MouseEvent<HTMLButtonElement>) => {
+        delegated.onMouseUp?.(evt);
+        playOn();
+      }}
+      whileHover={whileHover}
+      whileFocus={whileFocus}
+      whileTap={whileTap}
+      transition={transition}
+      className={`${delegated.className ?? ''} ${styles.button}`}
     >
       {icon}
       {children}

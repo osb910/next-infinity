@@ -64,7 +64,6 @@ export const generateMetadata: GetMetadata<MapPg> = async ({
 const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
   try {
     const json = await fetcher({lng, lat});
-    console.log(json.data?.userLocation);
 
     if (json?.status === 'error') {
       throw new Error(json.message);
@@ -99,6 +98,7 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
             useAttribution
             useZoomSlider
             useScaleLine
+            useLiveLocation
             fixDefaultLocation
           >
             {selectedItem && <StoreCard item={selectedItem} userId='' />}

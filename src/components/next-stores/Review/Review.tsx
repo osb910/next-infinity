@@ -146,7 +146,7 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
             {userId === review.author._id && (
               <>
                 <IconButton
-                  clickHandler={() => setIsEditing(true)}
+                  onClick={() => setIsEditing(true)}
                   icon={<Edit fill='var(--color-gray-900)' size={28} />}
                   className={styles.editButton}
                   title='Edit review'
