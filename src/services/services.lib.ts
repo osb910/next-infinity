@@ -133,7 +133,7 @@ export const getTopRated = async (
     const docs = await Model.aggregate(pipeline)
       .addFields({
         [addedField]: {
-          $avg: `${collection}.rating`,
+          $avg: `$${collection}.rating`,
         },
       })
       .sort(`-${addedField}`)
