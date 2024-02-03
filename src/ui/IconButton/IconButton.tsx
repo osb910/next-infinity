@@ -1,7 +1,7 @@
 import type {ReactNode, ComponentProps, MouseEvent} from 'react';
 import {motion, type MotionProps} from 'framer-motion';
 import useSound from 'use-sound';
-import useSoundEnabled from '../SoundToggler/sound-enabled';
+import useSoundEnabled from '../../components/SoundToggler/sound-enabled';
 import styles from './IconButton.module.css';
 
 export type IconButtonProps = ComponentProps<'button'> &

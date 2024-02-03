@@ -12,7 +12,7 @@ import useToaster from '@/components/Toaster/use-toaster';
 import Eraser from '../Eraser';
 import RatingStars from '@/ui/RatingStars';
 import Form from '@/components/Form';
-import IconButton from '@/components/IconButton';
+import IconButton from '@/ui/IconButton';
 import styles from './Review.module.css';
 
 interface ReviewProps {

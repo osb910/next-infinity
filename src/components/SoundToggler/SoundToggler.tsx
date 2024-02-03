@@ -3,7 +3,7 @@
 import {Volume2, VolumeX} from 'react-feather';
 import useSoundEnabled from './sound-enabled';
 import VisuallyHidden from '../../ui/VisuallyHidden';
-import IconButton from '../IconButton/IconButton';
+import IconButton from '../../ui/IconButton/IconButton';
 
 const SoundToggler = ({dir}: {dir?: string}) => {
   const {soundEnabled, toggleSound} = useSoundEnabled();

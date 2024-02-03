@@ -5,7 +5,7 @@ import ky from 'ky';
 import {Trash2} from 'react-feather';
 import useUser from './useUser';
 import styles from './Eraser.module.css';
-import IconButton from '../IconButton';
+import IconButton from '../../ui/IconButton';
 import Spinner from '../../ui/Spinner';
 import useToaster from '../Toaster/use-toaster';
 

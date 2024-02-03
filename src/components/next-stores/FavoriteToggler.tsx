@@ -4,7 +4,7 @@ import {Heart} from 'react-feather';
 import {motion} from 'framer-motion';
 import useUser from './useUser';
 import styles from './FavoriteToggler.module.css';
-import IconButton from '../IconButton';
+import IconButton from '../../ui/IconButton';
 
 export const toggleHeart = async (favoredId: string, user: any) => {
   const {userData, setUserData, toggleFavorite} = user;

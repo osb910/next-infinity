@@ -7,7 +7,6 @@ import {
   useRef,
   type ComponentProps,
   type ReactNode,
-  type MouseEvent,
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
 import {Geometry, Point} from 'ol/geom';
@@ -17,11 +16,10 @@ import {
   ROSM,
   RLayerVector,
   RFeature,
-  ROverlay,
   RStyle,
   RControl,
-  type RFeatureUIEvent,
   RPopup,
+  type RFeatureUIEvent,
 } from 'rlayers';
 import {FaLocationCrosshairs} from 'react-icons/fa6';
 import {MdCenterFocusWeak} from 'react-icons/md';
@@ -31,11 +29,12 @@ import {TbLiveView} from 'react-icons/tb';
 import {MdOutlineContentCopy} from 'react-icons/md';
 import useRedirect from '@/hooks/useRedirect';
 import useFullscreen from '@/hooks/useFullscreen';
-import IconButton from '@/components/IconButton';
+import IconButton from '@/ui/IconButton';
 import Spinner from '@/ui/Spinner';
 import {getCoords} from '@/utils/numbers';
 import {IS_SERVER} from '@/utils/path';
 import {delay} from '@/utils/promises';
+import {copy} from '@/utils/text/clipboard';
 import {type MapBrowserEvent} from 'ol';
 import type {Coordinate} from 'ol/coordinate';
 import {type RView} from 'rlayers/RMap';
@@ -43,12 +42,14 @@ import type {GeoLocation} from '@/types';
 import styles from './InteractiveMap.module.css';
 import 'rlayers/control/layers.css';
 import 'ol/ol.css';
-import {copy} from '@/utils/text/clipboard';
 
 const markerIcon = '/img/icons/marker.svg';
 const liveLocationIcon = '/img/icons/location-crosshairs.svg';
+
+export type Location = {lng: number; lat: number; id: string; title?: string};
+
 export interface InteractiveMapProps extends ComponentProps<'figure'> {
-  locations: Array<{lng: number; lat: number; id: string; title?: string}>;
+  locations: Array<Location>;
   userLocation?: GeoLocation;
   height?: string;
   children?: ReactNode;
