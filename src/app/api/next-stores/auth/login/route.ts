@@ -33,8 +33,11 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
+    console.log({user});
+
     // @ts-ignore
     const match = await user.comparePassword(password);
+    console.log({match});
 
     if (!match) {
       return NextResponse.json(

@@ -25,7 +25,7 @@ const ChangePasswordForm = ({
     const data = Object.fromEntries(body.entries());
     const res = await ky.patch(
       `/api/next-stores${
-        resetPassword ? '/auth/reset-password' : '/users/me/change-password'
+        resetPassword ? '/auth/reset-password' : '/auth/me/change-password'
       }`,
       {
         json: resetPassword

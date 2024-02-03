@@ -15,7 +15,7 @@ const EditAccountForm = ({user}: EditAccountFormProps) => {
   const {createToast} = useToaster();
 
   const updateAccount = async (body: FormData) => {
-    const res = await ky.put('/api/next-stores/users/me', {
+    const res = await ky.put('/api/next-stores/auth/me', {
       json: Object.fromEntries(body.entries()),
       headers: {
         'X-USER-ID': user._id,

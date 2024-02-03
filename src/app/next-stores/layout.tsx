@@ -67,7 +67,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
     const userId = headersStore.get('X-USER-ID');
     let user: any | User;
     if (!user) {
-      const res = await fetch(getURL(`/api/next-stores/users/me`), {
+      const res = await fetch(getURL(`/api/next-stores/auth/me`), {
         headers: {
           'X-USER-ID': userId ?? '',
         },
@@ -78,7 +78,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
     }
     return (
       <UserProvider
-        userEndpoint='/api/next-stores/users/me'
+        userEndpoint='/api/next-stores/auth/me'
         userIdCookie='next-stores-user-id'
       >
         <header className={styles.top}>

@@ -23,7 +23,7 @@ userSchema.pre('save', async function () {
 });
 
 userSchema.method('comparePassword', async function (password: string) {
-  await comparePassword(password, this.password);
+  return await comparePassword(password, this.password);
 });
 
 export default (db.models.User || db.model('User', userSchema)) as UserModel;
