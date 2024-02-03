@@ -58,7 +58,7 @@ const StoreCard = ({item, userId}: StoreProps) => {
       </section>
       <p className={styles.storeDescription} dir='auto'>
         {truncatedDescription}
-        {item.description.length > 25 && '...'}
+        {item.description.split('').length > 25 && '...'}
       </p>
     </article>
   );

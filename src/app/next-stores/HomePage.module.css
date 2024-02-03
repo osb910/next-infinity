@@ -114,7 +114,28 @@
   transition: all 300ms ease-in-out;
 }
 
-.main > a {
+.notFound {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.notFound::after {
+  content: '404';
+  position: absolute;
+  inset-block-start: 40%;
+  inset-inline-start: 36%;
+  z-index: -1;
+  font-size: 12rem;
+  font-weight: 600;
+  color: rgba(40, 40, 40, 0.4);
+}
+
+.main > a,
+.main .notFound > a {
   text-decoration: none;
   color: inherit;
   padding-block: 0.5em;
@@ -124,7 +145,8 @@
   transition: all 200ms ease-in-out;
 }
 
-.main > a:where(:hover, :focus) {
+.main > a:where(:hover, :focus),
+.main .notFound > a:where(:hover, :focus) {
   background-color: rgba(255, 180, 30, 1);
   transform: scale(1.05);
 }
