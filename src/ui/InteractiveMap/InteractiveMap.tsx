@@ -10,7 +10,7 @@ import {
   type MouseEvent,
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
-import {Point} from 'ol/geom';
+import {Geometry, Point} from 'ol/geom';
 import {boundingExtent, getCenter} from 'ol/extent';
 import {
   RMap,
@@ -28,21 +28,25 @@ import {MdCenterFocusWeak} from 'react-icons/md';
 import {BsArrowsFullscreen} from 'react-icons/bs';
 import {AiOutlineFullscreenExit} from 'react-icons/ai';
 import {TbLiveView} from 'react-icons/tb';
+import {MdOutlineContentCopy} from 'react-icons/md';
 import useRedirect from '@/hooks/useRedirect';
+import useFullscreen from '@/hooks/useFullscreen';
+import IconButton from '@/components/IconButton';
 import Spinner from '@/ui/Spinner';
 import {getCoords} from '@/utils/numbers';
 import {IS_SERVER} from '@/utils/path';
+import {delay} from '@/utils/promises';
 import {type MapBrowserEvent} from 'ol';
+import type {Coordinate} from 'ol/coordinate';
 import {type RView} from 'rlayers/RMap';
 import type {GeoLocation} from '@/types';
+import styles from './InteractiveMap.module.css';
 import 'rlayers/control/layers.css';
 import 'ol/ol.css';
-import styles from './InteractiveMap.module.css';
-import useFullscreen from '@/hooks/useFullscreen';
-import {Coordinate} from 'ol/coordinate';
-import {delay} from '@/utils/promises';
-import IconButton from '@/components/IconButton';
+import {copy} from '@/utils/text/clipboard';
 
+const markerIcon = '/img/icons/marker.svg';
+const liveLocationIcon = '/img/icons/location-crosshairs.svg';
 export interface InteractiveMapProps extends ComponentProps<'figure'> {
   locations: Array<{lng: number; lat: number; id: string; title?: string}>;
   userLocation?: GeoLocation;
@@ -58,6 +62,7 @@ export interface InteractiveMapProps extends ComponentProps<'figure'> {
   useLiveLocation?: boolean;
   useFullscreenBtn?: boolean;
   useCenterBtn?: boolean;
+  markerColor?: string;
 }
 
 const InteractiveMap = ({
@@ -75,9 +80,10 @@ const InteractiveMap = ({
   useFullscreenBtn = true,
   useCenterBtn = true,
   useLiveLocation = false,
+  markerColor = 'rgba(30, 30, 220, 0.9)',
   ...delegated
 }: InteractiveMapProps) => {
-  const [first, ...rest] = locations;
+  const [first] = locations;
   const map = useRef<RMap>(null);
   const userCoords = getCoords();
   const {setUrl} = useRedirect();
@@ -107,6 +113,7 @@ const InteractiveMap = ({
     zoom: 13,
   };
   const [view, setView] = useState(initial);
+  const [liveLocation, setLiveLocation] = useState<Geometry | null>(null);
   const [isLoading, setIsLoading] = useState(0);
   const [domLoaded, setDomLoaded] = useState(false);
 
@@ -124,6 +131,20 @@ const InteractiveMap = ({
     setView({center, zoom: 13});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!userCoords && !userLocation) return;
+    const interval = setInterval(() => {
+      const point = new Point(
+        fromLonLat([
+          userCoords?.lng ?? userLocation?.longitude ?? 0,
+          userCoords?.lat ?? userLocation?.latitude ?? 0,
+        ])
+      );
+      setLiveLocation(point);
+    }, 6168);
+    return () => clearInterval(interval);
+  }, [userCoords, userLocation]);
 
   useEffect(() => {
     if (
@@ -180,15 +201,19 @@ const InteractiveMap = ({
       return;
     const point = new Point(coordinate);
     const currentZoom = view.zoom;
+
     map.current?.ol.getView().fit(point.getExtent(), {
       duration: (ms ?? 1000) / 2,
       maxZoom: (zoom ?? currentZoom) - 1,
     });
+
     await delay((ms ?? 1000) / 2);
+
     map.current?.ol.getView().fit(point.getExtent(), {
       duration: (ms ?? 1000) / 2,
       maxZoom: zoom ?? currentZoom,
     });
+
     return new Promise(resolve =>
       resolve(
         setTimeout(
@@ -205,6 +230,7 @@ const InteractiveMap = ({
 
   const btnOnHover = {
     color: 'rgba(20, 20, 20)',
+    backgroundColor: 'rgba(180, 180, 180, 0.8)',
   };
 
   return (
@@ -261,18 +287,16 @@ const InteractiveMap = ({
               <IconButton
                 icon={<MdCenterFocusWeak width={20} />}
                 className={styles.mapButton}
-                onClick={(evt: MouseEvent<HTMLButtonElement>) =>
-                  fitView(center)
-                }
+                onClick={async () => await fitView(center)}
                 whileHover={btnOnHover}
                 whileFocus={btnOnHover}
               />
             )}
             {(useLiveLocation || isFullscreen) && (
               <IconButton
-                icon={<FaLocationCrosshairs width={20} />}
+                icon={<TbLiveView width={20} />}
                 className={styles.mapButton}
-                onClick={async (evt: MouseEvent<HTMLButtonElement>) => {
+                onClick={async () => {
                   if (!userCoords) return;
                   const center = fromLonLat([userCoords.lng, userCoords.lat]);
                   await fitView(center);
@@ -284,74 +308,76 @@ const InteractiveMap = ({
           </RControl.RCustom>
 
           <RLayerVector zIndex={12}>
-            <RStyle.RStyle>
-              <RStyle.RIcon
-                color={'rgba(30, 30, 220, 0.9)'}
-                size={[40, 40]}
-                src={'/img/icons/marker.svg'}
-                anchor={[0.5, 0.8]}
-              />
-            </RStyle.RStyle>
-            {/* <RStyle.RStyle>
-              <RStyle.RIcon
-                color={'rgba(30, 30, 220, 0.9)'}
-                size={[40, 40]}
-                src={'/img/icons/marker.svg'}
-                anchor={[0.5, 0.8]}
-              />
-            </RStyle.RStyle> */}
-            <RFeature
-              geometry={
-                new Point(
-                  fromLonLat([userCoords?.lng ?? 0, userCoords?.lat ?? 0])
-                )
-              }
-              key={`marker-0`}
-            ></RFeature>
-            <RFeature
-              geometry={new Point(fromLonLat(loc))}
-              onClick={(evt: RFeatureUIEvent) => {
-                console.log(evt.target.getGeometry());
-                evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
-                  duration: 300,
-                  maxZoom: 16,
-                });
-                selectItem(first?.id ?? '');
-              }}
-              key={'marker-1'}
-            >
-              <RPopup trigger={'click'} className='example-overlay'>
-                <div className='card'>
-                  {first?.title && (
-                    <p className='card-header'>
-                      <strong>{first.title}</strong>
-                    </p>
-                  )}
-                  <p className='card-body text-center'>
-                    {first?.lng}, {first?.lat}
+            {liveLocation && userCoords && (
+              <RFeature
+                geometry={liveLocation}
+                key={`marker-0`}
+                onClick={(evt: RFeatureUIEvent) => {
+                  evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
+                    duration: 400,
+                    maxZoom: 16,
+                  });
+                }}
+              >
+                <RStyle.RStyle>
+                  <RStyle.RIcon
+                    color={markerColor}
+                    src={liveLocationIcon}
+                    size={[40, 40]}
+                    anchor={[0.5, 0.8]}
+                  />
+                </RStyle.RStyle>
+                {/* <RPopup trigger={'click'} className={styles.popup}>
+                  <h3 dir='auto'>Here</h3>
+                  <p>
+                    {userCoords.lng}, {userCoords.lat}
                   </p>
-                </div>
-              </RPopup>
-              {/* {items &&
-              ItemComponent &&
-              selectedItem?._id === items?.[0]?._id && (
-                <ROverlay className={styles.overlay}>
-                  <ItemComponent item={items[0] ?? {}} />
-                </ROverlay>
-              )} */}
-            </RFeature>
-            {rest?.map(({lng, lat, id}, i) => (
+                  <section className={styles.actions}>
+                    <IconButton
+                      icon={<MdOutlineContentCopy size={20} />}
+                      onClick={() =>
+                        copy([`${userCoords.lng}, ${userCoords.lat}`])
+                      }
+                      noSfx
+                    />
+                  </section>
+                </RPopup> */}
+              </RFeature>
+            )}
+            {locations?.map(({lng, lat, id, title}, i) => (
               <RFeature
                 geometry={new Point(fromLonLat([lng, lat]))}
                 onClick={(evt: RFeatureUIEvent) => {
                   evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
-                    duration: 300,
+                    duration: 400,
                     maxZoom: 16,
                   });
                   selectItem(id ?? '');
                 }}
-                key={`marker-${i + 2}`}
-              ></RFeature>
+                key={`marker-${i + 1}`}
+              >
+                <RStyle.RStyle>
+                  <RStyle.RIcon
+                    color={markerColor}
+                    src={markerIcon}
+                    size={[36, 36]}
+                    anchor={[0.5, 0.8]}
+                  />
+                </RStyle.RStyle>
+                <RPopup trigger={'click'} className={styles.popup}>
+                  {title && <h3 dir='auto'>{title}</h3>}
+                  <p>
+                    {lng}, {lat}
+                  </p>
+                  <section className={styles.actions}>
+                    <IconButton
+                      icon={<MdOutlineContentCopy size={20} />}
+                      onClick={() => copy([title ?? '', `${lng}, ${lat}`])}
+                      noSfx
+                    />
+                  </section>
+                </RPopup>
+              </RFeature>
             ))}
           </RLayerVector>
         </RMap>

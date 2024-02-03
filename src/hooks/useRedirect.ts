@@ -15,14 +15,18 @@ const useRedirect = () => {
     } = {}
   ) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
-    if (noReplace && params.some(([key]) => current.has(key))) return;
-    params.forEach(([key, value]) => {
-      current.set(key, value);
+    if (
+      (noReplace && params.some(([k]) => current.has(k))) ||
+      params.every(([k, v]) => current.get(k) === v)
+    )
+      return;
+    params.forEach(([k, v]) => {
+      current.set(k, v);
     });
     const search = current.toString();
     router.push(`${pathname}${search ? `?${search}` : ''}`);
     router.refresh();
-    if (reload && params.every(([key]) => current.has(key))) {
+    if (reload && params.every(([k]) => current.has(k))) {
       location.href = `${pathname}${search ? `?${search}` : ''}`;
     }
   };

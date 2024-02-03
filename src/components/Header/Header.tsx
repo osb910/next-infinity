@@ -21,8 +21,8 @@ const Header = ({children}: {children?: React.ReactNode}) => {
       <section className={`${styles.settings} ${styles.app} settings app`}>
         <SoundToggler />
         <IconButton
-          clickHandler={openHelp}
           icon={<Info />}
+          onClick={openHelp}
           highlightDeps={[showHelp]}
           title='Help'
         />

@@ -22,8 +22,8 @@ export const getCoords = () => {
     return null;
   }
   const coords = {
-    lat: 0,
     lng: 0,
+    lat: 0,
   };
 
   const options = {
@@ -35,14 +35,17 @@ export const getCoords = () => {
   const success = (pos: any) => {
     const crd = pos.coords;
 
-    coords.lng = crd.longitude;
-    coords.lat = crd.latitude;
+    Object.assign(coords, {
+      lng: crd.longitude,
+      lat: crd.latitude,
+    });
   };
 
   navigator.geolocation.getCurrentPosition(
     success,
-    (err: any): void => {
+    (err: any) => {
       console.warn(`ERROR: ${err.message}`);
+      return null;
     },
     options
   );

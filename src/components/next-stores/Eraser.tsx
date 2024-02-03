@@ -78,8 +78,6 @@ const Eraser = ({
 
   return (
     <IconButton
-      clickHandler={deleteItem}
-      className={styles.button}
       icon={
         isDeleting ? (
           <Spinner />
@@ -94,6 +92,8 @@ const Eraser = ({
           )
         )
       }
+      className={styles.button}
+      onClick={deleteItem}
       disabled={isDeleting}
       title='Delete'
       aria-label='Delete'

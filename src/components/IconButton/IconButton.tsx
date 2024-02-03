@@ -1,12 +1,11 @@
 import type {ReactNode, ComponentProps, MouseEvent} from 'react';
-import {type AnimationProps, motion, type MotionProps} from 'framer-motion';
+import {motion, type MotionProps} from 'framer-motion';
 import useSound from 'use-sound';
 import useSoundEnabled from '../SoundToggler/sound-enabled';
 import styles from './IconButton.module.css';
 
 export type IconButtonProps = ComponentProps<'button'> &
-  MotionProps &
-  AnimationProps & {
+  MotionProps & {
     icon: JSX.Element;
     noSfx?: boolean;
     children?: ReactNode;
@@ -21,7 +20,7 @@ const IconButton = ({
   ...delegated
 }: IconButtonProps) => {
   const {soundEnabled} = useSoundEnabled();
-  const sfxOn = noSfx || soundEnabled;
+  const sfxOn = !noSfx && soundEnabled;
   const [playActive] = useSound('/sfx/pop-down.mp3', {
     soundEnabled: sfxOn,
     volume: 0.25,

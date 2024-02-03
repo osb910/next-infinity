@@ -87,8 +87,8 @@
   font-size: 1.5em;
   margin: 0;
   /* stroke: var(--hex-color); */
-  stroke: rgb(var(--bg-elevated-rgb));
-  stroke: var(--color-gray-900);
+  /* stroke: rgb(var(--bg-elevated-rgb));
+  stroke: var(--color-gray-900); */
   border-radius: 50%;
   /* transform: rotate(calc(var(--rotation-deg) * -1)); */
 }
