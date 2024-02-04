@@ -18,8 +18,29 @@ import {Metadata} from 'next';
 // );
 
 export const metadata: Metadata = {
-  title: 'Next Infinity',
-  description: 'Full-stack projects and mini-apps built with Next.js',
+  title: {
+    template: '%s | Next Infinity',
+    default: 'Next Infinity',
+  },
+  description:
+    'Full-stack projects and mini-apps built with Next.js, TypeScript, and MongoDB',
+  metadataBase: new URL('https://next-infinity.vercel.app'),
+  openGraph: {
+    title: {
+      template: '%s | Next Infinity',
+      default: 'Next Infinity',
+    },
+    url: 'https://next-infinity.vercel.app',
+    siteName: 'Next Infinity',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    title: {
+      template: '%s | Next Infinity',
+      default: 'Next Infinity',
+    },
+  },
 };
 
 const roboto = Roboto_Mono({

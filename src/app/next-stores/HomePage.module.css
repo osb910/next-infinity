@@ -168,9 +168,6 @@
 }
 
 @media all and (max-width: 900px) {
-  .main {
-    /* padding: 2em; */
-  }
   .nav {
     flex-wrap: wrap;
   }
