@@ -4,7 +4,6 @@ import SingleStore from '@/components/next-stores/SingleStore';
 import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
 import type {AppPage, GetMetadata, JsonRes} from '@/types';
-import {env} from '@/lib/helpers';
 import {Metadata} from 'next';
 
 export type StorePg = AppPage<{storeParam: string}>;

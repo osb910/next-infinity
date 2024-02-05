@@ -4,23 +4,55 @@ import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
 import {type Metadata} from 'next';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage, GetMetadata, JsonRes} from '@/types';
+import {cache} from 'react';
+import {randArrayEl} from '@/utils/general';
 
-export const metadata: Metadata = {
-  title: 'Stores',
-  description: 'Browse all stores',
+export type StoresPg = AppPage<{}, {p: string}>;
+
+const fetcher = cache(async (p: string) => {
+  const res = await fetch(getURL(`/api/next-stores/stores?p=${p}&limit=6`), {
+    headers: {
+      'User-Agent': '*',
+      Accept: 'application/json, text/plain, */*',
+    },
+  });
+  const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
+  return json;
+});
+
+export const generateMetadata: GetMetadata<StoresPg> = async ({
+  searchParams: {p},
+}) => {
+  const json = await fetcher(p);
+  const randStore = randArrayEl(json.data ?? []);
+  return {
+    title: 'Stores',
+    description: 'Browse all stores',
+    openGraph: {
+      title: 'Stores',
+      description: 'Browse all stores',
+      images: [
+        {
+          url: `/api/next-stores/files/${randStore?.photo?.key}`,
+          width: 800,
+          height: 600,
+          alt: 'Stores',
+        },
+      ],
+    },
+    twitter: {
+      title: 'Stores',
+      description: 'Browse all stores',
+      images: [`/api/next-stores/files/${randStore?.photo?.key}`],
+    },
+  };
 };
 
-const StoresPage: AppPage<{}, {p: string}> = async ({searchParams: {p}}) => {
+const StoresPage: StoresPg = async ({searchParams: {p}}) => {
   const userId = headers().get('X-USER-ID') ?? '';
   try {
-    const res = await fetch(getURL(`/api/next-stores/stores?p=${p}&limit=6`), {
-      headers: {
-        'User-Agent': '*',
-        Accept: 'application/json, text/plain, */*',
-      },
-    });
-    const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
+    const json = (await fetcher(p)) as JsonRes<Array<IStoreWithReviews>>;
     if (json.status === 'error') throw new Error(json.message);
     return (
       <>

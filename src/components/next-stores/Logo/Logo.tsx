@@ -13,24 +13,24 @@ const Logo = ({width = '193.70753173828126'}: LogoProps) => {
     >
       <defs id='SvgjsDefs9295'>
         <linearGradient id='SvgjsLinearGradient9304'>
-          <stop id='SvgjsStop9305' stop-color='#905e26' offset='0'></stop>
-          <stop id='SvgjsStop9306' stop-color='#f5ec9b' offset='0.5'></stop>
-          <stop id='SvgjsStop9307' stop-color='#905e26' offset='1'></stop>
+          <stop id='SvgjsStop9305' stopColor='#905e26' offset='0'></stop>
+          <stop id='SvgjsStop9306' stopColor='#f5ec9b' offset='0.5'></stop>
+          <stop id='SvgjsStop9307' stopColor='#905e26' offset='1'></stop>
         </linearGradient>
         <linearGradient id='SvgjsLinearGradient9308'>
-          <stop id='SvgjsStop9309' stop-color='#905e26' offset='0'></stop>
-          <stop id='SvgjsStop9310' stop-color='#f5ec9b' offset='0.5'></stop>
-          <stop id='SvgjsStop9311' stop-color='#905e26' offset='1'></stop>
+          <stop id='SvgjsStop9309' stopColor='#905e26' offset='0'></stop>
+          <stop id='SvgjsStop9310' stopColor='#f5ec9b' offset='0.5'></stop>
+          <stop id='SvgjsStop9311' stopColor='#905e26' offset='1'></stop>
         </linearGradient>
         <linearGradient id='SvgjsLinearGradient9312'>
-          <stop id='SvgjsStop9313' stop-color='#905e26' offset='0'></stop>
-          <stop id='SvgjsStop9314' stop-color='#f5ec9b' offset='0.5'></stop>
-          <stop id='SvgjsStop9315' stop-color='#905e26' offset='1'></stop>
+          <stop id='SvgjsStop9313' stopColor='#905e26' offset='0'></stop>
+          <stop id='SvgjsStop9314' stopColor='#f5ec9b' offset='0.5'></stop>
+          <stop id='SvgjsStop9315' stopColor='#905e26' offset='1'></stop>
         </linearGradient>
         <linearGradient id='SvgjsLinearGradient9316'>
-          <stop id='SvgjsStop9317' stop-color='#905e26' offset='0'></stop>
-          <stop id='SvgjsStop9318' stop-color='#f5ec9b' offset='0.5'></stop>
-          <stop id='SvgjsStop9319' stop-color='#905e26' offset='1'></stop>
+          <stop id='SvgjsStop9317' stopColor='#905e26' offset='0'></stop>
+          <stop id='SvgjsStop9318' stopColor='#f5ec9b' offset='0.5'></stop>
+          <stop id='SvgjsStop9319' stopColor='#905e26' offset='1'></stop>
         </linearGradient>
       </defs>
       <g
