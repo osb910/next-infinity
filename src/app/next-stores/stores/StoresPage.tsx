@@ -3,9 +3,8 @@ import Stores from '@/components/next-stores/Stores';
 import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
 import {type Metadata} from 'next';
-import {type IStore} from '@/services/next-stores/store';
-import {type IReview} from '@/services/next-stores/review';
-import type {AppPage, P8n} from '@/types';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
+import type {AppPage, JsonRes} from '@/types';
 
 export const metadata: Metadata = {
   title: 'Stores',
@@ -21,21 +20,17 @@ const StoresPage: AppPage<{}, {p: string}> = async ({searchParams: {p}}) => {
         Accept: 'application/json, text/plain, */*',
       },
     });
-    const json = (await res.json()) as {
-      status: string;
-      message: string;
-      data: Array<IStore & {reviews: Array<IReview>}>;
-    } & P8n;
+    const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
     if (json.status === 'error') throw new Error(json.message);
     return (
       <>
         <h1>Stores ({json?.count ?? 0})</h1>
         <Stores
-          stores={json.data}
-          count={json.count}
-          pages={json.pages}
-          page={json.page}
+          stores={json?.data ?? []}
           userId={userId}
+          pages={json?.pages ?? 1}
+          page={json?.page ?? 1}
+          count={json?.count ?? 0}
         />
       </>
     );

@@ -5,7 +5,7 @@ import {sendError} from './lib/helpers';
 
 export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;
-  const subPage = searchParams.get('sub-page');
+  const subPage = searchParams.get('dialog');
   const origin = req.headers.get('origin');
   const authCookie = req.cookies.get('nextStoresToken');
   const authHeader = req.headers.get('Authorization');
@@ -34,12 +34,7 @@ export const middleware = async (req: NextRequest) => {
 
   const response = NextResponse.next();
   response.headers.set('x-url', req.url);
-  console.log('middleware', req.ip, req.headers.get('x-forwarded-for'));
   let ipAddress = req.ip ?? req.headers.get('x-forwarded-for') ?? '';
-  // if (!ipAddress) {
-  //   const ipRes = await fetch('https://api.ipify.org?format=json');
-  //   ipAddress = (await ipRes.json()).ip;
-  // }
   response.headers.set('x-ip', ipAddress);
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
     console.log('middleware', req.method, pathname);
@@ -47,7 +42,7 @@ export const middleware = async (req: NextRequest) => {
     if (!token && (/\/add/.test(pathname) || subPage === 'account')) {
       return NextResponse.redirect(
         new URL(
-          `${pathname}?error=bad_token&sub-page=login&redirect=${pathname}`,
+          `${pathname}?error=bad_token&dialog=login&redirect=${pathname}`,
           req.url
         )
       );
@@ -61,7 +56,7 @@ export const middleware = async (req: NextRequest) => {
 
       if (sub && subPage === 'login') {
         console.log('trying to login while logged in');
-        const newUrl = req.nextUrl.searchParams.delete('sub-page');
+        const newUrl = req.nextUrl.searchParams.delete('dialog');
         console.log({newUrl});
         return NextResponse.redirect(new URL(pathname, req.url));
       }
@@ -80,7 +75,7 @@ export const middleware = async (req: NextRequest) => {
       }
 
       return NextResponse.redirect(
-        new URL(`${pathname}?error=bad_token&sub-page=login`, req.url)
+        new URL(`${pathname}?error=bad_token&dialog=login`, req.url)
       );
     }
   }

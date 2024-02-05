@@ -54,14 +54,14 @@ export const GET = async (req: NextRequest) => {
     if (!user) {
       return NextResponse.redirect(
         new URL(
-          `/next-stores?sub-page=login&error=Password reset token is invalid or has expired.`,
+          `/next-stores?dialog=login&error=Password reset token is invalid or has expired.`,
           req.url
         )
       );
     }
     return NextResponse.redirect(
       new URL(
-        `/next-stores?sub-page=reset-password&reset-token=${token}`,
+        `/next-stores?dialog=reset-password&reset-token=${token}`,
         req.url
       )
     );

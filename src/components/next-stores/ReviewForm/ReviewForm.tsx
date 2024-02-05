@@ -83,7 +83,7 @@ const ReviewForm = ({
           <button
             type='button'
             onClick={() => {
-              router.replace(`${pathname}?sub-page=login`);
+              router.replace(`${pathname}?dialog=login`);
             }}
           >
             Login

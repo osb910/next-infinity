@@ -6,11 +6,12 @@ import {getURL} from '@/utils/path';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
 import styles from './MapPage.module.css';
+import {cache} from 'react';
 
 type SearchParams = {lng: string; lat: string; selected: string};
 type MapPg = AppPage<{}, SearchParams>;
 
-const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
+const fetcher = cache(async ({lng, lat}: {lng: string; lat: string}) => {
   const res = await fetch(
     getURL(
       `/api/next-stores/stores/near?lng=${lng}&lat=${lat}&max-distance=12000`
@@ -25,15 +26,10 @@ const fetcher = async ({lng, lat}: {lng: string; lat: string}) => {
     userLocation: GeoLocation;
   }>;
   return json;
-};
+});
 
-// export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-export const generateMetadata: GetMetadata<MapPg> = async ({
-  searchParams: {lng, lat},
-}) => {
-  const pgLocationPromise = fetch(
+const getPageLocation = async ({lng, lat}: {lng: string; lat: string}) => {
+  const pgLocationRes = await fetch(
     getURL(`/api/geocode/reverse?lng=${lng}&lat=${lat}`),
     {
       cache: 'no-store',
@@ -43,16 +39,23 @@ export const generateMetadata: GetMetadata<MapPg> = async ({
       },
     }
   );
-  const [json, pgLocationRes] = await Promise.all([
-    fetcher({lng, lat}),
-    pgLocationPromise,
-  ]);
   const pgLocationJson = await pgLocationRes.json();
-  console.log({pgLocationJson});
+  return pgLocationJson.features;
+};
+
+// export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export const generateMetadata: GetMetadata<MapPg> = async ({
+  searchParams: {lng, lat},
+}) => {
+  const [json, pgLocationJson] = await Promise.all([
+    fetcher({lng, lat}),
+    getPageLocation({lng, lat}),
+  ]);
   const region = json.data?.userLocation?.region;
-  console.log(json.data?.userLocation);
-  const title = pgLocationJson?.features
-    ? `Map - ${pgLocationJson.features[0].properties.address.state}`
+  const title = pgLocationJson
+    ? `Map - ${pgLocationJson[0].properties.address.state}`
     : `Map${!lng && !lat && region ? ` - ${region}` : ''}`;
 
   return {

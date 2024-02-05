@@ -9,7 +9,6 @@ import type {JsonRes} from '@/types';
 
 export const metadata: Metadata = {
   title: 'Next Stores',
-  description: 'Your Delicious Dining Places',
 };
 
 const HomePage = async () => {

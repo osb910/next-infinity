@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "start:local": "next start -p 4002",
+    "analyze": "cross-env ANALYZE=true npm run build",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "@aws-sdk/client-s3": "^3.373.0",
     "@aws-sdk/signature-v4-crt": "^3.370.0",
     "@maxmind/geoip2-node": "^5.0.0",
+    "@next/bundle-analyzer": "^14.1.0",
     "@radix-ui/react-tabs": "^1.0.4",
     "@types/adm-zip": "^0.5.0",
     "@types/archiver": "^5.3.2",
@@ -34,6 +36,7 @@
     "arwes": "^1.0.0-alpha.5",
     "aws-crt": "^1.15.22",
     "bcrypt": "^5.1.0",
+    "cross-env": "^7.0.3",
     "csv-parse": "^5.5.2",
     "eslint": "^8.44.0",
     "eslint-config-next": "^13.4.7",

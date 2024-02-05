@@ -33,7 +33,7 @@ const UserNav = ({
   const {userData, setUserData} = useUser();
   const {createToast} = useToaster();
   const [subPage, setSubPage] = useState<string | null>(() =>
-    searchParams.get('sub-page')
+    searchParams.get('dialog')
   );
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return !!(userData ?? user);
@@ -71,7 +71,7 @@ const UserNav = ({
   };
 
   useEffect(() => {
-    setSubPage(searchParams.get('sub-page'));
+    setSubPage(searchParams.get('dialog'));
   }, [searchParams]);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const UserNav = ({
               className={styles.navLink}
               onClick={() => {
                 setSubPage('account');
-                router.replace(`${pathname}?sub-page=account`);
+                router.replace(`${pathname}?dialog=account`);
               }}
             >
               {userData?.gravatar ? (
@@ -132,7 +132,7 @@ const UserNav = ({
               className={styles.navLink}
               onClick={() => {
                 setSubPage('register');
-                router.replace(`${pathname}?sub-page=register`);
+                router.replace(`${pathname}?dialog=register`);
               }}
             >
               <UserPlus />
@@ -144,7 +144,7 @@ const UserNav = ({
               className={styles.navLink}
               onClick={() => {
                 setSubPage('login');
-                router.replace(`${pathname}?sub-page=login`);
+                router.replace(`${pathname}?dialog=login`);
               }}
             >
               <LogIn />

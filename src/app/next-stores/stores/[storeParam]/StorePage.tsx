@@ -1,34 +1,63 @@
+import {cache} from 'react';
+import Store, {type IStoreWithReviews} from '@/services/next-stores/store';
 import SingleStore from '@/components/next-stores/SingleStore';
-import {getURL} from '@/utils/path';
 import ErrorAlert from '@/components/ErrorAlert';
-import type {AppPage, GetMetadata} from '@/types';
+import {getURL} from '@/utils/path';
+import type {AppPage, GetMetadata, JsonRes} from '@/types';
+import {env} from '@/lib/helpers';
+import {Metadata} from 'next';
 
 export type StorePg = AppPage<{storeParam: string}>;
 
-export const generateMetadata: GetMetadata<StorePg> = async (
-  {params: {storeParam}},
-  parent
-) => {
-  const res = await fetch(getURL(`/api/next-stores/stores/${storeParam}`));
-  const json = await res.json();
+export const revalidate = 60 * 60 * 12;
+
+const fetcher = cache(async (param: string) => {
+  const res = await fetch(getURL(`/api/next-stores/stores/${param}`));
+  const json = (await res.json()) as JsonRes<IStoreWithReviews>;
+  return json;
+});
+
+export const generateMetadata: GetMetadata<StorePg> = async ({
+  params: {storeParam},
+}) => {
+  const json = await fetcher(storeParam);
   console.log(json);
-  const metadata =
+  const metadata: Metadata =
     json?.status === 'error'
       ? {
-          title: 'Error',
-          description: json.message,
+          title: 'Store',
         }
       : {
-          title: json.data.name,
-          description: json.data.description,
+          title: json.data?.name,
+          description: json.data?.description,
+          openGraph: {
+            title: json.data?.name,
+            description: json.data?.description,
+            images: [
+              {
+                url: `${env('ORIGIN')}/api/next-stores/files/${
+                  json.data?.photo?.key
+                }`,
+                width: 800,
+                height: 600,
+                alt: json.data?.name,
+              },
+            ],
+          },
+          twitter: {
+            title: json.data?.name,
+            description: json.data?.description,
+            images: [
+              `${env('ORIGIN')}/api/next-stores/files/${json.data?.photo?.key}`,
+            ],
+          },
         };
   return metadata;
 };
 
-const Store: StorePg = async ({params: {storeParam}}) => {
+const StorePage: StorePg = async ({params: {storeParam}}) => {
   try {
-    const res = await fetch(getURL(`/api/next-stores/stores/${storeParam}`));
-    const json = await res.json();
+    const json = await fetcher(storeParam);
     if (
       json?.status === 'error' &&
       json?.code === 500 &&
@@ -56,4 +85,13 @@ const Store: StorePg = async ({params: {storeParam}}) => {
     );
   }
 };
-export default Store;
+
+// export async function generateStaticParams() {
+//   const stores = await Store.find({slug: {$exists: true}}, 'slug');
+//   console.log('generateStaticParams', stores);
+//   return stores.map(store => ({
+//     storeParam: store.slug,
+//   }));
+// }
+
+export default StorePage;

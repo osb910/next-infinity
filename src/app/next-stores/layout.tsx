@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     template: '%s | Next Stores',
     default: 'Next Stores',
   },
+  description: 'Your Delicious Dining Places',
   metadataBase: new URL('https://next-infinity.vercel.app/next-stores'),
   openGraph: {
     title: {

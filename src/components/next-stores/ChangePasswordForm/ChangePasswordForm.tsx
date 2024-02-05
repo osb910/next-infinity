@@ -48,7 +48,7 @@ const ChangePasswordForm = ({
     createToast(json.status, <p>{json.message}</p>, 5000);
     if (json.status === 'success') {
       setTimeout(() => {
-        router.push(`${pathname}?sub-page=login`);
+        router.push(`${pathname}?dialog=login`);
       }, 3200);
     }
   };

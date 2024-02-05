@@ -30,7 +30,7 @@ const RatingStars = ({
       {stars.map(star => (
         <>
           <input
-            key={star}
+            key={`${appliedId}-${star}`}
             name='rating'
             defaultChecked={selectedRating === star}
             {...delegated}
