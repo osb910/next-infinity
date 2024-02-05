@@ -27,7 +27,7 @@ export const metadata: Metadata = {
       template: '%s | Next Stores',
       default: 'Next Stores',
     },
-    url: 'https://next-infinity.vercel.app/next-stores',
+    url: 'https://next-infinity.vercel.app',
     siteName: 'Next Stores',
     locale: 'en_US',
     type: 'website',
