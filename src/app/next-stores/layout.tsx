@@ -21,13 +21,11 @@ export const metadata: Metadata = {
     default: 'Next Stores',
   },
   description: 'Your Delicious Dining Places',
-  metadataBase: new URL('https://next-infinity.vercel.app/next-stores'),
   openGraph: {
     title: {
       template: '%s | Next Stores',
       default: 'Next Stores',
     },
-    url: 'https://next-infinity.vercel.app',
     siteName: 'Next Stores',
     locale: 'en_US',
     type: 'website',
