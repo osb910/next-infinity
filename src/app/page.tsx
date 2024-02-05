@@ -1,10 +1,14 @@
 import styles from './page.module.css';
 import Poster from '@/components/Poster/Poster';
 import SiteLogo from '@/components/SiteLogo/SiteLogo';
+import logo from '../../public/img/next-infinity-logo.svg';
 import {getFolderNames} from '@/utils/file';
 import {getPath} from '@/utils/path';
 import {readdir, stat} from 'fs/promises';
+import Image from 'next/image';
 import {join} from 'path';
+import Logo from '@/components/Logo';
+import Link from 'next/link';
 
 const dirSize = async (dir: string): Promise<number> => {
   const files = await readdir(dir, {withFileTypes: true});
@@ -30,24 +34,28 @@ const dirSize = async (dir: string): Promise<number> => {
 
 const Home = async () => {
   const packages = await import('../../package.json');
-  const nextVersion = packages.dependencies.next.replace('^', '');
+  const nextVersion = packages.dependencies.next.replace(
+    /\^(\d+\.\d+)\.\d+/,
+    '$1'
+  );
   const appFolder = await getFolderNames('./app');
   const projects = appFolder.filter(
-    name => name !== 'mini-apps' && name !== 'api'
+    name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
   );
-  // .map(async name => ({name, size: await dirSize(getPath(`./app/${name}`))}));
   const miniApps = await getFolderNames('./app/mini-apps');
   return (
     <>
       <header className={styles.header}>
-        <SiteLogo />
+        <Link href='/'>
+          <Logo width='14rem' />
+        </Link>
         <p className={styles.description}>
-          Full-stack projects & mini-apps with Next.js {nextVersion}
+          Full-stack projects built with Next.js {nextVersion}
         </p>
       </header>
       <main className={styles.main}>
         <section className={styles.section}>
-          <h2 className={styles.subtitle}>Projects ({appFolder.length - 2})</h2>
+          <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
           <ol className={styles.apps}>
             {projects.map(name => (
               <Poster poster={`/img/${name}.png`} link={name} key={name}>

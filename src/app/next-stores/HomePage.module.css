@@ -3,8 +3,8 @@
   inset-block-start: 0;
   isolation: isolate;
   z-index: 2;
-  background-color: hsl(0, 0%, 13%, 0.9);
-  backdrop-filter: blur(2px);
+  background-color: hsl(0, 0%, 13%, 0.8);
+  backdrop-filter: blur(4px);
 }
 
 .nav {
@@ -39,21 +39,18 @@
 .navLink svg {
   flex-shrink: 0;
   font-size: 1.5rem;
-  width: 1.35rem;
-  transition: all 0.2s;
+  transition: all 0.25s;
 }
 
-.navLink:where(:hover, :focus),
+.navLink:where(:hover, :focus):not(.navLinkLogo),
 .navLinkActive {
   border-block-end-color: rgba(20, 20, 60, 0.4);
   border-inline-end-color: rgba(0, 0, 0, 0.15);
   background: linear-gradient(
     90deg,
-    #48ded4 0% 10%,
-    #4026bf 30% 40%,
-    #19db2d 50%,
-    #4026bf 60% 70%,
-    #48ded4 90% 100%
+    hsl(50, 82%, 78%) 0% 8%,
+    hsla(32, 68%, 45%, 0.9) 35% 65%,
+    hsl(50, 82%, 78%) 92% 100%
   );
 }
 
@@ -63,7 +60,6 @@
 }
 
 .navLinkLogo svg {
-  width: 200px;
   margin: 0;
 }
 
@@ -100,7 +96,7 @@
 .main h1 {
   margin-block: 0.25em;
   margin-inline: 2em;
-  border-inline-start: 0.25em solid rgba(250, 170, 30, 0.7);
+  border-inline-start: 0.25em solid hsla(32, 68%, 45%, 1);
   border-start-start-radius: 4px;
   border-end-start-radius: 4px;
   padding-inline: 0.5em;
@@ -140,19 +136,19 @@
   color: inherit;
   padding-block: 0.5em;
   padding-inline: 0.75em;
-  background-color: rgba(250, 170, 30, 0.7);
+  background-color: hsla(32, 68%, 45%, 1);
   border-radius: 4px;
   transition: all 200ms ease-in-out;
 }
 
 .main > a:where(:hover, :focus),
 .main .notFound > a:where(:hover, :focus) {
-  background-color: rgba(255, 180, 30, 1);
+  background-color: hsla(32, 73%, 50%, 1);
   transform: scale(1.05);
 }
 
 .main h1:where(:hover, :focus) {
-  border-inline-start: 0.5em solid rgba(250, 170, 30, 1);
+  border-inline-start: 0.5em solid hsla(32, 73%, 50%, 1);
   padding-inline-start: 0.25em;
   padding-inline-end: 1em;
 }

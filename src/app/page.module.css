@@ -5,11 +5,22 @@
   padding-block: 0.5em;
   padding-inline: 1rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.75em;
   justify-content: space-between;
-  background: rgba(var(--bg-elevated-rgb), 0.8);
+  background: rgba(var(--bg-elevated-rgb), 0.75);
   backdrop-filter: blur(4px);
+}
+
+.header svg {
+  flex-shrink: 0;
+}
+
+@media (min-width: 26rem) {
+  .header {
+    flex-direction: row;
+  }
 }
 
 .main {
@@ -22,28 +33,14 @@
   padding-block: 0.5em;
   padding-inline: 2rem;
   background-color: rgba(var(--bg-default-rgb), 1);
-  background-image: url('/img/Nextjs-logo.svg');
-  background-size: 90%;
+  background-image: url('/img/next-infinity-logo.svg');
+  background-size: 85%;
   background-position: 50%;
-  background-repeat: no-repeat;
-  background-origin: content-box;
-  mix-blend-mode: multiply;
+  background-repeat: repeat-y;
+  background-origin: border-box;
+  mix-blend-mode: darken;
   font-size: 1.5rem;
   color: rgb(var(--color-primary-rgb));
-}
-
-.title {
-  display: flex;
-  align-items: center;
-  gap: 0.25em;
-  margin-block: 0;
-  font-size: 2.5rem;
-  color: var(--color-gray-700);
-}
-
-.title svg {
-  align-self: flex-end;
-  flex-shrink: 0;
 }
 
 .description {
@@ -51,6 +48,7 @@
   font-size: 1.125rem;
   max-width: var(--max-width);
   font-family: var(--font-mono);
+  color: var(--color-gray-700);
 }
 
 .code {

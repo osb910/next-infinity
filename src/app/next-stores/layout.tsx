@@ -14,6 +14,7 @@ import {UserProvider} from '@/components/next-stores/useUser';
 import {type Metadata} from 'next';
 import {type IUser} from '@/services/next-stores/user';
 import styles from './HomePage.module.css';
+import Logo from '@/components/next-stores/Logo';
 
 export const metadata: Metadata = {
   title: {
@@ -88,12 +89,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
                   className={`${styles.navLink} ${styles.navLinkLogo}`}
                   href='/next-stores'
                 >
-                  <Image
-                    src='/img/icons/logo.svg'
-                    alt='Logo'
-                    width={64}
-                    height={64}
-                  />
+                  <Logo width='10rem' />
                 </Link>
               </li>
               {menu.map((item, idx) => {
