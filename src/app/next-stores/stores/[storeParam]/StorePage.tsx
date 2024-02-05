@@ -35,9 +35,7 @@ export const generateMetadata: GetMetadata<StorePg> = async ({
             description: json.data?.description,
             images: [
               {
-                url: `${env('ORIGIN')}/api/next-stores/files/${
-                  json.data?.photo?.key
-                }`,
+                url: `/api/next-stores/files/${json.data?.photo?.key}`,
                 width: 800,
                 height: 600,
                 alt: json.data?.name,
@@ -47,9 +45,7 @@ export const generateMetadata: GetMetadata<StorePg> = async ({
           twitter: {
             title: json.data?.name,
             description: json.data?.description,
-            images: [
-              `${env('ORIGIN')}/api/next-stores/files/${json.data?.photo?.key}`,
-            ],
+            images: [`/api/next-stores/files/${json.data?.photo?.key}`],
           },
         };
   return metadata;
