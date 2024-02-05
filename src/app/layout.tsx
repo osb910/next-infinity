@@ -18,28 +18,19 @@ import {Metadata} from 'next';
 // );
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s | Next Infinity',
-    default: 'Next Infinity',
-  },
+  title: 'Next Infinity',
   description:
     'Full-stack projects and mini-apps built with Next.js, TypeScript, and MongoDB',
   metadataBase: new URL('https://next-infinity.vercel.app'),
   openGraph: {
-    title: {
-      template: '%s | Next Infinity',
-      default: 'Next Infinity',
-    },
+    title: 'Next Infinity',
     url: 'https://next-infinity.vercel.app',
     siteName: 'Next Infinity',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
-    title: {
-      template: '%s | Next Infinity',
-      default: 'Next Infinity',
-    },
+    title: 'Next Infinity',
   },
 };
 
@@ -72,7 +63,7 @@ const loadingFont = Redacted_Script({
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   const style: {[key: string]: string} = {
-    '--font-family-loading': loadingFont.style.fontFamily,
+    '--fn-loading': loadingFont.style.fontFamily,
     '--fn-roboto': roboto.style.fontFamily,
     '--fn-atkinson': atkinson.style.fontFamily,
     '--fn-lato': lato.style.fontFamily,

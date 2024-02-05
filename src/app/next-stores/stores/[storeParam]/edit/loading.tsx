@@ -10,10 +10,7 @@ const EditStoreLoading = () => {
     'Licensed',
   ];
   return (
-    <form
-      className={styles.form}
-      style={{fontFamily: 'var(--font-family-loading)'}}
-    >
+    <form className={styles.form} style={{fontFamily: 'var(--fn-loading)'}}>
       <h2 className={styles.title}>Edit Store</h2>
       <p>
         <label htmlFor='name'>Name</label>
@@ -32,12 +29,7 @@ const EditStoreLoading = () => {
           accept='image/gif, image/png, image/jpeg'
         />
       </p>
-      <Image
-        src='/uploads/store.png'
-        alt='store'
-        width={200}
-        height={200}
-      />
+      <Image src='/uploads/store.png' alt='store' width={200} height={200} />
       <p>
         <label htmlFor='address'>Address</label>
         <input />

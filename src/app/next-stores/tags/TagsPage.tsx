@@ -28,7 +28,7 @@ const Tags: TagsPg = async ({searchParams: {tag, p}}) => {
   try {
     const tagsPromise = Store.getTagsList();
     const storesPromise = fetch(
-      getURL(`/api/next-stores/stores?tag=${tag}&p=${p}`)
+      getURL(`/api/next-stores/stores?tag=${tag}&p=${p}&limit=9`)
     );
 
     const [tags, res] = await Promise.all([tagsPromise, storesPromise]);

@@ -21,7 +21,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
     return (
       <article
         className={styles.singleStore}
-        style={{fontFamily: 'var(--font-family-loading)'}}
+        style={{fontFamily: 'var(--fn-loading)'}}
       >
         <h1 className={`${styles.title} ${styles.singleTitle}`}>Title</h1>
         <section className={styles.storeHero}>
@@ -29,8 +29,8 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
             className={styles.storeImage}
             src='/uploads/store.png'
             alt='Store Image'
-            width={300}
-            height={300}
+            width={360}
+            height={360}
           />
         </section>
         <section className={styles.storeDetails}>
@@ -88,13 +88,13 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
           className={styles.storeImage}
           src={`/api/next-stores/files/${photo?.key}`}
           alt='Store Image'
-          width={300}
-          height={300}
+          width={360}
+          height={360}
         />
       </section>
       <section className={styles.storeDetails}>
         <InteractiveMap
-          locations={[{lng, lat, id: _id}]}
+          locations={[{lng, lat, id, title: name}]}
           useAttribution={false}
           useScaleLine={false}
           useZoomSlider={false}

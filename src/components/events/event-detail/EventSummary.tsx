@@ -10,7 +10,7 @@ function EventSummary({
   return (
     <section
       style={{
-        fontFamily: isPlaceholder ? 'var(--font-family-loading)' : undefined,
+        fontFamily: isPlaceholder ? 'var(--fn-loading)' : undefined,
       }}
       className={classes.summary}
     >

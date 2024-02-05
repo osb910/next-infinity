@@ -24,7 +24,7 @@ function EventLogistics({
       <section
         className={styles.logistics}
         style={{
-          fontFamily: 'var(--font-family-loading)',
+          fontFamily: 'var(--fn-loading)',
         }}
       >
         <div className={styles.fakeImage} />

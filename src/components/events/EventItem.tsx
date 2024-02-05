@@ -28,7 +28,7 @@ const EventItem = ({
         <div className={styles.fakeImage} />
         <section
           style={{
-            fontFamily: 'var(--font-family-loading)',
+            fontFamily: 'var(--fn-loading)',
           }}
           className={styles.content}
         >
@@ -44,7 +44,7 @@ const EventItem = ({
         </section>
         <section
           style={{
-            fontFamily: 'var(--font-family-loading)',
+            fontFamily: 'var(--fn-loading)',
           }}
           className={styles.actions}
         >
