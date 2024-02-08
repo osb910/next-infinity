@@ -7,6 +7,7 @@ import {
   useRef,
   type ComponentProps,
   type ReactNode,
+  ComponentPropsWithRef,
 } from 'react';
 import {fromLonLat, toLonLat} from 'ol/proj';
 import {Geometry, Point} from 'ol/geom';
@@ -21,10 +22,10 @@ import {
   RPopup,
   type RFeatureUIEvent,
 } from 'rlayers';
+import {motion, type MotionProps} from 'framer-motion';
 import {FaLocationCrosshairs} from 'react-icons/fa6';
 import {MdCenterFocusWeak} from 'react-icons/md';
-import {BsArrowsFullscreen} from 'react-icons/bs';
-import {AiOutlineFullscreenExit} from 'react-icons/ai';
+import {AiOutlineFullscreen, AiOutlineFullscreenExit} from 'react-icons/ai';
 import {TbLiveView} from 'react-icons/tb';
 import {MdOutlineContentCopy} from 'react-icons/md';
 import useRedirect from '@/hooks/useRedirect';
@@ -48,23 +49,24 @@ const liveLocationIcon = '/img/icons/location-crosshairs.svg';
 
 export type Location = {lng: number; lat: number; id: string; title?: string};
 
-export interface InteractiveMapProps extends ComponentProps<'figure'> {
-  locations: Array<Location>;
-  userLocation?: GeoLocation;
-  height?: string;
-  children?: ReactNode;
-  items?: Array<any>;
-  fixDefaultLocation?: boolean;
-  useSelection?: boolean;
-  useAttribution?: boolean;
-  useScaleLine?: boolean;
-  useZoom?: boolean;
-  useZoomSlider?: boolean;
-  useLiveLocation?: boolean;
-  useFullscreenBtn?: boolean;
-  useCenterBtn?: boolean;
-  markerColor?: string;
-}
+export type InteractiveMapProps = ComponentPropsWithRef<'section'> &
+  MotionProps & {
+    locations: Array<Location>;
+    userLocation?: GeoLocation;
+    height?: string;
+    children?: ReactNode;
+    items?: Array<any>;
+    fixDefaultLocation?: boolean;
+    useSelection?: boolean;
+    useAttribution?: boolean;
+    useScaleLine?: boolean;
+    useZoom?: boolean;
+    useZoomSlider?: boolean;
+    useLiveLocation?: boolean;
+    useFullscreenBtn?: boolean;
+    useCenterBtn?: boolean;
+    markerColor?: string;
+  };
 
 const InteractiveMap = ({
   locations,
@@ -134,18 +136,19 @@ const InteractiveMap = ({
   }, []);
 
   useEffect(() => {
-    if (!userCoords && !userLocation) return;
+    if (!userCoords) return;
     const interval = setInterval(() => {
-      const point = new Point(
-        fromLonLat([
-          userCoords?.lng ?? userLocation?.longitude ?? 0,
-          userCoords?.lat ?? userLocation?.latitude ?? 0,
-        ])
-      );
+      const point = new Point(fromLonLat([userCoords?.lng, userCoords?.lat]));
+      if (
+        point.getFlatCoordinates()[0] === 0 &&
+        point.getFlatCoordinates()[1] === -7.081154551613622e-10
+      ) {
+        return;
+      }
       setLiveLocation(point);
-    }, 6168);
+    }, 3084);
     return () => clearInterval(interval);
-  }, [userCoords, userLocation]);
+  }, [userCoords]);
 
   useEffect(() => {
     if (
@@ -185,7 +188,9 @@ const InteractiveMap = ({
     setUrl,
   ]);
 
-  const isFullscreen = useFullscreen();
+  const [isFullscreen, toggleFullscreen] = useFullscreen('interactive-map');
+
+  const [isFullscreenToggling, setIsFullscreenToggling] = useState(false);
 
   if (IS_SERVER) return null;
 
@@ -235,11 +240,20 @@ const InteractiveMap = ({
   };
 
   return (
-    <figure
-      style={style}
+    <motion.section
       {...delegated}
+      style={{...delegated.style, ...style}}
       className={`${styles.wrapper} ${delegated.className ?? ''}`}
-      id='interactive-map'
+      animate={
+        isFullscreen
+          ? {
+              blockSize: '100%',
+            }
+          : {
+              blockSize: 'initial',
+            }
+      }
+      transition={{duration: 0.5, bounce: 0.2}}
     >
       {(!!isLoading || !domLoaded) && (
         <div className={styles.loader}>
@@ -247,88 +261,116 @@ const InteractiveMap = ({
         </div>
       )}
       {domLoaded && (
-        <RMap
+        <motion.figure
+          id='interactive-map'
           className={styles.map}
-          initial={initial}
-          view={[view, setView]}
-          noDefaultControls
-          // extent={extent}
-          // onClick={changeView}
-          ref={map}
+          animate={
+            isFullscreen
+              ? {
+                  inlineSize: '100vw',
+                  blockSize: '100vh',
+                  position: 'absolute',
+                }
+              : {
+                  inlineSize: '100%',
+                  blockSize: height ?? '40vh',
+                  position: 'relative',
+                }
+          }
+          transition={{duration: 0.5, bounce: 0.2}}
         >
-          <ROSM
-          // onTileLoadStart={evt => {
-          //   evt.stopPropagation();
-          //   console.log('onTileLoadStart', evt);
-          //   setIsLoading(current => current + 1);
-          // }}
-          // onTileLoadEnd={evt => {
-          //   evt.stopPropagation();
+          <RMap
+            className={styles.rMap}
+            initial={initial}
+            view={[view, setView]}
+            noDefaultControls
+            // extent={extent}
+            // onClick={changeView}
+            ref={map}
+          >
+            <ROSM
+            // onTileLoadStart={evt => {
+            //   evt.stopPropagation();
+            //   console.log('onTileLoadStart', evt);
+            //   setIsLoading(current => current + 1);
+            // }}
+            // onTileLoadEnd={evt => {
+            //   evt.stopPropagation();
 
-          //   console.log('onTileLoadEnd', evt);
-          //   setIsLoading(current => current - 1);
-          // }}
-          />
-          {(useAttribution || isFullscreen) && <RControl.RAttribution />}
-          {(useScaleLine || isFullscreen) && <RControl.RScaleLine />}
-          {(useZoom || isFullscreen) && <RControl.RZoom />}
-          {(useZoomSlider || isFullscreen) && <RControl.RZoomSlider />}
-          {(useFullscreenBtn || isFullscreen) && (
-            <RControl.RFullScreen
-              className={`${styles.fullscreenBtn}`}
-              source='interactive-map'
-              // label='&#x6269;'
-              // labelActive='&#x564f;'
-            >
-              &#x6269;
-            </RControl.RFullScreen>
-          )}
-          <RControl.RCustom className={`${styles.mapButtons}`}>
-            {(useCenterBtn || isFullscreen) && (
-              <IconButton
-                icon={<MdCenterFocusWeak width={20} />}
-                className={styles.mapButton}
-                onClick={async () => await fitView(center)}
-                whileHover={btnOnHover}
-                whileFocus={btnOnHover}
-              />
-            )}
-            {(useLiveLocation || isFullscreen) && (
-              <IconButton
-                icon={<TbLiveView width={20} />}
-                className={styles.mapButton}
-                onClick={async () => {
-                  if (!userCoords) return;
-                  const center = fromLonLat([userCoords.lng, userCoords.lat]);
-                  await fitView(center);
-                }}
-                whileHover={btnOnHover}
-                whileFocus={btnOnHover}
-              />
-            )}
-          </RControl.RCustom>
+            //   console.log('onTileLoadEnd', evt);
+            //   setIsLoading(current => current - 1);
+            // }}
+            />
+            {(useAttribution || isFullscreen) && <RControl.RAttribution />}
+            {(useScaleLine || isFullscreen) && <RControl.RScaleLine />}
+            {(useZoom || isFullscreen) && <RControl.RZoom />}
+            {(useZoomSlider || isFullscreen) && <RControl.RZoomSlider />}
+            <RControl.RCustom className={`${styles.mapButtons}`}>
+              {(useFullscreenBtn || isFullscreen) && (
+                <IconButton
+                  icon={
+                    isFullscreen ? (
+                      <AiOutlineFullscreenExit width={20} />
+                    ) : (
+                      <AiOutlineFullscreen width={20} />
+                    )
+                  }
+                  className={`${styles.mapButton}`}
+                  whileHover={btnOnHover}
+                  whileFocus={btnOnHover}
+                  onClick={() => {
+                    // @ts-ignore
+                    toggleFullscreen();
+                  }}
+                />
+              )}
+              {(useCenterBtn || isFullscreen) && (
+                <IconButton
+                  icon={<MdCenterFocusWeak width={20} />}
+                  className={styles.mapButton}
+                  onClick={async () => await fitView(center)}
+                  whileHover={btnOnHover}
+                  whileFocus={btnOnHover}
+                />
+              )}
+              {(useLiveLocation || isFullscreen) && (
+                <IconButton
+                  icon={<TbLiveView width={20} />}
+                  className={styles.mapButton}
+                  onClick={async () => {
+                    if (!userCoords) return;
+                    const center = fromLonLat([userCoords.lng, userCoords.lat]);
+                    await fitView(center);
+                  }}
+                  whileHover={btnOnHover}
+                  whileFocus={btnOnHover}
+                />
+              )}
+            </RControl.RCustom>
 
-          <RLayerVector zIndex={12}>
-            {liveLocation && userCoords && (
-              <RFeature
-                geometry={liveLocation}
-                key={`marker-0`}
-                onClick={(evt: RFeatureUIEvent) => {
-                  evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
-                    duration: 400,
-                    maxZoom: 16,
-                  });
-                }}
-              >
-                <RStyle.RStyle>
-                  <RStyle.RIcon
-                    color={markerColor}
-                    src={liveLocationIcon}
-                    size={[40, 40]}
-                    anchor={[0.5, 0.8]}
-                  />
-                </RStyle.RStyle>
-                {/* <RPopup trigger={'click'} className={styles.popup}>
+            <RLayerVector zIndex={12}>
+              <RStyle.RStyle>
+                <RStyle.RIcon
+                  color={markerColor}
+                  src={liveLocationIcon}
+                  size={[40, 40]}
+                  anchor={[0.5, 0.8]}
+                />
+              </RStyle.RStyle>
+              {liveLocation && userCoords && (
+                <RFeature
+                  geometry={liveLocation}
+                  key={`marker-0`}
+                  onClick={(evt: RFeatureUIEvent) => {
+                    evt.map
+                      .getView()
+                      .fit(evt.target.getGeometry()!.getExtent(), {
+                        duration: 400,
+                        maxZoom: 16,
+                      });
+                  }}
+                >
+                  {/* <RPopup trigger={'click'} className={styles.popup}>
                   <h3 dir='auto'>Here</h3>
                   <p>
                     {userCoords.lng}, {userCoords.lat}
@@ -343,48 +385,54 @@ const InteractiveMap = ({
                     />
                   </section>
                 </RPopup> */}
-              </RFeature>
-            )}
-            {locations?.map(({lng, lat, id, title}, i) => (
-              <RFeature
-                geometry={new Point(fromLonLat([lng, lat]))}
-                onClick={(evt: RFeatureUIEvent) => {
-                  evt.map.getView().fit(evt.target.getGeometry()!.getExtent(), {
-                    duration: 400,
-                    maxZoom: 16,
-                  });
-                  selectItem(id ?? '');
-                }}
-                key={`marker-${i + 1}`}
-              >
-                <RStyle.RStyle>
-                  <RStyle.RIcon
-                    color={markerColor}
-                    src={markerIcon}
-                    size={[36, 36]}
-                    anchor={[0.5, 0.8]}
-                  />
-                </RStyle.RStyle>
-                <RPopup trigger={'click'} className={styles.popup}>
-                  {title && <h3 dir='auto'>{title}</h3>}
-                  <p>
-                    {lng}, {lat}
-                  </p>
-                  <section className={styles.actions}>
-                    <IconButton
-                      icon={<MdOutlineContentCopy size={20} />}
-                      onClick={() => copy([title ?? '', `${lng}, ${lat}`])}
-                      noSfx
+                </RFeature>
+              )}
+            </RLayerVector>
+
+            <RLayerVector zIndex={12}>
+              {locations?.map(({lng, lat, id, title}, i) => (
+                <RFeature
+                  geometry={new Point(fromLonLat([lng, lat]))}
+                  onClick={(evt: RFeatureUIEvent) => {
+                    evt.map
+                      .getView()
+                      .fit(evt.target.getGeometry()!.getExtent(), {
+                        duration: 400,
+                        maxZoom: 16,
+                      });
+                    selectItem(id ?? '');
+                  }}
+                  key={`marker-${i + 1}`}
+                >
+                  <RStyle.RStyle>
+                    <RStyle.RIcon
+                      color={markerColor}
+                      src={markerIcon}
+                      size={[36, 36]}
+                      anchor={[0.5, 0.8]}
                     />
-                  </section>
-                </RPopup>
-              </RFeature>
-            ))}
-          </RLayerVector>
-        </RMap>
+                  </RStyle.RStyle>
+                  <RPopup trigger={'click'} className={styles.popup}>
+                    {title && <h3 dir='auto'>{title}</h3>}
+                    <p>
+                      {lng}, {lat}
+                    </p>
+                    <section className={styles.actions}>
+                      <IconButton
+                        icon={<MdOutlineContentCopy size={20} />}
+                        onClick={() => copy([title ?? '', `${lng}, ${lat}`])}
+                        noSfx
+                      />
+                    </section>
+                  </RPopup>
+                </RFeature>
+              ))}
+            </RLayerVector>
+          </RMap>
+        </motion.figure>
       )}
       {children}
-    </figure>
+    </motion.section>
   );
 };
 

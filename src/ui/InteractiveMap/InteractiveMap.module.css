@@ -1,5 +1,4 @@
 .wrapper {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,17 +24,26 @@
 }
 
 .map {
+  position: relative;
   inline-size: 100%;
   height: var(--height);
   margin-inline: auto;
   border-radius: 6px;
+  background-color: #aaa;
 }
 
-.wrapper:fullscreen .map {
+.rMap {
+  position: absolute;
+  height: 100%;
+  inline-size: 100%;
+  z-index: 10;
+}
+
+/* .wrapper:fullscreen .rMap {
   position: absolute;
   z-index: 3;
   inline-size: 100vw;
-}
+} */
 
 .map .ol-viewport {
   border-radius: 6px;
@@ -55,16 +63,10 @@
   transform-origin: top left;
 }
 
-.fullscreenBtn {
-  inset-block-start: 1em;
-  inset-inline-end: 0.5em;
-  background-color: unset;
-}
-
 .mapButtons {
   position: absolute;
   inline-size: fit-content;
-  inset-block-start: 5.5em;
+  inset-block-start: 1em;
   inset-inline-end: 0.5em;
   display: flex;
   flex-flow: column wrap;
@@ -81,8 +83,7 @@
   background-color: unset;
 }
 
-.mapButtons .mapButton,
-.fullscreenBtn button {
+.mapButtons .mapButton {
   inline-size: 1.75em;
   block-size: 1.75em;
   padding: 0.125em;
