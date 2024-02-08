@@ -30,6 +30,13 @@ export const metadata: Metadata = {
     siteName: 'Next Stores',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/public/img/next-stores-logo.png',
+        width: 800,
+        height: 600,
+      },
+    ],
   },
   twitter: {
     title: {

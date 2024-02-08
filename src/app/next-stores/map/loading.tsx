@@ -4,7 +4,7 @@ const MapLoading = () => {
   return (
     <>
       <h1>
-        Map (<Spinner />)
+        Map <Spinner />
       </h1>
     </>
   );
