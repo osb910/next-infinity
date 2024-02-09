@@ -1,6 +1,10 @@
+
 const HomePage = async () => {
   return (
-    <>HomePage</>
-  )
-}
+    <>
+      <h1>Posts</h1>
+    </>
+  );
+};
+
 export default HomePage;

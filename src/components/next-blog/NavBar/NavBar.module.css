@@ -1,0 +1,46 @@
+.navBar {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  block-size: 100vh;
+  inline-size: 65vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 2em;
+  transform: translateX(calc(100% + 1em));
+  border: 1px solid red;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+.overlay {
+  position: absolute;
+  z-index: 1;
+  inline-size: 100vw;
+  block-size: 100vh;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  background-color: rgba(40, 40, 40, 0.7);
+}
+
+@media (min-width: 48rem) {
+  .navBar {
+    position: relative;
+    block-size: fit-content;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1em;
+    transform: translateX(0%);
+    visibility: visible;
+    opacity: 1;
+  }
+}

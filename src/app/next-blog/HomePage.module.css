@@ -1,0 +1,26 @@
+.header {
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  border-bottom: 2px dashed var(--color-gray-500);
+  background-color: rgb(var(--blog-bg-elevated-rgb));
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.main {
+  /* block-size: 100%; */
+  flex: 1 0 auto;
+  display: flex;
+  background-color: rgb(var(--blog-bg-rgb));
+}
+
+.main h1 {
+  color: rgb(var(--blog-primary-rgb));
+}
