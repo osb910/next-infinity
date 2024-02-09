@@ -1,12 +1,19 @@
+import {cache} from 'react';
+import dynamic from 'next/dynamic';
 import StoreCard from '@/components/next-stores/StoreCard';
 import AddressAutoComplete from '@/components/next-stores/AddressAutoComplete';
 import ErrorAlert from '@/components/ErrorAlert';
-import InteractiveMap from '@/ui/InteractiveMap';
+// import InteractiveMap from '@/ui/InteractiveMap';
 import {getURL} from '@/utils/path';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
+import Spinner from '@/ui/Spinner';
 import styles from './MapPage.module.css';
-import {cache} from 'react';
+
+const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
+  loading: () => <Spinner />,
+  ssr: false,
+});
 
 type SearchParams = {lng: string; lat: string; selected: string};
 type MapPg = AppPage<{}, SearchParams>;
@@ -103,6 +110,7 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
             useScaleLine
             useLiveLocation
             fixDefaultLocation
+            buttonStyle={{'--bg': 'rgba(144, 94, 38, 0.7)'}}
           >
             {selectedItem && <StoreCard item={selectedItem} userId='' />}
           </InteractiveMap>
