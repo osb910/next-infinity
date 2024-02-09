@@ -56,10 +56,10 @@
   background: none;
 }
 
-.button:focus {
+/* .button:focus {
   outline: 2px solid currentColor;
   outline-offset: 2px;
-}
+} */
 
 .button:active {
   /* border-block-start-color: var(--border-bottom-color);

@@ -1,11 +1,11 @@
-import type {ReactNode, ComponentProps, MouseEvent} from 'react';
+import type {ReactNode, MouseEvent, ComponentPropsWithoutRef} from 'react';
 import {motion, type MotionProps} from 'framer-motion';
 import useSound from 'use-sound';
-import useSoundEnabled from '../../components/SoundToggler/sound-enabled';
+import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
 import styles from './IconButton.module.css';
 
-export type IconButtonProps = ComponentProps<'button'> &
-  MotionProps & {
+export type IconButtonProps = ComponentPropsWithoutRef<'button'> &
+  Partial<MotionProps> & {
     icon: JSX.Element;
     noSfx?: boolean;
     children?: ReactNode;
@@ -42,13 +42,14 @@ const IconButton = ({
     ...(delegated.whileTap as Record<string, any>),
   };
   const transition = {
-    duration: 0.1,
-    bounce: 0.3,
+    type: 'spring',
+    damping: 25,
+    stiffness: 250,
+    restDelta: 0.01,
     ...delegated.transition,
   };
 
   return (
-    // @ts-ignore
     <motion.button
       type='button'
       key={highlightDeps?.join('')}
