@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect} from 'react';
-import useSoundEnabled from '@/components/SoundToggler/sound-enabled';
+import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
 import DrumButton from './DrumButton';
 import styles from './page.module.css';
 import useSound from 'use-sound';
