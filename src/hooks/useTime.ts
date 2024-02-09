@@ -1,6 +1,6 @@
 'use client';
 
-import useSoundEnabled from '@/components/SoundToggler/sound-enabled';
+import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
 import {useState, useEffect} from 'react';
 import useSound from 'use-sound';
 
