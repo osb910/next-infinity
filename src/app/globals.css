@@ -5,16 +5,14 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --fn-mono: ui-monospace, 'Source Code Pro', Menlo, Monaco, 'Cascadia Mono',
+    'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Fira Mono',
+    'Droid Sans Mono', 'Courier New', monospace;
 
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --bg-start-rgb: 214, 219, 220;
+  --bg-end-rgb: 255, 255, 255;
   --bg-default-rgb: 31, 33, 37;
   --bg-elevated-rgb: 52, 58, 64;
-  --bg-dark-rgb: 1, 35, 70;
   --color-primary-rgb: 231, 233, 234;
   --color-accent-rgb: 214, 166, 1;
 
@@ -61,14 +59,18 @@
   --scoped-base-rgb: 255, 198, 0;
   --scoped-spacing: 10px;
   --scoped-blur: 10px;
+
+  --blog-primary-rgb: 31, 33, 34;
+  --blog-accent-rgb: 214, 166, 1;
+  --blog-bg-rgb: 214, 219, 220;
+  --blog-bg-elevated-rgb: 194, 199, 200;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+:root.dark {
+  --blog-primary-rgb: 231, 233, 234;
+  --blog-accent-rgb: 214, 166, 1;
+  --blog-bg-rgb: 31, 33, 37;
+  --blog-bg-elevated-rgb: 52, 58, 64;
 }
 
 /*

@@ -6,10 +6,11 @@ import {
   Redacted_Script,
   Fira_Code,
 } from 'next/font/google';
-import {SoundProvider} from '@/components/SoundToggler/sound-enabled';
+import {SoundProvider} from '@/ui/SfxSwitch/sound-enabled';
 import {ToastProvider} from '@/components/Toaster/use-toaster';
 import Toaster from '@/components/Toaster/Toaster';
 import {Metadata} from 'next';
+import {cookies} from 'next/headers';
 // import {createServerContext} from 'react';
 
 // export const testServerContext = createServerContext(
@@ -62,6 +63,9 @@ const loadingFont = Redacted_Script({
 });
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  const cookieStore = cookies();
+  const theme = cookieStore.get('color-theme')?.value ?? 'light';
+
   const style: {[key: string]: string} = {
     '--fn-loading': loadingFont.style.fontFamily,
     '--fn-roboto': roboto.style.fontFamily,
@@ -70,7 +74,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     '--fn-fira': fira.style.fontFamily,
   };
   return (
-    <html lang='en' style={style}>
+    <html lang='en' data-color-theme={theme} style={style} className={theme}>
       <body className={`${atkinson.className}`} suppressHydrationWarning>
         <SoundProvider>
           <ToastProvider>

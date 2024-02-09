@@ -70,39 +70,18 @@ const Home = async () => {
         <section className={styles.section}>
           <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
           <ol className={styles.apps}>
-            <Poster
-              poster='/img/next-projects.png'
-              link='/mini-apps/next-projects'
-            >
-              Next Projects
-            </Poster>
-            <Poster poster='/img/drum-kit.png' link='/mini-apps/drum-kit'>
-              Drum Kit
-            </Poster>
-            <Poster
-              poster='/img/analog-clock.png'
-              link='/mini-apps/analog-clock'
-            >
-              Analog Clock
-            </Poster>
-            <Poster
-              poster='/img/scoped-css-var.png'
-              link='/mini-apps/scoped-css-var'
-            >
-              Scoped CSS Variables
-            </Poster>
-            <Poster
-              poster='/img/array-cardio.png'
-              link='/mini-apps/array-cardio'
-            >
-              Array Cardio
-            </Poster>
-            <Poster
-              poster='/img/flex-image-gallery.png'
-              link='/mini-apps/flex-image-gallery'
-            >
-              Flex Image Gallery
-            </Poster>
+            {miniApps.map(name => (
+              <Poster
+                poster={`/img/${name}.png`}
+                link={`/mini-apps/${name}`}
+                key={name}
+              >
+                {name
+                  .split('-')
+                  .map(word => word[0].toUpperCase() + word.slice(1))
+                  .join(' ')}
+              </Poster>
+            ))}
           </ol>
         </section>
       </main>
