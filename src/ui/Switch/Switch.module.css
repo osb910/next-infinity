@@ -1,0 +1,31 @@
+.SwitchRoot {
+  position: relative;
+  inline-size: var(--width);
+  block-size: calc(var(--width) * 0.6);
+  padding-inline: calc(var(--width) / 20);
+  display: flex;
+  align-items: center;
+  background-color: var(--switch-color);
+  border-radius: 20px;
+  box-shadow: var(--shadow-elevation-medium), 0 0 0 2px transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.SwitchRoot:focus {
+  box-shadow: var(--shadow-elevation-medium), 0 0 0 2px var(--switch-on-color);
+}
+
+.SwitchRoot[data-state='checked'] {
+  justify-content: flex-end;
+  background-color: var(--switch-on-color);
+  box-shadow: var(--shadow-elevation-medium), 0 0 0 2px var(--switch-on-color);
+}
+
+.SwitchThumb {
+  display: block;
+  inline-size: calc(var(--width) / 2);
+  block-size: calc(var(--width) / 2);
+  background-color: var(--thumb-color);
+  border-radius: 50%;
+  box-shadow: var(--shadow-elevation-high);
+}
