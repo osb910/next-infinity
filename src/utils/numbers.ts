@@ -52,3 +52,8 @@ export const getCoords = () => {
 
   return coords;
 };
+
+export const approx = (num: number, precision: number = 2) => {
+  const product = +`1${`0`.repeat(precision)}`;
+  return Math.round(num * product) / product;
+};
