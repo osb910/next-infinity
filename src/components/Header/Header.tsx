@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import IconButton from '../../ui/IconButton/IconButton';
 import Modal from '../Modal/Modal';
 import Portal from '@/ui/Portal';
-import SoundToggler from '../SoundToggler/SoundToggler';
+import SoundToggler from '../../ui/SfxSwitch/SfxSwitch';
 import {Info} from 'react-feather';
 import styles from './Header.module.css';
 import SiteLogo from '../SiteLogo/SiteLogo';

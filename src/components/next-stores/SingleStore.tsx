@@ -3,13 +3,20 @@ import Link from 'next/link';
 import {headers} from 'next/headers';
 import {Edit} from 'react-feather';
 import Reviews from './Reviews';
-import InteractiveMap from '@/ui/InteractiveMap';
+// import InteractiveMap from '@/ui/InteractiveMap';
 import FavoriteToggler from './FavoriteToggler';
 import Eraser from './Eraser';
 import Tags from './TagsList';
 import {type IStore} from '@/services/next-stores/store';
 import {type IReview} from '@/services/next-stores/review';
 import styles from './Store.module.css';
+import dynamic from 'next/dynamic';
+import Spinner from '@/ui/Spinner';
+
+const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
+  loading: () => <Spinner />,
+  ssr: false,
+});
 
 interface SingleStoreProps {
   store?: IStore & {reviews?: Array<IReview>};
