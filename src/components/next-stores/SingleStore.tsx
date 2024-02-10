@@ -12,7 +12,6 @@ import {type IReview} from '@/services/next-stores/review';
 import styles from './Store.module.css';
 import dynamic from 'next/dynamic';
 import Spinner from '@/ui/Spinner';
-import {} from '@/ui';
 
 const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
   loading: () => <Spinner />,
