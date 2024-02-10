@@ -44,6 +44,8 @@
 }
 
 .main small {
+  max-inline-size: 48rem;
+  text-align: center;
   font-size: 0.875rem;
 }
 
