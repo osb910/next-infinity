@@ -17,7 +17,7 @@ export interface PasswordInputProps extends ComponentProps<'input'> {
   [x: string]: any;
 }
 
-const PasswordInput = ({
+export const PasswordInput = ({
   label = 'Password',
   minLength = 8,
   maxLength = 32,

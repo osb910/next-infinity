@@ -12,7 +12,7 @@ const hiddenStyles: {[key: string]: string | number} = {
   border: 0,
 };
 
-const VisuallyHidden = ({children}: {children: ReactNode}) => (
+export const VisuallyHidden = ({children}: {children: ReactNode}) => (
   <span style={hiddenStyles}>{children}</span>
 );
 

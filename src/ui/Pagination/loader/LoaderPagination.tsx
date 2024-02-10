@@ -16,7 +16,7 @@ interface PaginationProps extends P8nProps {
   observedSelector?: string;
 }
 
-const Pagination = ({
+export const LoaderPagination = ({
   page,
   pages,
   endpoint,
@@ -71,4 +71,4 @@ const Pagination = ({
   );
 };
 
-export default Pagination;
+export default LoaderPagination;

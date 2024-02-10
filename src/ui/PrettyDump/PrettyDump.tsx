@@ -5,7 +5,7 @@ interface PrettyDumpProps {
   data: any;
 }
 
-const PrettyDump = ({data}: PrettyDumpProps) => {
+export const PrettyDump = ({data}: PrettyDumpProps) => {
   return (
     <pre
       className='json-container'

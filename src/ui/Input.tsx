@@ -1,6 +1,11 @@
 'use client';
 
-import {useId, ChangeEvent, ReactNode, ComponentProps} from 'react';
+import {
+  useId,
+  type ChangeEvent,
+  type ReactNode,
+  type ComponentProps,
+} from 'react';
 
 export interface InputProps extends ComponentProps<'input'> {
   label: string;
@@ -9,7 +14,7 @@ export interface InputProps extends ComponentProps<'input'> {
   children?: ReactNode;
 }
 
-const Input = ({
+export const Input = ({
   label,
   className,
   setInput,

@@ -2,7 +2,7 @@
 import {useState, useEffect, useId, ReactNode} from 'react';
 import {createPortal} from 'react-dom';
 
-const Portal = ({
+export const Portal = ({
   lang,
   children,
   style,

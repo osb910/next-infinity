@@ -10,7 +10,7 @@ export interface SoundContextProps {
   toggleSound: () => void;
 }
 
-const SoundContext = createContext<SoundContextProps>({
+export const SoundContext = createContext<SoundContextProps>({
   soundEnabled: true,
   toggleSound: () => {},
 });
@@ -42,7 +42,7 @@ export const SoundProvider = ({
   );
 };
 
-const useSoundEnabled = () => {
+export const useSoundEnabled = () => {
   const data = useContext(SoundContext);
 
   if (!data)

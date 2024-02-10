@@ -12,7 +12,7 @@ export type IconButtonProps = ComponentPropsWithoutRef<'button'> &
     highlightDeps?: any[];
   };
 
-const IconButton = ({
+export const IconButton = ({
   icon,
   noSfx = false,
   children,
@@ -43,8 +43,8 @@ const IconButton = ({
   };
   const transition = {
     type: 'spring',
-    damping: 25,
-    stiffness: 250,
+    damping: 30,
+    stiffness: 500,
     restDelta: 0.01,
     ...delegated.transition,
   };

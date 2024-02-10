@@ -34,7 +34,7 @@ const PageLink = ({
   </li>
 );
 
-const Pagination = ({
+export const NavPagination = ({
   page,
   pages,
   count,
@@ -103,4 +103,4 @@ const Pagination = ({
   );
 };
 
-export default Pagination;
+export default NavPagination;

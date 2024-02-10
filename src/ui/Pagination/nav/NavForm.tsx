@@ -11,7 +11,7 @@ interface NavFormProps {
   buttonText: string;
 }
 
-const NavForm = ({pages, page, buttonText}: NavFormProps) => {
+export const NavForm = ({pages, page, buttonText}: NavFormProps) => {
   const router = useRouter();
   const navigate = async (body: FormData) => {
     const dest = body.get('p');

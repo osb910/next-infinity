@@ -18,7 +18,7 @@ const bump = keyframes`
   }
 `;
 
-const Wrapper = styled.button`
+export const Wrapper = styled.button`
   --sec-color: #a8dadc;
   --ter-color: #457b9d;
   --hex-color: #1d3557;

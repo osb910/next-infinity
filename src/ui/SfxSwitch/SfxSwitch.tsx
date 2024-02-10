@@ -6,14 +6,14 @@ import IconButton, {type IconButtonProps} from '@/ui/IconButton';
 import VisuallyHidden from '@/ui/VisuallyHidden';
 import type {MouseEvent, ReactNode} from 'react';
 
-interface SfxSwitchProps extends Partial<IconButtonProps> {
+export interface SfxSwitchProps extends Partial<IconButtonProps> {
   sfxOnIcon?: JSX.Element;
   sfxOffIcon?: JSX.Element;
   dir?: string;
   children?: ReactNode;
 }
 
-const SfxSwitch = ({
+export const SfxSwitch = ({
   sfxOnIcon = <Volume2 />,
   sfxOffIcon = <VolumeX />,
   dir,

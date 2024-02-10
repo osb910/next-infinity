@@ -14,7 +14,7 @@ export interface RatingStarsProps extends ComponentProps<'input'> {
   children?: ReactNode;
 }
 
-const RatingStars = ({
+export const RatingStars = ({
   starsCount = 5,
   starCounter = star => pluralize('star', star),
   selectedRating,

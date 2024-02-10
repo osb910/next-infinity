@@ -9,8 +9,9 @@ import VisuallyHidden from '@/ui/VisuallyHidden';
 
 // type IconButtonProps = Parameters<typeof IconButton>;
 
-interface ThemeSwitchProps extends Partial<IconButtonProps> {
-  initialTheme: 'light' | 'dark';
+type Theme = 'light' | 'dark';
+export interface ThemeSwitchProps extends Partial<IconButtonProps> {
+  initialTheme?: Theme;
   lightIcon?: JSX.Element;
   darkIcon?: JSX.Element;
   cookieName?: string;
@@ -18,8 +19,8 @@ interface ThemeSwitchProps extends Partial<IconButtonProps> {
   children?: ReactNode;
 }
 
-const ThemeSwitch = ({
-  initialTheme,
+export const ThemeSwitch = ({
+  initialTheme = 'light',
   lightIcon = <Sun size='1.25em' />,
   darkIcon = <Moon size='1.25em' />,
   cookieName = 'color-theme',

@@ -7,7 +7,7 @@ import useSound from 'use-sound';
 import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
 import css from './Switch.module.css';
 
-interface SwitchProps extends PrimitiveButtonProps {
+export interface SwitchProps extends PrimitiveButtonProps {
   width?: string;
   switchColor?: string;
   switchOnColor?: string;
@@ -15,7 +15,7 @@ interface SwitchProps extends PrimitiveButtonProps {
   noSfx?: boolean;
 }
 
-const Switch = ({
+export const Switch = ({
   width = '2.5rem',
   switchColor = 'hsla(0, 0%, 50%, 0.8)',
   switchOnColor = 'hsla(210, 8%, 25%, 0.9)',
