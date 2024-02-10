@@ -12,6 +12,7 @@ import {type IReview} from '@/services/next-stores/review';
 import styles from './Store.module.css';
 import dynamic from 'next/dynamic';
 import Spinner from '@/ui/Spinner';
+import {} from '@/ui';
 
 const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
   loading: () => <Spinner />,
@@ -73,6 +74,16 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
 
   const headersList = headers();
   const userId = headersList.get('X-USER-ID');
+  const mapStyle: Record<string, any> = {
+    '--bg-img': `linear-gradient(
+    to right,
+    hsla(54, 82%, 78%, 0.7) 0% 15%,
+    hsla(32, 58%, 36%, 0.7) 20% 35%,
+    hsla(54, 82%, 78%, 0.7) 45% 55%,
+    hsla(32, 58%, 36%, 0.7) 65% 80%,
+    hsla(54, 82%, 78%, 0.7) 85% 100%
+  )`,
+  };
 
   return (
     <article className={styles.singleStore}>
@@ -105,6 +116,8 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
           useAttribution={false}
           useScaleLine={false}
           useZoomSlider={false}
+          style={mapStyle}
+          buttonStyle={{'--bg': 'rgba(144, 94, 38, 0.67)'}}
         />
         <p className={styles.storeLocation}>{address}</p>
         <p className={styles.storeDescription} dir='auto'>

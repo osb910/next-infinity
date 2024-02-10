@@ -91,6 +91,17 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
       store => store._id === selected
     );
 
+    const mapStyle: Record<string, any> = {
+      '--bg-img': `linear-gradient(
+        to right,
+        hsla(54, 82%, 78%, 0.7) 0% 15%,
+        hsla(32, 58%, 36%, 0.7) 20% 35%,
+        hsla(54, 82%, 78%, 0.7) 45% 55%,
+        hsla(32, 58%, 36%, 0.7) 65% 80%,
+        hsla(54, 82%, 78%, 0.7) 85% 100%
+      )`,
+    };
+
     return (
       <>
         <h1>Map</h1>
@@ -110,7 +121,8 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
             useScaleLine
             useLiveLocation
             fixDefaultLocation
-            buttonStyle={{'--bg': 'rgba(144, 94, 38, 0.7)'}}
+            style={mapStyle}
+            buttonStyle={{'--bg': 'rgba(144, 94, 38, 0.67)'}}
           >
             {selectedItem && <StoreCard item={selectedItem} userId='' />}
           </InteractiveMap>
