@@ -2,7 +2,7 @@
 
 import styled, {keyframes} from 'styled-components';
 
-const spin = keyframes`
+export const spin = keyframes`
   from {
     transform: rotate(0deg);
   }
@@ -12,7 +12,7 @@ const spin = keyframes`
   }
 `;
 
-const Wrapper = styled.span`
+export const Wrapper = styled.span`
   display: block;
   width: max-content;
   margin: 0.25em;
