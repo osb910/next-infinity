@@ -1,36 +1,30 @@
 import styles from './page.module.css';
 import Poster from '@/components/Poster/Poster';
-import SiteLogo from '@/components/SiteLogo/SiteLogo';
-import logo from '../../public/img/next-infinity-logo.svg';
 import {getFolderNames} from '@/utils/file';
-import {getPath} from '@/utils/path';
-import {readdir, stat} from 'fs/promises';
-import Image from 'next/image';
-import {join} from 'path';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
 
-const dirSize = async (dir: string): Promise<number> => {
-  const files = await readdir(dir, {withFileTypes: true});
+// const dirSize = async (dir: string): Promise<number> => {
+//   const files = await readdir(dir, {withFileTypes: true});
 
-  const paths = files.map(async file => {
-    const path = join(dir, file.name);
+//   const paths = files.map(async file => {
+//     const path = join(dir, file.name);
 
-    if (file.isDirectory()) return await dirSize(path);
+//     if (file.isDirectory()) return await dirSize(path);
 
-    if (file.isFile()) {
-      const {size} = await stat(path);
+//     if (file.isFile()) {
+//       const {size} = await stat(path);
 
-      return size;
-    }
+//       return size;
+//     }
 
-    return 0;
-  });
+//     return 0;
+//   });
 
-  return (await Promise.all(paths))
-    .flat(Infinity)
-    .reduce((i, size) => i + size, 0);
-};
+//   return (await Promise.all(paths))
+//     .flat(Infinity)
+//     .reduce((i, size) => i + size, 0);
+// };
 
 const Home = async () => {
   const packages = await import('../../package.json');

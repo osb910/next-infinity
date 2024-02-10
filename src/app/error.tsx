@@ -1,6 +1,9 @@
 'use client'; // Error components must be Client Components
 
+import Logo from '@/components/Logo';
+import Link from 'next/link';
 import {useEffect} from 'react';
+import styles from './page.module.css';
 
 export default function Error({
   error,
@@ -15,9 +18,17 @@ export default function Error({
   }, [error]);
 
   return (
-    <div>
+    <>
+      <header className={styles.header}>
+        <Link href='/'>
+          <Logo width='14rem' />
+        </Link>
+        <p className={styles.description}>
+          Full-stack projects built with Next.js 14
+        </p>
+      </header>
       <h2>Something went wrong!</h2>
       <button onClick={() => reset()}>Try again</button>
-    </div>
+    </>
   );
 }
