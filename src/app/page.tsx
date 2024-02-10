@@ -3,6 +3,8 @@ import Poster from '@/components/Poster/Poster';
 import {getFolderNames} from '@/utils/file';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
+import {fileURLToPath} from 'url';
+import {dirname, join} from 'path';
 
 // const dirSize = async (dir: string): Promise<number> => {
 //   const files = await readdir(dir, {withFileTypes: true});
@@ -33,11 +35,24 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
+    const dir = dirname(fileURLToPath(import.meta.url));
+    console.log({url: import.meta.url, dir, root: join(dir, '..')});
     const appFolder = await getFolderNames('./app');
-    // const projects = appFolder.filter(
-    //   name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
-    // );
-    // const miniApps = await getFolderNames('./app/mini-apps');
+    console.log({appFolder});
+    const projects = appFolder.filter(
+      name =>
+        ![
+          '_next',
+          'fonts',
+          'img',
+          'sfx',
+          'uploads',
+          'api',
+          'mini-apps',
+          'nasa-mission-control',
+        ].includes(name)
+    );
+    const miniApps = await getFolderNames('./app/mini-apps');
     return (
       <>
         <header className={styles.header}>
@@ -50,34 +65,34 @@ const Home = async () => {
         </header>
         <main className={styles.main}>
           <section className={styles.section}>
-            <h2 className={styles.subtitle}>Projects ({appFolder.length})</h2>
+            <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
             <ol className={styles.apps}>
-              {/* {appFolder.map(name => (
+              {projects.map(name => (
                 <Poster poster={`/img/${name}.png`} link={name} key={name}>
                   {name
                     .split('-')
                     .map(word => word[0].toUpperCase() + word.slice(1))
                     .join(' ')}
                 </Poster>
-              ))} */}
+              ))}
             </ol>
           </section>
           <section className={styles.section}>
-            {/* <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2> */}
-            {/* <ol className={styles.apps}>
-            {miniApps.map(name => (
-              <Poster
-                poster={`/img/${name}.png`}
-                link={`/mini-apps/${name}`}
-                key={name}
-              >
-                {name
-                  .split('-')
-                  .map(word => word[0].toUpperCase() + word.slice(1))
-                  .join(' ')}
-              </Poster>
-            ))}
-          </ol> */}
+            <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
+            <ol className={styles.apps}>
+              {miniApps.map(name => (
+                <Poster
+                  poster={`/img/${name}.png`}
+                  link={`/mini-apps/${name}`}
+                  key={name}
+                >
+                  {name
+                    .split('-')
+                    .map(word => word[0].toUpperCase() + word.slice(1))
+                    .join(' ')}
+                </Poster>
+              ))}
+            </ol>
           </section>
         </main>
       </>
