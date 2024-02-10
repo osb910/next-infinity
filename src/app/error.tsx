@@ -27,8 +27,10 @@ export default function Error({
           Full-stack projects built with Next.js 14
         </p>
       </header>
-      <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
+      <main className={styles.main}>
+        <h2>Something went wrong!</h2>
+        <button onClick={() => reset()}>Try again</button>
+      </main>
     </>
   );
 }

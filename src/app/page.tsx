@@ -63,7 +63,7 @@ const Home = async () => {
         </section>
         <section className={styles.section}>
           <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
-          <ol className={styles.apps}>
+          {/* <ol className={styles.apps}>
             {miniApps.map(name => (
               <Poster
                 poster={`/img/${name}.png`}
@@ -76,7 +76,7 @@ const Home = async () => {
                   .join(' ')}
               </Poster>
             ))}
-          </ol>
+          </ol> */}
         </section>
       </main>
     </>
