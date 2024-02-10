@@ -5,6 +5,7 @@ import Logo from '@/components/Logo';
 import Link from 'next/link';
 import {fileURLToPath} from 'url';
 import {dirname, join} from 'path';
+import fs from 'fs/promises';
 
 // const dirSize = async (dir: string): Promise<number> => {
 //   const files = await readdir(dir, {withFileTypes: true});
@@ -38,7 +39,8 @@ const Home = async () => {
     );
     const dir = dirname(fileURLToPath(import.meta.url));
     console.log({url: import.meta.url, dir, root: join(dir, '..')});
-    console.log(await getFolderNames(join(dir, '..', '..', '..', '..', '..')));
+    console.log('cwd:', process.cwd());
+    console.log(await fs.readdir(dir));
     const appFolder = await getFolderNames('./app');
     console.log({appFolder});
     const projects = appFolder.filter(

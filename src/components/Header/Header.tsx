@@ -8,7 +8,6 @@ import Portal from '@/ui/Portal';
 import SoundToggler from '../../ui/SfxSwitch/SfxSwitch';
 import {Info} from 'react-feather';
 import styles from './Header.module.css';
-import SiteLogo from '../SiteLogo/SiteLogo';
 
 const Header = ({children}: {children?: React.ReactNode}) => {
   const [showHelp, setShowHelp] = useState<boolean>(false);
@@ -17,7 +16,6 @@ const Header = ({children}: {children?: React.ReactNode}) => {
   return (
     <StyledHeader className={styles.header}>
       {children}
-      <SiteLogo variant='secondary' />
       <section className={`${styles.settings} ${styles.app} settings app`}>
         <SoundToggler />
         <IconButton

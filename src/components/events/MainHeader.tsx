@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import styles from './MainHeader.module.css';
-import SiteLogo from '../SiteLogo/SiteLogo';
 
 const MainHeader = () => {
   return (
@@ -8,7 +7,6 @@ const MainHeader = () => {
       <h1 className={styles.logo}>
         <Link href='/next-events'>Next Events</Link>
       </h1>
-      <SiteLogo variant='secondary' />
       <nav className={styles.navigation}>
         <ul>
           <li>
