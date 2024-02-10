@@ -26,10 +26,23 @@
 .map {
   position: relative;
   inline-size: 100%;
-  height: var(--height);
+  block-size: var(--height);
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
   margin-inline: auto;
   border-radius: 6px;
-  background-color: #aaa;
+  will-change: true;
+  background-color: hsla(0, 0%, 53%, 0.6);
+  background-image: var(--bg-img);
+}
+
+.maximized {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  inline-size: revert;
+  block-size: revert;
 }
 
 .rMap {
@@ -37,12 +50,6 @@
   height: 100%;
   inline-size: 100%;
 }
-
-/* .wrapper:fullscreen .rMap {
-  position: absolute;
-  z-index: 3;
-  inline-size: 100vw;
-} */
 
 .map .ol-viewport {
   border-radius: 6px;
@@ -82,7 +89,7 @@
   background-color: unset;
 }
 
-.mapButtons .mapButton {
+.mapButtons > button {
   inline-size: 1.75em;
   block-size: 1.75em;
   padding: 0.125em;
@@ -91,15 +98,19 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  color: #fff;
+  font-size: 1.5em;
+  color: rgb(232, 232, 232);
   background-color: rgba(120, 120, 120, 0.7);
+  background-color: var(--bg);
   border: 1px solid rgba(120, 120, 120, 0.7);
+  border: 1px solid var(--bg);
   box-shadow: var(--shadow-elevation-high);
   cursor: pointer;
 }
 
-.mapButtons .mapButton:is(:hover, :focus) {
+.mapButton:is(:hover, :focus) {
   border: 1px solid rgba(140, 140, 140, 0.75);
+  border: 1px solid var(--bg);
 }
 
 .loader {
