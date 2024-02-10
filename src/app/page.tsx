@@ -33,8 +33,8 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
+    console.log({nextVersion});
     const appFolder = await getFolderNames('./app');
-    console.log({nextVersion, appFolder});
     // const projects = appFolder.filter(
     //   name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
     // );
@@ -53,14 +53,14 @@ const Home = async () => {
           <section className={styles.section}>
             <h2 className={styles.subtitle}>Projects ({appFolder.length})</h2>
             <ol className={styles.apps}>
-              {appFolder.map(name => (
+              {/* {appFolder.map(name => (
                 <Poster poster={`/img/${name}.png`} link={name} key={name}>
                   {name
                     .split('-')
                     .map(word => word[0].toUpperCase() + word.slice(1))
                     .join(' ')}
                 </Poster>
-              ))}
+              ))} */}
             </ol>
           </section>
           <section className={styles.section}>
@@ -85,6 +85,7 @@ const Home = async () => {
     );
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
 
