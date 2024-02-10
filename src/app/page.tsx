@@ -27,43 +27,45 @@ import Link from 'next/link';
 // };
 
 const Home = async () => {
-  const packages = await import('../../package.json');
-  const nextVersion = packages.dependencies.next.replace(
-    /\^(\d+\.\d+)\.\d+/,
-    '$1'
-  );
-  const appFolder = await getFolderNames('./app');
-  const projects = appFolder.filter(
-    name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
-  );
-  // const miniApps = await getFolderNames('./app/mini-apps');
-  return (
-    <>
-      <header className={styles.header}>
-        <Link href='/'>
-          <Logo width='14rem' />
-        </Link>
-        <p className={styles.description}>
-          Full-stack projects built with Next.js {nextVersion}
-        </p>
-      </header>
-      <main className={styles.main}>
-        <section className={styles.section}>
-          <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
-          <ol className={styles.apps}>
-            {projects.map(name => (
-              <Poster poster={`/img/${name}.png`} link={name} key={name}>
-                {name
-                  .split('-')
-                  .map(word => word[0].toUpperCase() + word.slice(1))
-                  .join(' ')}
-              </Poster>
-            ))}
-          </ol>
-        </section>
-        <section className={styles.section}>
-          {/* <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2> */}
-          {/* <ol className={styles.apps}>
+  try {
+    const packages = await import('../../package.json');
+    const nextVersion = packages.dependencies.next.replace(
+      /\^(\d+\.\d+)\.\d+/,
+      '$1'
+    );
+    const appFolder = await getFolderNames('./app');
+    console.log({nextVersion, appFolder});
+    // const projects = appFolder.filter(
+    //   name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
+    // );
+    // const miniApps = await getFolderNames('./app/mini-apps');
+    return (
+      <>
+        <header className={styles.header}>
+          <Link href='/'>
+            <Logo width='14rem' />
+          </Link>
+          <p className={styles.description}>
+            Full-stack projects built with Next.js {nextVersion}
+          </p>
+        </header>
+        <main className={styles.main}>
+          <section className={styles.section}>
+            <h2 className={styles.subtitle}>Projects ({appFolder.length})</h2>
+            <ol className={styles.apps}>
+              {appFolder.map(name => (
+                <Poster poster={`/img/${name}.png`} link={name} key={name}>
+                  {name
+                    .split('-')
+                    .map(word => word[0].toUpperCase() + word.slice(1))
+                    .join(' ')}
+                </Poster>
+              ))}
+            </ol>
+          </section>
+          <section className={styles.section}>
+            {/* <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2> */}
+            {/* <ol className={styles.apps}>
             {miniApps.map(name => (
               <Poster
                 poster={`/img/${name}.png`}
@@ -77,10 +79,13 @@ const Home = async () => {
               </Poster>
             ))}
           </ol> */}
-        </section>
-      </main>
-    </>
-  );
+          </section>
+        </main>
+      </>
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export default Home;
