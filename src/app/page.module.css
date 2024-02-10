@@ -43,6 +43,10 @@
   color: rgb(var(--color-primary-rgb));
 }
 
+.main small {
+  font-size: 0.875rem;
+}
+
 .description {
   text-align: center;
   font-size: 1.125rem;

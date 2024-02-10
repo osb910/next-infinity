@@ -9,7 +9,7 @@ export default function Error({
   error,
   reset,
 }: {
-  error: Error;
+  error: Error & {digest?: string};
   reset: () => void;
 }) {
   useEffect(() => {
@@ -31,6 +31,8 @@ export default function Error({
         <h2>Something went wrong!</h2>
         <button onClick={() => reset()}>Try again</button>
         <small>{error.message}</small>
+        <p>Digest:</p>
+        <small>{error.digest}</small>
       </main>
     </>
   );
