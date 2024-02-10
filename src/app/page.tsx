@@ -36,7 +36,7 @@ const Home = async () => {
   const projects = appFolder.filter(
     name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
   );
-  const miniApps = await getFolderNames('./app/mini-apps');
+  // const miniApps = await getFolderNames('./app/mini-apps');
   return (
     <>
       <header className={styles.header}>
@@ -62,7 +62,7 @@ const Home = async () => {
           </ol>
         </section>
         <section className={styles.section}>
-          <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
+          {/* <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2> */}
           {/* <ol className={styles.apps}>
             {miniApps.map(name => (
               <Poster
