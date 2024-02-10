@@ -1,8 +1,8 @@
 'use client'; // Error components must be Client Components
 
-import Logo from '@/components/Logo';
 import Link from 'next/link';
 import {useEffect} from 'react';
+import Logo from '@/components/Logo';
 import styles from './page.module.css';
 
 export default function Error({
@@ -30,6 +30,7 @@ export default function Error({
       <main className={styles.main}>
         <h2>Something went wrong!</h2>
         <button onClick={() => reset()}>Try again</button>
+        <small>{error.message}</small>
       </main>
     </>
   );
