@@ -24,8 +24,10 @@ const readFile = async (
 
 const readFolder = async (pathFromRoot: string): Promise<string[]> => {
   const path = getPath(pathFromRoot);
+  console.log({path});
   try {
     const files: string[] = await fs.readdir(path);
+    console.log({files});
     return files;
   } catch (err) {
     console.error(err);

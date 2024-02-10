@@ -33,7 +33,6 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
-    console.log({nextVersion});
     const appFolder = await getFolderNames('./app');
     // const projects = appFolder.filter(
     //   name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
