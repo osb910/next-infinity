@@ -27,7 +27,7 @@ import {dirname, join} from 'path';
 //     .flat(Infinity)
 //     .reduce((i, size) => i + size, 0);
 // };
-
+export const dynamic = 'force-dynamic';
 const Home = async () => {
   try {
     const packages = await import('../../package.json');
@@ -37,7 +37,7 @@ const Home = async () => {
     );
     const dir = dirname(fileURLToPath(import.meta.url));
     console.log({url: import.meta.url, dir, root: join(dir, '..')});
-    console.log(await getFolderNames(join(dir, '..')));
+    console.log(await getFolderNames(join(dir, '..', '..')));
     const appFolder = await getFolderNames('./app');
     console.log({appFolder});
     const projects = appFolder.filter(
