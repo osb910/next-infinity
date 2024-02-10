@@ -35,8 +35,11 @@ const readFolder = async (pathFromRoot: string): Promise<string[]> => {
 
 const getFolderNames = async (pathFromRoot: string): Promise<string[]> => {
   try {
+    console.log('getting folder names');
     const list = await readFolder(pathFromRoot);
+    console.log({list});
     const folders = list.filter(item => !item.match(/\.[^.]+$/));
+    console.log({folders});
     return folders;
   } catch (err) {
     console.error(err);
