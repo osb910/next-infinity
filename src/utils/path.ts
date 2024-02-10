@@ -1,18 +1,17 @@
 import {join, dirname} from 'path';
 import {fileURLToPath} from 'url';
 
-const rootPath = (): string => {
-  const __filename = fileURLToPath(import.meta.url);
-  return join(dirname(__filename), '..');
+export const root = (): string => {
+  const filename = fileURLToPath(import.meta.url);
+  return join(dirname(filename), '..');
 };
 
-const getPath = (pathFromRoot: string): string =>
-  join(rootPath(), pathFromRoot);
+export const getPath = (pathFromRoot: string): string =>
+  join(root(), pathFromRoot);
 
-const IS_SERVER = typeof window === 'undefined';
-const getURL = (path: string) => {
+export const getURL = (path: string) => {
   const baseURL = IS_SERVER ? process.env.ORIGIN! : window.location.origin;
   return new URL(path, baseURL).toString();
 };
 
-export {rootPath, getPath, getURL, IS_SERVER};
+export const IS_SERVER = typeof window === 'undefined';

@@ -3,9 +3,8 @@ import Poster from '@/components/Poster/Poster';
 import {getFolderNames} from '@/utils/file';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
-import {fileURLToPath} from 'url';
-import {dirname, join} from 'path';
 import fs from 'fs/promises';
+import PrettyDump from '@/ui/PrettyDump';
 
 // const dirSize = async (dir: string): Promise<number> => {
 //   const files = await readdir(dir, {withFileTypes: true});
@@ -30,6 +29,21 @@ import fs from 'fs/promises';
 // };
 // export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+const projects = ['next-blog', 'next-events', 'next-stores'];
+
+const miniApps = [
+  'analog-clock',
+  'array-cardio',
+  'drum-kit',
+  'flex-image-gallery',
+  'interview',
+  'next-projects',
+  'scoped-css-var',
+  'vapor',
+  'web-base',
+];
+
 const Home = async () => {
   try {
     const packages = await import('../../package.json');
@@ -37,26 +51,27 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
-    const dir = dirname(fileURLToPath(import.meta.url));
-    console.log({url: import.meta.url, dir, root: join(dir, '..')});
-    console.log('cwd:', process.cwd());
-    console.log(await fs.readdir(dir));
-    const appFolder = await getFolderNames('./app');
-    console.log({appFolder});
-    const projects = appFolder.filter(
-      name =>
-        ![
-          '_next',
-          'fonts',
-          'img',
-          'sfx',
-          'uploads',
-          'api',
-          'mini-apps',
-          'nasa-mission-control',
-        ].includes(name)
-    );
-    const miniApps = await getFolderNames('./app/mini-apps');
+    console.log({
+      url: import.meta.url,
+      cwd: process.cwd(),
+    });
+    console.log(await fs.readdir(process.cwd()));
+    // const appFolder = await getFolderNames('./app');
+    // console.log({appFolder});
+    // const projects = appFolder.filter(
+    //   name =>
+    //     ![
+    //       '_next',
+    //       'fonts',
+    //       'img',
+    //       'sfx',
+    //       'uploads',
+    //       'api',
+    //       'mini-apps',
+    //       'nasa-mission-control',
+    //     ].includes(name)
+    // );
+    // const miniApps = await getFolderNames('./app/mini-apps');
     return (
       <>
         <header className={styles.header}>
@@ -71,7 +86,7 @@ const Home = async () => {
           <section className={styles.section}>
             <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
             <ol className={styles.apps}>
-              {projects.map(name => (
+              {projects.sort().map(name => (
                 <Poster poster={`/img/${name}.png`} link={name} key={name}>
                   {name
                     .split('-')
@@ -84,7 +99,7 @@ const Home = async () => {
           <section className={styles.section}>
             <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
             <ol className={styles.apps}>
-              {miniApps.map(name => (
+              {miniApps.sort().map(name => (
                 <Poster
                   poster={`/img/${name}.png`}
                   link={`/mini-apps/${name}`}
@@ -98,6 +113,7 @@ const Home = async () => {
               ))}
             </ol>
           </section>
+          <PrettyDump data={await fs.readdir(process.cwd())} />
         </main>
       </>
     );
