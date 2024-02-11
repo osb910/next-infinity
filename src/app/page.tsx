@@ -54,7 +54,6 @@ const Home = async () => {
     );
     console.log(await fs.readdir(join(process.cwd(), 'src')));
     console.log(await fs.readdir(join(process.cwd(), '.next/cache')));
-    console.log(await fs.readdir(join(process.cwd(), '.next/BUILD_ID')));
     const appFolder = await getFolderNames(
       join(process.cwd(), '.next/server/app')
     );
@@ -109,12 +108,6 @@ const Home = async () => {
           <PrettyDump data={await fs.readdir(join(process.cwd()))} />
           <PrettyDump
             data={await fs.readdir(join(process.cwd(), '___vc', '__launcher'))}
-          />
-          <PrettyDump
-            data={await fs.readdir(join(process.cwd(), '.next/cache'))}
-          />
-          <PrettyDump
-            data={await fs.readdir(join(process.cwd(), '.next/BUILD_ID'))}
           />
         </main>
       </>
