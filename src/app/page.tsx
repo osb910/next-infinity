@@ -5,6 +5,7 @@ import Logo from '@/components/Logo';
 import Link from 'next/link';
 import fs from 'fs/promises';
 import PrettyDump from '@/ui/PrettyDump';
+import {join} from 'path';
 
 // const dirSize = async (dir: string): Promise<number> => {
 //   const files = await readdir(dir, {withFileTypes: true});
@@ -55,7 +56,8 @@ const Home = async () => {
       url: import.meta.url,
       cwd: process.cwd(),
     });
-    console.log(await fs.readdir(process.cwd()));
+    console.log(await fs.readdir(join(process.cwd(), 'src')));
+    console.log(await fs.readdir(join(process.cwd(), '.next')));
     // const appFolder = await getFolderNames('./app');
     // console.log({appFolder});
     // const projects = appFolder.filter(
@@ -113,7 +115,8 @@ const Home = async () => {
               ))}
             </ol>
           </section>
-          <PrettyDump data={await fs.readdir(process.cwd())} />
+          <PrettyDump data={await fs.readdir(join(process.cwd(), 'src'))} />
+          <PrettyDump data={await fs.readdir(join(process.cwd(), '.next'))} />
         </main>
       </>
     );
