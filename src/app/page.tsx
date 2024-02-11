@@ -52,30 +52,18 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
-    console.log({
-      url: import.meta.url,
-      cwd: process.cwd(),
-    });
     console.log(await fs.readdir(join(process.cwd(), 'src')));
     console.log(await fs.readdir(join(process.cwd(), '.next')));
     const appFolder = await getFolderNames(
       join(process.cwd(), '.next/server/app')
     );
     console.log({appFolder});
-    // const projects = appFolder.filter(
-    //   name =>
-    //     ![
-    //       '_next',
-    //       'fonts',
-    //       'img',
-    //       'sfx',
-    //       'uploads',
-    //       'api',
-    //       'mini-apps',
-    //       'nasa-mission-control',
-    //     ].includes(name)
-    // );
-    // const miniApps = await getFolderNames('./app/mini-apps');
+    const projects = appFolder.filter(
+      name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
+    );
+    const miniApps = await getFolderNames(
+      join(process.cwd(), '.next/server/app/mini-apps')
+    );
     return (
       <>
         <header className={styles.header}>
@@ -117,7 +105,7 @@ const Home = async () => {
               ))}
             </ol>
           </section>
-          <PrettyDump data={await fs.readdir(join(process.cwd(), 'src'))} />
+          <PrettyDump data={await fs.readdir(join(process.cwd()))} />
           <PrettyDump data={appFolder} />
         </main>
       </>
