@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import {getPath} from './path';
-import {extname} from 'path';
+import {extname, join} from 'path';
 
 const readFile = async (
   pathFromRoot: string,
@@ -62,7 +62,7 @@ const writeFile = async (
   }
 };
 
-const deleteOneObject = async (pathFromRoot: string): Promise<void> => {
+const deleteFile = async (pathFromRoot: string): Promise<void> => {
   try {
     const err = (await fs.unlink(pathFromRoot)) as Error | undefined;
     if (err) {
@@ -75,4 +75,26 @@ const deleteOneObject = async (pathFromRoot: string): Promise<void> => {
   }
 };
 
-export {readFile, writeFile, deleteOneObject, readFolder, getFolderNames};
+export const calculateDirSize = async (dir: string): Promise<number> => {
+  const files = await fs.readdir(dir, {withFileTypes: true});
+
+  const sizesPromises = files.map(async file => {
+    const path = join(file.path, file.name);
+
+    if (file.isDirectory()) return await calculateDirSize(path);
+
+    if (file.isFile()) {
+      const {size} = await fs.stat(path);
+
+      return size;
+    }
+
+    return 0;
+  });
+
+  const sizes = await Promise.all(sizesPromises);
+
+  return sizes.flat(Infinity).reduce((acc, size) => acc + size, 0);
+};
+
+export {readFile, writeFile, deleteFile, readFolder, getFolderNames};

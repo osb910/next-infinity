@@ -1,6 +1,6 @@
 import slug from 'slug';
 import User from '../user';
-import {deleteOneObject} from '@/lib/s3';
+import {deleteObject} from '@/lib/s3';
 import type {Model, HydratedDocument, FilterQuery, UpdateQuery} from 'mongoose';
 import {type IStore} from './store.types';
 
@@ -18,7 +18,7 @@ export const preUpdateStore = async (
     }
     // Delete old photo if new photo is uploaded
     if (update.photo && doc.photo?.key !== update.photo.key) {
-      await deleteOneObject(`next-stores/${doc.photo?.key}`);
+      await deleteObject(`next-stores/${doc.photo?.key}`);
     }
     // Update slug if name is changed
     if (doc.name !== update.name) {

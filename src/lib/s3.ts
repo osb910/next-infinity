@@ -1,7 +1,7 @@
 import {
   S3,
-  PutObjectCommandInput,
   S3ServiceException,
+  type PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
 import {extname} from 'path';
 
@@ -24,7 +24,7 @@ const client = new S3({
   },
 });
 
-const uploadOneObject = async (fileName: string, data: Buffer) => {
+export const uploadObject = async (fileName: string, data: Buffer) => {
   const fileData = data.buffer;
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -39,7 +39,7 @@ const uploadOneObject = async (fileName: string, data: Buffer) => {
   }
 };
 
-const getOneObject = async (fileKey: string) => {
+export const getObject = async (fileKey: string) => {
   try {
     const fileObject = await client.getObject({
       Bucket: process.env.AWS_BUCKET_NAME,
@@ -70,7 +70,7 @@ const getOneObject = async (fileKey: string) => {
   }
 };
 
-const deleteOneObject = async (fileKey: string) => {
+export const deleteObject = async (fileKey: string) => {
   try {
     return await client.deleteObject({
       Bucket: process.env.AWS_BUCKET_NAME,
@@ -81,7 +81,7 @@ const deleteOneObject = async (fileKey: string) => {
   }
 };
 
-const deleteManyObjects = async (fileKeys: string[]) => {
+export const deleteObjects = async (fileKeys: string[]) => {
   try {
     const {Deleted} = await client.deleteObjects({
       Bucket: process.env.AWS_BUCKET_NAME,
@@ -104,7 +104,7 @@ const deleteManyObjects = async (fileKeys: string[]) => {
   }
 };
 
-const listFileObjects = async (): Promise<
+export const listFileObjects = async (): Promise<
   [FileMetaData[], string[]] | void
 > => {
   try {
@@ -146,7 +146,7 @@ const listFileObjects = async (): Promise<
   }
 };
 
-const listBuckets = async () => {
+export const listBuckets = async () => {
   try {
     const contents = await client.listBuckets({});
     return {buckets: contents.Buckets, owner: contents.Owner};
@@ -155,7 +155,7 @@ const listBuckets = async () => {
   }
 };
 
-const createBucket = async (bucketName: string) => {
+export const createBucket = async (bucketName: string) => {
   try {
     return await client.createBucket({Bucket: bucketName});
   } catch (err) {
@@ -163,21 +163,10 @@ const createBucket = async (bucketName: string) => {
   }
 };
 
-const deleteBucket = async (bucketName: string) => {
+export const deleteBucket = async (bucketName: string) => {
   try {
     return await client.deleteBucket({Bucket: bucketName});
   } catch (err) {
     console.error(err);
   }
-};
-
-export {
-  uploadOneObject,
-  getOneObject,
-  deleteOneObject,
-  deleteManyObjects,
-  listFileObjects,
-  listBuckets,
-  createBucket,
-  deleteBucket,
 };

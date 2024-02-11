@@ -1,5 +1,5 @@
 import nulter from './nulter';
-import {uploadOneObject} from './s3';
+import {uploadObject} from './s3';
 
 export const processUploadFile = async (
   body: FormData,
@@ -32,7 +32,7 @@ export const processUploadFile = async (
     });
 
     // Upload to S3
-    const uploaded = await uploadOneObject(
+    const uploaded = await uploadObject(
       `${folder && `${folder}/`}${file?.fileName}`,
       file?.buffer!
     );
