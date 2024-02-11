@@ -115,8 +115,12 @@ const Home = async () => {
               ))}
             </ol>
           </section>
-          <PrettyDump data={await fs.readdir(join(process.cwd(), 'src'))} />
-          <PrettyDump data={await fs.readdir(join(process.cwd(), '.next'))} />
+          <PrettyDump
+            data={await fs.readdir(join(process.cwd(), 'src', 'ui'))}
+          />
+          <PrettyDump
+            data={await fs.readdir(join(process.cwd(), '.next', 'server'))}
+          />
         </main>
       </>
     );
