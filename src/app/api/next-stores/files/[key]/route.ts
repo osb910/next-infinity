@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {getOneObject} from '@/lib/s3';
+import {getObject} from '@/lib/s3';
 import {readFile} from '@/utils/file';
 
 export const GET = async (
@@ -7,7 +7,7 @@ export const GET = async (
   {params}: {params: {key: string}}
 ) => {
   try {
-    const s3File = await getOneObject(`next-stores/${params.key}`);
+    const s3File = await getObject(`next-stores/${params.key}`);
     const file = s3File?.data
       ? s3File
       : await readFile(

@@ -1,49 +1,11 @@
-import styles from './page.module.css';
-import Poster from '@/components/Poster/Poster';
-import {getFolderNames} from '@/utils/file';
-import Logo from '@/components/Logo';
-import Link from 'next/link';
-import fs from 'fs/promises';
-import PrettyDump from '@/ui/PrettyDump';
 import {join} from 'path';
-
-// const dirSize = async (dir: string): Promise<number> => {
-//   const files = await readdir(dir, {withFileTypes: true});
-
-//   const paths = files.map(async file => {
-//     const path = join(dir, file.name);
-
-//     if (file.isDirectory()) return await dirSize(path);
-
-//     if (file.isFile()) {
-//       const {size} = await stat(path);
-
-//       return size;
-//     }
-
-//     return 0;
-//   });
-
-//   return (await Promise.all(paths))
-//     .flat(Infinity)
-//     .reduce((i, size) => i + size, 0);
-// };
-// export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-const projects = ['next-blog', 'next-events', 'next-stores'];
-
-const miniApps = [
-  'analog-clock',
-  'array-cardio',
-  'drum-kit',
-  'flex-image-gallery',
-  'interview',
-  'next-projects',
-  'scoped-css-var',
-  'vapor',
-  'web-base',
-];
+import Link from 'next/link';
+import Poster from '@/components/Poster/Poster';
+import Logo from '@/components/Logo';
+import {env} from '@/lib/helpers';
+import {calculateDirSize, getFolderNames} from '@/utils/file';
+import {getPath} from '@/utils/path';
+import styles from './page.module.css';
 
 const Home = async () => {
   try {
@@ -52,18 +14,28 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
-    console.log(await fs.readdir(join(process.cwd(), 'src')));
-    console.log(await fs.readdir(join(process.cwd(), '.next/cache')));
-    const appFolder = await getFolderNames(
-      join(process.cwd(), '.next/server/app')
-    );
-    console.log({appFolder});
-    const projects = appFolder.filter(
-      name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
-    );
-    const miniApps = await getFolderNames(
-      join(process.cwd(), '.next/server/app/mini-apps')
-    );
+    const appPath =
+      env('NODE_ENV') === 'development'
+        ? getPath('./app')
+        : join(process.cwd(), '.next/server/app');
+    const appDir = await getFolderNames(appPath);
+    const projectsPromises = appDir
+      .filter(
+        name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
+      )
+      .map(async dir => ({
+        name: dir,
+        size: await calculateDirSize(join(appPath, dir)),
+      }));
+    const projects = await Promise.all(projectsPromises);
+
+    const miniAppsDir = await getFolderNames(join(appPath, 'mini-apps'));
+    const miniAppsPromises = miniAppsDir.map(async dir => ({
+      name: dir,
+      size: await calculateDirSize(join(appPath, 'mini-apps', dir)),
+    }));
+    const miniApps = await Promise.all(miniAppsPromises);
+
     return (
       <>
         <header className={styles.header}>
@@ -78,37 +50,37 @@ const Home = async () => {
           <section className={styles.section}>
             <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
             <ol className={styles.apps}>
-              {projects.sort().map(name => (
-                <Poster poster={`/img/${name}.png`} link={name} key={name}>
-                  {name
-                    .split('-')
-                    .map(word => word[0].toUpperCase() + word.slice(1))
-                    .join(' ')}
-                </Poster>
-              ))}
+              {projects
+                .sort((a, b) => b.size - a.size)
+                .map(({name}) => (
+                  <Poster poster={`/img/${name}.png`} link={name} key={name}>
+                    {name
+                      .split('-')
+                      .map(word => word[0].toUpperCase() + word.slice(1))
+                      .join(' ')}
+                  </Poster>
+                ))}
             </ol>
           </section>
           <section className={styles.section}>
             <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
             <ol className={styles.apps}>
-              {miniApps.sort().map(name => (
-                <Poster
-                  poster={`/img/${name}.png`}
-                  link={`/mini-apps/${name}`}
-                  key={name}
-                >
-                  {name
-                    .split('-')
-                    .map(word => word[0].toUpperCase() + word.slice(1))
-                    .join(' ')}
-                </Poster>
-              ))}
+              {miniApps
+                .sort((a, b) => b.size - a.size)
+                .map(({name}) => (
+                  <Poster
+                    poster={`/img/${name}.png`}
+                    link={`/mini-apps/${name}`}
+                    key={name}
+                  >
+                    {name
+                      .split('-')
+                      .map(word => word[0].toUpperCase() + word.slice(1))
+                      .join(' ')}
+                  </Poster>
+                ))}
             </ol>
           </section>
-          <PrettyDump data={await fs.readdir(join(process.cwd()))} />
-          <PrettyDump
-            data={await fs.readdir(join(process.cwd(), '___vc', '__launcher'))}
-          />
         </main>
       </>
     );
