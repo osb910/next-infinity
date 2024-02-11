@@ -58,8 +58,10 @@ const Home = async () => {
     });
     console.log(await fs.readdir(join(process.cwd(), 'src')));
     console.log(await fs.readdir(join(process.cwd(), '.next')));
-    // const appFolder = await getFolderNames('./app');
-    // console.log({appFolder});
+    const appFolder = await getFolderNames(
+      join(process.cwd(), '.next/server/app')
+    );
+    console.log({appFolder});
     // const projects = appFolder.filter(
     //   name =>
     //     ![
@@ -116,11 +118,7 @@ const Home = async () => {
             </ol>
           </section>
           <PrettyDump data={await fs.readdir(join(process.cwd(), 'src'))} />
-          <PrettyDump
-            data={await fs.readdir(
-              join(process.cwd(), '.next', 'server', 'app')
-            )}
-          />
+          <PrettyDump data={appFolder} />
         </main>
       </>
     );

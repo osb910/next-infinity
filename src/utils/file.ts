@@ -22,8 +22,7 @@ const readFile = async (
   }
 };
 
-const readFolder = async (pathFromRoot: string): Promise<string[]> => {
-  const path = getPath(pathFromRoot);
+const readFolder = async (path: string): Promise<string[]> => {
   try {
     const files: string[] = await fs.readdir(path);
     return files;
@@ -33,9 +32,9 @@ const readFolder = async (pathFromRoot: string): Promise<string[]> => {
   }
 };
 
-const getFolderNames = async (pathFromRoot: string): Promise<string[]> => {
+const getFolderNames = async (path: string): Promise<string[]> => {
   try {
-    const list = await readFolder(pathFromRoot);
+    const list = await readFolder(path);
     const folders = list.filter(item => !item.match(/\.[^.]+$/));
     return folders;
   } catch (err) {
