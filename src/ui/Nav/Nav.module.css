@@ -1,3 +1,7 @@
+.nav {
+  inline-size: 100%;
+}
+
 .navList {
   display: flex;
 }
@@ -5,10 +9,7 @@
 .overlay {
   position: absolute;
   z-index: 1;
-  inline-size: 100vw;
-  block-size: 100vh;
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  inset: 0;
   background-color: rgba(40, 40, 40, 0.7);
 }
 
@@ -27,6 +28,6 @@
   position: relative;
 }
 
-.link {
+.navLink {
   position: relative;
 }

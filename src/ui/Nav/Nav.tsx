@@ -1,109 +1,34 @@
 'use client';
 
-import Link from 'next/link';
-import {usePathname} from 'next/navigation';
-import {useId, useState, type ReactNode, type ComponentProps} from 'react';
-import {motion} from 'framer-motion';
+import {motion, LayoutGroup} from 'framer-motion';
 import {RxHamburgerMenu} from 'react-icons/rx';
+import type {NavProps} from './types';
+import {useNav, NavProvider} from './useNav';
 import styles from './Nav.module.css';
 
-export interface NavProps extends ComponentProps<'nav'> {
-  children: ReactNode;
-  useBurger?: boolean;
-}
-
-export interface NavListProps extends ComponentProps<'ul'> {
-  items: Array<{
-    href: string;
-    label: ReactNode;
-  }>;
-  highlightClass: string;
-  highlightStyle?: Record<string, any>;
-  linkClass: string;
-  navItemClass?: string;
-  transition?: Record<string, any>;
-  children?: ReactNode;
-}
-
-export const NavList = ({
-  items,
-  highlightClass,
-  highlightStyle,
-  navItemClass,
-  linkClass,
-  transition,
-  children,
-  ...delegated
-}: NavListProps) => {
-  const pathName = usePathname();
-  const [hoveredItem, setHoveredItem] = useState('');
-  const layoutId = `nav-backdrop${useId()}`;
-
+export const Nav = ({children, useBurger = false, ...delegated}: NavProps) => {
+  const {isOpen, closeNav, toggleNav, changeHovered} = useNav();
   return (
-    <>
-      <ul
-        {...delegated}
-        onMouseLeave={() => setHoveredItem('')}
-        onBlur={() => setHoveredItem('')}
-        className={`${styles.navList} ${delegated.className ?? ''}`}
-      >
-        {items.map(({href, label}) => (
-          <motion.li
-            key={href}
-            className={`${styles.navItem} ${navItemClass}`}
-            style={{zIndex: hoveredItem === href ? 1 : 2}}
-          >
-            {(hoveredItem === href || pathName === href) && (
-              <motion.div
-                layoutId={layoutId}
-                className={`${highlightClass} ${styles.backdrop}`}
-                initial={{...highlightStyle}}
-                transition={{
-                  type: 'spring',
-                  damping: 26,
-                  stiffness: 370,
-                  ...transition,
-                }}
-              />
-            )}
-            <Link
-              href={href}
-              className={`${linkClass} ${styles.link} ${
-                pathName === href ? highlightClass : ''
-              }`}
-              style={pathName === href ? highlightStyle : {}}
-              onMouseEnter={() => setHoveredItem(href)}
-              onFocus={() => setHoveredItem(href)}
-            >
-              {label}
-            </Link>
-          </motion.li>
-        ))}
-        {children}
-      </ul>
-    </>
-  );
-};
-
-const Nav = ({children, useBurger = false, ...delegated}: NavProps) => {
-  const [isNavOpen, setIsNavOpen] = useState(true);
-
-  return (
-    <nav
-      {...delegated}
-      className={`${isNavOpen ? styles.open : ''} ${delegated.className ?? ''}`}
-    >
-      {isNavOpen && (
-        <div onClick={() => setIsNavOpen(false)} className={styles.overlay} />
-      )}
-      {children}
-      {useBurger && (
-        <RxHamburgerMenu
-          onClick={() => setIsNavOpen(current => !current)}
-          className={styles.hamburger}
-        />
-      )}
-    </nav>
+    <NavProvider>
+      <LayoutGroup>
+        <motion.nav
+          {...delegated}
+          className={`${styles.nav} ${isOpen ? styles.open : ''} ${
+            delegated.className ?? ''
+          }`}
+          // BUG: doesn't cancel hover, works in NavList
+          onMouseLeave={() => changeHovered('')}
+          // BUG: doesn't cancel hover, works in NavList
+          onBlur={() => changeHovered('')}
+        >
+          {isOpen && <div onClick={closeNav} className={styles.overlay} />}
+          {children}
+          {useBurger && (
+            <RxHamburgerMenu onClick={toggleNav} className={styles.burger} />
+          )}
+        </motion.nav>
+      </LayoutGroup>
+    </NavProvider>
   );
 };
 
