@@ -15,6 +15,7 @@ import {type Metadata} from 'next';
 import {type IUser} from '@/services/next-stores/user';
 import styles from './HomePage.module.css';
 import Logo from '@/components/next-stores/Logo';
+import {NavList} from '@/ui/Nav';
 
 export const metadata: Metadata = {
   title: {
@@ -63,11 +64,6 @@ const menu: MenuItem[] = [
   {slug: '/next-stores/map', title: 'Map', icon: PiMapPinLine},
 ];
 
-//           rel="shortcut icon"
-//           type="image/png"
-//           href="/images/icons/doughnut.png"
-//         />
-
 const RootLayout = async ({children}: {children: ReactNode}) => {
   try {
     const headersStore = headers();
@@ -83,6 +79,20 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
       const json = await res.json();
       if (json.status === 'success') user = json.data;
     }
+    const navLinks = menu
+      .filter(({title}) => !(title === 'Add' && !user))
+      .map(item => {
+        return {
+          href: item.slug,
+          label: (
+            <>
+              <item.icon />
+              <span>{item.title}</span>
+            </>
+          ),
+        };
+      });
+    navLinks.unshift({href: '/next-stores', label: <Logo width='10rem' />});
     return (
       <UserProvider
         userEndpoint='/api/next-stores/auth/me'
@@ -90,31 +100,22 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
       >
         <header className={styles.top}>
           <nav className={styles.nav}>
-            <section className={styles.navSection}>
-              <li className={styles.navItem}>
-                <Link
-                  className={`${styles.navLink} ${styles.navLinkLogo}`}
-                  href='/next-stores'
-                >
-                  <Logo width='10rem' />
-                </Link>
-              </li>
-              {menu.map((item, idx) => {
-                if (item.title === 'Add' && !user) return null;
-                return (
-                  <li className={styles.navItem} key={idx}>
-                    <NavLink
-                      activeClassName={styles.navLinkActive}
-                      className={`${styles.navLink}`}
-                      href={item.slug}
-                    >
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </NavLink>
-                  </li>
-                );
-              })}
-            </section>
+            <NavList
+              items={navLinks}
+              navItemClass={styles.navItem}
+              highlightClass={styles.navLinkActive}
+              highlightStyle={{
+                borderBlockEndColor: 'rgba(20, 20, 60, 0.4)',
+                borderInlineEndColor: 'rgba(0, 0, 0, 0.15)',
+                background: `linear-gradient(
+                  90deg,
+                  hsla(50, 82%, 78%, 0.8) 0% 8%,
+                  hsla(32, 68%, 45%, 0.8) 35% 65%,
+                  hsla(50, 82%, 78%, 0.8) 92% 100%
+                )`,
+              }}
+              linkClass={styles.navLink}
+            />
             <section
               className={`${styles.navSection} ${styles.navSectionSearch}`}
             >

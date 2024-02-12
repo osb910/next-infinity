@@ -84,7 +84,7 @@ const UserNav = ({
         <>
           <li className={styles.navItem}>
             <NavLink
-              activeClassName={styles.navLinkActive}
+              activeClass={styles.navLinkActive}
               className={styles.navLink}
               href='/next-stores/favorites'
             >

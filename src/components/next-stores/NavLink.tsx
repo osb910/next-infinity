@@ -1,29 +1,24 @@
 'use client';
 
-import {ReactNode} from 'react';
-import Link, {LinkProps} from 'next/link';
+import Link, {type LinkProps} from 'next/link';
 import {usePathname} from 'next/navigation';
+import {type ComponentPropsWithoutRef, type ReactNode} from 'react';
 
-interface NavLinkProps extends LinkProps {
-  activeClassName: string;
-  children: ReactNode;
-  className?: string;
-}
+type NavLinkProps = LinkProps &
+  ComponentPropsWithoutRef<'a'> & {
+    activeClass: string;
+    children: ReactNode;
+  };
 
-const NavLink = ({
-  children,
-  activeClassName,
-  className,
-  ...rest
-}: NavLinkProps) => {
-  const {href} = rest;
+const NavLink = ({children, activeClass, ...delegated}: NavLinkProps) => {
   const pathName = usePathname();
 
-  const isActive = pathName === href;
+  const isActive = pathName === delegated.href;
+
   return (
     <Link
-      {...rest}
-      className={`${isActive ? activeClassName : ''} ${className ?? ''}`}
+      {...delegated}
+      className={`${isActive ? activeClass : ''} ${delegated.className ?? ''}`}
     >
       {children}
     </Link>

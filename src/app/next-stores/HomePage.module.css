@@ -3,6 +3,7 @@
   inset-block-start: 0;
   isolation: isolate;
   z-index: 2;
+  display: flex;
   background-color: hsl(0, 0%, 13%, 0.8);
   backdrop-filter: blur(4px);
 }
@@ -17,6 +18,8 @@
 
 .navItem {
   display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 0.75rem;
 }
 
@@ -33,17 +36,16 @@
   text-transform: uppercase;
   text-decoration: none;
   color: white;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.35s ease-in-out;
 }
 
 .navLink svg {
   flex-shrink: 0;
   font-size: 1.5rem;
-  transition: all 0.25s;
+  transition: all 350ms ease-in-out;
 }
 
-.navLink:where(:hover, :focus):not(.navLinkLogo),
-.navLinkActive {
+/* .navItem:not(:first-child) .navLinkActive {
   border-block-end-color: rgba(20, 20, 60, 0.4);
   border-inline-end-color: rgba(0, 0, 0, 0.15);
   background: linear-gradient(
@@ -52,19 +54,19 @@
     hsla(32, 68%, 45%, 0.9) 35% 65%,
     hsl(50, 82%, 78%) 92% 100%
   );
+} */
+
+.navItem:first-child .navLinkActive {
+  background: transparent !important;
 }
 
-.navLink:where(:hover, :focus) svg,
-.navLinkActive svg {
-  transform: scale(1.2);
+.navItem:first-child .navLink:where(:hover, :focus) svg {
+  scale: 1.05;
 }
 
-.navLinkLogo svg {
-  margin: 0;
-}
-
-.navLinkLogo:where(:hover, :focus) svg {
-  transform: none;
+.navItem:not(:first-child) .navLink:where(:hover, :focus) svg,
+.navItem:not(:first-child) .navLinkActive svg {
+  scale: 1.2;
 }
 
 .navItem .avatar {
@@ -180,6 +182,9 @@
 }
 
 @media all and (max-width: 650px) {
+  .top {
+    flex-direction: column;
+  }
   .navSection {
     inline-size: 100%;
   }
