@@ -13,12 +13,23 @@ import EditAccountForm from './EditAccountForm';
 import ForgotPassForm from './ForgotPassForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Tabbed from '../Tabbed';
-import NavLink from './NavLink';
-import Portal from '../../ui/Portal';
-import Modal from '../Modal';
-import Spinner from '../../ui/Spinner';
+import Portal from '@/ui/Portal';
+import Modal from '@/components/Modal';
+import Spinner from '@/ui/Spinner';
 import {type IUser} from '@/services/next-stores/user';
 import styles from './UserNav.module.css';
+import {NavItem, NavList, NavLink} from '@/ui/Nav';
+
+const highlightStyle = {
+  borderBlockEndColor: 'rgba(20, 20, 60, 0.4)',
+  borderInlineEndColor: 'rgba(0, 0, 0, 0.15)',
+  background: `linear-gradient(
+    90deg,
+    hsla(50, 82%, 78%, 0.8) 0% 8%,
+    hsla(32, 68%, 45%, 0.8) 35% 65%,
+    hsla(50, 82%, 78%, 0.8) 92% 100%
+  )`,
+};
 
 const UserNav = ({
   user,
@@ -32,7 +43,7 @@ const UserNav = ({
   const pathname = usePathname();
   const {userData, setUserData} = useUser();
   const {createToast} = useToaster();
-  const [subPage, setSubPage] = useState<string | null>(() =>
+  const [dialog, setSubPage] = useState<string | null>(() =>
     searchParams.get('dialog')
   );
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -79,12 +90,16 @@ const UserNav = ({
   }, [userData]);
 
   return (
-    <ul className={`${styles.navSection} ${styles.navSectionUser}`}>
+    <NavList className={`${styles.navSection} ${styles.navSectionUser}`}>
       {isLoggedIn ? (
         <>
-          <li className={styles.navItem}>
+          <NavItem
+            slug='/next-stores/favorites'
+            className={styles.navItem}
+            highlightStyle={highlightStyle}
+          >
             <NavLink
-              activeClass={styles.navLinkActive}
+              highlightStyle={highlightStyle}
               className={styles.navLink}
               href='/next-stores/favorites'
             >
@@ -93,14 +108,22 @@ const UserNav = ({
                 {userData?.favorites?.length ?? user?.favorites?.length ?? 0}
               </span>
             </NavLink>
-          </li>
-          <li className={styles.navItem}>
+          </NavItem>
+          <NavItem
+            slug='logout'
+            className={styles.navItem}
+            highlightStyle={highlightStyle}
+          >
             <button className={styles.navLink} onClick={logout}>
               <LogOut />
               {isLoggingOut ? <Spinner /> : <span>Logout</span>}
             </button>
-          </li>
-          <li className={styles.navItem}>
+          </NavItem>
+          <NavItem
+            slug='account'
+            className={styles.navItem}
+            highlightStyle={highlightStyle}
+          >
             <button
               className={styles.navLink}
               onClick={() => {
@@ -123,11 +146,15 @@ const UserNav = ({
                 </>
               )}
             </button>
-          </li>
+          </NavItem>
         </>
       ) : (
         <>
-          <li className={styles.navItem}>
+          <NavItem
+            slug='register'
+            className={styles.navItem}
+            highlightStyle={highlightStyle}
+          >
             <button
               className={styles.navLink}
               onClick={() => {
@@ -138,8 +165,12 @@ const UserNav = ({
               <UserPlus />
               <span>Register</span>
             </button>
-          </li>
-          <li className={styles.navItem}>
+          </NavItem>
+          <NavItem
+            slug='login'
+            className={styles.navItem}
+            highlightStyle={highlightStyle}
+          >
             <button
               className={styles.navLink}
               onClick={() => {
@@ -150,23 +181,23 @@ const UserNav = ({
               <LogIn />
               <span>Log In</span>
             </button>
-          </li>
+          </NavItem>
         </>
       )}
-      {subPage && (
+      {dialog && (
         <Portal>
           <Modal
-            title={subPage[0].toUpperCase() + subPage.slice(1)}
+            title={dialog[0].toUpperCase() + dialog.slice(1)}
             dismissText={`Dismiss ${
-              subPage[0].toUpperCase() + subPage.slice(1)
+              dialog[0].toUpperCase() + dialog.slice(1)
             } Form`}
             dismiss={dismissSubPage}
           >
-            {subPage === 'account' && (
+            {dialog === 'account' && (
               <EditAccountForm user={userData as IUser} />
             )}
 
-            {subPage === 'reset-password' && (
+            {dialog === 'reset-password' && (
               <ChangePasswordForm
                 resetPassword
                 title='Reset Password'
@@ -174,7 +205,7 @@ const UserNav = ({
               />
             )}
 
-            {(subPage === 'register' || subPage === 'login') && (
+            {(dialog === 'register' || dialog === 'login') && (
               <Tabbed
                 title='Authentication'
                 tabs={[
@@ -194,13 +225,13 @@ const UserNav = ({
                     component: <RegisterForm />,
                   },
                 ]}
-                defaultTab={subPage}
+                defaultTab={dialog}
               />
             )}
           </Modal>
         </Portal>
       )}
-    </ul>
+    </NavList>
   );
 };
 

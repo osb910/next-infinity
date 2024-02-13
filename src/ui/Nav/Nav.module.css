@@ -28,6 +28,10 @@
   position: relative;
 }
 
+.navItem :where(a, button) {
+  z-index: 1;
+}
+
 .navLink {
   position: relative;
 }
