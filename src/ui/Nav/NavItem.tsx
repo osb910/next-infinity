@@ -14,7 +14,6 @@ export const NavItem = ({
   ...delegated
 }: NavItemProps) => {
   const {hoveredItem, changeHovered, pathName, layoutId} = useNav();
-  console.log({hoveredItem});
 
   return (
     <motion.li
@@ -39,7 +38,6 @@ export const NavItem = ({
             type: 'spring',
             damping: 26,
             stiffness: 380,
-            ...delegated.transition,
           }}
         />
       )}

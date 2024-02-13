@@ -5,31 +5,13 @@
   inset-inline-end: 0;
   block-size: 100vh;
   inline-size: 65vw;
-  display: flex;
+  transform: translateX(calc(100% + 1em));
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   gap: 2em;
-  transform: translateX(calc(100% + 1em));
-  border: 1px solid red;
   visibility: hidden;
   opacity: 0;
-}
-
-.open {
-  visibility: visible;
-  opacity: 1;
-  transform: translateX(0%);
-}
-
-.overlay {
-  position: absolute;
-  z-index: 1;
-  inline-size: 100vw;
-  block-size: 100vh;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  background-color: rgba(40, 40, 40, 0.7);
 }
 
 @media (min-width: 48rem) {
@@ -43,4 +25,18 @@
     visibility: visible;
     opacity: 1;
   }
+}
+
+.navLink {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.highlight {
+  background: hsl(0deg 0% 100% / 0.2);
+  border-radius: 8px;
+  border-bottom: 2px solid #888;
 }
