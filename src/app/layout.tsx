@@ -11,6 +11,7 @@ import {ToastProvider} from '@/components/Toaster/use-toaster';
 import Toaster from '@/components/Toaster/Toaster';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
+import ObeyMotionPref from '@/ui/ObeyMotionPref';
 // import {createServerContext} from 'react';
 
 // export const testServerContext = createServerContext(
@@ -74,15 +75,17 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     '--fn-fira': fira.style.fontFamily,
   };
   return (
-    <html lang='en' data-color-theme={theme} style={style} className={theme}>
-      <body className={`${atkinson.className}`} suppressHydrationWarning>
-        <SoundProvider>
-          <ToastProvider>
-            {children}
-            <Toaster lang='en' />
-          </ToastProvider>
-        </SoundProvider>
-      </body>
-    </html>
+    <ObeyMotionPref>
+      <html lang='en' data-color-theme={theme} style={style} className={theme}>
+        <body className={`${atkinson.className}`} suppressHydrationWarning>
+          <SoundProvider>
+            <ToastProvider>
+              {children}
+              <Toaster lang='en' />
+            </ToastProvider>
+          </SoundProvider>
+        </body>
+      </html>
+    </ObeyMotionPref>
   );
 }
