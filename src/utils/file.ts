@@ -6,7 +6,7 @@ const readFile = async (
   pathFromRoot: string,
   {encoding, fallback}: {encoding?: BufferEncoding; fallback?: string} = {}
 ): Promise<any> => {
-  const filePath = getPath(pathFromRoot);
+  const filePath = join(process.cwd(), pathFromRoot);
   const ext = extname(filePath).split('.').pop();
   try {
     const data = await fs.readFile(filePath, {encoding});

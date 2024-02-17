@@ -6,9 +6,12 @@ export const getBlogPostList = async () => {
   const blogPosts = [];
 
   for (let file of files) {
-    const {data: rawContent} = await readFile(`/data/next-blog/${file.name}`, {
-      encoding: 'utf-8',
-    });
+    const {data: rawContent} = await readFile(
+      `src/data/next-blog/${file.name}`,
+      {
+        encoding: 'utf-8',
+      }
+    );
 
     const {data: frontmatter} = matter(rawContent);
 
@@ -22,7 +25,7 @@ export const getBlogPostList = async () => {
 };
 
 export const loadBlogPost = async (slug: string) => {
-  const {data: rawContent} = await readFile(`/data/next-blog/${slug}.mdx`, {
+  const {data: rawContent} = await readFile(`src/data/next-blog/${slug}.mdx`, {
     encoding: 'utf-8',
   });
 

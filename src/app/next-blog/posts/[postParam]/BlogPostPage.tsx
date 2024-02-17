@@ -13,11 +13,7 @@ export const metadata: Metadata = {
 export type BlogPostPg = AppPage<{postParam: string}>;
 
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
-  // const posts = await getBlogPostList();
-  const files = await readDir('src/data/next-blog');
-  const file = await readFile(`/data/next-blog/${files[0].name}`, {
-    encoding: 'utf-8',
-  });
+  const posts = await getBlogPostList();
   return (
     <>
       <article className={styles.wrapper}>
@@ -33,16 +29,16 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           </p>
         </div>
       </article>
-      <PrettyDump data={file} />
       <PrettyDump data={await readDir('src/data/next-blog')} />
-      {/* {posts.map((post: any) => (
-        <>
+      {posts.map((post: any, idx) => (
+        <div key={idx}>
           <p>{post.slug}</p>
           <p>{post.title}</p>
           <p>{post.publishedOn}</p>
           <p>{post.abstract}</p>
-        </>
-      ))} */}
+          <br />
+        </div>
+      ))}
       {/* <PrettyDump data={post.frontmatter} /> */}
     </>
   );
