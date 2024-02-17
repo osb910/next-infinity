@@ -5,6 +5,7 @@ import styles from './BlogPostPage.module.css';
 import {readDir} from '@/utils/file';
 import {getBlogPostList} from '@/helpers/blog-helpers';
 import PrettyDump from '@/ui/PrettyDump';
+import {readFile} from 'fs/promises';
 
 export const metadata: Metadata = {
   title: 'BlogPostPage',
@@ -15,6 +16,9 @@ export type BlogPostPg = AppPage<{postParam: string}>;
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
   // const posts = await getBlogPostList();
   const files = await readDir('src/data/next-blog');
+  const file = await readFile(`/data/next-blog/${files[0].name}`, {
+    encoding: 'utf-8',
+  });
   return (
     <>
       <article className={styles.wrapper}>
@@ -30,8 +34,7 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           </p>
         </div>
       </article>
-      <PrettyDump data={files} />
-      <PrettyDump data={await readDir('public/uploads')} />
+      <PrettyDump data={file} />
       <PrettyDump data={await readDir('src/data/next-blog')} />
       {/* {posts.map((post: any) => (
         <>
