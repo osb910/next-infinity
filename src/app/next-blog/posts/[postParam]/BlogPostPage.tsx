@@ -2,10 +2,9 @@ import BlogHero from '@/components/next-blog/BlogHero';
 import {type Metadata} from 'next';
 import type {AppPage, JsonRes} from '@/types';
 import styles from './BlogPostPage.module.css';
-import {readDir} from '@/utils/file';
+import {readDir, readFile} from '@/utils/file';
 import {getBlogPostList} from '@/helpers/blog-helpers';
 import PrettyDump from '@/ui/PrettyDump';
-import {readFile} from 'fs/promises';
 
 export const metadata: Metadata = {
   title: 'BlogPostPage',
