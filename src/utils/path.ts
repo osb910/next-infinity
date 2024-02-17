@@ -1,9 +1,17 @@
+import {env} from '@/lib/helpers';
 import {join, dirname} from 'path';
 import {fileURLToPath} from 'url';
 
+/**
+ * writeFile
+ * Nulter - options.dest
+ */
+
 export const root = (): string => {
   const filename = fileURLToPath(import.meta.url);
-  return join(dirname(filename), '..');
+  return env('NODE_ENV') === 'development'
+    ? join(dirname(filename), '..', '..')
+    : process.cwd();
 };
 
 export const getPath = (pathFromRoot: string): string =>

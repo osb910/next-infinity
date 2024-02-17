@@ -72,7 +72,7 @@ export const getDirNames = async (
   }
 };
 
-const writeFile = async (
+export const writeFile = async (
   pathFromRoot: string,
   content: any,
   {
@@ -85,7 +85,7 @@ const writeFile = async (
   const body = stringify ? JSON.stringify(content, null, 2) : content;
   try {
     await fs.writeFile(path, body, {encoding});
-    log && console.log(`Wrote ${body} to ${pathFromRoot}`);
+    log && console.log(`Wrote file to ${pathFromRoot}`);
   } catch (err) {
     console.error(err);
   }
@@ -126,4 +126,4 @@ export const calculateDirSize = async (dir: string): Promise<number> => {
   return sizes.flat(Infinity).reduce((acc, size) => acc + size, 0);
 };
 
-export {readFile, writeFile, deleteFile};
+export {readFile, deleteFile};

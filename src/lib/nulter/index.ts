@@ -108,7 +108,7 @@ const nulter: Nulter = async (body, options) => {
     parseFile(file, {
       field,
       ...(options.storage === 'disk'
-        ? {storage, dest: options?.dest ?? '../public/uploads'}
+        ? {storage, dest: options?.dest ?? 'public/uploads'}
         : {storage: 'memory'}),
     })
   );

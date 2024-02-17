@@ -2,11 +2,8 @@ import {join} from 'path';
 import Link from 'next/link';
 import Poster from '@/components/Poster/Poster';
 import Logo from '@/components/Logo';
-import {env} from '@/lib/helpers';
 import {calculateDirSize, getDirNames} from '@/utils/file';
-import {getPath} from '@/utils/path';
 import styles from './page.module.css';
-import PrettyDump from '@/ui/PrettyDump';
 
 const Home = async () => {
   try {
@@ -16,7 +13,6 @@ const Home = async () => {
       '$1'
     );
     const appPath = 'src/app';
-    // env('NODE_ENV') === 'development' ? 'src/app' : '.next/server/app';
     const appDirPromise = getDirNames(appPath);
     const miniAppsDirPromise = getDirNames(`${appPath}/mini-apps`);
     const [appDir, miniAppsDir] = await Promise.all([

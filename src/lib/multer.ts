@@ -2,7 +2,7 @@ import {getPath} from '@/utils/path';
 import multer from 'multer';
 
 const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, getPath('../public/uploads')),
+  destination: (req, file, cb) => cb(null, getPath('public/uploads')),
   filename: (req, file, cb) => cb(null, `${file.originalname}`),
 });
 

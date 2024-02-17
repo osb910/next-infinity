@@ -39,7 +39,7 @@ export const getAllPlanets = async () => {
 
 export const loadPlanetsData = () => {
   return new Promise((resolve, reject) => {
-    fs.createReadStream(getPath('./data/kepler_data.csv'))
+    fs.createReadStream(getPath('src/data/kepler_data.csv'))
       .pipe(
         parse({
           comment: '#',

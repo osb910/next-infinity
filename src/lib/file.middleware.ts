@@ -27,7 +27,7 @@ export const processUploadFile = async (
           }
         : {
             storage: 'disk',
-            dest: `../public/uploads${folder && `/${folder}`}`,
+            dest: `public/uploads${folder && `/${folder}`}`,
           }),
     });
 
