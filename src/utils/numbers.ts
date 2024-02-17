@@ -1,6 +1,6 @@
 export const range = (
   start: number,
-  end?: number,
+  end?: number | undefined,
   step: number = 1
 ): number[] => {
   let output = [];

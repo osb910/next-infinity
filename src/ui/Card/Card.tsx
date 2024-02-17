@@ -1,20 +1,26 @@
-import {type ComponentPropsWithoutRef, type ReactNode} from 'react';
+import {
+  HTMLAttributes,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from 'react';
 import clsx from 'clsx';
 
 import styles from './Card.module.css';
 
-export interface CardProps extends ComponentPropsWithoutRef<'article'> {
+export type CardProps = ComponentPropsWithoutRef<'div'> & {
   children: ReactNode;
-}
+  as?: string;
+};
 
-function Card({children, ...delegated}: CardProps) {
+function Card({children, as: Element = 'article', ...delegated}: CardProps) {
   return (
-    <article
+    // @ts-ignore
+    <Element
       className={clsx(styles.wrapper, delegated.className)}
       {...delegated}
     >
       {children}
-    </article>
+    </Element>
   );
 }
 
