@@ -27,7 +27,7 @@ const readFolder = async (path: string): Promise<string[]> => {
     return files;
   } catch (err) {
     console.error(err);
-    throw err;
+    return [];
   }
 };
 
