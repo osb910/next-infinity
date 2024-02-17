@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export type BlogPostPg = AppPage<{postParam: string}>;
 
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
-  const post = await loadBlogPost('css-font-size');
+  // const post = await loadBlogPost('css-font-size');
   return (
     <>
       <article className={styles.wrapper}>
@@ -30,8 +30,8 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
         </div>
       </article>
       <PrettyDump data={await readFolder('src')} />
-      <PrettyDump data={post.frontmatter} />
-      <p>{post.content}</p>
+      {/* <PrettyDump data={post.frontmatter} /> */}
+      {/* <p>{post.content}</p> */}
     </>
   );
 };
