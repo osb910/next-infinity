@@ -17,7 +17,13 @@ const Home = async () => {
     );
     const appPath = 'src/app';
     // env('NODE_ENV') === 'development' ? 'src/app' : '.next/server/app';
-    const appDir = await getDirNames(appPath);
+    const appDirPromise = getDirNames(appPath);
+    const miniAppsDirPromise = getDirNames(`${appPath}/mini-apps`);
+    const [appDir, miniAppsDir] = await Promise.all([
+      appDirPromise,
+      miniAppsDirPromise,
+    ]);
+
     const projectsPromises = appDir
       .filter(
         ({name}) => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
@@ -26,14 +32,16 @@ const Home = async () => {
         name,
         size: await calculateDirSize(join(appPath, name)),
       }));
-    const projects = await Promise.all(projectsPromises);
 
-    const miniAppsDir = await getDirNames(`${appPath}/mini-apps`);
     const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
       name,
       size: await calculateDirSize(join(appPath, 'mini-apps', name)),
     }));
-    const miniApps = await Promise.all(miniAppsPromises);
+
+    const [projects, miniApps] = await Promise.all([
+      Promise.all(projectsPromises),
+      Promise.all(miniAppsPromises),
+    ]);
 
     return (
       <>
