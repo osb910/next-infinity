@@ -14,6 +14,7 @@ export type BlogPostPg = AppPage<{postParam: string}>;
 
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
   // const posts = await getBlogPostList();
+  const files = await readDir('src/data/next-blog');
   return (
     <>
       <article className={styles.wrapper}>
@@ -29,8 +30,8 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           </p>
         </div>
       </article>
-      <PrettyDump data={await readDir('public')} />
-      <PrettyDump data={await readDir('src')} />
+      <PrettyDump data={files} />
+      <PrettyDump data={await readDir('public/uploads')} />
       <PrettyDump data={await readDir('src/data/next-blog')} />
       {/* {posts.map((post: any) => (
         <>
