@@ -1,0 +1,16 @@
+.wrapper {
+  --padding: 1em;
+  padding: var(--padding);
+  margin-left: calc(var(--padding) * -1);
+  margin-right: calc(var(--padding) * -1);
+  margin-block-end: 2em;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border-color);
+  box-shadow: var(--card-shadow);
+}
+
+@media (min-width: 56rem) {
+  .wrapper {
+    border-radius: 8px !important;
+  }
+}

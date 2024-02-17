@@ -1,3 +1,4 @@
+'use client';
 import type {ReactNode, MouseEvent, ComponentPropsWithoutRef} from 'react';
 import {motion, type MotionProps} from 'framer-motion';
 import useSound from 'use-sound';

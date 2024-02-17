@@ -1,6 +1,6 @@
-import {ReactNode} from 'react';
+import {type ReactNode, type ComponentProps, type CSSProperties} from 'react';
 
-const hiddenStyles: {[key: string]: string | number} = {
+const hiddenStyles: CSSProperties = {
   display: 'inline-block',
   position: 'absolute',
   overflow: 'hidden',
@@ -12,8 +12,17 @@ const hiddenStyles: {[key: string]: string | number} = {
   border: 0,
 };
 
-export const VisuallyHidden = ({children}: {children: ReactNode}) => (
-  <span style={hiddenStyles}>{children}</span>
+interface VisuallyHiddenProps extends ComponentProps<'span'> {
+  children: ReactNode;
+  // as?: string;
+}
+
+export const VisuallyHidden = ({
+  children,
+  // as: Element = 'span',
+  ...delegated
+}: VisuallyHiddenProps) => (
+  <span style={{...hiddenStyles, ...delegated.style}}>{children}</span>
 );
 
 export default VisuallyHidden;

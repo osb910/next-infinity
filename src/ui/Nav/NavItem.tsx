@@ -32,8 +32,8 @@ export const NavItem = ({
       {(hoveredItem === slug || pathName === slug) && (
         <motion.div
           layoutId={layoutId}
-          className={`${highlightClass} ${styles.backdrop}`}
-          initial={{...highlightStyle}}
+          className={`${highlightClass ?? ''} ${styles.backdrop}`}
+          initial={highlightStyle}
           transition={{
             type: 'spring',
             damping: 26,

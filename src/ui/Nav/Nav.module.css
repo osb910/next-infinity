@@ -1,5 +1,5 @@
 .nav {
-  inline-size: 100%;
+  block-size: inherit;
 }
 
 .navList {
@@ -26,6 +26,7 @@
 
 .navItem {
   position: relative;
+  block-size: inherit;
 }
 
 .navItem :where(a, button) {

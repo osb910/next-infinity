@@ -25,6 +25,7 @@ export const Spinner = ({
     '--speed': `${speed}ms`,
     width: size,
     height: size,
+    color,
   };
   return (
     <span

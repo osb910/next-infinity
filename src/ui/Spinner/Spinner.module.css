@@ -9,8 +9,11 @@
 }
 
 .wrapper {
+  inline-size: min-content;
+  block-size: min-content;
   display: inline-block;
   animation: spin var(--speed) linear infinite;
+  color: inherit;
 }
 
 [dir='rtl'] .wrapper {
@@ -23,4 +26,5 @@
     that it spins symmetrically
   */
   display: block;
+  max-inline-size: revert;
 }

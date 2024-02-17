@@ -1,6 +1,11 @@
-import type {MotionProps} from 'framer-motion';
+import type {MotionProps, MotionStyle} from 'framer-motion';
 import {type LinkProps} from 'next/link';
-import type {ComponentProps, ComponentPropsWithoutRef, ReactNode} from 'react';
+import type {
+  CSSProperties,
+  ComponentProps,
+  ComponentPropsWithoutRef,
+  ReactNode,
+} from 'react';
 
 export type NavProps = ComponentPropsWithoutRef<'nav'> &
   Partial<MotionProps> & {

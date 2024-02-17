@@ -2,7 +2,7 @@
 
 import {useState, type MouseEvent, type ReactNode} from 'react';
 import Cookies from 'js-cookie';
-import {Sun, Moon} from 'react-feather';
+import {Sun, Moon, Icon} from 'react-feather';
 import IconButton, {type IconButtonProps} from '@/ui/IconButton';
 import styles from './ThemeSwitch.module.css';
 import VisuallyHidden from '@/ui/VisuallyHidden';
@@ -12,8 +12,8 @@ import VisuallyHidden from '@/ui/VisuallyHidden';
 type Theme = 'light' | 'dark';
 export interface ThemeSwitchProps extends Partial<IconButtonProps> {
   initialTheme?: Theme;
-  lightIcon?: JSX.Element;
-  darkIcon?: JSX.Element;
+  lightIcon?: Icon;
+  darkIcon?: Icon;
   cookieName?: string;
   cookieOptions?: Cookies.CookieAttributes;
   children?: ReactNode;
@@ -21,14 +21,15 @@ export interface ThemeSwitchProps extends Partial<IconButtonProps> {
 
 export const ThemeSwitch = ({
   initialTheme = 'light',
-  lightIcon = <Sun size='1.25em' />,
-  darkIcon = <Moon size='1.25em' />,
+  lightIcon: Light = Sun,
+  darkIcon: Dark = Moon,
   cookieName = 'color-theme',
   cookieOptions,
   children,
   ...delegated
 }: ThemeSwitchProps) => {
   const [theme, setTheme] = useState(initialTheme);
+  const Icon = theme === 'light' ? Light : Dark;
 
   const toggle = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
@@ -49,7 +50,7 @@ export const ThemeSwitch = ({
     <IconButton
       {...delegated}
       className={`${styles.switch} ${delegated.className ?? ''}`}
-      icon={theme === 'light' ? lightIcon : darkIcon}
+      icon={<Icon size='1.25em' />}
       onClick={(evt: MouseEvent<HTMLButtonElement>) => {
         toggle();
         delegated.onClick?.(evt);
