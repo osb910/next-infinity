@@ -4,8 +4,7 @@ import {extname, join} from 'path';
 
 const readFile = async (
   pathFromRoot: string,
-  encoding?: BufferEncoding,
-  fallback?: string
+  {encoding, fallback}: {encoding?: BufferEncoding; fallback?: string} = {}
 ): Promise<any> => {
   const filePath = getPath(pathFromRoot);
   const ext = extname(filePath).split('.').pop();
@@ -15,7 +14,7 @@ const readFile = async (
   } catch (err) {
     if (!(err instanceof Error)) return;
     if (fallback) {
-      return readFile(fallback, encoding);
+      return await readFile(fallback, {encoding});
     }
     console.error(err.message);
     return {data: null, ext, message: err.message, code: err.name};
@@ -24,7 +23,7 @@ const readFile = async (
 
 const readFolder = async (path: string): Promise<string[]> => {
   try {
-    const files: string[] = await fs.readdir(path);
+    const files: string[] = await fs.readdir(join(process.cwd(), path));
     return files;
   } catch (err) {
     console.error(err);
