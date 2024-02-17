@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import {getPath} from './path';
 import {extname, join} from 'path';
 
-const readFile = async (
+export const readFile = async (
   pathFromRoot: string,
   {encoding, fallback}: {encoding?: BufferEncoding; fallback?: string} = {}
 ): Promise<any> => {
@@ -91,7 +91,7 @@ export const writeFile = async (
   }
 };
 
-const deleteFile = async (pathFromRoot: string): Promise<void> => {
+export const deleteFile = async (pathFromRoot: string): Promise<void> => {
   try {
     const err = (await fs.unlink(pathFromRoot)) as Error | undefined;
     if (err) {
@@ -125,5 +125,3 @@ export const calculateDirSize = async (dir: string): Promise<number> => {
 
   return sizes.flat(Infinity).reduce((acc, size) => acc + size, 0);
 };
-
-export {readFile, deleteFile};
