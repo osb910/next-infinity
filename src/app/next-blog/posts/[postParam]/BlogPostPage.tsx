@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export type BlogPostPg = AppPage<{postParam: string}>;
 
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
-  const posts = await getBlogPostList();
+  // const posts = await getBlogPostList();
   return (
     <>
       <article className={styles.wrapper}>
@@ -32,14 +32,14 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
       <PrettyDump data={await readDir('public')} />
       <PrettyDump data={await readDir('src')} />
       <PrettyDump data={await readDir('src/data/next-blog')} />
-      {posts.map((post: any) => (
+      {/* {posts.map((post: any) => (
         <>
           <p>{post.slug}</p>
           <p>{post.title}</p>
           <p>{post.publishedOn}</p>
           <p>{post.abstract}</p>
         </>
-      ))}
+      ))} */}
       {/* <PrettyDump data={post.frontmatter} /> */}
     </>
   );
