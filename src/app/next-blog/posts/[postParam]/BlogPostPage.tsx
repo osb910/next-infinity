@@ -29,8 +29,10 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           </p>
         </div>
       </article>
+      <PrettyDump data={await readFolder('')} />
       <PrettyDump data={await readFolder('src')} />
-      <PrettyDump data={await readFolder('src/data')} />
+      <PrettyDump data={await readFolder('src/app')} />
+      <PrettyDump data={await readFolder('src/data/next-blog')} />
       {/* <PrettyDump data={post.frontmatter} /> */}
       {/* <p>{post.content}</p> */}
     </>
