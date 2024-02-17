@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import {getPath} from './path';
 import {extname, join} from 'path';
+import {ObjectEncodingOptions, PathLike} from 'fs';
 
 const readFile = async (
   pathFromRoot: string,
@@ -21,9 +22,21 @@ const readFile = async (
   }
 };
 
-const readFolder = async (path: string): Promise<string[]> => {
+const readFolder = async (
+  path: string,
+  options?:
+    | (ObjectEncodingOptions & {
+        withFileTypes?: false | undefined;
+        recursive?: boolean | undefined;
+      })
+    | BufferEncoding
+    | null
+): Promise<string[]> => {
   try {
-    const files: string[] = await fs.readdir(join(process.cwd(), path));
+    const files: string[] = await fs.readdir(
+      join(process.cwd(), path),
+      options
+    );
     return files;
   } catch (err) {
     console.error(err);
@@ -38,7 +51,7 @@ const getFolderNames = async (path: string): Promise<string[]> => {
     return folders;
   } catch (err) {
     console.error(err);
-    throw err;
+    return [];
   }
 };
 

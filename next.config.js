@@ -14,7 +14,7 @@ const nextConfig = {
      * Essentially, we're telling Next: Hey, this application requires these files, please upload them along with the compiled application during deployment.
      */
     outputFileTracingIncludes: {
-      '/*': ['./public', './src/app/**/*', './src/data/**/*'],
+      '/*': ['./public/**/*', './src/app/**/*', './src/data/**/*'],
     },
   },
   images: {

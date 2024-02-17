@@ -15,8 +15,8 @@ const Home = async () => {
       /\^(\d+\.\d+)\.\d+/,
       '$1'
     );
-    const appPath =
-      env('NODE_ENV') === 'development' ? 'src/app' : '.next/server/app';
+    const appPath = 'src/app';
+    // env('NODE_ENV') === 'development' ? 'src/app' : '.next/server/app';
     const appDir = await getFolderNames(appPath);
     const projectsPromises = appDir
       .filter(
@@ -28,7 +28,7 @@ const Home = async () => {
       }));
     const projects = await Promise.all(projectsPromises);
 
-    const miniAppsDir = await getFolderNames(join(appPath, 'mini-apps'));
+    const miniAppsDir = await getFolderNames(`${appPath}/mini-apps`);
     const miniAppsPromises = miniAppsDir.map(async dir => ({
       name: dir,
       size: await calculateDirSize(join(appPath, 'mini-apps', dir)),
