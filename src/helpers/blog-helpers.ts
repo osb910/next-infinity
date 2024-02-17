@@ -1,18 +1,19 @@
 import matter, {GrayMatterFile} from 'gray-matter';
-import {readFile, readFolder} from '@/utils/file';
-import {getPath} from '@/utils/path';
+import {readFile, readDir} from '@/utils/file';
 
 export const getBlogPostList = async () => {
-  const fileNames = await readFolder('/src/data/next-blog');
+  const files = await readDir('src/data/next-blog');
   const blogPosts = [];
 
-  for (let fileName of fileNames) {
-    const rawContent = await readFile(getPath(`/data/next-blog/${fileName}`));
+  for (let file of files) {
+    const {data: rawContent} = await readFile(`/data/next-blog/${file.name}`, {
+      encoding: 'utf-8',
+    });
 
     const {data: frontmatter} = matter(rawContent);
 
     blogPosts.push({
-      slug: fileName.replace('.mdx', ''),
+      slug: file.name.replace('.mdx', ''),
       ...frontmatter,
     });
   }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Poster from '@/components/Poster/Poster';
 import Logo from '@/components/Logo';
 import {env} from '@/lib/helpers';
-import {calculateDirSize, getFolderNames} from '@/utils/file';
+import {calculateDirSize, getDirNames} from '@/utils/file';
 import {getPath} from '@/utils/path';
 import styles from './page.module.css';
 import PrettyDump from '@/ui/PrettyDump';
@@ -17,21 +17,21 @@ const Home = async () => {
     );
     const appPath = 'src/app';
     // env('NODE_ENV') === 'development' ? 'src/app' : '.next/server/app';
-    const appDir = await getFolderNames(appPath);
+    const appDir = await getDirNames(appPath);
     const projectsPromises = appDir
       .filter(
-        name => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
+        ({name}) => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
       )
-      .map(async dir => ({
-        name: dir,
-        size: await calculateDirSize(join(appPath, dir)),
+      .map(async ({name}) => ({
+        name,
+        size: await calculateDirSize(join(appPath, name)),
       }));
     const projects = await Promise.all(projectsPromises);
 
-    const miniAppsDir = await getFolderNames(`${appPath}/mini-apps`);
-    const miniAppsPromises = miniAppsDir.map(async dir => ({
-      name: dir,
-      size: await calculateDirSize(join(appPath, 'mini-apps', dir)),
+    const miniAppsDir = await getDirNames(`${appPath}/mini-apps`);
+    const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
+      name,
+      size: await calculateDirSize(join(appPath, 'mini-apps', name)),
     }));
     const miniApps = await Promise.all(miniAppsPromises);
 
@@ -81,7 +81,6 @@ const Home = async () => {
             </ol>
           </section>
         </main>
-        <PrettyDump data={join(process.cwd())} />
       </>
     );
   } catch (err) {

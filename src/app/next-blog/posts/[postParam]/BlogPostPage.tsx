@@ -2,8 +2,8 @@ import BlogHero from '@/components/next-blog/BlogHero';
 import {type Metadata} from 'next';
 import type {AppPage, JsonRes} from '@/types';
 import styles from './BlogPostPage.module.css';
-import {readFolder} from '@/utils/file';
-import {loadBlogPost} from '@/helpers/blog-helpers';
+import {readDir} from '@/utils/file';
+import {getBlogPostList} from '@/helpers/blog-helpers';
 import PrettyDump from '@/ui/PrettyDump';
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export type BlogPostPg = AppPage<{postParam: string}>;
 
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
-  // const post = await loadBlogPost('css-font-size');
+  const posts = await getBlogPostList();
   return (
     <>
       <article className={styles.wrapper}>
@@ -29,12 +29,18 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           </p>
         </div>
       </article>
-      <PrettyDump data={await readFolder('')} />
-      <PrettyDump data={await readFolder('src')} />
-      <PrettyDump data={await readFolder('src/app')} />
-      <PrettyDump data={await readFolder('src/data/next-blog')} />
+      <PrettyDump data={await readDir('public')} />
+      <PrettyDump data={await readDir('src')} />
+      <PrettyDump data={await readDir('src/data/next-blog')} />
+      {posts.map((post: any) => (
+        <>
+          <p>{post.slug}</p>
+          <p>{post.title}</p>
+          <p>{post.publishedOn}</p>
+          <p>{post.abstract}</p>
+        </>
+      ))}
       {/* <PrettyDump data={post.frontmatter} /> */}
-      {/* <p>{post.content}</p> */}
     </>
   );
 };

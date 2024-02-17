@@ -1,7 +1,6 @@
 import fs from 'fs/promises';
 import {getPath} from './path';
 import {extname, join} from 'path';
-import {ObjectEncodingOptions, PathLike} from 'fs';
 
 const readFile = async (
   pathFromRoot: string,
@@ -22,32 +21,50 @@ const readFile = async (
   }
 };
 
-const readFolder = async (
-  path: string,
-  options?:
-    | (ObjectEncodingOptions & {
-        withFileTypes?: false | undefined;
-        recursive?: boolean | undefined;
-      })
-    | BufferEncoding
-    | null
-): Promise<string[]> => {
+export const readDir = async (
+  path: string
+): Promise<
+  Array<{
+    name: string;
+    dir: string;
+    path: string;
+  }>
+> => {
   try {
-    const files: string[] = await fs.readdir(
-      join(process.cwd(), path),
-      options
-    );
-    return files;
+    const files = await fs.readdir(join(process.cwd(), path), {
+      withFileTypes: true,
+    });
+    return files.map(({path, name}) => ({
+      name,
+      dir: path,
+      path: join(path, name),
+    }));
   } catch (err) {
     console.error(err);
     return [];
   }
 };
 
-const getFolderNames = async (path: string): Promise<string[]> => {
+export const getDirNames = async (
+  path: string
+): Promise<
+  Array<{
+    name: string;
+    dir: string;
+    path: string;
+  }>
+> => {
   try {
-    const list = await readFolder(path);
-    const folders = list.filter(item => !item.match(/\.[^.]+$/));
+    const list = await fs.readdir(join(process.cwd(), path), {
+      withFileTypes: true,
+    });
+    const folders = list
+      .filter(item => item.isDirectory())
+      .map(({path, name}) => ({
+        name,
+        dir: path,
+        path: join(path, name),
+      }));
     return folders;
   } catch (err) {
     console.error(err);
@@ -109,4 +126,4 @@ export const calculateDirSize = async (dir: string): Promise<number> => {
   return sizes.flat(Infinity).reduce((acc, size) => acc + size, 0);
 };
 
-export {readFile, writeFile, deleteFile, readFolder, getFolderNames};
+export {readFile, writeFile, deleteFile};
