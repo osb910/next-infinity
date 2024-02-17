@@ -10,11 +10,9 @@ export const GET = async (
     const s3File = await getObject(`next-stores/${params.key}`);
     const file = s3File?.data
       ? s3File
-      : await readFile(
-          `../public/uploads/next-stores/${params.key}`,
-          undefined,
-          '../public/uploads/store.png'
-        );
+      : await readFile(`../public/uploads/next-stores/${params.key}`, {
+          fallback: '../public/uploads/store.png',
+        });
     if (!file.data) {
       const err = new Error('Something went wrong!');
       throw err;

@@ -1,11 +1,10 @@
 import {cookies} from 'next/headers';
-import NavBar from '@/components/next-blog/NavBar';
 import {UserDataProvider} from '@/hooks/useUserData';
 import {type Metadata} from 'next';
 import styles from './HomePage.module.css';
-import ThemeSwitch from '@/ui/ThemeSwitch';
-import SfxSwitch from '@/ui/SfxSwitch';
-import Switch from '@/ui/Switch';
+
+import Header from '@/components/next-blog/Header';
+import Footer from '@/components/next-blog/Footer';
 
 export const metadata: Metadata = {
   title: {
@@ -37,30 +36,14 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
     | 'light'
     | 'dark';
 
-  const btnAnimation = {
-    backgroundColor: 'hsla(0, 0%, 50%, 0.3)',
-    boxShadow: '0 0 0 4px hsla(0, 0%, 50%, 0.3)',
-  };
-
   return (
     <UserDataProvider
       userEndpoint='/api/next-blog/auth/me'
       userIdCookie='next-blog-user-id'
     >
-      <header className={styles.header}>
-        <h1>Next Blog</h1>
-        <NavBar />
-        <section className={styles.settings}>
-          <ThemeSwitch
-            initialTheme={theme}
-            whileHover={btnAnimation}
-            whileFocus={btnAnimation}
-          />
-          <SfxSwitch whileHover={btnAnimation} whileFocus={btnAnimation} />
-          <Switch />
-        </section>
-      </header>
+      <Header theme={theme} userId={userId} />
       <main className={styles.main}>{children}</main>
+      <Footer />
     </UserDataProvider>
   );
 };

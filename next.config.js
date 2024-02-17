@@ -10,12 +10,12 @@ const nextConfig = {
     esmExternals: 'loose',
     serverComponentsExternalPackages: ['mongoose'],
     /**
-     * outputFileTracingIncludes allows us to specify which files should be included on a route-by-route basis. Here, we're saying that the '/src/database.json' file should be made available for all routes (represented by the wildcard /*).
-     * Essentially, we're telling Next: Hey, this application requires this random JSON file, please upload it along with the compiled application during deployment.
+     * allows us to specify which files should be included on a route-by-route basis. Here, we're saying that the '/src/database.json' file should be made available for all routes (represented by the wildcard /*).
+     * Essentially, we're telling Next: Hey, this application requires these files, please upload them along with the compiled application during deployment.
      */
-    // outputFileTracingIncludes: {
-    // '/*': ['./src/database.json'],
-    // },
+    outputFileTracingIncludes: {
+      '/*': ['./src/data/*'],
+    },
   },
   images: {
     remotePatterns: [

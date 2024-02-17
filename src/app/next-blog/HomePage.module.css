@@ -1,26 +1,28 @@
-.header {
-  padding: 0.5em 1em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-  border-bottom: 2px dashed var(--color-gray-500);
-  background-color: rgb(var(--blog-bg-elevated-rgb));
-}
-
-.settings {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
 .main {
   /* block-size: 100%; */
+  inline-size: 100%;
+  max-inline-size: var(--blog-width);
   flex: 1 0 auto;
   display: flex;
-  background-color: rgb(var(--blog-bg-rgb));
+  flex-direction: column;
+  align-items: center;
+  padding: 2em 4em;
+  margin: 0 auto;
 }
 
 .main h1 {
-  color: rgb(var(--blog-primary-rgb));
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 32rem) {
+  .main h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .main h1 {
+    font-size: 2rem;
+  }
 }

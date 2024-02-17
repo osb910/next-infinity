@@ -6,6 +6,7 @@ import {env} from '@/lib/helpers';
 import {calculateDirSize, getFolderNames} from '@/utils/file';
 import {getPath} from '@/utils/path';
 import styles from './page.module.css';
+import PrettyDump from '@/ui/PrettyDump';
 
 const Home = async () => {
   try {
@@ -15,9 +16,7 @@ const Home = async () => {
       '$1'
     );
     const appPath =
-      env('NODE_ENV') === 'development'
-        ? getPath('./app')
-        : join(process.cwd(), '.next/server/app');
+      env('NODE_ENV') === 'development' ? 'src/app' : '.next/server/app';
     const appDir = await getFolderNames(appPath);
     const projectsPromises = appDir
       .filter(
@@ -82,6 +81,7 @@ const Home = async () => {
             </ol>
           </section>
         </main>
+        <PrettyDump data={join(process.cwd())} />
       </>
     );
   } catch (err) {
