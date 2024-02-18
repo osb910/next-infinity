@@ -33,7 +33,6 @@ const storeSchema = new Schema<IStore, StoreModel>(
     },
     photo: {
       key: String,
-      etag: String,
       title: String,
       ext: String,
       mimeType: String,

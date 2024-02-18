@@ -1,5 +1,5 @@
 import type {Model, Types, Document} from 'mongoose';
-import {P8n} from '@/types';
+import type {P8n} from '@/types';
 import type {IReview} from '../review';
 
 export interface IStore extends Document {

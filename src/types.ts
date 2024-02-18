@@ -68,3 +68,15 @@ export interface GeoLocation {
   isProxy?: boolean;
   source?: string;
 }
+
+export interface Img {
+  key: string;
+  ogName: string;
+  title: string;
+  ogTitle: string;
+  ext: string;
+  mimeType: string;
+  size: number;
+  readableSize: string;
+  caption?: string;
+}
