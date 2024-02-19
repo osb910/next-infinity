@@ -13,14 +13,14 @@
   margin-bottom: 0.25rem;
 }
 .title:hover {
-  color: var(--color-primary);
+  color: var(--blog-primary-500);
 }
 .wrapper time {
   display: block;
   margin-bottom: 1rem;
   font-weight: 500;
   font-size: 1.125rem;
-  color: var(--color-decorative-900);
+  color: var(--blog-decorative-900);
 }
 .wrapper p {
   font-size: 1.125rem;
@@ -30,7 +30,7 @@
 .arrow {
   display: inline-block;
   font-family: 'Monaco', monospace;
-  color: var(--color-primary);
+  color: var(--blog-primary-500);
   transition: transform 200ms;
   font-weight: 400;
 }

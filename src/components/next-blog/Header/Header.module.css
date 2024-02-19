@@ -1,12 +1,16 @@
 .header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
   inline-size: 100%;
   padding: 0.5em 1em;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
-  border-bottom: 2px dashed var(--color-gray-500);
-  background-color: var(--blog-decorative-300);
+  border-bottom: 2px dashed var(--blog-decorative-800);
+  background-color: var(--blog-bg-decorative);
+  backdrop-filter: blur(4px);
 }
 
 .navBar {

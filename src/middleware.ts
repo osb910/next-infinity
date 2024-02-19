@@ -36,6 +36,9 @@ export const middleware = async (req: NextRequest) => {
   response.headers.set('x-url', req.url);
   let ipAddress = req.ip ?? req.headers.get('x-forwarded-for') ?? '';
   response.headers.set('x-ip', ipAddress);
+  const site = pathname.match(/^(?:\/api|\/mini-apps)?\/([-\w]+)/)?.[1];
+  response.headers.set('x-site', site ?? '');
+
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
     console.log('middleware', req.method, pathname);
 

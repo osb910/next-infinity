@@ -8,7 +8,7 @@ import {
   Fira_Code,
   Spline_Sans_Mono,
 } from 'next/font/google';
-import {cookies} from 'next/headers';
+import {headers, cookies} from 'next/headers';
 import clsx from 'clsx';
 import {SoundProvider} from '@/ui/SfxSwitch/sound-enabled';
 import {ToastProvider} from '@/components/Toaster/use-toaster';
@@ -81,14 +81,18 @@ const splineSansMono = Spline_Sans_Mono({
 });
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  const headerStore = headers();
   const cookieStore = cookies();
+  const site = headerStore.get('x-site');
   const theme = cookieStore.get('color-theme')?.value ?? 'light';
 
   return (
     <html
       lang='en'
       data-color-theme={theme}
-      className={`${theme} ${clsx(
+      className={clsx(
+        site,
+        theme,
         atkinson.variable,
         roboto.variable,
         lato.variable,
@@ -96,7 +100,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         workSans.variable,
         fira.variable,
         splineSansMono.variable
-      )}`}
+      )}
     >
       <body suppressHydrationWarning>
         <ObeyMotionPref>

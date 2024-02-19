@@ -1,5 +1,4 @@
 .wrapper {
-  padding-bottom: 64px;
   position: relative;
   z-index: 2;
 }
@@ -10,9 +9,9 @@
   grid-template-columns:
     1fr min(var(--trimmed-content-width), 100%)
     1fr;
-  max-width: var(--outer-content-width);
+  max-width: var(--blog-outer-width);
   margin: 0 auto;
-  padding: 64px var(--viewport-padding) 32px;
+  padding: 64px var(--blog-padding) 32px;
   background: var(--color-page-background);
   box-shadow: var(--shadow-page);
 }

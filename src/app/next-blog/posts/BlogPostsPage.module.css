@@ -1,0 +1,28 @@
+.main {
+  /* block-size: 100%; */
+  inline-size: 100%;
+  max-inline-size: var(--blog-width);
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em 4em;
+  margin: 0 auto;
+}
+
+.main h1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 32rem) {
+  .main h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .main h1 {
+    font-size: 2rem;
+  }
+}

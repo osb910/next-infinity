@@ -1,15 +1,31 @@
 import {type Metadata} from 'next';
 import type {AppPage, JsonRes} from '@/types';
-import styles from './BlogPostsPage.module.css';
+import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
+import BlogPostCard from '@/components/next-blog/BlogPostCard';
+import cls from './BlogPostsPage.module.css';
 
 export const metadata: Metadata = {
-  title: 'BlogPostsPage'
+  title: 'BlogPostsPage',
 };
 
 const BlogPostsPage: AppPage<{}> = async ({}) => {
+  const posts = await getBlogPostList();
   return (
-    <section className={styles.BlogPostsPage}>BlogPostsPage</section>
-  )
-}
+    <>
+      <ul>
+        {posts.map(({slug, title, abstract, publishedOn}) => (
+          <li key={slug}>
+            <BlogPostCard
+              abstract={abstract}
+              slug={slug}
+              title={title}
+              publishedOn={publishedOn}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
 
 export default BlogPostsPage;

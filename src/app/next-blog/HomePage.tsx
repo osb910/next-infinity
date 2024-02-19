@@ -1,20 +1,25 @@
 import BlogPostCard from '@/components/next-blog/BlogPostCard';
 import styles from './HomePage.module.css';
-import './styles.css';
+import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 
 const HomePage = async () => {
+  const posts = await getBlogPostList();
   return (
-    <main className={styles.wrapper}>
-      <h1 className={styles.mainHeading}>Latest Content:</h1>
-
-      {/* TODO: Iterate over the data read from the file system! */}
-      <BlogPostCard
-        slug='example'
-        title='Hello world!'
-        abstract="This is a placeholder, an example which shows how the “BlogSummaryCard” component should be used. You'll want to swap this out based on the data from the various MDX files!"
-        publishedOn={new Date()}
-      />
-    </main>
+    <>
+      <h1>Latest Content:</h1>
+      <ul>
+        {posts.map(({slug, title, abstract, publishedOn}) => (
+          <li key={slug}>
+            <BlogPostCard
+              abstract={abstract}
+              slug={slug}
+              title={title}
+              publishedOn={publishedOn}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

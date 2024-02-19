@@ -1,7 +1,7 @@
 import {cookies} from 'next/headers';
 import {UserDataProvider} from '@/hooks/useUserData';
 import {type Metadata} from 'next';
-import styles from './HomePage.module.css';
+import cls from './HomePage.module.css';
 
 import Header from '@/components/next-blog/Header';
 import Footer from '@/components/next-blog/Footer';
@@ -42,7 +42,7 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
       userIdCookie='next-blog-user-id'
     >
       <Header theme={theme} userId={userId} />
-      <main className={styles.main}>{children}</main>
+      <main className={cls.main}>{children}</main>
       <Footer />
     </UserDataProvider>
   );

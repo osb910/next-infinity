@@ -3,7 +3,7 @@ import {type Metadata} from 'next';
 import type {AppPage, JsonRes} from '@/types';
 import styles from './BlogPostPage.module.css';
 import {readDir, readFile} from '@/utils/file';
-import {getBlogPostList} from '@/helpers/blog-helpers';
+import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 import PrettyDump from '@/ui/PrettyDump';
 
 export const metadata: Metadata = {
