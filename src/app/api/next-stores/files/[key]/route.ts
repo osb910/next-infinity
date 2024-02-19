@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {getObject} from '@/lib/s3';
+import {getObject} from '@/lib/files/s3';
 import {readFile} from '@/utils/file';
 
 export const GET = async (

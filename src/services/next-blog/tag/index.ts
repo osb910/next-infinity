@@ -1,1 +1,1 @@
-export * from './tag.types.ts';
+export * from './tag.types';

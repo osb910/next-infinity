@@ -1,6 +1,6 @@
 import slug from 'slug';
 import User from '../user';
-import {deleteObject} from '@/lib/s3';
+import {deleteObject} from '@/lib/files/s3';
 import type {Model, HydratedDocument, FilterQuery, UpdateQuery} from 'mongoose';
 import {type IStore} from './store.types';
 

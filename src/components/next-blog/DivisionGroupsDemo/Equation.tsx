@@ -3,7 +3,7 @@ import styles from './Equation.module.css';
 export interface EquationProps {
   dividend: number;
   divisor: number;
-  remainder?: number;
+  remainder: number | null;
 }
 
 const Equation = ({dividend, divisor, remainder}: EquationProps) => {

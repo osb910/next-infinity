@@ -1,5 +1,12 @@
-import matter, {GrayMatterFile} from 'gray-matter';
+import matter from 'gray-matter';
 import {readFile, readDir} from '@/utils/file';
+
+type Post = {
+  slug: string;
+  title: string;
+  abstract: string;
+  publishedOn: Date;
+};
 
 export const getBlogPostList = async () => {
   const files = await readDir('src/data/next-blog');
@@ -20,8 +27,9 @@ export const getBlogPostList = async () => {
       ...frontmatter,
     });
   }
-  // @ts-ignore
-  return blogPosts.sort((p1, p2) => (p1.publishedOn < p2.publishedOn ? 1 : -1));
+  return blogPosts.sort((p1, p2) =>
+    (p1 as Post).publishedOn < (p2 as Post).publishedOn ? 1 : -1
+  ) as Array<Post>;
 };
 
 export const loadBlogPost = async (slug: string) => {

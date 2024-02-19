@@ -15,6 +15,11 @@ export type AppPage<
   K = Record<string, string | string[] | undefined>
 > = (props: PageProps<T, K>) => Promise<any>;
 
+export type AppPageSync<
+  T = Record<string, string>,
+  K = Record<string, string | string[] | undefined>
+> = (props: PageProps<T, K>) => any;
+
 export type GetMetadata<T extends (...args: any) => any = AppPage> = (
   props: Parameters<T>[0],
   parent: ResolvingMetadata

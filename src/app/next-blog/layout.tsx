@@ -8,13 +8,13 @@ import Footer from '@/components/next-blog/Footer';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Next Blog',
+    template: '%s • Next Blog',
     default: 'Next Blog',
   },
   description: 'Read about different topics',
   openGraph: {
     title: {
-      template: '%s | Next Blog',
+      template: '%s • Next Blog',
       default: 'Next Blog',
     },
     siteName: 'Next Blog',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     title: {
-      template: '%s | Next Blog',
+      template: '%s • Next Blog',
       default: 'Next Blog',
     },
   },

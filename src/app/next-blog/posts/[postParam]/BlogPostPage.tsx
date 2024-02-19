@@ -1,45 +1,41 @@
+import {cache} from 'react';
+import {loadBlogPost} from '@/helpers/next-blog/blog-helpers';
 import BlogHero from '@/components/next-blog/BlogHero';
-import {type Metadata} from 'next';
-import type {AppPage, JsonRes} from '@/types';
-import styles from './BlogPostPage.module.css';
-import {readDir, readFile} from '@/utils/file';
-import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
-import PrettyDump from '@/ui/PrettyDump';
+import Mdx from '@/ui/Mdx';
+import {Spinner} from '@/ui/Spinner';
+import type {AppPage, GetMetadata, JsonRes} from '@/types';
+import cls from './BlogPostPage.module.css';
 
-export const metadata: Metadata = {
-  title: 'BlogPostPage',
-};
+const fetcher = cache(async (postParam: string) => {
+  const posts = await loadBlogPost(postParam);
+  return posts;
+});
 
 export type BlogPostPg = AppPage<{postParam: string}>;
 
+export const generateMetadata: GetMetadata<BlogPostPg> = async ({
+  params: {postParam},
+}) => {
+  const {frontmatter, content} = await fetcher(postParam);
+  return {
+    title: frontmatter.title,
+    description: frontmatter.abstract,
+  };
+};
+
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
-  const posts = await getBlogPostList();
+  const {frontmatter, content} = await fetcher(postParam);
   return (
     <>
-      <article className={styles.wrapper}>
+      <article className={cls.wrapper}>
         <BlogHero
-          title='Example post!'
-          publishedOn={new Date().toISOString()}
+          title={frontmatter.title}
+          publishedOn={frontmatter.publishedOn}
         />
-        <div className={styles.page}>
-          <p>This is where the blog post will go!</p>
-          <p>
-            You will need to use <em>MDX</em> to render all of the elements
-            created from the blog post in this spot.
-          </p>
+        <div className={cls.page}>
+          <Mdx source={content} loader={<Spinner />} />
         </div>
       </article>
-      <PrettyDump data={await readDir('src/data/next-blog')} />
-      {posts.map((post: any, idx) => (
-        <div key={idx}>
-          <p>{post.slug}</p>
-          <p>{post.title}</p>
-          <p>{post.publishedOn}</p>
-          <p>{post.abstract}</p>
-          <br />
-        </div>
-      ))}
-      {/* <PrettyDump data={post.frontmatter} /> */}
     </>
   );
 };

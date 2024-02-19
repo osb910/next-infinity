@@ -1,7 +1,7 @@
 import Store from './store.model';
 import User, {type IUser} from '../user';
 import Review, {type IReview} from '../review';
-import {processUploadFile} from '@/lib/file.middleware';
+import {processUploadFile} from '@/lib/files/file.middleware';
 import {getModelQuery} from '@/services/services.lib';
 import {getP8n} from '@/lib/helpers';
 import type {IStore, IStoreWithReviews, StoreModel} from './store.types';

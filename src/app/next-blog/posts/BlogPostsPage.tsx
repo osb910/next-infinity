@@ -5,7 +5,8 @@ import BlogPostCard from '@/components/next-blog/BlogPostCard';
 import cls from './BlogPostsPage.module.css';
 
 export const metadata: Metadata = {
-  title: 'BlogPostsPage',
+  title: 'Blog Posts',
+  description: 'Browse all blog posts',
 };
 
 const BlogPostsPage: AppPage<{}> = async ({}) => {

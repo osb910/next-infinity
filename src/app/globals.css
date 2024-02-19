@@ -514,7 +514,7 @@ html.next-blog {
   position: relative;
 }
 
-.next-blog code {
+html.next-blog code {
   font-family: var(--fn-spline-sans-mono);
 }
 
