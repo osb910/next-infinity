@@ -3,7 +3,7 @@
 import {useState, useId, ReactNode, ChangeEvent, ComponentProps} from 'react';
 import {Eye, EyeOff} from 'react-feather';
 import styles from './PasswordInput.module.css';
-import {stringifyRegex} from '@/lib/regex';
+import {stringifyRegex} from '@/lib/text/regex';
 
 export interface PasswordInputProps extends ComponentProps<'input'> {
   label: string;

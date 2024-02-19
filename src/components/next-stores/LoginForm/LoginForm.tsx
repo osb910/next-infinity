@@ -10,7 +10,7 @@ import Input from '@/ui/Input';
 import PasswordInput from '@/ui/PasswordInput';
 import Spinner from '@/ui/Spinner';
 import {type IUser} from '@/services/next-stores/user';
-import {emailRegex, stringifyRegex} from '@/lib/regex';
+import {emailRegex, stringifyRegex} from '@/lib/text/regex';
 import {getURL} from '@/utils/path';
 import styles from './LoginForm.module.css';
 

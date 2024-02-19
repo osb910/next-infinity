@@ -2,7 +2,7 @@
 import Form from '@/components/Form';
 import Input from '@/ui/Input';
 import useToaster from '@/components/Toaster/use-toaster';
-import {emailRegex, stringifyRegex} from '@/lib/regex';
+import {emailRegex, stringifyRegex} from '@/lib/text/regex';
 import ky from 'ky';
 
 interface ForgotPassFormProps {}
