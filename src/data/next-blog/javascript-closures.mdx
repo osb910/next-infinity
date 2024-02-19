@@ -16,22 +16,24 @@ A closure gives you access to an outer function’s scope from an inner function
 
 Here's a simple closure in action:
 
-```js
+<Code
+lang='js'
+code={`
 function outer() {
-  let count = 0;
+\tlet count = 0;
+\tfunction inner() {
+\t\tcount++;
+\t\tconsole.log(count);
+\t}
 
-  function inner() {
-    count++;
-    console.log(count);
-  }
-
-  return inner;
+\treturn inner;
 }
 
 let incrementCounter = outer();
 incrementCounter(); // Logs: 1
 incrementCounter(); // Logs: 2
-```
+`}
+/>
 
 In this example, `inner()` has access to the `outer()` function's scope, even after `outer()` has finished executing. This access is the magic of closures!
 
@@ -45,10 +47,10 @@ One of the most powerful applications of closures is encapsulating variables—e
 
 Let's take a look at a simple counter object:
 
-```js
+<Code lang='js'
+code={`
 const createCounter = () => {
   let count = 0;
-
   return {
     increment: function () {
       count++;
@@ -62,7 +64,7 @@ const createCounter = () => {
 const counter = createCounter();
 counter.increment();
 console.log(counter.getCount()); // Logs: 1
-```
+`}/>
 
 Here, `count` is not accessible directly. It can only be manipulated through the `increment` method and read by the `getCount` method. This is a way of controlling access to `count`, ensuring that it can't be arbitrarily modified from outside the counter object.
 
@@ -70,7 +72,8 @@ Here, `count` is not accessible directly. It can only be manipulated through the
 
 Function factories are functions that return other functions, potentially with some variables pre-set. This is a powerful pattern that can lead to cleaner, more reusable code, and closures are at the heart of it.
 
-```js
+<Code lang='js'
+code={`
 function multiplyBy(x) {
   return function (y) {
     return x * y;
@@ -79,7 +82,8 @@ function multiplyBy(x) {
 
 const double = multiplyBy(2);
 console.log(double(5)); // Logs: 10
-```
+`}
+/>
 
 In this example, `multiplyBy` is a function factory that generates functions to multiply by a certain number. Each function it creates forms a closure, keeping access to the x value even after `multiplyBy` has finished executing.
 
@@ -87,10 +91,10 @@ In this example, `multiplyBy` is a function factory that generates functions to 
 
 Memoization is a technique used to speed up programs by storing the results of expensive function calls and reusing them when the same inputs occur. Closures enable us to store this data.
 
-```js
+<Code lang='js'
+code={`
 function fibonacci() {
   let cache = {};
-
   return function fib(n) {
     if (n in cache) {
       return cache[n];
@@ -106,7 +110,8 @@ function fibonacci() {
 
 const fastFib = fibonacci();
 console.log(fastFib(50)); // It returns instantly!
-```
+`}
+/>
 
 Here, `fibonacci` is a function that returns a function, `fib`. The `fib` function calculates the nth Fibonacci number and uses a cache to store previously calculated values, significantly speeding up subsequent calls with the same inputs.
 

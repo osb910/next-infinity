@@ -5,6 +5,7 @@ import Mdx from '@/ui/Mdx';
 import {Spinner} from '@/ui/Spinner';
 import type {AppPage, GetMetadata, JsonRes} from '@/types';
 import cls from './BlogPostPage.module.css';
+import Codum from '@/ui/Codum';
 
 const fetcher = cache(async (postParam: string) => {
   const posts = await loadBlogPost(postParam);
@@ -33,7 +34,11 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           publishedOn={frontmatter.publishedOn}
         />
         <div className={cls.page}>
-          <Mdx source={content} loader={<Spinner />} />
+          <Mdx
+            source={content}
+            loader={<Spinner />}
+            components={{Code: Codum}}
+          />
         </div>
       </article>
     </>
