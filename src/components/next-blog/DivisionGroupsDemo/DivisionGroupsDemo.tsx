@@ -1,13 +1,14 @@
 'use client';
-import React, {ChangeEvent} from 'react';
+import {useId, useState, type ChangeEvent} from 'react';
 import clsx from 'clsx';
+import {LayoutGroup, motion} from 'framer-motion';
 
 import {range} from '@/utils/numbers';
-import Card from '@/ui/Card';
 import SliderControl from '@/components/next-blog/SliderControl';
+import Card from '@/ui/Card';
 
 import Equation from './Equation';
-import styles from './DivisionGroupsDemo.module.css';
+import cls from './DivisionGroupsDemo.module.css';
 
 export interface DivisionGroupsDemoProps {
   numOfItems?: number;
@@ -19,11 +20,21 @@ const DivisionGroupsDemo = ({
   initialNumOfGroups = 1,
   includeRemainderArea,
 }: DivisionGroupsDemoProps) => {
-  const [numOfGroups, setNumOfGroups] = React.useState(initialNumOfGroups);
+  const [numOfGroups, setNumOfGroups] = useState(initialNumOfGroups);
+  const id = useId();
 
   const numOfItemsPerGroup = Math.floor(numOfItems / numOfGroups);
 
   const remainder = includeRemainderArea ? numOfItems % numOfGroups : null;
+  const items = range(numOfGroups).map(groupIdx =>
+    range(numOfItemsPerGroup).map(
+      idx => `item-${groupIdx * numOfItemsPerGroup + idx + 1}`
+    )
+  );
+  const remainderItems = range(remainder ?? 0).map(
+    r => `item-${numOfGroups * numOfItemsPerGroup + r + 1}`
+  );
+  console.log({items, remainderItems});
 
   // When we're splitting into 1-3 groups, display side-by-side
   // columns. When we get to 4, it should switch to a 2x2 grid.
@@ -38,11 +49,11 @@ const DivisionGroupsDemo = ({
         };
 
   return (
-    <Card as='section' className={styles.wrapper}>
-      <header className={styles.header}>
+    <Card as='section' className={cls.wrapper}>
+      <header className={cls.header}>
         <SliderControl
           label='Number of Groups'
-          className={styles.slider}
+          className={cls.slider}
           step={1}
           min={1}
           max={4}
@@ -53,27 +64,44 @@ const DivisionGroupsDemo = ({
         />
       </header>
 
-      <div className={styles.demoWrapper}>
-        <div className={clsx(styles.demoArea)} style={gridStructure}>
-          {range(numOfGroups).map(groupIndex => (
-            <div key={groupIndex} className={styles.group}>
-              {range(numOfItemsPerGroup).map(index => {
-                return <div key={index} className={styles.item} />;
-              })}
-            </div>
-          ))}
+      <LayoutGroup>
+        <div className={cls.demoWrapper}>
+          <div className={clsx(cls.demoArea)} style={gridStructure}>
+            {range(numOfGroups).map(groupIdx => (
+              <div key={groupIdx} className={cls.group}>
+                {range(numOfItemsPerGroup).map(idx => (
+                  <motion.div
+                    layoutId={`${groupIdx + 1}:${idx + 1}`}
+                    key={`item-${groupIdx + 1}:${idx + 1}`}
+                    transition={{
+                      type: 'spring',
+                      damping: 25 + idx * 5,
+                      stiffness: 200 + idx * 10,
+                    }}
+                    className={cls.item}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {includeRemainderArea && (
-        <div className={styles.remainderArea}>
-          <p className={styles.remainderHeading}>Remainder Area</p>
+        {includeRemainderArea && (
+          <div className={cls.remainderArea}>
+            <p className={cls.remainderHeading}>Remainder Area</p>
 
-          {range(remainder ?? 0).map(index => {
-            return <div key={index} className={styles.item} />;
-          })}
-        </div>
-      )}
+            {range(remainder ?? 0).map(idx => {
+              return (
+                <motion.div
+                  layoutId={`item-${idx}`}
+                  key={idx}
+                  className={cls.item}
+                />
+              );
+            })}
+          </div>
+        )}
+      </LayoutGroup>
 
       <Equation
         dividend={numOfItems}

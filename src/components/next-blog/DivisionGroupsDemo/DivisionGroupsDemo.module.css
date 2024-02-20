@@ -24,7 +24,7 @@
   display: grid;
   grid-gap: 16px;
   height: 300px;
-  border: 2px solid var(--color-gray-500);
+  border: 2px solid var(--gray-500);
   padding: 16px;
 }
 
@@ -36,7 +36,7 @@
   justify-content: center;
   align-content: center;
   padding: 8px;
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--gray-300);
 }
 
 .item {
@@ -44,8 +44,8 @@
   z-index: 2;
   width: 32px;
   height: 32px;
-  background: var(--color-secondary);
-  border-radius: 1000px;
+  background: var(--blog-secondary);
+  border-radius: 50%;
   /*
     These styles not actually used in the final product,
     but they help illustrate
@@ -62,7 +62,7 @@
   align-items: center;
   gap: 8px;
   /* background: var(--color-gray-100); */
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--gray-300);
   height: 64px;
   width: 100%;
   max-width: 600px;
@@ -73,9 +73,9 @@
   top: 0px;
   left: -1px;
   padding: 4px 8px 0px;
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--gray-300);
   border-bottom: none;
-  background: var(--color-card-background);
+  background: var(--blog-card-bg);
   font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
