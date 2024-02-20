@@ -38,7 +38,6 @@ export const loadBlogPost = async (slug: string) => {
   });
 
   const {data: frontmatter, content} = matter(rawContent);
-  console.log(content);
 
   return {frontmatter, content};
 };

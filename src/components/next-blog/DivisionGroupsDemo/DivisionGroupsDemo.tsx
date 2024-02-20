@@ -26,15 +26,15 @@ const DivisionGroupsDemo = ({
   const numOfItemsPerGroup = Math.floor(numOfItems / numOfGroups);
 
   const remainder = includeRemainderArea ? numOfItems % numOfGroups : null;
+
   const items = range(numOfGroups).map(groupIdx =>
     range(numOfItemsPerGroup).map(
-      idx => `item-${groupIdx * numOfItemsPerGroup + idx + 1}`
+      idx => `item-${groupIdx * numOfItemsPerGroup + idx + 1}${id}`
     )
   );
   const remainderItems = range(remainder ?? 0).map(
-    r => `item-${numOfGroups * numOfItemsPerGroup + r + 1}`
+    idx => `item-${numOfGroups * numOfItemsPerGroup + idx + 1}${id}`
   );
-  console.log({items, remainderItems});
 
   // When we're splitting into 1-3 groups, display side-by-side
   // columns. When we get to 4, it should switch to a 2x2 grid.
@@ -67,16 +67,16 @@ const DivisionGroupsDemo = ({
       <LayoutGroup>
         <div className={cls.demoWrapper}>
           <div className={clsx(cls.demoArea)} style={gridStructure}>
-            {range(numOfGroups).map(groupIdx => (
-              <div key={groupIdx} className={cls.group}>
-                {range(numOfItemsPerGroup).map(idx => (
+            {items.map((group, groupIdx) => (
+              <div key={groupIdx + 1} className={cls.group}>
+                {group.map((item, idx) => (
                   <motion.div
-                    layoutId={`${groupIdx + 1}:${idx + 1}`}
-                    key={`item-${groupIdx + 1}:${idx + 1}`}
+                    layoutId={item}
+                    key={item}
                     transition={{
                       type: 'spring',
-                      damping: 25 + idx * 5,
-                      stiffness: 200 + idx * 10,
+                      damping: 30 + idx * 5,
+                      stiffness: 250 + idx * 10,
                     }}
                     className={cls.item}
                   />
@@ -90,12 +90,17 @@ const DivisionGroupsDemo = ({
           <div className={cls.remainderArea}>
             <p className={cls.remainderHeading}>Remainder Area</p>
 
-            {range(remainder ?? 0).map(idx => {
+            {remainderItems.map((item, idx) => {
               return (
                 <motion.div
-                  layoutId={`item-${idx}`}
-                  key={idx}
+                  key={item}
                   className={cls.item}
+                  layoutId={item}
+                  transition={{
+                    type: 'spring',
+                    damping: 30 + idx * 5,
+                    stiffness: 250 + idx * 10,
+                  }}
                 />
               );
             })}
