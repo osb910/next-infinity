@@ -3,7 +3,7 @@
   --handle-height: 24px;
   --track-color: var(--gray-500);
   --handle-color: var(--blog-text);
-  --handle-active-color: var(--color-primary);
+  --handle-active-color: var(--blog-primary-500);
   --background-color: var(--blog-card-bg);
   display: block;
   width: 100%;
