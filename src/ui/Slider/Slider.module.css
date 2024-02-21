@@ -1,3 +1,25 @@
+.ctrl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.label,
+.value {
+  font-size: 1.125rem;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 550;
+}
+
+.value {
+  font-weight: 400;
+}
+
 .slider {
   --handle-width: 12px;
   --handle-height: 24px;

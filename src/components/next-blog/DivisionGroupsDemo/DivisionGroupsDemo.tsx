@@ -4,11 +4,11 @@ import clsx from 'clsx';
 import {LayoutGroup, motion} from 'framer-motion';
 
 import {range} from '@/utils/numbers';
-import SliderControl from '@/components/next-blog/SliderControl';
 import Card from '@/ui/Card';
 
 import Equation from './Equation';
 import cls from './DivisionGroupsDemo.module.css';
+import Slider from '@/ui/Slider';
 
 export interface DivisionGroupsDemoProps {
   numOfItems?: number;
@@ -51,11 +51,9 @@ const DivisionGroupsDemo = ({
   return (
     <Card as='section' className={cls.wrapper}>
       <header className={cls.header}>
-        <SliderControl
+        <Slider
           label='Number of Groups'
           className={cls.slider}
-          step={1}
-          min={1}
           max={4}
           value={numOfGroups}
           onChange={(ev: ChangeEvent<HTMLInputElement>) =>

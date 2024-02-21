@@ -7,12 +7,12 @@ import VisuallyHidden from '@/ui/VisuallyHidden';
 import styles from './CircularColorsDemo.module.css';
 
 const COLORS = [
-  {label: 'red', value: 'hsl(348deg 100% 60%)'},
-  {label: 'yellow', value: 'hsl(50deg 100% 55%)'},
-  {label: 'blue', value: 'hsl(235deg 100% 65%)'},
+  {label: 'red', value: 'hsl(348, 100%, 60%)'},
+  {label: 'yellow', value: 'hsl(50, 100%, 55%)'},
+  {label: 'blue', value: 'hsl(235, 100%, 65%)'},
 ];
 
-function CircularColorsDemo() {
+const CircularColorsDemo = () => {
   // TODO: This value should increase by 1 every second:
   const timeElapsed = 0;
 
@@ -63,6 +63,6 @@ function CircularColorsDemo() {
       </div>
     </Card>
   );
-}
+};
 
 export default CircularColorsDemo;
