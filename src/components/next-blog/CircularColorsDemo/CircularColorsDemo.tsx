@@ -9,6 +9,7 @@ import Card from '@/ui/Card';
 import VisuallyHidden from '@/ui/VisuallyHidden';
 
 import cls from './CircularColorsDemo.module.css';
+import useToggle from '@/hooks/useToggle';
 
 const COLORS = [
   {label: 'red', value: 'hsl(348, 100%, 60%)'},
@@ -18,7 +19,7 @@ const COLORS = [
 
 const CircularColorsDemo = () => {
   const [timeElapsed, setTimeElapsed] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, toggleIsPlaying] = useToggle(false);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -75,13 +76,13 @@ const CircularColorsDemo = () => {
           <dd>{timeElapsed}</dd>
         </dl>
         <div className={cls.actions}>
-          <button onClick={() => setIsPlaying(current => !current)}>
+          <button onClick={() => toggleIsPlaying()}>
             {isPlaying ? <Pause /> : <Play />}
             <VisuallyHidden>{isPlaying ? 'Pause' : 'Play'}</VisuallyHidden>
           </button>
           <button
             onClick={() => {
-              setIsPlaying(false);
+              toggleIsPlaying(false);
               setTimeElapsed(0);
             }}
           >

@@ -1,27 +1,24 @@
 'use client';
 
-import {type ReactNode, type ComponentProps} from 'react';
 import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
-import Form from '@/components/Form';
+import Form, {type FormProps} from '@/components/Form';
 import useToaster from '@/components/Toaster/use-toaster';
-import styles from './ReviewForm.module.css';
+import cls from './ReviewForm.module.css';
 import RatingStars from '@/ui/RatingStars';
 import {type IUser} from '@/services/next-stores/user';
+import clsx from 'clsx';
 
-interface ReviewFormProps extends ComponentProps<'form'> {
+interface ReviewFormProps extends FormProps {
   user: Omit<IUser, 'password'> | null;
   endpoint: string;
   addReview: (review: any) => void;
-  children?: ReactNode;
-  className?: string;
 }
 
 const ReviewForm = ({
   user,
   endpoint,
   children,
-  className,
   addReview,
   ...delegated
 }: ReviewFormProps) => {
@@ -61,12 +58,12 @@ const ReviewForm = ({
   return (
     <Form
       submitHandler={submitReview}
-      errorHandler={throwError}
-      className={`${className ?? ''} ${styles.reviewForm}`}
-      buttonDisabled={!user}
+      throwErr={throwError}
+      btnDisabled={!user}
       {...delegated}
+      className={clsx(cls.reviewForm, delegated.className)}
     >
-      <p className={styles.reviewText}>
+      <p className={cls.reviewText}>
         <label htmlFor='review'>Type your review</label>
         <textarea
           id='review'
@@ -78,7 +75,7 @@ const ReviewForm = ({
       </p>
       <RatingStars disabled={!user} />
       {!user && (
-        <p className={styles.loginText}>
+        <p className={cls.loginText}>
           Not logged in.{' '}
           <button
             type='button'

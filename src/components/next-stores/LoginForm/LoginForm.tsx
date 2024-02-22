@@ -82,7 +82,7 @@ const LoginForm = ({
     <Form
       className={styles.form}
       submitHandler={login}
-      errorHandler={throwError}
+      throwErr={throwError}
       submitText='Log In →'
       {...delegated}
     >

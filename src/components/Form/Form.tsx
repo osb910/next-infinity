@@ -4,31 +4,33 @@ import {
   useState,
   type FormEvent,
   type ReactNode,
-  type ComponentProps,
+  type ComponentPropsWithoutRef,
 } from 'react';
+import clsx from 'clsx';
+import {motion} from 'framer-motion';
 import Spinner from '@/ui/Spinner';
-import styles from './Form.module.css';
+import cls from './Form.module.css';
 
-export interface FormProps extends ComponentProps<'form'> {
-  children: ReactNode;
+export interface FormProps extends ComponentPropsWithoutRef<'form'> {
+  children?: ReactNode;
   submitHandler?: (body: FormData) => Promise<void>;
-  errorHandler?: (error: Error) => void;
+  throwErr?: (error: Error) => void;
   title?: string;
-  useSubmitButton?: boolean;
+  useSubmitBtn?: boolean;
   submitText?: string;
   resetAfterSubmit?: boolean;
-  buttonDisabled?: boolean;
+  btnDisabled?: boolean;
 }
 
 const Form = ({
   title,
   submitHandler,
   children,
-  useSubmitButton = true,
+  useSubmitBtn = true,
   submitText = 'Submit',
-  errorHandler,
+  throwErr,
   resetAfterSubmit = true,
-  buttonDisabled,
+  btnDisabled,
   ...delegated
 }: FormProps) => {
   const [submitting, setSubmitting] = useState(false);
@@ -65,29 +67,32 @@ const Form = ({
     } catch (err) {
       if (!(err instanceof Error)) return;
       console.error(err);
-      errorHandler?.(err);
+      throwErr?.(err);
     }
     setSubmitting(false);
   };
 
   return (
     <form
-      {...(delegated.action && {action: delegated.action})}
-      {...(submitHandler && {onSubmit: submit})}
       {...delegated}
-      className={`${styles.form} ${delegated.className ?? ''}`}
+      {...(submitHandler && {onSubmit: submit})}
+      className={clsx(cls.form, delegated.className)}
     >
-      {title && <h2 className={styles.title}>{title}</h2>}
+      {title && <h2 className={cls.title}>{title}</h2>}
       {children}
-      {useSubmitButton && (
-        <button
+      {useSubmitBtn && (
+        <motion.button
           type='submit'
-          disabled={submitting || buttonDisabled}
-          className={styles.submit}
+          disabled={submitting || btnDisabled}
+          className={cls.submit}
+          layout={true}
+          transition={{
+            type: 'spring',
+          }}
         >
           {submitText}
           {submitting && <Spinner size={22} />}
-        </button>
+        </motion.button>
       )}
     </form>
   );

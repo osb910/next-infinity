@@ -121,7 +121,7 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
         {isEditing ? (
           <Form
             submitHandler={updateReview}
-            errorHandler={throwError}
+            throwErr={throwError}
             submitText='Save'
             className={styles.reviewEditForm}
           >
