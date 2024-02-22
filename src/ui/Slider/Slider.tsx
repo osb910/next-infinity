@@ -3,13 +3,13 @@ import clsx from 'clsx';
 
 import cls from './Slider.module.css';
 
-export interface SliderProps extends ComponentPropsWithoutRef<'input'> {
+export type SliderProps = ComponentPropsWithoutRef<'input'> & {
   label?: string;
   value: number;
   ctrlClass?: string;
-}
+};
 
-function Slider({label, value, ctrlClass, ...delegated}: SliderProps) {
+const Slider = ({label, value, ctrlClass, ...delegated}: SliderProps) => {
   const id = `slider${
     delegated.name ? `-${delegated.name.toLowerCase()}` : ''
   }${useId()}`;
@@ -32,6 +32,6 @@ function Slider({label, value, ctrlClass, ...delegated}: SliderProps) {
       />
     </p>
   );
-}
+};
 
 export default Slider;

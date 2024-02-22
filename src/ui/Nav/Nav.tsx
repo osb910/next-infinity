@@ -7,7 +7,7 @@ import {useNav, NavProvider} from './useNav';
 import styles from './Nav.module.css';
 
 export const Nav = ({children, useBurger = false, ...delegated}: NavProps) => {
-  const {isOpen, closeNav, toggleNav, changeHovered} = useNav();
+  const {isOpen, toggleNav, changeHovered} = useNav();
   return (
     <NavProvider>
       <LayoutGroup>
@@ -21,10 +21,15 @@ export const Nav = ({children, useBurger = false, ...delegated}: NavProps) => {
           // BUG: doesn't cancel hover, works in NavList
           onBlur={() => changeHovered('')}
         >
-          {isOpen && <div onClick={closeNav} className={styles.overlay} />}
+          {isOpen && (
+            <div onClick={() => toggleNav(false)} className={styles.overlay} />
+          )}
           {children}
           {useBurger && (
-            <RxHamburgerMenu onClick={toggleNav} className={styles.burger} />
+            <RxHamburgerMenu
+              onClick={() => toggleNav()}
+              className={styles.burger}
+            />
           )}
         </motion.nav>
       </LayoutGroup>
