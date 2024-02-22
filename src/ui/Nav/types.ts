@@ -33,9 +33,7 @@ export type NavLinkProps = ComponentPropsWithoutRef<'a'> &
 
 export interface NavContextProps {
   isOpen: boolean;
-  toggleNav: () => void;
-  openNav: () => void;
-  closeNav: () => void;
+  toggleNav: (bool?: boolean) => void;
   hoveredItem: string;
   changeHovered: (slug: string) => void;
   pathName: string;

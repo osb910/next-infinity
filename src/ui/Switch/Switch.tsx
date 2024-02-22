@@ -1,11 +1,11 @@
 'use client';
 
-import {useState} from 'react';
 import {Root, Thumb, type PrimitiveButtonProps} from '@radix-ui/react-switch';
 import {motion} from 'framer-motion';
 import useSound from 'use-sound';
+import useToggle from '@/hooks/useToggle';
 import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
-import css from './Switch.module.css';
+import cls from './Switch.module.css';
 
 export interface SwitchProps extends PrimitiveButtonProps {
   width?: string;
@@ -23,8 +23,7 @@ export const Switch = ({
   noSfx = false,
   ...delegated
 }: SwitchProps) => {
-  const [isOn, setIsOn] = useState(false);
-  const toggleSwitch = () => setIsOn(current => !current);
+  const [isOn, toggleSwitch] = useToggle(false);
 
   const {soundEnabled} = useSoundEnabled();
   const sfxOn = !noSfx && soundEnabled;
@@ -56,7 +55,7 @@ export const Switch = ({
       }}
     >
       <motion.button
-        className={`${css.SwitchRoot} ${delegated.className ?? ''}`}
+        className={`${cls.SwitchRoot} ${delegated.className ?? ''}`}
         style={{...style, ...delegated.style}}
         animate={{
           backgroundColor: isOn ? switchOnColor : switchColor,
@@ -69,7 +68,7 @@ export const Switch = ({
       >
         <Thumb asChild>
           <motion.span
-            className={css.SwitchThumb}
+            className={cls.SwitchThumb}
             layout={true}
             transition={SPRING}
           />

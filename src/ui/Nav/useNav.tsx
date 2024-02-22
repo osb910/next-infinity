@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import type {NavContextProps} from './types';
+import useToggle from '@/hooks/useToggle';
 
 const NavContext = createContext<NavContextProps>({
   isOpen: false,
@@ -17,28 +18,21 @@ const NavContext = createContext<NavContextProps>({
   pathName: '',
   layoutId: '',
   toggleNav: () => {},
-  openNav: () => {},
-  closeNav: () => {},
 });
 
 export const NavProvider = ({children}: {children: ReactNode}): JSX.Element => {
   const [hoveredItem, setHoveredItem] = useState('');
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, toggleNav] = useToggle(true);
   const pathName = usePathname();
   const layoutId = `nav-backdrop${useId()}`;
 
   const changeHovered = (slug: string) => setHoveredItem(slug);
-  const toggleNav = () => setIsOpen(!isOpen);
-  const closeNav = () => setIsOpen(false);
-  const openNav = () => setIsOpen(true);
 
   return (
     <NavContext.Provider
       value={{
         isOpen,
         toggleNav,
-        openNav,
-        closeNav,
         hoveredItem,
         changeHovered,
         pathName,
