@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import {notFound, redirect} from 'next/navigation';
 
 import {getBlogPost} from '@/helpers/next-blog/requests';
 import BlogHero from '@/components/next-blog/BlogHero';
@@ -23,25 +24,31 @@ export type BlogPostPg = AppPage<{postParam: string}>;
 export const generateMetadata: GetMetadata<BlogPostPg> = async ({
   params: {postParam},
 }) => {
-  const {frontmatter} = await getBlogPost(postParam);
-  return {
-    title: frontmatter.title,
-    description: frontmatter.abstract,
-  };
+  const {data} = await getBlogPost(postParam);
+  return data
+    ? {
+        title: data.frontmatter.title,
+        description: data.frontmatter.abstract,
+      }
+    : {
+        title: 'Post Not Found',
+      };
 };
 
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
   try {
-    const {frontmatter, content} = await getBlogPost(postParam);
+    const {data} = await getBlogPost(postParam);
+    // if (!data) redirect(`/next-blog/${postParam}?type=Post`);
+    if (!data) notFound();
     return (
       <article className={cls.wrapper}>
         <BlogHero
-          title={frontmatter.title}
-          publishedOn={frontmatter.publishedOn}
+          title={data.frontmatter.title}
+          publishedOn={data.frontmatter.publishedOn}
         />
         <div className={cls.page}>
           <Mdx
-            source={content}
+            source={data.content}
             loader={<Spinner />}
             components={{Code: Codum, DivisionGroupsDemo, CircularColorsDemo}}
           />

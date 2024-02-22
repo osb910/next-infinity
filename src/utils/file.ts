@@ -10,14 +10,14 @@ export const readFile = async (
   const ext = extname(filePath).split('.').pop();
   try {
     const data = await fs.readFile(filePath, {encoding});
-    return {data, ext};
+    return {data, ext, message: 'File read successfully', code: 200};
   } catch (err) {
     if (!(err instanceof Error)) return;
     if (fallback) {
       return await readFile(fallback, {encoding});
     }
     console.error(err.message);
-    return {data: null, ext, message: err.message, code: err.name};
+    return {data: null, ext, message: err.message, name: err.name, code: 404};
   }
 };
 
