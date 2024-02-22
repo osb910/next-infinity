@@ -1,15 +1,15 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import clsx from 'clsx';
 import {Play, Pause, RotateCcw} from 'react-feather';
 import {motion} from 'framer-motion';
+import clsx from 'clsx';
+
+import useToggle from '@/hooks/useToggle';
+import useStopwatch from '@/hooks/useStopwatch';
 
 import Card from '@/ui/Card';
 import VisuallyHidden from '@/ui/VisuallyHidden';
-
 import cls from './CircularColorsDemo.module.css';
-import useToggle from '@/hooks/useToggle';
 
 const COLORS = [
   {label: 'red', value: 'hsl(348, 100%, 60%)'},
@@ -18,19 +18,10 @@ const COLORS = [
 ];
 
 const CircularColorsDemo = () => {
-  const [timeElapsed, setTimeElapsed] = useState(0);
-  const [isPlaying, toggleIsPlaying] = useToggle(false);
+  const [isRunning, toggleIsRunning] = useToggle(false);
+  const {watch, reset} = useStopwatch(isRunning);
 
-  useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(
-      () => setTimeElapsed(current => current + 1),
-      1000
-    );
-    return () => clearInterval(interval);
-  }, [isPlaying]);
-
-  const selectedColor = COLORS[timeElapsed % 3];
+  const selectedColor = COLORS[watch.sec % COLORS.length];
 
   return (
     <Card as='section' className={cls.wrapper}>
@@ -73,17 +64,27 @@ const CircularColorsDemo = () => {
       <div className={cls.timeWrapper}>
         <dl className={cls.timeDisplay}>
           <dt>Time Elapsed</dt>
-          <dd>{timeElapsed}</dd>
+          <motion.dd
+            animate={{opacity: [0, 1]}}
+            key={`${watch.timeElapsed}`}
+            transition={{
+              type: 'spring',
+              damping: 30,
+              stiffness: 100,
+            }}
+          >
+            {watch.timeElapsed}
+          </motion.dd>
         </dl>
         <div className={cls.actions}>
-          <button onClick={() => toggleIsPlaying()}>
-            {isPlaying ? <Pause /> : <Play />}
-            <VisuallyHidden>{isPlaying ? 'Pause' : 'Play'}</VisuallyHidden>
+          <button onClick={() => toggleIsRunning()}>
+            {isRunning ? <Pause /> : <Play />}
+            <VisuallyHidden>{isRunning ? 'Pause' : 'Play'}</VisuallyHidden>
           </button>
           <button
             onClick={() => {
-              toggleIsPlaying(false);
-              setTimeElapsed(0);
+              toggleIsRunning(false);
+              reset();
             }}
           >
             <RotateCcw />
