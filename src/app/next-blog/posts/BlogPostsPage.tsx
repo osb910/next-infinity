@@ -14,14 +14,9 @@ const BlogPostsPage: AppPage<{}> = async ({}) => {
   return (
     <>
       <ul>
-        {posts.map(({slug, title, abstract, publishedOn}) => (
+        {posts.map(({slug, ...delegated}) => (
           <li key={slug}>
-            <BlogPostCard
-              abstract={abstract}
-              slug={slug}
-              title={title}
-              publishedOn={publishedOn}
-            />
+            <BlogPostCard slug={slug} {...delegated} />
           </li>
         ))}
       </ul>
