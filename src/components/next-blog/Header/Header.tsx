@@ -7,6 +7,7 @@ import Switch from '@/ui/Switch';
 import IconButton from '@/ui/IconButton';
 import VisuallyHidden from '@/ui/VisuallyHidden';
 import styles from './Header.module.css';
+import Link from 'next/link';
 
 interface HeaderProps {
   theme: 'light' | 'dark';
@@ -69,21 +70,23 @@ const Header = ({theme}: HeaderProps) => {
           whileFocus={btnAnimation}
           className={styles.sfxSwitch}
         />
-        <IconButton
-          icon={
-            <Rss
-              style={{
-                // Optical alignment
-                transform: 'translate(2px, -2px)',
-              }}
-            />
-          }
-          whileHover={btnAnimation}
-          whileFocus={btnAnimation}
-          className={styles.rssBtn}
-        >
-          <VisuallyHidden>View RSS feed</VisuallyHidden>
-        </IconButton>
+        <Link href='/api/next-blog/rss'>
+          <IconButton
+            icon={
+              <Rss
+                style={{
+                  // Optical alignment
+                  transform: 'translate(2px, -2px)',
+                }}
+              />
+            }
+            whileHover={btnAnimation}
+            whileFocus={btnAnimation}
+            className={styles.rssBtn}
+          >
+            <VisuallyHidden>View RSS feed</VisuallyHidden>
+          </IconButton>
+        </Link>
       </section>
     </header>
   );

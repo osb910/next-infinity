@@ -560,7 +560,6 @@ html.next-blog code {
   border-radius: 3px;
 }
 .next-blog a {
-  color: currentColor;
   text-decoration-color: var(--color-primary);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.125em;

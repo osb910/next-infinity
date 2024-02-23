@@ -1,23 +1,13 @@
-import dynamic from 'next/dynamic';
 import {notFound, redirect} from 'next/navigation';
 
 import {getBlogPost} from '@/helpers/next-blog/requests';
 import BlogHero from '@/components/next-blog/BlogHero';
 import Mdx from '@/ui/Mdx';
-import Codum from '@/ui/Codum';
 import {Spinner} from '@/ui/Spinner';
 
 import type {AppPage, GetMetadata, JsonRes} from '@/types';
 import cls from './BlogPostPage.module.css';
-
-const DivisionGroupsDemo = dynamic(
-  () => import('@/components/next-blog/DivisionGroupsDemo'),
-  {loading: () => <Spinner />, ssr: false}
-);
-const CircularColorsDemo = dynamic(
-  () => import('@/components/next-blog/CircularColorsDemo'),
-  {loading: () => <Spinner />, ssr: false}
-);
+import COMPONENT_MAP from '@/helpers/next-blog/mdx-components';
 
 export type BlogPostPg = AppPage<{postParam: string}>;
 
@@ -50,7 +40,7 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           <Mdx
             source={data.content}
             loader={<Spinner />}
-            components={{Code: Codum, DivisionGroupsDemo, CircularColorsDemo}}
+            components={COMPONENT_MAP}
           />
         </div>
       </article>

@@ -5,7 +5,7 @@ type Post = {
   slug: string;
   title: string;
   abstract: string;
-  publishedOn: Date;
+  publishedOn: string;
 };
 
 export const getBlogPostList = async () => {

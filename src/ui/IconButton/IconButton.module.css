@@ -43,7 +43,7 @@
   /* background-color: var(--sept-color); */
   cursor: pointer;
   font-family: 'Calibri';
-  /* color: var(--hex-color); */
+  /* color: inherit; */
   box-shadow: 0px 2px 20px rgba(var(--bg-elevated-rgb) 0.15);
   transition: all 250ms ease-in-out;
   /* border: 2px solid hsl(0deg 0% 85%); */
