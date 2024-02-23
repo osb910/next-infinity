@@ -9,7 +9,7 @@ import {CSSProperties} from 'react';
 export interface BlogPostCardProps {
   slug: string;
   title: string;
-  publishedOn: Date;
+  publishedOn: string;
   abstract: string;
 }
 
