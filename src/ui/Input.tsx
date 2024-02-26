@@ -4,35 +4,34 @@ import {
   useId,
   type ChangeEvent,
   type ReactNode,
-  type ComponentProps,
+  type ComponentPropsWithRef,
+  forwardRef,
 } from 'react';
 
-export interface InputProps extends ComponentProps<'input'> {
-  label: string;
-  className?: string;
+export interface InputProps extends ComponentPropsWithRef<'input'> {
+  label?: string;
   setInput?: Function;
   children?: ReactNode;
+  ctrlClass?: string;
 }
 
-export const Input = ({
-  label,
-  className,
-  setInput,
-  children,
-  ...delegated
-}: InputProps) => {
-  const appliedId = `${label.toLowerCase()}${useId()}`;
+export const Input = forwardRef(function Input(
+  {label, setInput, children, ctrlClass, ...delegated}: InputProps,
+  ref: any
+) {
+  const appliedId = `${label?.toLowerCase?.() ?? ''}${useId()}`;
 
   return (
-    <p className={className ?? ''} style={{position: 'relative'}}>
-      <label htmlFor={appliedId}>{label}</label>
+    <p className={ctrlClass ?? ''} style={{position: 'relative'}}>
+      {label && <label htmlFor={appliedId}>{label}</label>}
       <input
         type='text'
-        name={label.toLowerCase()}
+        name={label?.toLowerCase()}
         onChange={(evt: ChangeEvent): void =>
-          setInput?.(+(evt.target as HTMLInputElement).value)
+          setInput?.(evt.target as HTMLInputElement)
         }
-        {...(delegated.type === 'number' && {min: 1})}
+        {...(delegated.type === 'number' && {min: 1, step: 1})}
+        ref={ref}
         {...delegated}
         id={appliedId}
         dir='auto'
@@ -40,6 +39,6 @@ export const Input = ({
       {children}
     </p>
   );
-};
+});
 
 export default Input;
