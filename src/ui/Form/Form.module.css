@@ -45,7 +45,7 @@
   inline-size: 100%;
 }
 
-.form input,
+.form input:not(:where([type='checkbox'], [type='radio'])),
 .form textarea {
   inline-size: 100%;
   padding-block: 0.25em;
@@ -163,4 +163,8 @@
   .actions {
     flex-direction: row;
   }
+}
+
+.loading {
+  font-family: (--fn-loading);
 }

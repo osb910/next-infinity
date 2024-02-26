@@ -18,11 +18,11 @@
 }
 
 .tagChoice input {
-  width: auto;
-  right: -1.5rem;
-  margin-right: -1rem;
   position: relative;
   z-index: 2;
+  inline-size: auto;
+  inset-inline-end: -1em;
+  margin-inline-end: -0.5em;
 }
 
 .tagChoice input + label {

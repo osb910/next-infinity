@@ -1,28 +1,39 @@
 import Image from 'next/image';
-import styles from '@/components/Form/Form.module.css';
+import cls from '@/ui/Form/Form.module.css';
+
+const features = [
+  'Wifi',
+  'Open Late',
+  'Family Friendly',
+  'Vegetarian',
+  'Licensed',
+];
 
 const EditStoreLoading = () => {
-  const features = [
-    'Wifi',
-    'Open Late',
-    'Family Friendly',
-    'Vegetarian',
-    'Licensed',
-  ];
   return (
-    <form className={styles.form} style={{fontFamily: 'var(--fn-loading)'}}>
-      <h2 className={styles.title}>Edit Store</h2>
+    <form className={cls.form}>
+      <h2 className={cls.title}>Edit Store</h2>
       <p>
         <label htmlFor='name'>Name</label>
-        <input type='text' name='name' defaultValue='' />
+        <input
+          className={cls.loading}
+          type='text'
+          name='name'
+          defaultValue='Store Name'
+        />
       </p>
       <p>
         <label htmlFor='description'>Description</label>
-        <textarea name='description' defaultValue='' />
+        <textarea
+          className={cls.loading}
+          name='description'
+          defaultValue='Store long description'
+        />
       </p>
       <p>
         <label htmlFor='photo'>Photo</label>
         <input
+          className={cls.loading}
           type='file'
           id='photo'
           name='photo'
@@ -32,20 +43,38 @@ const EditStoreLoading = () => {
       <Image src='/uploads/store.png' alt='store' width={200} height={200} />
       <p>
         <label htmlFor='address'>Address</label>
-        <input />
+        <input
+          type='text'
+          defaultValue='Store address'
+          className={cls.loading}
+        />
       </p>
       <p>
         <label htmlFor='lng'>Address Lng</label>
-        <input type='text' id='lng' name='lng' defaultValue='' required />
+        <input
+          className={cls.loading}
+          type='text'
+          id='lng'
+          name='lng'
+          defaultValue='Store longitude'
+          required
+        />
       </p>
       <p>
         <label htmlFor='lat'>Address Lat</label>
-        <input type='text' id='lat' name='lat' defaultValue='' required />
+        <input
+          className={cls.loading}
+          type='text'
+          id='lat'
+          name='lat'
+          defaultValue='Store latitude'
+          required
+        />
       </p>
       <label>Tags</label>
-      <ul className={styles.tags}>
+      <ul className={cls.tags}>
         {features.map((choice, index) => (
-          <li className={styles.tagChoice} key={index}>
+          <li className={cls.tagChoice} key={index}>
             <input type='checkbox' value={choice} id={choice} name='tags' />
             <label htmlFor={choice}>{choice}</label>
           </li>

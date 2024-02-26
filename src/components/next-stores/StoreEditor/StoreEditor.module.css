@@ -20,16 +20,17 @@
 }
 
 .tagChoice input {
-  width: auto;
-  right: -1.5rem;
-  margin-right: -0.5rem;
   position: relative;
   z-index: 2;
+  inline-size: 1rem;
+  block-size: 1rem;
+  inset-inline-end: -1em;
+  margin-inline-end: -0.5em;
 }
 
 .tagChoice input + label {
   background: gray;
-  padding: 0.75em 0.75em 0.75em 3em;
+  padding: 0.75em 0.75em 0.75em 2em;
 }
 
 .tagChoice input:checked + label {

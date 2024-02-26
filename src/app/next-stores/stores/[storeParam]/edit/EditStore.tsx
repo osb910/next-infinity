@@ -16,7 +16,6 @@ const EditStore: StorePg = async ({params: {storeParam}}) => {
         author: string;
       }
     >;
-    console.log(json.data);
     if (json?.data?.author !== userId) {
       return (
         <ErrorAlert>
