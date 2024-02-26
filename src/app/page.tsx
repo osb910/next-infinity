@@ -22,7 +22,8 @@ const Home = async () => {
 
     const projectsPromises = appDir
       .filter(
-        ({name}) => !['api', 'mini-apps', 'nasa-mission-control'].includes(name)
+        ({name}) =>
+          !['api', 'mini-apps', 'nasa-mission-control', 'test'].includes(name)
       )
       .map(async ({name}) => ({
         name,
