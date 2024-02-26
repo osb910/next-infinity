@@ -3,7 +3,7 @@
 import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
 import {useToaster} from '@/ui/Toaster';
-import Form from '@/components/Form/Form';
+import Form from '@/ui/Form/Form';
 import Input from '@/ui/Input';
 import PasswordInput from '@/ui/PasswordInput';
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';

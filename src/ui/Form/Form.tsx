@@ -7,8 +7,7 @@ import {
   type ComponentPropsWithoutRef,
 } from 'react';
 import clsx from 'clsx';
-import {motion} from 'framer-motion';
-import Spinner from '@/ui/Spinner';
+import Submit from './Submit';
 import cls from './Form.module.css';
 
 export interface FormProps extends ComponentPropsWithoutRef<'form'> {
@@ -33,10 +32,10 @@ const Form = ({
   btnDisabled,
   ...delegated
 }: FormProps) => {
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const submit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    setSubmitting(true);
+    setIsSubmitting(true);
 
     const body = new FormData(evt.currentTarget);
     const elements = evt.currentTarget.elements;
@@ -69,7 +68,7 @@ const Form = ({
       console.error(err);
       throwErr?.(err);
     }
-    setSubmitting(false);
+    setIsSubmitting(false);
   };
 
   return (
@@ -80,20 +79,13 @@ const Form = ({
     >
       {title && <h2 className={cls.title}>{title}</h2>}
       {children}
-      {useSubmitBtn && (
-        <motion.button
-          type='submit'
-          disabled={submitting || btnDisabled}
-          className={cls.submit}
-          layout={true}
-          transition={{
-            type: 'spring',
-          }}
-        >
-          {submitText}
-          {submitting && <Spinner size={22} />}
-        </motion.button>
-      )}
+      <p className={cls.actions}>
+        {useSubmitBtn && (
+          <Submit isSubmitting={isSubmitting} disabled={btnDisabled}>
+            {submitText}
+          </Submit>
+        )}
+      </p>
     </form>
   );
 };

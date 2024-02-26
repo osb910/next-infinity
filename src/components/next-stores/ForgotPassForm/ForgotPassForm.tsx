@@ -1,5 +1,5 @@
 'use client';
-import Form from '@/components/Form';
+import Form from '@/ui/Form';
 import Input from '@/ui/Input';
 import {useToaster} from '@/ui/Toaster';
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';

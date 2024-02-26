@@ -4,7 +4,7 @@ import {useLayoutEffect, useRef, type ChangeEvent} from 'react';
 import Image from 'next/image';
 import {type IStore} from '@/services/next-stores/store';
 import {useToaster} from '@/ui/Toaster';
-import Form from '../../Form';
+import Form from '@/ui/Form';
 import Input from '@/ui/Input';
 import AutoCompleter from '../../AutoCompleter';
 import cls from './StoreEditor.module.css';

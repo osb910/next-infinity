@@ -11,7 +11,7 @@ import {type IUser} from '@/services/next-stores/user';
 import {useToaster} from '@/ui/Toaster';
 import Eraser from '../Eraser';
 import RatingStars from '@/ui/RatingStars';
-import Form from '@/components/Form';
+import Form from '@/ui/Form';
 import IconButton from '@/ui/IconButton';
 import styles from './Review.module.css';
 

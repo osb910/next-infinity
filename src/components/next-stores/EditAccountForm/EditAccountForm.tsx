@@ -1,6 +1,6 @@
 'use client';
 
-import Form from '@/components/Form';
+import Form from '@/ui/Form';
 import Input from '@/ui/Input';
 import {type IUser} from '@/services/next-stores/user';
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';

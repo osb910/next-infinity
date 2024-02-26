@@ -68,6 +68,7 @@
 .form button {
   padding-block: 0.5em;
   padding-inline: 1em;
+  margin-inline: auto;
   border: 0;
   border-radius: var(--border-radius);
   display: flex;
@@ -81,6 +82,13 @@
   transition: all 250ms ease-in-out;
 }
 
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .submit {
   padding-block: 0.75em;
   padding-inline: 1.25em;
@@ -89,12 +97,18 @@
   font-weight: 700;
 }
 
+.submit > span {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .submit:where(:hover, :focus) {
   background: hsl(51 100% 50%);
 }
 
 .submit[disabled] {
-  background: var(--color-gray-500);
+  background: var(--gray-500);
   cursor: not-allowed;
 }
 
@@ -144,5 +158,9 @@
   .form
     p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
     gap: 1em;
+  }
+
+  .actions {
+    flex-direction: row;
   }
 }

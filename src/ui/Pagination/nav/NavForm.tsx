@@ -1,7 +1,7 @@
 'use client';
 
 import {useRouter} from 'next/navigation';
-import Form from '@/components/Form';
+import Form from '@/ui/Form';
 import Input from '../../Input';
 import styles from '../Pagination.module.css';
 

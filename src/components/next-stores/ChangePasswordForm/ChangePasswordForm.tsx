@@ -1,4 +1,4 @@
-import Form from '@/components/Form';
+import Form from '@/ui/Form';
 import PasswordInput from '@/ui/PasswordInput';
 import {useToaster} from '@/ui/Toaster';
 import ky from 'ky';
