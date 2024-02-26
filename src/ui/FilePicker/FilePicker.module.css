@@ -1,0 +1,46 @@
+.picker {
+  margin-block-end: 1em;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5em;
+}
+
+.picker .input {
+  display: none;
+}
+
+.picker .btn {
+  border: 0;
+  padding: 0.5em 1.5em;
+  background: #a4abb9;
+  border-radius: 2px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.picker .btn:where(:hover, :focus) {
+  background: #b3b9c6;
+}
+
+.preview {
+  position: relative;
+  min-inline-size: 10rem;
+  max-inline-size: 100%;
+  min-block-size: 10rem;
+  border: 2px solid #a4abb9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #a4abb9;
+}
+
+.preview p {
+  margin: 0;
+  padding: 1em;
+}
+
+.preview img {
+  object-fit: cover;
+}
