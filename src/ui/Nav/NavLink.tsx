@@ -18,6 +18,7 @@ export const NavLink = ({
 
   return (
     <Link
+      prefetch={true}
       {...delegated}
       className={`${styles.navLink} ${
         pathName === path ? highlightClass : ''
