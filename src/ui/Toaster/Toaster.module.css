@@ -2,9 +2,10 @@
   position: fixed;
   inset-block-end: 1rem;
   inset-inline-end: 1rem;
+  max-block-size: 100vh;
   display: flex;
-  flex-direction: column-reverse;
+  flex-flow: column-reverse wrap-reverse;
   gap: 1em;
-  padding: 1em;
+  padding: 0.5rem;
   list-style-type: none;
 }

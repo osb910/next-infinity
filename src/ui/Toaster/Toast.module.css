@@ -1,33 +1,16 @@
-@keyframes slideInX {
-  from {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes slideInXReverse {
-  from {
-    transform: translateX(-100%);
-  }
-}
-
 .toast {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
-  border-radius: 16px;
+  gap: 0.5em;
+  border-radius: 8px;
   color: black;
   color-scheme: light;
   background: white;
   max-width: 100%;
   width: 350px;
   box-shadow: var(--shadow-elevation-medium);
-  /* animation: slideInX 1s cubic-bezier(0, 0.46, 0, 1.04) both; */
-  will-change: transform;
-}
-
-.rtl .toast {
-  animation-name: slideInXReverse;
+  will-change: all;
 }
 
 .content {
@@ -78,7 +61,7 @@
 .iconContainer {
   align-self: flex-start;
   flex-shrink: 0;
-  padding: 16px;
+  padding: 0.75em;
 }
 
 .iconContainer svg {
@@ -91,7 +74,7 @@
   flex-shrink: 0;
   border: none;
   background: transparent;
-  padding: 16px;
+  padding: 0.75em;
   cursor: pointer;
 }
 

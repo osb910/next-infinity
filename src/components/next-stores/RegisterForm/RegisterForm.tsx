@@ -2,7 +2,7 @@
 
 import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
-import useToaster from '@/components/Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import Form from '@/components/Form/Form';
 import Input from '@/ui/Input';
 import PasswordInput from '@/ui/PasswordInput';

@@ -7,7 +7,7 @@ import useUser from './useUser';
 import styles from './Eraser.module.css';
 import IconButton from '../../ui/IconButton';
 import Spinner from '../../ui/Spinner';
-import useToaster from '../Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 
 interface EraserProps {
   itemId: string;

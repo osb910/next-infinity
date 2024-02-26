@@ -1,6 +1,6 @@
 import Form from '@/components/Form';
 import PasswordInput from '@/ui/PasswordInput';
-import useToaster from '@/components/Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import ky from 'ky';
 import {usePathname, useRouter} from 'next/navigation';
 

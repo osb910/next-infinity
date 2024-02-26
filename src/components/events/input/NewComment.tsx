@@ -1,8 +1,8 @@
 'use client';
 import {FormEvent, useRef, useState} from 'react';
 import styles from './NewComment.module.css';
-import useToaster from '../../Toaster/use-toaster';
-import Spinner from '@/ui/Spinner/Spinner';
+import {useToaster} from '@/ui/Toaster';
+import Spinner from '@/ui/Spinner';
 import {isEmail} from '@/utils/validators';
 
 export type Comment = {

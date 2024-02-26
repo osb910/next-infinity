@@ -20,28 +20,15 @@ const Wrapper = styled.li`
   position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
-  border-radius: 16px;
+  gap: 0.5em;
+  border-radius: 8px;
   color: black;
   color-scheme: light;
   background: white;
   max-width: 100%;
   width: 350px;
   box-shadow: var(--shadow-elevation-medium);
-  animation: ${slideInX()} 1s cubic-bezier(0, 0.46, 0, 1.04) both;
   will-change: transform;
-
-  &.exiting {
-    animation-name: ${slideOutX()};
-  }
-
-  .rtl & {
-    animation-name: ${slideInX(-1)};
-  }
-
-  .rtl &.exiting {
-    animation-name: ${slideOutX(-1)};
-  }
 
   & .content {
     display: flex;
@@ -68,7 +55,7 @@ const Wrapper = styled.li`
   & .iconContainer {
     align-self: flex-start;
     flex-shrink: 0;
-    padding: 16px;
+    padding: 0.75em;
   }
 
   & .iconContainer svg {
@@ -77,11 +64,10 @@ const Wrapper = styled.li`
 
   & .closeButton {
     align-self: flex-start;
-
     flex-shrink: 0;
     border: none;
     background: transparent;
-    padding: 16px;
+    padding: 0.75em;
     cursor: pointer;
   }
 

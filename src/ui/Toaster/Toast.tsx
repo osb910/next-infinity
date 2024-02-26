@@ -1,13 +1,13 @@
 'use client';
 
-import {useEffect, ReactNode, useState, useCallback} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import {AlertOctagon, AlertTriangle, CheckCircle, Info, X} from 'react-feather';
-import StyledToast from './StyledToast';
 import {motion} from 'framer-motion';
-// @ts-ignore';
-import styles from './Toast.module.css';
-
+import clsx from 'clsx';
 import VisuallyHidden from '@/ui/VisuallyHidden';
+import {TIME} from '@/constants/numbers';
+import type {ToastProps} from './types';
+import cls from './Toast.module.css';
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -16,20 +16,13 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-interface ToastProps {
-  variant: 'notice' | 'warning' | 'success' | 'error';
-  dismiss: () => void;
-  delay?: number;
-  children: ReactNode;
-  dir: 'ltr' | 'rtl';
-}
-
 const Toast = ({
+  id,
   variant,
   dismiss,
   delay = 60000,
   children,
-  dir,
+  ...delegated
 }: ToastProps) => {
   const Icon = ICONS_BY_VARIANT[variant];
   const [exiting, setExiting] = useState<boolean>(false);
@@ -39,41 +32,39 @@ const Toast = ({
     const timer = setTimeout(() => {
       setExiting(false);
       dismiss();
-    }, 1236);
+    }, TIME.goldenSec / 4);
     return () => clearTimeout(timer);
   }, [dismiss]);
 
   useEffect(() => {
+    if (delay === 'infinite') return;
     const timeout = setTimeout(() => {
       smoothlyDismiss();
     }, delay);
     return () => clearTimeout(timeout);
   }, [delay, smoothlyDismiss]);
 
-  const enterKeyframes = dir === 'ltr' ? ['110%', '0%'] : ['-110%', '0%'];
-  const exitKeyframes = dir === 'ltr' ? ['0%', '115%'] : ['0%', '-115%'];
+  const enterKeyframes = ['110%', '0%'];
+  const exitKeyframes = ['0%', '110%'];
 
   return (
     <motion.li
-      key='toast'
       onClick={smoothlyDismiss}
-      className={`${variant} ${styles.toast} ${styles[variant]} ${
-        exiting ? 'exiting' : ''
-      }`}
+      className={clsx(variant, cls.toast, cls[variant])}
       animate={{
-        translateX: exiting ? exitKeyframes : enterKeyframes,
+        insetInlineStart: exiting ? exitKeyframes : enterKeyframes,
       }}
-      transition={{duration: 1.2, type: 'spring', bounce: 0.4}}
+      {...delegated}
     >
-      <section className={`iconContainer ${styles.iconContainer}`}>
+      <section className={`iconContainer ${cls.iconContainer}`}>
         <Icon size={24} />
       </section>
-      <section className={`content ${styles.content}`}>
+      <section className={`content ${cls.content}`}>
         <VisuallyHidden>{variant} -</VisuallyHidden>
         {children}
       </section>
       <button
-        className={`closeButton ${styles.closeButton}`}
+        className={`closeButton ${cls.closeButton}`}
         onClick={smoothlyDismiss}
         aria-label='Dismiss message'
         aria-live='off'

@@ -4,7 +4,7 @@ import {useState} from 'react';
 import CommentList from './CommentList';
 import NewComment, {Comment} from './NewComment';
 import styles from './Comments.module.css';
-import useToaster from '../../Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import ky from 'ky';
 
 const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {

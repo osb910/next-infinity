@@ -3,7 +3,7 @@
 import {useRouter, usePathname} from 'next/navigation';
 import ky from 'ky';
 import Form, {type FormProps} from '@/components/Form';
-import useToaster from '@/components/Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import cls from './ReviewForm.module.css';
 import RatingStars from '@/ui/RatingStars';
 import {type IUser} from '@/services/next-stores/user';

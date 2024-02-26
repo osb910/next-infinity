@@ -4,7 +4,7 @@ import {useSearchParams, useRouter, usePathname} from 'next/navigation';
 import {useEffect} from 'react';
 import ky from 'ky';
 import useUser from '../useUser';
-import useToaster from '@/components/Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import Form, {FormProps} from '@/components/Form';
 import Input from '@/ui/Input';
 import PasswordInput from '@/ui/PasswordInput';

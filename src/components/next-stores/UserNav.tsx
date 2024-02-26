@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 import {User, UserPlus, LogIn, LogOut, Heart} from 'react-feather';
 import ky from 'ky';
 import useUser from './useUser';
-import useToaster from '../Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import RegisterForm from '@/components/next-stores/RegisterForm';
 import LoginForm from '@/components/next-stores/LoginForm';
 import EditAccountForm from './EditAccountForm';

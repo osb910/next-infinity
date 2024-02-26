@@ -8,7 +8,7 @@ import ky from 'ky';
 import {Edit} from 'react-feather';
 import {IReview} from '@/services/next-stores/review/review.types';
 import {type IUser} from '@/services/next-stores/user';
-import useToaster from '@/components/Toaster/use-toaster';
+import {useToaster} from '@/ui/Toaster';
 import Eraser from '../Eraser';
 import RatingStars from '@/ui/RatingStars';
 import Form from '@/components/Form';

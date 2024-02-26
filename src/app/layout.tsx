@@ -11,10 +11,10 @@ import {
 import {headers, cookies} from 'next/headers';
 import clsx from 'clsx';
 import {SoundProvider} from '@/ui/SfxSwitch/sound-enabled';
-import {ToastProvider} from '@/components/Toaster/use-toaster';
+import {ToastProvider} from '@/ui/Toaster';
 
 import ObeyMotionPref from '@/ui/ObeyMotionPref';
-import Toaster from '@/components/Toaster/Toaster';
+import Toaster from '@/ui/Toaster/Toaster';
 import {type Metadata} from 'next';
 
 export const metadata: Metadata = {
