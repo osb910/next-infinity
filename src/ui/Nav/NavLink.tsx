@@ -3,37 +3,38 @@
 import Link from 'next/link';
 import {useNav} from './useNav';
 import {type FocusEvent, type MouseEvent} from 'react';
-import styles from './Nav.module.css';
 import type {NavLinkProps} from './types';
+import cls from './Nav.module.css';
+import clsx from 'clsx';
 
 export const NavLink = ({
   highlightClass,
   highlightStyle,
   slug,
   children,
-  ...delegated
+  ...rest
 }: NavLinkProps) => {
   const {changeHovered, pathName} = useNav();
-  const path = slug ?? delegated.href;
+  const path = slug ?? rest.href;
 
   return (
     <Link
       prefetch={true}
-      {...delegated}
-      className={`${styles.navLink} ${
+      {...rest}
+      className={clsx(
+        cls.navLink,
+        rest.className,
         pathName === path ? highlightClass : ''
-      } ${delegated.className ?? ''}`}
+      )}
       style={
-        pathName === path
-          ? {...delegated.style, ...highlightStyle}
-          : delegated.style
+        pathName === path ? {...rest.style, ...highlightStyle} : rest.style
       }
       onMouseEnter={(evt: MouseEvent<HTMLAnchorElement>) => {
-        delegated.onMouseEnter?.(evt);
+        rest.onMouseEnter?.(evt);
         changeHovered(path);
       }}
       onFocus={(evt: FocusEvent<HTMLAnchorElement>) => {
-        delegated.onFocus?.(evt);
+        rest.onFocus?.(evt);
         changeHovered(path);
       }}
     >
