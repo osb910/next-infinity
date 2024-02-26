@@ -1,15 +1,15 @@
 'use client';
 
-import {useRef, ChangeEvent} from 'react';
+import {useLayoutEffect, useRef, type ChangeEvent} from 'react';
 import Image from 'next/image';
-import ky from 'ky';
-import {IStore} from '@/services/next-stores/store';
-import {getURL} from '@/utils/path';
-import styles from './StoreEditor.module.css';
-import useToaster from '../Toaster/use-toaster';
-import Form from '../Form/Form';
-import Input from '../../ui/Input';
-import AutoCompleter from '../AutoCompleter';
+import {type IStore} from '@/services/next-stores/store';
+import {useToaster} from '@/ui/Toaster';
+import Form from '../../Form';
+import Input from '@/ui/Input';
+import AutoCompleter from '../../AutoCompleter';
+import cls from './StoreEditor.module.css';
+import {useFormState} from 'react-dom';
+import {saveStore} from './actions';
 
 interface StoreEditorProps {
   store?: IStore;
@@ -23,15 +23,20 @@ type AddressOption = {
   coordinates: [number, number];
 };
 
-const StoreEditor = ({store}: StoreEditorProps) => {
-  const features = [
-    'Wifi',
-    'Open Late',
-    'Family Friendly',
-    'Vegetarian',
-    'Licensed',
-  ];
+const features = [
+  'Wifi',
+  'Open Late',
+  'Family Friendly',
+  'Vegetarian',
+  'Licensed',
+];
 
+const StoreEditor = ({store}: StoreEditorProps) => {
+  const [formState, formAction] = useFormState(saveStore, {
+    status: 'idle',
+    message: null,
+    data: store ?? null,
+  });
   const photoRef = useRef<HTMLImageElement>(null);
   const lngRef = useRef<HTMLInputElement>(null);
   const latRef = useRef<HTMLInputElement>(null);
@@ -68,46 +73,37 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       if (photoRef.current) {
         photoRef.current!.removeAttribute('srcset');
         photoRef.current!.src = reader.result as string;
-        photoRef.current!.className = styles.preview;
+        photoRef.current!.className = cls.preview;
       }
     };
   };
 
-  const submit = async (body: FormData) => {
-    const method = store ? 'put' : 'post';
-    const res = await ky[method](
-      getURL(`/api/next-stores/stores${store ? `/${store._id}` : ''}`),
-      {
-        body,
-        timeout: 20000,
-        throwHttpErrors: false,
-      }
-    );
-    const json = (await res.json()) as {
-      data: IStore;
-      status: 'success' | 'warning' | 'error' | 'notice';
-      message: string;
-    };
-    if (json.status === 'error') {
-      createToast(json.status, json.message);
-      return;
+  useLayoutEffect(() => {
+    if (formState.status === 'error' && formState.message) {
+      createToast(formState.status, formState.message);
     }
-    createToast(
-      json.status,
-      <>
-        <p>{json.message}</p>
-        <a className='btn' href={`/next-stores/stores/${json.data._id}`}>
-          View Store →
-        </a>
-      </>,
-      20000
-    );
-    photoRef.current!.removeAttribute('class');
-  };
+
+    if (formState.status === 'success' && formState.message) {
+      createToast(
+        formState.status,
+        <>
+          <p>{formState.message}</p>
+          <a
+            className='btn'
+            href={`/next-stores/stores/${formState.data?._id}`}
+          >
+            View Store →
+          </a>
+        </>,
+        'infinite'
+      );
+      photoRef.current!.removeAttribute('class');
+    }
+  }, [formState, createToast]);
 
   return (
     <Form
-      submitHandler={submit}
+      action={formAction}
       submitText='Save →'
       title={store ? `Edit ${store.name}` : 'Add Store'}
     >
@@ -174,9 +170,9 @@ const StoreEditor = ({store}: StoreEditorProps) => {
         />
       </p>
       <label>Tags</label>
-      <ul className={styles.tags}>
+      <ul className={cls.tags}>
         {features.map((choice, index) => (
-          <li className={styles.tagChoice} key={index}>
+          <li className={cls.tagChoice} key={index}>
             <input
               type='checkbox'
               value={choice}

@@ -1,5 +1,5 @@
 import StoreEditor from '@/components/next-stores/StoreEditor';
-import {Metadata} from 'next';
+import {type Metadata} from 'next';
 
 export const metadata: Metadata = {
   title: 'Add Store',

@@ -20,7 +20,6 @@ export const generateMetadata: GetMetadata<StorePg> = async ({
   params: {storeParam},
 }) => {
   const json = await fetcher(storeParam);
-  console.log(json);
   const metadata: Metadata =
     json?.status === 'error'
       ? {
