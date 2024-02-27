@@ -1,26 +1,27 @@
-import BlogPostCard from '@/components/next-blog/BlogPostCard';
-import styles from './HomePage.module.css';
 import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 import {type Metadata} from 'next';
+import BlogHero from '@/components/next-blog/BlogHero';
+import BlogPosts from '@/components/next-blog/BlogPosts';
+import cls from './HomePage.module.css';
 
 export const metadata: Metadata = {
   title: 'Next Blog',
 };
 
 const HomePage = async () => {
-  const posts = await getBlogPostList();
-  return (
-    <>
-      <h1>Latest Content:</h1>
-      <ul>
-        {posts.map(({slug, ...delegated}) => (
-          <li key={slug}>
-            <BlogPostCard slug={slug} {...delegated} />
-          </li>
-        ))}
-      </ul>
-    </>
-  );
+  try {
+    const posts = await getBlogPostList();
+    return (
+      <>
+        <BlogHero />
+        <h2>Latest Content:</h2>
+        <BlogPosts posts={posts} />
+      </>
+    );
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
 
 export default HomePage;

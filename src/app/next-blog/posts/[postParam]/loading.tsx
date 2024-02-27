@@ -1,11 +1,11 @@
-import {BlogHeroLoading} from '@/components/next-blog/BlogHero';
+import {BlogPostHeroLoading} from '@/components/next-blog/BlogPostHero';
 import cls from './BlogPostPage.module.css';
 import {range} from '@/utils/numbers';
 
 const BlogPostPageLoading = () => {
   return (
     <article className={cls.wrapper}>
-      <BlogHeroLoading
+      <BlogPostHeroLoading
         title={`Blog Post Loading Title`}
         publishedOn={new Date().toISOString()}
       />

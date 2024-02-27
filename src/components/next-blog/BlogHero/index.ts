@@ -1,2 +1,3 @@
 export * from './BlogHero';
-export { default } from './BlogHero';
+
+export {default} from './BlogHero';

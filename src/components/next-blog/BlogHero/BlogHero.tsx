@@ -1,49 +1,25 @@
-import {format} from 'date-fns';
-import clsx from 'clsx';
-
+import Image from 'next/image';
 import cls from './BlogHero.module.css';
-import {ComponentProps, ReactNode} from 'react';
 
-const loadingStyle = {fontFamily: 'var(--fn-loading)'};
-export interface BlogHeroProps extends ComponentProps<'header'> {
-  title: string;
-  publishedOn: string;
-  children?: ReactNode;
-}
-const BlogHero = ({title, publishedOn, ...delegated}: BlogHeroProps) => {
-  const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
+export interface BlogHeroProps {}
 
+const BlogHero = ({}: BlogHeroProps) => {
   return (
-    <header className={clsx(cls.wrapper, delegated.className)} {...delegated}>
-      <div className={cls.content}>
-        <h1>{title}</h1>
-        <p>
-          Published on <time dateTime={publishedOn}>{humanizedDate}</time>
-        </p>
-      </div>
-    </header>
-  );
-};
-
-export const BlogHeroLoading = ({
-  title,
-  publishedOn,
-  ...delegated
-}: BlogHeroProps) => {
-  const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
-
-  return (
-    <header className={clsx(cls.wrapper, delegated.className)} {...delegated}>
-      <div className={cls.content}>
-        <h1 style={loadingStyle}>{title}</h1>
-        <p>
-          Published on{' '}
-          <time style={loadingStyle} dateTime={publishedOn}>
-            {humanizedDate}
-          </time>
-        </p>
-      </div>
-    </header>
+    <section className={cls.hero}>
+      <h1>Hi, I&apos;m Omar</h1>
+      <p>
+        I blog about web development, translation, and the Arabic language.
+        💻🌐🖊️📗
+      </p>
+      <figure className={cls.image}>
+        <Image
+          src='/img/next-blog/omar.png'
+          alt='An image showing Omar'
+          width={480}
+          height={480}
+        />
+      </figure>
+    </section>
   );
 };
 

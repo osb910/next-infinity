@@ -1,38 +1,101 @@
-.wrapper {
+.hero {
   position: relative;
+  z-index: 1;
+  padding: 1.5em 0;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  width: 100%;
-  max-width: var(--outer-content-width);
-  margin: 0 auto;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  gap: 1.5em;
+  border-radius: 6px;
+  /* border-start-start-radius: 0;
+  border-start-end-radius: 0; */
+  text-align: center;
+  color: var(--blog-decorative-900);
+  background-image: linear-gradient(
+    to bottom,
+    var(--blog-decorative-500),
+    var(--blog-decorative-200)
+  );
 }
 
-.content {
-  position: relative;
-  width: 100%;
-  max-width: var(--content-width);
-  padding: var(--viewport-padding);
-  padding-top: calc(48px + 8vw);
-  padding-bottom: 64px;
+.hero::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: -6px;
+  inset-block-start: 0;
+  block-size: 120vh;
+  border-radius: inherit;
+  border: 3px dashed currentColor;
+  /* border-block-start-color: transparent; */
+  border-block-end-color: transparent;
+  pointer-events: none;
 }
 
-.content h1 {
-  margin-bottom: 0.5rem;
-}
-.content p {
-  font-size: 1.125rem;
-  color: var(--color-decorative-900);
-  margin-bottom: 0px;
-  font-weight: 400;
-}
-.content time {
-  font-weight: 500;
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: -6px;
+  inset-block-start: 60vh;
+  block-size: 120vh;
+  border-radius: inherit;
+  border: 3px dashed var(--blog-decorative-500);
+  border-block-start-color: transparent;
+  border-block-end-color: transparent;
+  pointer-events: none;
 }
 
-@media (min-width: 35rem) {
-  .content p {
-    font-size: 1.25rem;
+.image {
+  inline-size: 9rem;
+  block-size: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  order: -1;
+  box-shadow: 0 1px 8px 2px rgba(10, 10, 10, 0.25);
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--gray-700);
+  color: var(--gray-500);
+}
+
+.image img {
+  object-fit: cover;
+  object-position: 15%;
+  inline-size: 140%;
+  block-size: 140%;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin: 0.25em 0;
+}
+
+.hero p {
+  order: 1;
+  font-size: 1.5rem;
+  color: var(--blog-decorative-800);
+  width: 90%;
+  max-width: 40rem;
+  margin: auto;
+}
+
+@media (min-width: 24rem) {
+  .image {
+    inline-size: 12rem;
+    block-size: 12rem;
+  }
+}
+
+@media (min-width: 36rem) {
+  .hero {
+    flex-flow: row wrap;
+  }
+
+  .image {
+    order: 0;
   }
 }

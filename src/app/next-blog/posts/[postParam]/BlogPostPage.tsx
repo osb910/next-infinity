@@ -1,7 +1,7 @@
 import {notFound, redirect} from 'next/navigation';
 
 import {getBlogPost} from '@/helpers/next-blog/requests';
-import BlogHero from '@/components/next-blog/BlogHero';
+import BlogPostHero from '@/components/next-blog/BlogPostHero';
 import Mdx from '@/ui/Mdx';
 import {Spinner} from '@/ui/Spinner';
 
@@ -28,21 +28,20 @@ export const generateMetadata: GetMetadata<BlogPostPg> = async ({
 const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
   try {
     const {data} = await getBlogPost(postParam);
-    // if (!data) redirect(`/next-blog/${postParam}?type=Post`);
     if (!data) notFound();
     return (
       <article className={cls.wrapper}>
-        <BlogHero
+        <BlogPostHero
           title={data.frontmatter.title}
           publishedOn={data.frontmatter.publishedOn}
         />
-        <div className={cls.page}>
+        <section className={cls.page}>
           <Mdx
             source={data.content}
             loader={<Spinner />}
             components={COMPONENT_MAP}
           />
-        </div>
+        </section>
       </article>
     );
   } catch (err) {

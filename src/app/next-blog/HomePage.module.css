@@ -1,13 +1,14 @@
 .main {
-  /* block-size: 100%; */
   inline-size: 100%;
   max-inline-size: var(--blog-width);
+  padding: 0;
+  margin: 0 auto;
+  border-radius: 2px;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2em 4em;
-  margin: 0 auto;
+  box-shadow: var(--shadow-elevation-medium);
 }
 
 .main h1 {
@@ -15,13 +16,27 @@
   font-size: 1.5rem;
 }
 
+@media (min-width: 24rem) {
+  .main {
+    padding-inline: 1em;
+  }
+}
+
 @media (min-width: 32rem) {
+  .main {
+    padding-inline: 1.5em;
+  }
+
   .main h1 {
     font-size: 1.75rem;
   }
 }
 
 @media (min-width: 48rem) {
+  .main {
+    padding-inline: 2em;
+  }
+
   .main h1 {
     font-size: 2rem;
   }

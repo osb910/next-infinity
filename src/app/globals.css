@@ -72,7 +72,7 @@
 
   /* Blog Vars */
 
-  --blog-width: 55rem;
+  --blog-width: 56rem;
   --blog-outer-width: 80rem;
   --blog-padding: 1em;
   --trimmed-content-width: calc(
@@ -494,6 +494,7 @@ html.next-blog {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  gap: 2em;
   background-color: var(--blog-decorative-200);
   border-bottom: 3px solid var(--blog-decorative-600);
   color: var(--blog-text);
