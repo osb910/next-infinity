@@ -12,7 +12,7 @@ interface PosterProps {
 
 const Poster = ({link, children, poster}: PosterProps) => {
   return (
-    <Link className={styles.link} href={link}>
+    <Link className={styles.link} href={link} prefetch={true}>
       <Wrapper
         className={styles.poster}
         style={{backgroundImage: `url(${poster})`}}

@@ -1,16 +1,16 @@
 'use client';
 
-import {motion} from 'framer-motion';
-import {ReactNode} from 'react';
+import {motion, type MotionProps} from 'framer-motion';
+import {ComponentPropsWithoutRef, ReactNode} from 'react';
 
-interface WrapperProps {
-  children: ReactNode;
-  [key: string]: any;
-}
+export type WrapperProps = ComponentPropsWithoutRef<'figure'> &
+  Partial<MotionProps> & {
+    children: ReactNode;
+  };
 
-const Wrapper = ({children, ...delegated}: WrapperProps) => {
+const Wrapper = ({children, ...rest}: WrapperProps) => {
   return (
-    <motion.li
+    <motion.figure
       whileHover={{
         scale: 1.06,
         color: [
@@ -19,16 +19,17 @@ const Wrapper = ({children, ...delegated}: WrapperProps) => {
         ],
         backgroundColor: ['rgba(20, 20, 20, 0.65)', 'rgba(20, 20, 20, 0.35)'],
         boxShadow: ['0', '0px 0px 16px 0px rgba(20, 20, 20, 0.4)'],
-        textShadow: ['0', '0px 1px 6px rgba(30, 30, 80, 0.5)'],
       }}
       animate={{}}
       transition={{
         type: 'spring',
+        damping: 12,
+        stiffness: 150,
       }}
-      {...delegated}
+      {...rest}
     >
       {children}
-    </motion.li>
+    </motion.figure>
   );
 };
 
