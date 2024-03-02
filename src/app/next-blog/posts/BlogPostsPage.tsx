@@ -4,6 +4,7 @@ import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 import BlogPostCard from '@/components/next-blog/BlogPostCard';
 import BlogPosts from '@/components/next-blog/BlogPosts';
 import cls from './BlogPostsPage.module.css';
+import {pluralize} from '@/utils/numbers';
 
 export const metadata: Metadata = {
   title: 'Blog Posts',
@@ -13,7 +14,15 @@ export const metadata: Metadata = {
 const BlogPostsPage: AppPage<{}> = async ({}) => {
   try {
     const posts = await getBlogPostList();
-    return <BlogPosts posts={posts} />;
+    return (
+      <>
+        <section className={cls.title}>
+          <h2>All Posts</h2>
+          <p>{pluralize('post', posts.length)}</p>
+        </section>
+        <BlogPosts posts={posts} />
+      </>
+    );
   } catch (err) {
     console.error(err);
     throw err;

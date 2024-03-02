@@ -72,7 +72,7 @@
 
   /* Blog Vars */
 
-  --blog-width: 56rem;
+  --blog-width: 64rem;
   --blog-outer-width: 80rem;
   --blog-padding: 1em;
   --trimmed-content-width: calc(
@@ -133,6 +133,8 @@
   --gray-700: hsl(256, 10%, 75%);
   --gray-900: hsl(256, 20%, 90%);
   --gray-1000: white;
+
+  --shadow-color: 250, 65%, 89%;
 
   /* Blog Vars */
 
@@ -500,6 +502,7 @@ html.next-blog {
   color: var(--blog-text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: all 300ms ease-in-out;
 }
 
 .next-blog body::before {
@@ -538,38 +541,39 @@ html.next-blog code {
 }
 .next-blog h2 {
   font-size: 1.5rem;
-  margin-top: 2em;
-  margin-bottom: 0.5em;
+  margin-block: 0.5em;
   font-weight: 600;
 }
 .next-blog h3 {
   font-size: 1.25rem;
-  margin-top: 2em;
-  margin-bottom: 0.5em;
+  margin-block: 0.5em;
   font-weight: 500;
 }
 .next-blog p {
   font-size: 1.25rem;
-  margin-bottom: 1.5em;
+  margin-block-end: 0.5em;
 }
 .next-blog p code {
   display: inline-block;
   font-size: 0.9em;
   background: var(--color-inline-code-bg);
-  padding: 3px 6px;
+  padding: 0.25em 0.325em;
   margin: -0.25em -1px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
+
 .next-blog a {
-  text-decoration-color: var(--color-primary);
+  text-decoration-color: var(--blog-primary-500);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.125em;
   font-weight: 500;
-  transition: all 200ms;
+  transition: all 300ms ease-in-out;
 }
+
 .next-blog a:hover {
-  text-underline-offset: 0.175em;
+  text-underline-offset: 0.25em;
 }
+
 .next-blog button {
   padding: 0;
 }

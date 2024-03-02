@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: var(--shadow-elevation-medium);
 }
 
 .main h1 {

@@ -35,6 +35,7 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
           title={data.frontmatter.title}
           publishedOn={data.frontmatter.publishedOn}
         />
+        <aside>{data.frontmatter.abstract}</aside>
         <section className={cls.page}>
           <Mdx
             source={data.content}

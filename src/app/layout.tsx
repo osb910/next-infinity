@@ -11,10 +11,9 @@ import {
 import {headers, cookies} from 'next/headers';
 import clsx from 'clsx';
 import {SoundProvider} from '@/ui/SfxSwitch/sound-enabled';
-import {ToastProvider} from '@/ui/Toaster';
-
+import Toaster, {ToastProvider} from '@/ui/Toaster';
 import ObeyMotionPref from '@/ui/ObeyMotionPref';
-import Toaster from '@/ui/Toaster/Toaster';
+import {TooltipProvider} from '@/ui/Tooltip';
 import {type Metadata} from 'next';
 
 export const metadata: Metadata = {
@@ -106,7 +105,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <ObeyMotionPref>
           <SoundProvider>
             <ToastProvider>
-              {children}
+              <TooltipProvider>{children}</TooltipProvider>
               <Toaster lang='en' />
             </ToastProvider>
           </SoundProvider>

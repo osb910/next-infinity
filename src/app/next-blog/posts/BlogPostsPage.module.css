@@ -1,1 +1,7 @@
-
+.title {
+  inline-size: 100%;
+  padding-inline: var(--blog-padding);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
