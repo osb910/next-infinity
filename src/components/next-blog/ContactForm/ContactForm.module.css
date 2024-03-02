@@ -1,0 +1,32 @@
+.form {
+  inline-size: 100%;
+  background-color: var(--blog-decorative-500);
+  color: var(--blog-text);
+}
+
+.form p {
+  position: relative;
+  z-index: 1;
+}
+
+.form :where(input, textarea, button) {
+  border: 0;
+  outline: 0;
+  background-color: var(--blog-decorative-300);
+}
+
+.form :is(input, textarea, button):focus {
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+.form label {
+  align-self: flex-start;
+}
+
+.form button[type='submit'] {
+  transition: all 300ms ease-in-out;
+}
+
+.form button[type='submit']:where(:hover, :focus) {
+  background-color: var(--blog-decorative-500);
+}
