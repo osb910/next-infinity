@@ -1,0 +1,21 @@
+.trigger:is(button) {
+  --color: hsl(245, 100%, 50%);
+  --bg-color: inherit;
+  inset-block-start: 0;
+  inset-inline-start: 2px;
+  margin-inline: 0.125em;
+  border: none;
+  padding: 0 0.25em;
+  display: inline-block;
+  font-weight: bold;
+  color: var(--color);
+  background-color: var(--bg-color);
+}
+
+.content {
+  --content-bg: hsl(245, 100%, 60%);
+  border-radius: 6px;
+  background-color: var(--content-bg);
+  color: white;
+  filter: drop-shadow(0px 4px 8px hsl(245, 100%, 40%, 0.2));
+}
