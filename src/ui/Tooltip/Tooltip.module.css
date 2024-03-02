@@ -1,0 +1,15 @@
+.trigger:is(button) {
+  position: relative;
+}
+
+.content {
+  z-index: 2;
+  padding: 0.75em 1em;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.arrow {
+  fill: var(--content-bg);
+  stroke: var(--content-bg);
+}
