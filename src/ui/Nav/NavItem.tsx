@@ -37,7 +37,7 @@ export const NavItem = ({
           transition={{
             type: 'spring',
             damping: 26,
-            stiffness: 380,
+            stiffness: 320,
           }}
         />
       )}

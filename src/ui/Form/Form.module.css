@@ -1,16 +1,14 @@
 .form {
-  --border-radius: 6px;
+  --radius: 6px;
   min-inline-size: 280px;
   max-inline-size: 720px;
-  inline-size: fit-content;
   padding: 0.75em;
   margin: 0 auto;
-  border-radius: 6px;
+  border-radius: var(--radius);
   display: flex;
   flex-direction: column;
   gap: 0.75em;
-  background: white;
-  color: rgb(var(--bg-default-rgb));
+  transition: all 300ms ease-in-out;
 }
 
 .title {
@@ -24,7 +22,8 @@
 
 .form label {
   padding: 0.25em 0;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
+  text-wrap: nowrap;
 }
 
 .form p {
@@ -50,10 +49,11 @@
   inline-size: 100%;
   padding-block: 0.25em;
   padding-inline: 0.5em;
-  border: 1px solid gray;
-  border-radius: var(--border-radius);
+  /* border: 1px solid gray; */
+  border-radius: var(--radius);
   font: inherit;
   line-height: 1.5;
+  transition: all 300ms ease-in-out;
 }
 
 .form p > input {
@@ -65,21 +65,21 @@
   border-color: red;
 }
 
-.form button {
+.form button,
+.submit {
+  margin-inline: auto;
   padding-block: 0.5em;
   padding-inline: 1em;
-  margin-inline: auto;
   border: 0;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   gap: 0.5em;
   align-self: center;
-  color: rgb(var(--bg-default-rgb));
   font-weight: 600;
   cursor: pointer;
-  filter: drop-shadow(0 0 0 10px rgba(10, 10, 20, 0.2));
-  transition: all 250ms ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(10, 10, 20, 0.2));
+  transition: all 300ms ease-in-out;
 }
 
 .actions {
@@ -90,10 +90,10 @@
 }
 
 .submit {
+  position: relative;
   padding-block: 0.75em;
   padding-inline: 1.25em;
   background: hsl(42 85% 55%);
-  color: rgb(var(--bg-default-rgb));
   font-weight: 700;
 }
 
@@ -119,10 +119,10 @@
   max-block-size: 85vh;
   margin: 0 auto;
   object-fit: cover;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
 }
 
-@media (min-width: 28rem) {
+@media (min-width: 36rem) {
   .form {
     padding: 1em;
   }

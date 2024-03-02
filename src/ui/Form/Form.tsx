@@ -7,7 +7,7 @@ import {
   type ComponentPropsWithoutRef,
 } from 'react';
 import clsx from 'clsx';
-import Submit from './Submit';
+import {Submit} from './Submit';
 import cls from './Form.module.css';
 
 export interface FormProps extends ComponentPropsWithoutRef<'form'> {

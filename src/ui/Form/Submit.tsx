@@ -5,36 +5,35 @@ import {useFormStatus} from 'react-dom';
 import Spinner from '@/ui/Spinner';
 import {type ComponentPropsWithoutRef, type ReactNode} from 'react';
 import cls from './Form.module.css';
+import clsx from 'clsx';
 
-type SubmitProps = ComponentPropsWithoutRef<'button'> &
+export type SubmitProps = ComponentPropsWithoutRef<'button'> &
   Partial<MotionProps> & {
     children: ReactNode;
     isSubmitting?: boolean;
   };
 
-const Submit = ({children, isSubmitting, ...delegated}: SubmitProps) => {
+export const Submit = ({children, isSubmitting, ...rest}: SubmitProps) => {
   const {pending} = useFormStatus();
 
   return (
     <motion.button
-      className={cls.submit}
       layout={true}
       transition={{
         type: 'spring',
-        stiffness: 250,
-        damping: 30,
+        stiffness: 280,
+        damping: 25,
         restDelta: 0.01,
       }}
-      {...delegated}
+      {...rest}
+      className={clsx(cls.submit, rest.className)}
       type='submit'
-      disabled={pending || delegated.disabled}
+      disabled={pending || rest.disabled}
     >
-      <motion.span layout='preserve-aspect'>
+      <span>
         {children}
         {(pending || isSubmitting) && <Spinner size={22} />}
-      </motion.span>
+      </span>
     </motion.button>
   );
 };
-
-export default Submit;

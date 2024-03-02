@@ -2,7 +2,7 @@
 
 import {useRouter} from 'next/navigation';
 import Form from '@/ui/Form';
-import Input from '../../Input';
+import Input from '@/ui/Input';
 import styles from '../Pagination.module.css';
 
 interface NavFormProps {
