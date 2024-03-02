@@ -1,0 +1,39 @@
+.label {
+  position: relative;
+  align-self: baseline;
+}
+
+.inputWrapper {
+  flex: 1 1 auto;
+}
+
+.ctrl sup {
+  --asterisk-color: hsla(342, 97%, 42%, 0.8);
+  margin-inline-start: 2px;
+  margin-block-start: 4px;
+  font-weight: 700;
+  font-size: 1.125em;
+  color: var(--asterisk-color);
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3)) blur(0.5px);
+  pointer-events: none;
+}
+
+.input {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.input.invalid :where(input, textarea):invalid {
+  box-shadow: 0 0 0 2px hsla(342, 97%, 42%, 0.8);
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.errorMsg {
+  color: hsla(342, 97%, 42%, 0.8);
+  font-size: 0.875em;
+}
