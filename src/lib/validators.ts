@@ -6,6 +6,15 @@ import isStrongPassword from 'validator/es/lib/isStrongPassword';
 import equals from 'validator/es/lib/equals';
 import emailVerifier from './email-verifier';
 
+const getErrorMap = (errors: Array<{field: string; message: string}>) =>
+  errors.reduce((acc, err) => {
+    acc[err.field]
+      ? (acc[err.field] = [...acc[err.field], err.message])
+      : (acc[err.field] = [err.message]);
+    acc.count ? (acc.count = acc.count + 1) : (acc.count = 1);
+    return acc;
+  }, {} as {count: number} & Record<string, any>);
+
 const registerValidator = async (body: any) => {
   let newBody = {...body};
   const errors = [];
@@ -118,6 +127,65 @@ const loginValidator = (body: any) => {
   );
 
   return [newBody, errors];
+};
+
+export const contactValidator = (
+  {email, name, message}: any,
+  lang?: string
+): {
+  validated: Record<string, any>;
+  errorMap: {count: number} & Record<string, any>;
+} => {
+  const validated = {email, name, message};
+  const errors = [];
+
+  if (isEmpty(email)) {
+    errors.push({field: 'email', message: 'Please provide an email address'});
+  }
+
+  if (!isEmail(email)) {
+    errors.push({
+      field: 'email',
+      message: 'Invalid email address',
+    });
+  }
+
+  if (isEmpty(name)) {
+    errors.push({field: 'name', message: 'Please provide a name'});
+  }
+
+  if (name.length < 2) {
+    errors.push({
+      field: 'name',
+      message: 'Name should be at least 2 characters',
+    });
+  }
+
+  if (isEmpty(message)) {
+    errors.push({field: 'message', message: 'Please provide a message'});
+  }
+
+  if (message.length < 7) {
+    errors.push({
+      field: 'message',
+      message: 'Message should be at least 7 characters',
+    });
+  }
+
+  validated.email = trim(
+    normalizeEmail(email, {
+      gmail_remove_dots: false,
+      gmail_remove_subaddress: false,
+      all_lowercase: true,
+    }) as string
+  );
+
+  validated.name = trim(name);
+  validated.message = trim(message);
+
+  const errorMap = getErrorMap(errors);
+
+  return {validated, errorMap};
 };
 
 export {registerValidator, loginValidator};
