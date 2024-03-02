@@ -1,3 +1,19 @@
 .posts {
-  padding-inline: 1em;
+  --min-size: 16rem;
+  inline-size: 100%;
+  margin: 0 auto;
+  padding-inline: 0.5em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--min-size), 1fr));
+  gap: 1em;
+  align-content: center;
+  align-items: baseline;
+  list-style: none;
+}
+
+@media (min-width: 24rem) {
+  .posts {
+    --min-size: 20rem;
+    padding-inline: 1em;
+  }
 }

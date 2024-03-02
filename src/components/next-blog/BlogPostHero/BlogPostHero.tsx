@@ -11,21 +11,21 @@ export interface BlogPostHeroProps extends ComponentProps<'header'> {
   children?: ReactNode;
   locale?: 'en';
 }
-const BlogPostHero = ({title, publishedOn, ...delegated}: BlogPostHeroProps) => {
+const BlogPostHero = ({
+  title,
+  publishedOn,
+  children,
+  ...delegated
+}: BlogPostHeroProps) => {
   const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
 
   return (
-    <header
-      className={clsx(cls.wrapper, delegated.className)}
-      {...delegated}
-      dir='auto'
-    >
-      <div className={cls.content}>
-        <h1>{title}</h1>
-        <p>
-          Published on <time dateTime={publishedOn}>{humanizedDate}</time>
-        </p>
-      </div>
+    <header className={clsx(cls.hero, delegated.className)} {...delegated}>
+      <h1>{title}</h1>
+      <p>
+        Published on <time dateTime={publishedOn}>{humanizedDate}</time>
+      </p>
+      {children}
     </header>
   );
 };
@@ -38,16 +38,18 @@ export const BlogPostHeroLoading = ({
   const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
 
   return (
-    <header className={clsx(cls.wrapper, delegated.className)} {...delegated}>
-      <div className={cls.content}>
-        <h1 style={loadingStyle}>{title}</h1>
-        <p>
-          Published on{' '}
-          <time style={loadingStyle} dateTime={publishedOn}>
-            {humanizedDate}
-          </time>
-        </p>
-      </div>
+    <header
+      className={clsx(cls.hero, delegated.className)}
+      {...delegated}
+      dir='auto'
+    >
+      <h1 style={loadingStyle}>{title}</h1>
+      <p>
+        Published on{' '}
+        <time style={loadingStyle} dateTime={publishedOn}>
+          {humanizedDate}
+        </time>
+      </p>
     </header>
   );
 };

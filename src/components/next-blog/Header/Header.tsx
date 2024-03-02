@@ -6,7 +6,7 @@ import SfxSwitch from '@/ui/SfxSwitch';
 import Switch from '@/ui/Switch';
 import IconButton from '@/ui/IconButton';
 import VisuallyHidden from '@/ui/VisuallyHidden';
-import styles from './Header.module.css';
+import cls from './Header.module.css';
 import Link from 'next/link';
 
 interface HeaderProps {
@@ -20,55 +20,59 @@ const btnAnimation = {
 };
 
 const navLinks = [
-  {slug: '/next-blog', label: <Logo width='12rem' />},
+  {to: '/next-blog', label: <Logo width='12rem' />},
   {
-    slug: '/next-blog/posts',
+    to: '/next-blog/posts',
     label: 'Posts',
   },
   {
-    slug: '/next-blog/categories',
+    to: '/next-blog/categories',
     label: 'Categories',
+  },
+  {
+    to: '/next-blog/contact',
+    label: 'Contact',
   },
 ];
 
 const Header = ({theme}: HeaderProps) => {
   return (
-    <header className={styles.header}>
-      <Nav className={styles.nav}>
-        <NavList className={`${styles.navBar}`}>
-          {navLinks.map(({slug, label}, idx) => (
+    <header className={cls.header}>
+      <Nav className={cls.nav}>
+        <NavList className={`${cls.navBar}`}>
+          {navLinks.map(({to, label}, idx) => (
             <NavItem
-              slug={slug}
-              key={slug}
-              className={styles.navItem}
-              highlightClass={styles.highlight}
+              slug={to}
+              key={to}
+              className={cls.navItem}
+              highlightClass={cls.highlight}
               highlightStyle={
                 idx
                   ? {
-                      borderRadius: 8,
+                      borderRadius: 6,
                       padding: '0.5em 1em',
                     }
                   : {}
               }
             >
-              <NavLink className={styles.navLink} href={slug}>
+              <NavLink className={cls.navLink} href={to}>
                 {label}
               </NavLink>
             </NavItem>
           ))}
         </NavList>
       </Nav>
-      <section className={styles.settings}>
+      <section className={cls.settings}>
         <ThemeSwitch
           initialTheme={theme}
           whileHover={btnAnimation}
           whileFocus={btnAnimation}
-          className={styles.themeSwitch}
+          className={cls.themeSwitch}
         />
         <SfxSwitch
           whileHover={btnAnimation}
           whileFocus={btnAnimation}
-          className={styles.sfxSwitch}
+          className={cls.sfxSwitch}
         />
         <Link href='/api/next-blog/rss'>
           <IconButton
@@ -82,7 +86,7 @@ const Header = ({theme}: HeaderProps) => {
             }
             whileHover={btnAnimation}
             whileFocus={btnAnimation}
-            className={styles.rssBtn}
+            className={cls.rssBtn}
           >
             <VisuallyHidden>View RSS feed</VisuallyHidden>
           </IconButton>

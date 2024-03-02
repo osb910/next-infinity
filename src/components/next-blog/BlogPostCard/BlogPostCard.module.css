@@ -1,45 +1,59 @@
 .wrapper {
-  width: 100%;
-  max-width: 750px;
-  margin-bottom: 32px;
+  inline-size: 100%;
+  padding: var(--padding);
+  border-radius: 6px;
+  box-shadow: var(--shadow-elevation-medium);
+  transition: all 300ms ease-in-out;
+}
+
+.wrapper:where(:hover, :focus) {
+  transform: translateY(-2px);
 }
 
 .title {
   display: block;
-  font-size: 1.75rem;
+  font-size: 1.625rem;
   line-height: 1.3;
   text-decoration: none;
   transition: color 200ms;
-  margin-bottom: 0.25rem;
+  margin-block-end: 0.25rem;
 }
 .title:hover {
   color: var(--blog-primary-500);
 }
 .wrapper time {
   display: block;
-  margin-bottom: 1rem;
+  margin-block-end: 1em;
   font-weight: 500;
   font-size: 1.125rem;
+  font-style: italic;
   color: var(--blog-decorative-900);
 }
+
 .wrapper p {
   font-size: 1.125rem;
-  margin-bottom: 0;
+  margin-block-end: 0;
 }
 
 .arrow {
-  display: inline-block;
-  font-family: 'Monaco', monospace;
+  font-family: var(--fn-fira), monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--blog-primary-500);
-  transition: transform 200ms;
-  font-weight: 400;
+  transition: transform 300ms ease-in-out;
 }
-.continueReadingLink {
+
+.readMoreLink {
+  display: inline-flex;
+  align-items: center;
+  text-wrap: nowrap;
   font-weight: 600;
 }
-.continueReadingLink:hover {
-  text-underline-offset: 0.125em;
+
+.readMoreLink:where(:hover, :focus) {
+  text-decoration: underline;
 }
-.continueReadingLink:hover .arrow {
+
+.readMoreLink:hover .arrow {
   transform: translateX(4px);
 }

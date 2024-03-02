@@ -25,10 +25,10 @@
   z-index: 0;
   inset: -6px;
   inset-block-start: 0;
-  block-size: 120vh;
+  block-size: 50vh;
   border-radius: inherit;
   border: 3px dashed currentColor;
-  /* border-block-start-color: transparent; */
+  border-block-start-color: transparent;
   border-block-end-color: transparent;
   pointer-events: none;
 }
@@ -38,8 +38,8 @@
   position: absolute;
   z-index: 0;
   inset: -6px;
-  inset-block-start: 60vh;
-  block-size: 120vh;
+  inset-block-start: 25%;
+  block-size: 50vh;
   border-radius: inherit;
   border: 3px dashed var(--blog-decorative-500);
   border-block-start-color: transparent;
