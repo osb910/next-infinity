@@ -1,8 +1,6 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {contactValidator} from '@/lib/validators';
-import Message from '@/services/next-blog/message';
-import sendEmail from '@/lib/email-sender';
-import ContactEmail from '@/components/email-templates/ContactEmail';
+import {createMsg} from '@/services/next-blog/message';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -19,23 +17,11 @@ export const POST = async (req: NextRequest) => {
         },
         {status: 422}
       );
-    const newMessage = new Message({
+    const {doc} = await createMsg({
       email: validated.email,
       name: validated.name,
       body: validated.message,
     });
-    const docPromise = newMessage.save();
-    const sentEmailPromise = sendEmail({
-      email: 'omarshdev@gmail.com',
-      subject: `Message from ${validated.name}`,
-      react: ContactEmail({
-        email: validated.email,
-        name: validated.name,
-        body: validated.message,
-      }),
-      username: 'next-blog',
-    });
-    const [doc, sentEmail] = await Promise.all([docPromise, sentEmailPromise]);
     return NextResponse.json(
       {
         status: 'success',

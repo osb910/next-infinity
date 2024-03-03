@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const COMPONENT_MAP = {
   // pre: Codum,
-  img: Image,
+  // img: Image,
   Code: Codum,
   DivisionGroupsDemo,
   CircularColorsDemo,
