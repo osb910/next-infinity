@@ -5,11 +5,11 @@ import {
   forwardRef,
   useEffect,
   useState,
+  useRef,
   type ReactNode,
   type ComponentPropsWithRef,
-  type ChangeEvent,
-  type FocusEvent,
-  useRef,
+  type ChangeEventHandler,
+  type FocusEventHandler,
 } from 'react';
 import {motion} from 'framer-motion';
 import clsx from 'clsx';
@@ -20,24 +20,36 @@ import {removeGrammarlyTab} from './util';
 import cls from './Input.module.css';
 import MotionBackdrop from '../MotionBackdrop';
 
-export type InputProps = ComponentPropsWithRef<'input'> &
-  ComponentPropsWithRef<'textarea'> & {
-    as?: 'input' | 'textarea';
-    label?: string;
-    setInput?: Function;
-    children?: ReactNode;
-    ctrlClass?: string;
-    layoutId?: string;
-    focused?: string;
-    backdropStyle?: Record<string, any>;
-    invalidMsg?: string;
-    ctrlChildren?: ReactNode;
-    removeExternalTabs?: boolean;
-  };
+type BaseProps = {
+  label?: string;
+  setInput?: Function;
+  children?: ReactNode;
+  ctrlClass?: string;
+  layoutId?: string;
+  focused?: string;
+  backdropStyle?: Record<string, any>;
+  invalidMsg?: string;
+  ctrlChildren?: ReactNode;
+  removeExternalTabs?: boolean;
+};
+
+export interface InputComponent
+  extends BaseProps,
+    ComponentPropsWithRef<'input'> {
+  as?: 'input';
+}
+
+export interface TextAreaComponent
+  extends BaseProps,
+    ComponentPropsWithRef<'textarea'> {
+  as: 'textarea';
+}
+
+export type InputProps = InputComponent | TextAreaComponent;
 
 export const Input = forwardRef(function Input(
   {
-    as: Element = 'input',
+    as: Tag = 'input',
     label,
     setInput,
     invalidMsg,
@@ -48,20 +60,27 @@ export const Input = forwardRef(function Input(
     focused,
     backdropStyle,
     removeExternalTabs = true,
-    ...rest
+    ...delegated
   }: InputProps,
   ref: any
 ) {
+  const rest = delegated as ComponentPropsWithRef<
+    typeof Tag extends 'input'
+      ? HTMLInputElement
+      : typeof Tag extends 'textarea'
+      ? HTMLTextAreaElement
+      : any
+  >;
   const appliedId = `${label?.toLowerCase?.() ?? ''}${useId()}`;
   const [isTouched, setIsTouched] = useState(false);
   const [isAttempted, setIsAttempted] = useState(false);
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const validityState = inputRef.current?.validity;
   const isInValid =
     isAttempted && !validityState?.valueMissing && !validityState?.valid;
 
   useEffect(() => {
-    if (Element !== 'textarea' || !isTouched || !removeExternalTabs) return;
+    if (Tag !== 'textarea' || !isTouched || !removeExternalTabs) return;
     let attempts = 0;
     const remove3rdPartyTabs = async () => {
       if (attempts > 100) return; // Safety net in case of infinite loop
@@ -73,7 +92,44 @@ export const Input = forwardRef(function Input(
       }
     };
     remove3rdPartyTabs();
-  }, [Element, isTouched, removeExternalTabs]);
+  }, [Tag, isTouched, removeExternalTabs]);
+
+  const changeInput: ChangeEventHandler = evt => {
+    const target =
+      Tag === 'input'
+        ? (evt.target as HTMLInputElement)
+        : (evt.target as HTMLTextAreaElement);
+    setInput?.(target);
+    rest.onChange?.(evt);
+  };
+
+  const focusInput: FocusEventHandler = evt => {
+    setIsTouched(true);
+    rest.onFocus?.(evt);
+  };
+
+  const blurInput: FocusEventHandler = evt => {
+    setIsAttempted(true);
+    rest.onBlur?.(evt);
+  };
+
+  // const InputJSX = (
+  //   <Tag
+  //     onChange={changeInput}
+  //     {...(Tag === 'textarea'
+  //       ? {rows: 4}
+  //       : rest.type === 'number'
+  //       ? {min: 1, step: 1}
+  //       : {type: 'text'})}
+  //     ref={ref ?? inputRef}
+  //     {...rest}
+  //     onFocus={focusInput}
+  //     onBlur={blurInput}
+  //     id={appliedId}
+  //     dir='auto'
+  //     style={{...rest.style, zIndex: focused === rest.name ? 1 : 2}}
+  //   />
+  // );
 
   return (
     <p className={clsx(cls.ctrl, ctrlClass)}>
@@ -87,45 +143,17 @@ export const Input = forwardRef(function Input(
       )}
       <motion.section className={cls.inputWrapper}>
         <div className={clsx(cls.input, isInValid && cls.invalid)}>
-          <Element
-            onChange={(evt: ChangeEvent): void =>
-              setInput?.(
-                Element === 'textarea'
-                  ? (evt.target as HTMLTextAreaElement)
-                  : (evt.target as HTMLInputElement)
-              )
-            }
-            {...(Element === 'textarea'
+          <Tag
+            {...(Tag === 'textarea'
               ? {rows: 4}
               : rest.type === 'number'
               ? {min: 1, step: 1}
               : {type: 'text'})}
             ref={ref ?? inputRef}
             {...rest}
-            onFocus={(
-              evt: FocusEvent<
-                typeof Element extends 'input'
-                  ? HTMLInputElement
-                  : typeof Element extends 'textarea'
-                  ? HTMLTextAreaElement
-                  : any
-              >
-            ) => {
-              setIsTouched(true);
-              rest.onFocus?.(evt);
-            }}
-            onBlur={(
-              evt: FocusEvent<
-                typeof Element extends 'input'
-                  ? HTMLInputElement
-                  : typeof Element extends 'textarea'
-                  ? HTMLTextAreaElement
-                  : any
-              >
-            ) => {
-              setIsAttempted(true);
-              rest.onBlur?.(evt);
-            }}
+            onChange={changeInput}
+            onFocus={focusInput}
+            onBlur={blurInput}
             id={appliedId}
             dir='auto'
             style={{...rest.style, zIndex: focused === rest.name ? 1 : 2}}
@@ -141,7 +169,7 @@ export const Input = forwardRef(function Input(
                     }
                   : backdropStyle
               }
-              style={{blockSize: Element === 'textarea' ? '94%' : '100%'}}
+              style={{blockSize: Tag === 'textarea' ? '94%' : '100%'}}
             />
           )}
         </div>
