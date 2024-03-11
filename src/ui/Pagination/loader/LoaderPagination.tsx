@@ -62,7 +62,7 @@ export const LoaderPagination = ({
   return (
     <section className={styles.pagination}>
       {type === 'manual' && pages > 1 && chunkPage < pages && (
-        <Form submitHandler={loadMore} submitText={buttonText}>
+        <Form onSave={loadMore} submitText={buttonText}>
           <></>
         </Form>
       )}

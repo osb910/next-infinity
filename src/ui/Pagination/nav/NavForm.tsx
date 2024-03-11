@@ -13,8 +13,8 @@ interface NavFormProps {
 
 export const NavForm = ({pages, page, buttonText}: NavFormProps) => {
   const router = useRouter();
-  const navigate = async (body: FormData) => {
-    const dest = body.get('p');
+  const navigate = async (data: Record<string, FormDataEntryValue | null>) => {
+    const {p: dest} = data as {p: string};
     if (typeof dest !== 'string' || isNaN(+dest)) return;
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set(
@@ -24,11 +24,7 @@ export const NavForm = ({pages, page, buttonText}: NavFormProps) => {
     router.push(newUrl.href);
   };
   return (
-    <Form
-      submitHandler={navigate}
-      submitText={buttonText}
-      className={styles.navForm}
-    >
+    <Form onSave={navigate} submitText={buttonText} className={styles.navForm}>
       <Input
         label='Page'
         type='number'
