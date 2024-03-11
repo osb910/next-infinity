@@ -9,7 +9,7 @@ import RatingStars from '@/ui/RatingStars';
 import {type IUser} from '@/services/next-stores/user';
 import clsx from 'clsx';
 
-interface ReviewFormProps extends FormProps {
+interface ReviewFormProps extends Omit<FormProps, 'ref'> {
   user: Omit<IUser, 'password'> | null;
   endpoint: string;
   addReview: (review: any) => void;
@@ -26,10 +26,12 @@ const ReviewForm = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const submitReview = async (body: FormData) => {
+  const submitReview = async (
+    data: Record<string, FormDataEntryValue | null>
+  ) => {
     const json = (await ky
       .post(endpoint, {
-        json: Object.fromEntries(body.entries()),
+        json: data,
         headers: {
           'X-USER-ID': user?._id?.toString() ?? '',
         },
@@ -57,7 +59,7 @@ const ReviewForm = ({
 
   return (
     <Form
-      submitHandler={submitReview}
+      onSave={submitReview}
       throwErr={throwError}
       btnDisabled={!user}
       {...delegated}

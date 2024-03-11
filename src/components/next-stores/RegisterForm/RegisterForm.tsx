@@ -30,10 +30,10 @@ const RegisterForm = () => {
   const pathname = usePathname();
   console.log(pathname);
 
-  const signUp = async (body: FormData) => {
+  const signUp = async (data: Record<string, FormDataEntryValue | null>) => {
     try {
       const res = await ky.post(getURL('/api/next-stores/auth/register'), {
-        json: Object.fromEntries(body.entries()),
+        json: data,
         throwHttpErrors: false,
         timeout: 20000,
       });
@@ -55,7 +55,7 @@ const RegisterForm = () => {
           2400
         );
         setTimeout(() => {
-          router.push(`${pathname}?dialog=login&email=${body.get('email')}`);
+          router.push(`${pathname}?dialog=login&email=${data.email}`);
         }, 2800);
       }
     } catch (err) {
@@ -64,7 +64,7 @@ const RegisterForm = () => {
     }
   };
   return (
-    <Form className={styles.form} submitHandler={signUp} submitText='Register'>
+    <Form className={styles.form} onSave={signUp} submitText='Register'>
       <Input
         label='Name'
         name='name'

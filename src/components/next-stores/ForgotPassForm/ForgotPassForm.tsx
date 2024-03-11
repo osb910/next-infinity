@@ -9,9 +9,11 @@ interface ForgotPassFormProps {}
 
 const ForgotPassForm = ({}: ForgotPassFormProps) => {
   const {createToast} = useToaster();
-  const resetPassword = async (body: FormData) => {
+  const resetPassword = async (
+    data: Record<string, FormDataEntryValue | null>
+  ) => {
     const res = await ky.post('/api/next-stores/auth/reset-password', {
-      json: Object.fromEntries(body.entries()),
+      json: data,
       throwHttpErrors: false,
       timeout: 20000,
     });
@@ -26,7 +28,7 @@ const ForgotPassForm = ({}: ForgotPassFormProps) => {
     <Form
       title='Forgot Password'
       submitText='Reset My Password'
-      submitHandler={resetPassword}
+      onSave={resetPassword}
     >
       <Input
         type='email'

@@ -14,9 +14,11 @@ interface EditAccountFormProps {
 const EditAccountForm = ({user}: EditAccountFormProps) => {
   const {createToast} = useToaster();
 
-  const updateAccount = async (body: FormData) => {
+  const updateAccount = async (
+    data: Record<string, FormDataEntryValue | null>
+  ) => {
     const res = await ky.put('/api/next-stores/auth/me', {
-      json: Object.fromEntries(body.entries()),
+      json: data,
       headers: {
         'X-USER-ID': user._id,
       },
@@ -34,7 +36,7 @@ const EditAccountForm = ({user}: EditAccountFormProps) => {
     <Form
       title='Edit Your Account'
       submitText='Update My Account'
-      submitHandler={updateAccount}
+      onSave={updateAccount}
     >
       <Input label='Name' name='name' defaultValue={user?.name} />
       <Input

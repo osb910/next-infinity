@@ -4,7 +4,7 @@ import {JsonRes} from '@/types';
 import {getURL} from '@/utils/path';
 
 export type FormState = {
-  status: 'idle' | 'success' | 'error' | 'warning' | 'notice';
+  status: 'success' | 'error' | 'warning' | 'notice';
   message: string | null;
   data: any | null;
 };

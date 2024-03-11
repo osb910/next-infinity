@@ -14,8 +14,7 @@ import {emailRegex, stringifyRegex} from '@/lib/text/regex';
 import {getURL} from '@/utils/path';
 import styles from './LoginForm.module.css';
 
-export interface LoginFormProps
-  extends Omit<FormProps, 'submitHandler' | 'children'> {
+export interface LoginFormProps extends Omit<FormProps, 'ref'> {
   endpoint?: string;
   badTokenMessage?: string;
 }
@@ -46,9 +45,9 @@ const LoginForm = ({
     success && createToast('success', <p>{success}</p>, 5000);
   }, [createToast, error, success, badTokenMessage]);
 
-  const login = async (body: FormData) => {
+  const login = async (data: Record<string, FormDataEntryValue | null>) => {
     const res = await ky.post(getURL(endpoint), {
-      json: Object.fromEntries(body.entries()),
+      json: data,
       throwHttpErrors: false,
       timeout: 20000,
     });
@@ -81,7 +80,7 @@ const LoginForm = ({
   return (
     <Form
       className={styles.form}
-      submitHandler={login}
+      onSave={login}
       throwErr={throwError}
       submitText='Log In →'
       {...delegated}

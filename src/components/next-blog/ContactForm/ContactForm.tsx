@@ -1,17 +1,19 @@
 'use client';
 
-import {useId, useLayoutEffect, useState} from 'react';
+import {useId, useLayoutEffect, useRef, useState} from 'react';
 import {LayoutGroup} from 'framer-motion';
 import {useFormState} from 'react-dom';
 
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';
-import Form, {Submit} from '@/ui/Form';
+import Form, {Submit, type FormHandle} from '@/ui/Form';
 import Input from '@/ui/Input';
 import {useToaster} from '@/ui/Toaster';
 import MotionBackdrop from '@/ui/MotionBackdrop';
 import {sendMessage} from './actions';
 
 import cls from './ContactForm.module.css';
+import clsx from 'clsx';
+import {TIME} from '@/constants/numbers';
 
 interface ContactFormProps {}
 
@@ -22,33 +24,44 @@ const initial = {
 
 const ContactForm = ({}: ContactFormProps) => {
   const [formState, formAction] = useFormState(sendMessage, {
-    status: 'idle',
+    status: 'notice',
     message: null,
     data: null,
   });
-  const {errors} = formState.data ?? {};
   const [focused, setFocused] = useState('');
+  const [isCleared, setIsCleared] = useState(false);
+  const form = useRef<HTMLFormElement & FormHandle>(null);
+  const {errors} = formState.data ?? {};
   const {createToast} = useToaster();
   const layoutId = `backdrop${useId()}`;
 
   const changeFocused = (slug: string) => setFocused(slug);
 
   useLayoutEffect(() => {
-    if (formState.status === 'error' && formState.message) {
-      createToast(formState.status, formState.message);
-    }
+    const toast = () =>
+      createToast(formState.status, <p>{formState.message}</p>, 'infinite');
+
+    formState.status === 'error' && formState.message && toast();
 
     if (formState.status === 'success' && formState.message) {
-      createToast(formState.status, <p>{formState.message}</p>, 'infinite');
+      toast();
+      setTimeout(() => {
+        form.current?.clear();
+        setIsCleared(true);
+      }, TIME.goldenSec / 1.5);
     }
   }, [formState, createToast]);
 
   return (
     <LayoutGroup>
       <Form
-        className={cls.form}
+        className={clsx(
+          cls.form,
+          formState.status === 'success' && !isCleared && cls.cleared
+        )}
         useSubmitBtn={false}
         action={formAction}
+        ref={form}
         // BUG: fires on all inputs, cancels animation
         // onBlur={() => setFocused('')}
       >
@@ -60,6 +73,8 @@ const ContactForm = ({}: ContactFormProps) => {
           pattern={stringifyRegex(emailRegex)}
           title='Please enter a valid email address.'
           onFocus={() => changeFocused('email')}
+          // animate={formState.status === 'success' && {color: 'transparent'}}
+          // transition={{type: 'spring'}}
           autoFocus
           focused={focused}
           layoutId={layoutId}

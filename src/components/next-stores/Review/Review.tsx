@@ -37,17 +37,19 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
     return () => clearInterval(interval);
   }, [review.updatedAt]);
 
-  const updateReview = async (body: FormData) => {
+  const updateReview = async (
+    data: Record<string, FormDataEntryValue | null>
+  ) => {
     if (
-      body.get('reviewText') === review.text &&
-      +(body.get('rating') ?? '') === review.rating
+      data.reviewText === review.text &&
+      +(data.rating ?? '') === review.rating
     ) {
       setIsEditing(false);
       return;
     }
     const json = (await ky
       .put(`/api/next-stores/stores/${review.store}/reviews/${review._id}`, {
-        json: Object.fromEntries(body.entries()),
+        json: data,
         headers: {
           'X-USER-ID': userId,
         },
@@ -120,7 +122,7 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
       <section className={styles.reviewBody}>
         {isEditing ? (
           <Form
-            submitHandler={updateReview}
+            onSave={updateReview}
             throwErr={throwError}
             submitText='Save'
             className={styles.reviewEditForm}

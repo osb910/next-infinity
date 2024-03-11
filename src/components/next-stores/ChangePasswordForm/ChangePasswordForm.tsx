@@ -21,8 +21,9 @@ const ChangePasswordForm = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const changePassword = async (body: FormData) => {
-    const data = Object.fromEntries(body.entries());
+  const changePassword = async (
+    data: Record<string, FormDataEntryValue | null>
+  ) => {
     const res = await ky.patch(
       `/api/next-stores${
         resetPassword ? '/auth/reset-password' : '/auth/me/change-password'
@@ -57,7 +58,7 @@ const ChangePasswordForm = ({
     <Form
       title={title}
       submitText={resetPassword ? 'Reset' : 'Change' + ' Password'}
-      submitHandler={changePassword}
+      onSave={changePassword}
     >
       {!resetPassword && (
         <PasswordInput
