@@ -1,0 +1,28 @@
+.burger {
+  --size: 24px;
+  z-index: 3;
+  position: relative;
+  block-size: var(--size);
+  inline-size: var(--size);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--size) / 5);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.burger span {
+  background-color: var(--color);
+  inline-size: var(--size);
+  block-size: calc(var(--size) / 6);
+  border-radius: 1rem;
+  transform-origin: center;
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+.burger span:nth-child(2) {
+  inline-size: calc(var(--size) - 20%);
+  block-size: calc(var(--size) / 5 - 2px);
+}
