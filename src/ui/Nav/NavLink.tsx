@@ -14,7 +14,7 @@ export const NavLink = ({
   children,
   ...rest
 }: NavLinkProps) => {
-  const {changeHovered, pathName} = useNav();
+  const {changeHovered, pathName, toggleNav} = useNav();
   const path = slug ?? rest.href;
 
   return (
@@ -29,13 +29,17 @@ export const NavLink = ({
       style={
         pathName === path ? {...rest.style, ...highlightStyle} : rest.style
       }
+      onClick={(evt: MouseEvent<HTMLAnchorElement>) => {
+        toggleNav(false);
+        rest.onClick?.(evt);
+      }}
       onMouseEnter={(evt: MouseEvent<HTMLAnchorElement>) => {
-        rest.onMouseEnter?.(evt);
         changeHovered(path);
+        rest.onMouseEnter?.(evt);
       }}
       onFocus={(evt: FocusEvent<HTMLAnchorElement>) => {
-        rest.onFocus?.(evt);
         changeHovered(path);
+        rest.onFocus?.(evt);
       }}
     >
       {children}

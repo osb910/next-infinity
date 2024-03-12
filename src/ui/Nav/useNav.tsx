@@ -22,7 +22,7 @@ const NavContext = createContext<NavContextProps>({
 
 export const NavProvider = ({children}: {children: ReactNode}): JSX.Element => {
   const [hoveredItem, setHoveredItem] = useState('');
-  const [isOpen, toggleNav] = useToggle(true);
+  const [isOpen, toggleNav] = useToggle(false);
   const pathName = usePathname();
   const layoutId = `nav-backdrop${useId()}`;
 

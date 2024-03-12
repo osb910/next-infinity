@@ -11,11 +11,14 @@ export type NavProps = ComponentPropsWithoutRef<'nav'> &
   Partial<MotionProps> & {
     children: ReactNode;
     useBurger?: boolean;
+    burgerClass?: string;
+    overlayClass?: string;
   };
 
-export interface NavListProps extends ComponentProps<'ul'> {
-  children: ReactNode;
-}
+export type NavListProps = ComponentPropsWithoutRef<'ul'> &
+  Partial<MotionProps> & {
+    children: ReactNode;
+  };
 
 export type NavItemProps = ComponentPropsWithoutRef<'li'> &
   Partial<MotionProps> & {
