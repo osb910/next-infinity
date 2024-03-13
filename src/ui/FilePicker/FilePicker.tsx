@@ -3,7 +3,7 @@
 import {useRef, useState} from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
-import Input, {type InputComponent} from '@/ui/Input';
+import Input, {type InputProps, type InputComponent} from '@/ui/Input';
 import cls from './FilePicker.module.css';
 
 export interface FilePickerProps extends InputComponent {
