@@ -33,18 +33,18 @@ type BaseProps = {
   removeExternalTabs?: boolean;
 };
 
-export interface InputComponent
-  extends BaseProps,
-    ComponentPropsWithRef<'input'> {
-  as?: 'input';
-}
+export type InputComponent = BaseProps &
+  ComponentPropsWithRef<'input'> &
+  Partial<MotionProps> & {
+    as?: 'input';
+  };
 
-export interface TextAreaComponent
-  extends BaseProps,
-    ComponentPropsWithRef<'textarea'> {
-  as: 'textarea';
-  type?: never;
-}
+export type TextAreaComponent = BaseProps &
+  ComponentPropsWithRef<'textarea'> &
+  Partial<MotionProps> & {
+    as: 'textarea';
+    type?: never;
+  };
 
 export const isTextAreaProps = (
   props: InputProps | TextAreaComponent
@@ -58,8 +58,7 @@ export const isInputProps = (
   return props.as === 'input' || 'type' in props || props.as !== 'textarea';
 };
 
-export type InputProps = (InputComponent | TextAreaComponent) &
-  Partial<MotionProps>;
+export type InputProps = InputComponent | TextAreaComponent;
 
 export type InputElement = HTMLInputElement | HTMLTextAreaElement;
 
