@@ -6,7 +6,7 @@ import clsx from 'clsx';
 export type BurgerProps = Partial<MotionProps> &
   ComponentPropsWithoutRef<'button'> & {
     isOpen: boolean;
-    color: string;
+    color?: string;
     size?: string;
   };
 
@@ -17,7 +17,7 @@ const Burger = ({isOpen, color, size, ...rest}: BurgerProps) => {
     stiffness: 120,
     restDelta: 0.01,
   };
-  const style = {'--color': color, '--size': size};
+  const style = {'--color': color ?? 'var(--gray-500)', '--size': size};
 
   return (
     <motion.button
