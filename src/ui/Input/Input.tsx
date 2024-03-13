@@ -11,7 +11,7 @@ import {
   type ChangeEventHandler,
   type FocusEventHandler,
 } from 'react';
-import {motion} from 'framer-motion';
+import {MotionProps, motion} from 'framer-motion';
 import clsx from 'clsx';
 
 import Asterisk from '@/ui/Asterisk';
@@ -43,12 +43,28 @@ export interface TextAreaComponent
   extends BaseProps,
     ComponentPropsWithRef<'textarea'> {
   as: 'textarea';
+  type?: never;
 }
 
-export type InputProps = InputComponent | TextAreaComponent;
+export const isTextAreaProps = (
+  props: InputProps | TextAreaComponent
+): props is TextAreaComponent => {
+  return props.as === 'textarea' || !('type' in props);
+};
 
-export const Input = forwardRef(function Input(
-  {
+export const isInputProps = (
+  props: InputProps | InputComponent
+): props is InputComponent => {
+  return props.as === 'input' || 'type' in props || props.as !== 'textarea';
+};
+
+export type InputProps = (InputComponent | TextAreaComponent) &
+  Partial<MotionProps>;
+
+export type InputElement = HTMLInputElement | HTMLTextAreaElement;
+
+const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
+  const {
     as: Tag = 'input',
     label,
     setInput,
@@ -61,11 +77,9 @@ export const Input = forwardRef(function Input(
     backdropStyle,
     removeExternalTabs = true,
     ...delegated
-  }: InputProps,
-  ref: any
-) {
+  } = props;
   const rest = delegated as ComponentPropsWithRef<
-    typeof Tag extends 'input'
+    InputProps extends InputComponent
       ? HTMLInputElement
       : typeof Tag extends 'textarea'
       ? HTMLTextAreaElement
@@ -74,7 +88,10 @@ export const Input = forwardRef(function Input(
   const appliedId = `${label?.toLowerCase?.() ?? ''}${useId()}`;
   const [isTouched, setIsTouched] = useState(false);
   const [isAttempted, setIsAttempted] = useState(false);
-  const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const inputRef =
+    useRef<
+      typeof Tag extends 'textarea' ? HTMLTextAreaElement : HTMLInputElement
+    >(null);
   const validityState = inputRef.current?.validity;
   const isInValid =
     isAttempted && !validityState?.valueMissing && !validityState?.valid;
@@ -95,11 +112,7 @@ export const Input = forwardRef(function Input(
   }, [Tag, isTouched, removeExternalTabs]);
 
   const changeInput: ChangeEventHandler = evt => {
-    const target =
-      Tag === 'input'
-        ? (evt.target as HTMLInputElement)
-        : (evt.target as HTMLTextAreaElement);
-    setInput?.(target);
+    setInput?.(evt.target);
     rest.onChange?.(evt);
   };
 
@@ -113,23 +126,7 @@ export const Input = forwardRef(function Input(
     rest.onBlur?.(evt);
   };
 
-  // const InputJSX = (
-  //   <Tag
-  //     onChange={changeInput}
-  //     {...(Tag === 'textarea'
-  //       ? {rows: 4}
-  //       : rest.type === 'number'
-  //       ? {min: 1, step: 1}
-  //       : {type: 'text'})}
-  //     ref={ref ?? inputRef}
-  //     {...rest}
-  //     onFocus={focusInput}
-  //     onBlur={blurInput}
-  //     id={appliedId}
-  //     dir='auto'
-  //     style={{...rest.style, zIndex: focused === rest.name ? 1 : 2}}
-  //   />
-  // );
+  const Element = motion[Tag];
 
   return (
     <p className={clsx(cls.ctrl, ctrlClass)}>
@@ -143,8 +140,8 @@ export const Input = forwardRef(function Input(
       )}
       <motion.section className={cls.inputWrapper}>
         <div className={clsx(cls.input, isInValid && cls.invalid)}>
-          <Tag
-            {...(Tag === 'textarea'
+          <Element
+            {...(isTextAreaProps(props)
               ? {rows: 4}
               : rest.type === 'number'
               ? {min: 1, step: 1}

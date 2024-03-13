@@ -27,6 +27,10 @@
   box-shadow: 0 0 0 2px hsla(342, 97%, 42%, 0.8);
 }
 
+.input :where(input, textarea) {
+  transition: color 809ms ease-in-out;
+}
+
 .backdrop {
   position: absolute;
   inset: 0;
