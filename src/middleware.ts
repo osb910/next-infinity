@@ -1,11 +1,10 @@
-import {NextResponse} from 'next/server';
-import {NextRequest} from 'next/server';
+import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
 
 export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;
-  const subPage = searchParams.get('dialog');
+  const dialog = searchParams.get('dialog');
   const origin = req.headers.get('origin');
   const authCookie = req.cookies.get('nextStoresToken');
   const authHeader = req.headers.get('Authorization');
@@ -40,9 +39,7 @@ export const middleware = async (req: NextRequest) => {
   response.headers.set('x-site', site ?? '');
 
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
-    console.log('middleware', req.method, pathname);
-
-    if (!token && (/\/add/.test(pathname) || subPage === 'account')) {
+    if (!token && (/\/add/.test(pathname) || dialog === 'account')) {
       return NextResponse.redirect(
         new URL(
           `${pathname}?error=bad_token&dialog=login&redirect=${pathname}`,
@@ -57,11 +54,11 @@ export const middleware = async (req: NextRequest) => {
         process.env.NEXT_STORES_JWT_SECRET!
       );
 
-      if (sub && subPage === 'login') {
+      if (sub && dialog === 'login') {
         console.log('trying to login while logged in');
         const newUrl = req.nextUrl.searchParams.delete('dialog');
         console.log({newUrl});
-        return NextResponse.redirect(new URL(pathname, req.url));
+        return NextResponse.redirect(req.nextUrl);
       }
 
       response.headers.set('X-USER-ID', sub);
@@ -77,15 +74,12 @@ export const middleware = async (req: NextRequest) => {
         );
       }
 
-      return NextResponse.redirect(
-        new URL(`${pathname}?error=bad_token&dialog=login`, req.url)
-      );
+      req.nextUrl.searchParams.set('error', 'bad_token');
+      req.nextUrl.searchParams.set('dialog', 'login');
+      req.nextUrl.searchParams.set('redirect', pathname);
+
+      return NextResponse.redirect(req.nextUrl);
     }
   }
   return response;
 };
-
-// See "Matching Paths" below to learn more
-// export const config = {
-//   matcher: '/api/(.*)',
-// };
