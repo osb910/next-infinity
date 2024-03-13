@@ -8,7 +8,7 @@ const TestPage = ({}: TestPageProps) => {
   console.log({slug});
   return (
     <main>
-      <FilePicker />
+      <FilePicker accept='image/png' />
     </main>
   );
 };

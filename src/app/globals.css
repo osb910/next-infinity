@@ -505,6 +505,12 @@ html.next-blog {
   transition: all 300ms ease-in-out;
 }
 
+/* @media (min-width: 48rem) {
+  .next-blog body {
+    flex-flow: column nowrap;
+  }
+} */
+
 .next-blog body::before {
   content: '';
   position: absolute;
