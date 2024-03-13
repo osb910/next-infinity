@@ -31,8 +31,8 @@
   gap: 2em;
   background: linear-gradient(
     to bottom,
-    var(--blog-decorative-300),
-    var(--blog-decorative-600)
+    var(--blog-decorative-200),
+    var(--blog-decorative-500)
   );
 }
 

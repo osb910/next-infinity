@@ -1,7 +1,7 @@
 .main {
   inline-size: 100%;
   max-inline-size: var(--blog-width);
-  padding: 0;
+  padding-block: 2em;
   margin: 0 auto;
   border-radius: 2px;
   flex: 1 0 auto;

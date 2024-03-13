@@ -32,6 +32,7 @@ export type NavLinkProps = ComponentPropsWithoutRef<'a'> &
     highlightClass?: string;
     highlightStyle?: Record<string, any>;
     slug?: string;
+    external?: boolean;
   };
 
 export interface NavContextProps {

@@ -496,7 +496,6 @@ html.next-blog {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  gap: 2em;
   background-color: var(--blog-decorative-200);
   border-bottom: 3px solid var(--blog-decorative-600);
   color: var(--blog-text);
@@ -555,10 +554,7 @@ html.next-blog code {
   margin-block: 0.5em;
   font-weight: 500;
 }
-.next-blog p {
-  font-size: 1.25rem;
-  margin-block-end: 0.5em;
-}
+
 .next-blog p code {
   display: inline-block;
   font-size: 0.9em;

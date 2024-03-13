@@ -36,5 +36,5 @@
 }
 
 html[data-color-theme='dark'] .wrapper {
-  --stroke-color: var(--blog-decorative-300);
+  --stroke-color: var(--blog-decorative-600);
 }

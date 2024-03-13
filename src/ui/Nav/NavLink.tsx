@@ -12,6 +12,7 @@ export const NavLink = ({
   highlightStyle,
   slug,
   children,
+  external,
   ...rest
 }: NavLinkProps) => {
   const {changeHovered, pathName, toggleNav} = useNav();
@@ -20,6 +21,7 @@ export const NavLink = ({
   return (
     <Link
       prefetch={true}
+      {...((rest.href.startsWith('http') || external) && {target: '_blank'})}
       {...rest}
       className={clsx(
         cls.navLink,

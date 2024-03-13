@@ -9,6 +9,7 @@ import IconButton from '@/ui/IconButton';
 import VisuallyHidden from '@/ui/VisuallyHidden';
 import Switch from '@/ui/Switch';
 import cls from './Header.module.css';
+import {NavProvider} from '@/ui/Nav';
 
 interface HeaderProps {
   theme: 'light' | 'dark';
@@ -22,41 +23,43 @@ const btnAnimation = {
 
 const Header = ({theme, userId}: HeaderProps) => {
   return (
-    <header className={clsx(cls.header)}>
-      <Link href='/next-blog' className={cls.logo}>
-        <Logo width='12rem' />
-      </Link>
-      <Navigation />
-      <section className={cls.settings}>
-        <ThemeSwitch
-          whileHover={btnAnimation}
-          whileFocus={btnAnimation}
-          className={cls.themeSwitch}
-        />
-        <SfxSwitch
-          whileHover={btnAnimation}
-          whileFocus={btnAnimation}
-          className={cls.sfxSwitch}
-        />
-        <Link href='/api/next-blog/rss'>
-          <IconButton
-            icon={
-              <Rss
-                style={{
-                  // Optical alignment
-                  transform: 'translate(2px, -2px)',
-                }}
-              />
-            }
+    <NavProvider>
+      <header className={clsx(cls.header)}>
+        <Link href='/next-blog' className={cls.logo}>
+          <Logo width='12rem' />
+        </Link>
+        <Navigation />
+        <section className={cls.settings}>
+          <ThemeSwitch
             whileHover={btnAnimation}
             whileFocus={btnAnimation}
-            className={cls.rssBtn}
-          >
-            <VisuallyHidden>View RSS feed</VisuallyHidden>
-          </IconButton>
-        </Link>
-      </section>
-    </header>
+            className={cls.themeSwitch}
+          />
+          <SfxSwitch
+            whileHover={btnAnimation}
+            whileFocus={btnAnimation}
+            className={cls.sfxSwitch}
+          />
+          <Link href='/api/next-blog/rss'>
+            <IconButton
+              icon={
+                <Rss
+                  style={{
+                    // Optical alignment
+                    transform: 'translate(2px, -2px)',
+                  }}
+                />
+              }
+              whileHover={btnAnimation}
+              whileFocus={btnAnimation}
+              className={cls.rssBtn}
+            >
+              <VisuallyHidden>View RSS feed</VisuallyHidden>
+            </IconButton>
+          </Link>
+        </section>
+      </header>
+    </NavProvider>
   );
 };
 

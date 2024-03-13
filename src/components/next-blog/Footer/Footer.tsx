@@ -1,49 +1,66 @@
 import Link from 'next/link';
-
 import Logo from '@/components/next-blog/Logo';
-
 import DecorativeSwoops from './DecorativeSwoops';
-import styles from './Footer.module.css';
+import Nav, {NavList, NavItem, NavProvider, NavLink} from '@/ui/Nav';
+import clsx from 'clsx';
+import cls from './Footer.module.css';
+
+const navLinks = [
+  {
+    to: '/api/next-blog/rss',
+    label: 'RSS feed',
+    external: true,
+  },
+  {
+    to: 'https://twitter.com/omarshdev',
+    label: 'Twitter',
+  },
+  {
+    to: '/',
+    label: 'Next Infinity',
+  },
+];
 
 function Footer() {
   return (
-    <footer className={styles.wrapper}>
-      <DecorativeSwoops />
-      <section className={styles.content}>
-        <div>
+    <NavProvider>
+      <footer className={cls.footer}>
+        <DecorativeSwoops />
+        <section className={cls.body}>
           <Logo width='10rem' />
-          {/*
-            NOTE: If you'd like to build your blog on top
-            of this code, the license requires that you leave
-            this paragraph untouched. Check out LICENSE.md
-            for more information.
-          */}
-          <p className={styles.attribution}>
-            Blog template created by{' '}
-            <a href='https://www.joshwcomeau.com/'>Josh W. Comeau</a>. Check out{' '}
-            <a href='https://www.joyofreact.com/'>The Joy of React</a> to learn
-            how to build dynamic React apps like this one!
+          <p className={cls.attribution}>
+            Blog created by{' '}
+            <Link href='https://www.github.com/osb910' target='_blank'>
+              Omar Shareef
+            </Link>
+            .
           </p>
-        </div>
-        <nav>
-          <h2 className={styles.linkHeading}>Links</h2>
-          <ul className={styles.linkList}>
-            <li>
-              <Link href='/next-blog/rss'>RSS feed</Link>
-            </li>
-            <li>
-              <Link href='/next-blog/todo'>Terms of Use</Link>
-            </li>
-            <li>
-              <Link href='/next-blog/todo'>Privacy Policy</Link>
-            </li>
-            <li>
-              <a href='https://twitter.com/JoshWComeau'>Twitter</a>
-            </li>
-          </ul>
-        </nav>
-      </section>
-    </footer>
+          <p className={cls.attribution}>
+            Blog template created by{' '}
+            <Link href='https://www.joshwcomeau.com/' target='_blank'>
+              Josh W. Comeau
+            </Link>
+            . Check out{' '}
+            <Link href='https://www.joyofreact.com/' target='_blank'>
+              The Joy of React
+            </Link>{' '}
+            to learn how to build dynamic React apps like this one!
+          </p>
+        </section>
+        <Nav className={cls.nav}>
+          <h2 className={cls.linkHeading}>Links</h2>
+          <NavList className={cls.linkList}>
+            {navLinks.map(({to, label, external}) => (
+              <NavItem key={to} highlightClass={cls.highlight} slug={to}>
+                <NavLink href={to} external={external}>
+                  {label}
+                </NavLink>
+              </NavItem>
+            ))}
+          </NavList>
+        </Nav>
+      </footer>
+    </NavProvider>
   );
 }
 
