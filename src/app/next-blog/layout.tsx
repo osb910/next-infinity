@@ -1,11 +1,11 @@
-import {cookies} from 'next/headers';
+import {cookies, headers} from 'next/headers';
 import {UserDataProvider} from '@/hooks/useUserData';
 import {ThemeProvider} from '@/ui/ThemeSwitch/useTheme';
-import {NavProvider} from '@/ui/Nav';
 import {type Metadata} from 'next';
 import Header from '@/components/next-blog/Header';
 import Footer from '@/components/next-blog/Footer';
 import cls from './HomePage.module.css';
+import './styles.css';
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({children}: {children: React.ReactNode}) => {
+  const headerStore = headers();
   const cookieStore = cookies();
   const userId = cookieStore.get('next-blog-user-id')?.value ?? '';
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
@@ -43,9 +44,11 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
         userEndpoint='/api/next-blog/auth/me'
         userIdCookie='next-blog-user-id'
       >
-        <Header theme={theme} userId={userId} />
-        <main className={cls.main}>{children}</main>
-        <Footer />
+        <body className='next-blog'>
+          <Header theme={theme} userId={userId} />
+          <main className={cls.main}>{children}</main>
+          <Footer />
+        </body>
       </UserDataProvider>
     </ThemeProvider>
   );

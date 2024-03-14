@@ -82,15 +82,15 @@ const splineSansMono = Spline_Sans_Mono({
 export default function RootLayout({children}: {children: React.ReactNode}) {
   const headerStore = headers();
   const cookieStore = cookies();
-  const site = headerStore.get('x-site');
-  const theme = cookieStore.get('color-theme')?.value ?? 'light';
+  const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
+    | 'light'
+    | 'dark';
 
   return (
     <html
       lang='en'
       data-color-theme={theme}
       className={clsx(
-        site,
         theme,
         atkinson.variable,
         roboto.variable,

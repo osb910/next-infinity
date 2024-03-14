@@ -1,0 +1,113 @@
+body ::selection {
+  background-color: var(--blog-selection-bg) !important;
+  color: var(--blog-selection-text) !important;
+  background-image: none !important;
+  -webkit-text-fill-color: var(--blog-selection-text) !important;
+  -moz-text-fill-color: var(--blog-selection-text) !important;
+  background-image: none !important;
+  background-clip: revert !important;
+  -webkit-background-clip: revert !important;
+  text-shadow: none !important;
+}
+
+body {
+  min-block-size: 100vh;
+  min-block-size: 100svh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blog-decorative-200);
+  border-bottom: 3px solid var(--blog-decorative-600);
+  color: var(--blog-text);
+  font-family: var(--fn-work-sans), sans-serif;
+  line-height: 1.5;
+  letter-spacing: -0.03125em;
+  -webkit-font-smoothing: antialiased;
+  transition: all 300ms ease-in-out;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 50vh;
+  background: linear-gradient(
+    to top,
+    var(--blog-backdrop),
+    var(--blog-backdrop-highlight)
+  );
+}
+
+body > main {
+  flex: 1;
+  position: relative;
+}
+
+body p {
+  font-size: 1.25rem;
+  margin-block: 1em;
+}
+
+body code {
+  font-family: var(--fn-spline-sans-mono);
+}
+
+@media (min-width: 35rem) {
+  :root body {
+    --blog-padding: 1.5em;
+  }
+}
+
+body h1 {
+  font-size: 1.75rem;
+  font-weight: 650;
+}
+body h2 {
+  font-size: 1.5rem;
+  margin-block: 1.25em;
+  font-weight: 600;
+}
+body h3 {
+  font-size: 1.25rem;
+  margin-block: 1.25em;
+  font-weight: 500;
+}
+
+body p code {
+  display: inline-block;
+  font-size: 0.9em;
+  background: var(--color-inline-code-bg);
+  padding: 0.25em 0.325em;
+  margin: -0.25em -1px;
+  border-radius: 4px;
+}
+
+body a {
+  text-decoration-color: var(--blog-primary-500);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.125em;
+  font-weight: 500;
+  transition: all 300ms ease-in-out;
+}
+
+body a:hover {
+  text-underline-offset: 0.25em;
+}
+
+body button {
+  padding: 0;
+}
+
+@media (min-width: 35rem) {
+  body h1 {
+    font-size: 2.25rem;
+  }
+
+  body h2 {
+    font-size: 1.75rem;
+  }
+  body h3 {
+    font-size: 1.5rem;
+  }
+}
