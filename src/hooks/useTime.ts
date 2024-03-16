@@ -24,7 +24,7 @@ const useTime = ({
   useEffect(() => {
     if (!showTime) return;
     setTime(new Date());
-  }, []);
+  }, [showTime]);
 
   useEffect(() => {
     if (!showTime || !time) return;

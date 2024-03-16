@@ -1,0 +1,10 @@
+.form {
+  max-inline-size: 50rem;
+  margin: 2rem auto;
+  padding: 2em;
+  background: linear-gradient(#c8d8d7, #979e9d);
+}
+
+.form :is(button[type='submit']) {
+  background-color: #0d8f52;
+}

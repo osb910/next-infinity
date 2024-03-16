@@ -44,11 +44,11 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
         userEndpoint='/api/next-blog/auth/me'
         userIdCookie='next-blog-user-id'
       >
-        <body className='next-blog'>
-          <Header theme={theme} userId={userId} />
-          <main className={cls.main}>{children}</main>
-          <Footer />
-        </body>
+        {/* <body className='next-blog'> */}
+        <Header theme={theme} userId={userId} />
+        <main className={cls.main}>{children}</main>
+        <Footer />
+        {/* </body> */}
       </UserDataProvider>
     </ThemeProvider>
   );

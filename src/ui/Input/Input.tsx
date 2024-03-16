@@ -128,7 +128,7 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
   const Element = motion[Tag];
 
   return (
-    <p className={clsx(cls.ctrl, ctrlClass)}>
+    <div className={clsx(cls.ctrl, ctrlClass)}>
       {label && (
         <label htmlFor={appliedId} tabIndex={-1} className={cls.label}>
           {label}
@@ -173,7 +173,7 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
         {invalidMsg && <small className={cls.errorMsg}>{invalidMsg}</small>}
       </motion.section>
       {ctrlChildren}
-    </p>
+    </div>
   );
 });
 

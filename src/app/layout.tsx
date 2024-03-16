@@ -19,7 +19,7 @@ import {type Metadata} from 'next';
 export const metadata: Metadata = {
   title: 'Next Infinity',
   description:
-    'Full-stack projects and mini-apps built with Next.js, TypeScript, and MongoDB',
+    'An assortment of full-stack projects and miniature applications crafted using Next.js, TypeScript, MongoDB, and Framer Motion.',
   metadataBase: new URL('https://next-infinity.vercel.app'),
   openGraph: {
     title: 'Next Infinity',
@@ -80,7 +80,6 @@ const splineSansMono = Spline_Sans_Mono({
 });
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
-  const headerStore = headers();
   const cookieStore = cookies();
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'

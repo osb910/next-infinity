@@ -1,0 +1,16 @@
+.header {
+  padding: 2em 3em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header h1 {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.header button {
+  background-color: #0d8f52;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+}
