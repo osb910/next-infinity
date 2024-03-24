@@ -6,12 +6,17 @@ import Card from '@/ui/Card';
 
 import {type CSSProperties} from 'react';
 import cls from './BlogPostCard.module.css';
+import {getReadingTime} from '@/lib/text/analysis';
+import DateTooltip from '../DateTooltip';
+import Separator from '@/ui/Separator';
 
 export interface BlogPostCardProps {
   slug: string;
   title: string;
   publishedOn: string;
   abstract: string;
+  body: string;
+  category?: string;
   img?: string;
 }
 
@@ -20,15 +25,12 @@ const BlogPostCard = ({
   title,
   publishedOn,
   abstract,
+  body,
+  category = 'Web',
   img,
 }: BlogPostCardProps) => {
   const href = `/next-blog/posts/${slug}`;
-  // const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
-  const formattedDate = new Date(publishedOn).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const readingTime = getReadingTime(body);
   const truncatedAbstract =
     abstract.split(/[- ]/).length <= 24
       ? abstract
@@ -42,7 +44,7 @@ const BlogPostCard = ({
           <Image
             src={`/api/next-blog/files/${slug}/${img}`}
             alt={title}
-            width={450}
+            width={600}
             height={300}
           />
         </figure>
@@ -50,9 +52,13 @@ const BlogPostCard = ({
       <Link href={href} className={cls.title}>
         <h3>{title}</h3>
       </Link>
-      <time dateTime={new Date(publishedOn).toISOString()}>
-        {formattedDate}
-      </time>
+      <section className={cls.meta}>
+        <p>{category}</p>
+        <Separator color='var(--blog-decorative-500)' />
+        <p>{readingTime.text}</p>
+        <Separator color='var(--blog-decorative-500)' />
+        <DateTooltip date={publishedOn} />
+      </section>
       <p>
         {truncatedAbstract}{' '}
         <Link href={href} className={cls.readMoreLink}>

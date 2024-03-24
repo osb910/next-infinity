@@ -1,0 +1,7 @@
+.tooltip.tooltip {
+  --content-bg: var(--blog-decorative-300);
+  padding-block: 0.25em;
+  padding-inline: 0.75em;
+  background-color: var(--content-bg);
+  border-radius: 4px;
+}

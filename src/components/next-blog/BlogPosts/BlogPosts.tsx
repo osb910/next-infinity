@@ -7,15 +7,18 @@ export interface BlogPostsProps {
     title: string;
     publishedOn: string;
     abstract: string;
+    body: string;
+    category?: string;
+    img?: string;
   }[];
 }
 
 const BlogPosts = ({posts}: BlogPostsProps) => {
   return (
     <ul className={cls.posts}>
-      {posts.map(({slug, ...delegated}) => (
+      {posts.map(({slug, ...rest}) => (
         <li key={slug}>
-          <BlogPostCard slug={slug} {...delegated} />
+          <BlogPostCard slug={slug} {...rest} />
         </li>
       ))}
     </ul>

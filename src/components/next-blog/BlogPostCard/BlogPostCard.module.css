@@ -21,9 +21,35 @@
 .title:hover {
   color: var(--blog-primary-500);
 }
+
+.meta {
+  margin-block-end: 1em;
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+/* .meta > *:not(:first-child)::before {
+  content: '•';
+  margin-inline: 0.325em;
+  font-weight: 700;
+  color: var(--gray-500);
+} */
+
+.meta p {
+  color: var(--blog-decorative-800);
+}
+
+/* .meta .tooltip {
+  --content-bg: var(--blog-decorative-300);
+  padding-block: 0.25em;
+  padding-inline: 0.75em;
+  background-color: var(--content-bg);
+  border-radius: 4px;
+} */
+
 .wrapper time {
   display: block;
-  margin-block-end: 1em;
   font-weight: 500;
   font-size: 1.125rem;
   font-style: italic;
@@ -32,7 +58,7 @@
 
 .wrapper p {
   font-size: 1.125rem;
-  margin-block-end: 0;
+  margin-block: 0;
 }
 
 .arrow {
