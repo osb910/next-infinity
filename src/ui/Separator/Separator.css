@@ -1,0 +1,14 @@
+.SeparatorRoot {
+  background-color: var(--color);
+  margin: var(--space);
+  border-radius: 2px;
+}
+.SeparatorRoot[data-orientation='horizontal'] {
+  height: var(--size);
+  width: 100%;
+}
+
+.SeparatorRoot[data-orientation='vertical'] {
+  height: auto;
+  width: var(--size);
+}
