@@ -5,6 +5,7 @@ type Post = {
   slug: string;
   title: string;
   abstract: string;
+  body: string;
   publishedOn: string;
 };
 
@@ -20,11 +21,12 @@ export const getBlogPostList = async () => {
       }
     );
 
-    const {data: frontmatter} = matter(rawContent);
+    const {data: frontmatter, content} = matter(rawContent);
 
     blogPosts.push({
       slug: file.name.replace('.mdx', ''),
       ...frontmatter,
+      body: content,
     });
   }
   return blogPosts.sort((p1, p2) =>
