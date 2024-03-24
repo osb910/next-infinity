@@ -2,18 +2,53 @@ import Link from 'next/link';
 import Logo from '@/components/next-blog/Logo';
 import DecorativeSwoops from './DecorativeSwoops';
 import Nav, {NavList, NavItem, NavProvider, NavLink} from '@/ui/Nav';
-import clsx from 'clsx';
 import cls from './Footer.module.css';
+import siteInfo from '@/l10n/next-blog/site';
+import Icon from '@/ui/Icon/lucide';
+import {FaDiscord} from 'react-icons/fa';
+import IconLabel from '../IconLabel';
 
 const navLinks = [
   {
     to: '/api/next-blog/rss',
-    label: 'RSS feed',
+    label: (
+      <IconLabel label='RSS' className={cls.iconLink}>
+        <Icon name='rss' />
+      </IconLabel>
+    ),
     external: true,
   },
   {
-    to: 'https://twitter.com/omarshdev',
-    label: 'Twitter',
+    to: siteInfo['en'].links.github,
+    label: (
+      <IconLabel label='GitHub' className={cls.iconLink}>
+        <Icon name='github' />
+      </IconLabel>
+    ),
+  },
+  {
+    to: siteInfo['en'].links.linkedin,
+    label: (
+      <IconLabel label='LinkedIn' className={cls.iconLink}>
+        <Icon name='linkedin' />
+      </IconLabel>
+    ),
+  },
+  {
+    to: siteInfo['en'].links.twitter,
+    label: (
+      <IconLabel label='Twitter' className={cls.iconLink}>
+        <Icon name='twitter' />
+      </IconLabel>
+    ),
+  },
+  {
+    to: siteInfo['en'].links.discord,
+    label: (
+      <IconLabel label='Discord' className={cls.iconLink}>
+        <FaDiscord />
+      </IconLabel>
+    ),
   },
   {
     to: '/',
@@ -28,9 +63,10 @@ function Footer() {
         <DecorativeSwoops />
         <section className={cls.body}>
           <Logo width='10rem' />
+          <p className={cls.description}>{siteInfo['en'].description}</p>
           <p className={cls.attribution}>
-            Blog created by{' '}
-            <Link href='https://www.github.com/osb910' target='_blank'>
+            Blog created with ❤️ by{' '}
+            <Link href={siteInfo['en'].links.github} target='_blank'>
               Omar Shareef
             </Link>
             .
@@ -46,6 +82,9 @@ function Footer() {
             </Link>{' '}
             to learn how to build dynamic React apps like this one!
           </p>
+          <small className={cls.copyright}>
+            All rights reserved | Copyright {new Date().getFullYear()}
+          </small>
         </section>
         <Nav className={cls.nav}>
           <h2 className={cls.linkHeading}>Links</h2>
