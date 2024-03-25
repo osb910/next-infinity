@@ -15,12 +15,15 @@ const Tooltip = ({
   noHover = false,
   defaultOpen = false,
   children,
+  ...rest
 }: TooltipProps) => {
   return (
     <T.Root
+      data-tooltip='root'
       delayDuration={delay}
       disableHoverableContent={noHover}
       defaultOpen={defaultOpen}
+      {...rest}
     >
       {children}
     </T.Root>
