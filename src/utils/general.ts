@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const dump = (obj: object) => JSON.stringify(obj, null, 2);
 
 const logDump = (obj: object) => console.log(dump(obj));
@@ -23,6 +25,10 @@ export const randArrayEl = (
 ) => {
   const idx = randNum(till, from);
   return arr[idx];
+};
+
+export const getRelativeDate = (date: string) => {
+  return moment(date).fromNow();
 };
 
 export {dump, logDump};
