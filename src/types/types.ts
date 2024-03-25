@@ -1,34 +1,4 @@
-import {type NextRequest} from 'next/server';
-import {type Metadata, type ResolvingMetadata} from 'next';
-import {type HydratedDocument} from 'mongoose';
-
-export interface PageProps<
-  T = Record<string, string>,
-  K = Record<string, string | string[] | undefined>
-> {
-  params: T;
-  searchParams: K;
-}
-
-export type AppPage<
-  T = Record<string, string>,
-  K = Record<string, string | string[] | undefined>
-> = (props: PageProps<T, K>) => Promise<any>;
-
-export type AppPageSync<
-  T = Record<string, string>,
-  K = Record<string, string | string[] | undefined>
-> = (props: PageProps<T, K>) => any;
-
-export type GetMetadata<T extends (...args: any) => any = AppPage> = (
-  props: Parameters<T>[0],
-  parent: ResolvingMetadata
-) => Promise<Metadata>;
-
-export type AppRoute<T = Record<string, string>> = (
-  req: NextRequest,
-  {params}: {params: T}
-) => Promise<any>;
+import type {CSSProperties} from 'react';
 
 export interface P8n {
   count: number;
@@ -46,15 +16,15 @@ export type GetP8n = (
   perPage?: number | string | null
 ) => P8n;
 
-export type HDoc<T> = HydratedDocument<T> & {
-  _doc: T;
-};
-
 export interface JsonRes<T = any> extends Partial<P8n> {
   status: 'success' | 'error' | 'warning' | 'notice';
   code: number;
   message: string;
-  data?: T;
+  data?:
+    | T
+    | {
+        errors: {[x: string]: any};
+      };
 }
 
 export interface GeoLocation {
@@ -85,3 +55,5 @@ export interface Img {
   readableSize: string;
   caption?: string;
 }
+
+export type CSSProps = CSSProperties & {[key: `--${string}`]: string | number};
