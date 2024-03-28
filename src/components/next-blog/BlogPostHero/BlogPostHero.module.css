@@ -17,11 +17,22 @@
 .hero p {
   font-size: 1.125rem;
   color: var(--blog-decorative-900);
-  margin-block-end: 0px;
   font-weight: 400;
 }
 .hero time {
   font-weight: 500;
+}
+
+.meta {
+  margin-block-end: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.meta p {
+  color: var(--blog-decorative-800);
 }
 
 @media (min-width: 35rem) {

@@ -54,9 +54,9 @@ const BlogPostCard = ({
       </Link>
       <section className={cls.meta}>
         <p>{category}</p>
-        <Separator color='var(--blog-decorative-500)' />
+        <Separator color='var(--blog-decorative-600)' />
         <p>{readingTime.text}</p>
-        <Separator color='var(--blog-decorative-500)' />
+        <Separator color='var(--blog-decorative-600)' />
         <DateTooltip date={publishedOn} />
       </section>
       <p>

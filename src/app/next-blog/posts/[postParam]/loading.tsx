@@ -6,6 +6,8 @@ const BlogPostPageLoading = () => {
   return (
     <article className={cls.wrapper}>
       <BlogPostHeroLoading
+        slug='blog-post-slug'
+        readingTime='0 min read'
         title={`Blog Post Loading Title`}
         publishedOn={new Date().toISOString()}
       />
