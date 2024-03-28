@@ -5,24 +5,32 @@ import type {IComment} from '../comment';
 export interface PostBase {
   lang: string;
   title: string;
-  abstract: string;
+  abstract?: string;
   file: string;
-  content: string;
+  body: string;
+  readingTime: {
+    minutes: number;
+    text: string;
+    time: number;
+    words: number;
+  };
 }
 
 export interface IPost extends Document, PostBase {
   slug: string;
   publishedOn: Date;
+  status: 'draft' | 'published';
   isFeatured: boolean;
-  by?: string;
   author: Types.ObjectId;
+  by?: string;
+  category: Types.ObjectId;
   tags: Array<Types.ObjectId>;
-  likedBy: Array<Types.ObjectId>;
+  likes: Array<Types.ObjectId>;
   comments: Array<Types.ObjectId>;
   images: Array<Img>;
   l10n: Array<
     PostBase & {
-      translatedBy?: string;
+      translator?: string;
     }
   >;
 }

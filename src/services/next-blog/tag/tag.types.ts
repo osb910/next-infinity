@@ -1,13 +1,14 @@
 import type {Document, Model, Types} from 'mongoose';
 
-export interface ITag extends Document {
-  name: string;
+export interface TagBase {
   lang: string;
+  name: string;
+  description?: string;
+}
+export interface ITag extends Document, TagBase {
+  slug: string;
   posts: Array<Types.ObjectId>;
-  l10n: Array<{
-    lang: string;
-    name: string;
-  }>;
+  l10n: Array<TagBase>;
 }
 
 export interface TagModel extends Model<ITag> {}
