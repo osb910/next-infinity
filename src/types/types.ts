@@ -20,11 +20,9 @@ export interface JsonRes<T = any> extends Partial<P8n> {
   status: 'success' | 'error' | 'warning' | 'notice';
   code: number;
   message: string;
-  data?:
-    | T
-    | {
-        errors: {[x: string]: any};
-      };
+  data?: T & {
+    errors?: {[x: string]: any};
+  };
 }
 
 export interface GeoLocation {

@@ -9,6 +9,6 @@
 }
 
 .SeparatorRoot[data-orientation='vertical'] {
-  height: auto;
+  height: 1.5em;
   width: var(--size);
 }
