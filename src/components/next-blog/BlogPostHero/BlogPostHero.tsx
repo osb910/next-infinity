@@ -32,6 +32,7 @@ const BlogPostHero = ({
 
   return (
     <header className={clsx(cls.hero, delegated.className)} {...delegated}>
+      <h1>{title}</h1>
       {img && (
         <figure className={cls.image}>
           <Image
@@ -42,7 +43,6 @@ const BlogPostHero = ({
           />
         </figure>
       )}
-      <h1>{title}</h1>
       <section className={cls.meta}>
         <p>{category}</p>
         <Separator color='var(--blog-decorative-800)' />
