@@ -1,12 +1,12 @@
 .logo {
   --width: 216.7915832519531px;
-  inline-size: calc(var(--width) * 0.83);
+  inline-size: calc(var(--width) * 0.74);
   block-size: calc(var(--width) / 4.95);
   display: flex;
   align-items: center;
 }
 
-@media (min-width: 24rem) {
+@media (min-width: 36rem) {
   .logo {
     inline-size: var(--width);
   }

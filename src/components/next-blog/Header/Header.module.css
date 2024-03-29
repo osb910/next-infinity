@@ -14,7 +14,7 @@
 .logo {
   z-index: 2;
   margin-inline-start: auto;
-  padding-inline-start: 2.5em;
+  padding-inline-start: 2em;
   flex-shrink: 1;
   transition: all 300ms ease-in-out;
 }
