@@ -1,5 +1,10 @@
 import moment from 'moment';
 
+type ShareOptions = {
+  caption?: string;
+  source?: string;
+};
+
 const dump = (obj: object) => JSON.stringify(obj, null, 2);
 
 const logDump = (obj: object) => console.log(dump(obj));
@@ -30,5 +35,47 @@ export const randArrayEl = (
 export const getRelativeDate = (date: string) => {
   return moment(date).fromNow();
 };
+
+export const getFacebookShareLink = (
+  url: string,
+  {caption = ''}: ShareOptions
+) => {
+  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    url
+  )}& quote=${caption}`;
+};
+
+export const getTwitterShareLink = (
+  url: string,
+  {caption = '', source}: ShareOptions = {}
+) =>
+  `https://twitter.com/intent/tweet/?text=${encodeURIComponent(caption ?? '')}${
+    source && `&related=@${source}`
+  }&url=${encodeURIComponent(url)}`;
+
+export const getLinkedInShareLink = (
+  url: string,
+  {caption = '', source}: ShareOptions
+) => {
+  return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+    url
+  )}&title=&summary=${
+    source &&
+    `&source=${source}
+`
+  }`;
+};
+
+export const getWhatsappShareLink = (
+  url: string,
+  {caption = '', source}: ShareOptions
+) =>
+  `https://api.whatsapp.com/send?&text=${encodeURIComponent(
+    url
+  )} \n${encodeURIComponent(caption)}`;
+export const getTelegramShareLink = (
+  url: string,
+  {caption = '', source}: ShareOptions
+) => `https://telegram.me/share/url?url=${encodeURIComponent(url)}`;
 
 export {dump, logDump};
