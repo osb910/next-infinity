@@ -1,5 +1,5 @@
 .tooltip.tooltip {
-  --content-bg: var(--blog-decorative-300);
+  --content-bg: var(--blog-decorative-500);
   background-color: var(--content-bg);
   border-radius: 4px;
 }

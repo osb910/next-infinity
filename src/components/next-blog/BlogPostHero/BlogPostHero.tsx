@@ -45,9 +45,9 @@ const BlogPostHero = ({
       <h1>{title}</h1>
       <section className={cls.meta}>
         <p>{category}</p>
-        <Separator color='var(--blog-decorative-600)' />
+        <Separator color='var(--blog-decorative-800)' />
         <p>{readingTime}</p>
-        <Separator color='var(--blog-decorative-600)' />
+        <Separator color='var(--blog-decorative-800)' />
         <DateTooltip date={publishedOn} />
       </section>
       {children}

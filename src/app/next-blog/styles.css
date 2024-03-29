@@ -48,10 +48,6 @@ body p {
   font-size: 1.25rem;
 }
 
-body p:not(:first-child) {
-  margin-block: 1em;
-}
-
 body code {
   font-family: var(--fn-spline-sans-mono);
 }

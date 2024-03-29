@@ -7,32 +7,23 @@
   padding-inline: 1em;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
 }
 
-.hero h1 {
-  margin-block-end: 0.5rem;
-}
-.hero p {
-  font-size: 1.125rem;
-  color: var(--blog-decorative-900);
-  font-weight: 400;
-}
 .hero time {
   font-weight: 500;
 }
 
 .meta {
-  margin-block-end: 1em;
   display: flex;
   align-items: center;
   gap: 0.5em;
   flex-wrap: wrap;
 }
 
-.meta p {
+.meta :where(p, time) {
   color: var(--blog-decorative-800);
+  font-size: 1.125rem;
 }
 
 @media (min-width: 35rem) {

@@ -4,6 +4,7 @@ import * as RSeparator from '@radix-ui/react-separator';
 import './Separator.css';
 import {type ComponentPropsWithoutRef} from 'react';
 import {type CSSProps} from '@/types';
+import clsx from 'clsx';
 
 interface SeparatorProps extends ComponentPropsWithoutRef<'div'> {
   orientation?: 'horizontal' | 'vertical';
@@ -28,7 +29,7 @@ const Separator = ({
   };
   return (
     <RSeparator.Root
-      className={`SeparatorRoot ${rest.className}`}
+      className={clsx('SeparatorRoot', rest.className)}
       style={style}
       orientation={orientation}
       decorative={decorative}

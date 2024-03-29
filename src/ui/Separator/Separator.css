@@ -2,6 +2,7 @@
   background-color: var(--color);
   margin: var(--space);
   border-radius: 2px;
+  align-self: center;
 }
 .SeparatorRoot[data-orientation='horizontal'] {
   height: var(--size);
@@ -9,6 +10,6 @@
 }
 
 .SeparatorRoot[data-orientation='vertical'] {
-  height: 1.5em;
+  height: 2em;
   width: var(--size);
 }
