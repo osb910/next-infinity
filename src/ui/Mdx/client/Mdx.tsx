@@ -8,8 +8,9 @@ export interface MdxProps extends MDXRemoteProps {
 }
 
 const Mdx = async ({source, loader, ...delegated}: MdxProps) => {
-  const Body = <MDXRemote source={source} {...delegated} />;
-  return loader ? <Suspense fallback={loader}>{Body}</Suspense> : Body;
+  // @ts-ignore
+  const Body = <MDXRemote {...source} {...delegated} />;
+  return Body;
 };
 
 export default Mdx;
