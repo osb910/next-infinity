@@ -1,13 +1,38 @@
 import openai from './openai';
+import {GenerateImageOptions} from './types';
 
-export const createImages = async () => {
-  const result = await openai.images.generate({
-    model: 'dall-e-2',
-    prompt: 'A cute baby sea otter',
-    // model_params: {
-    //   n: 1,
-    //   size: '1024x1024',
-    // },
-  });
-  console.log(result.data);
+export const generateImages = async ({
+  prompt,
+  model = 'dall-e-2',
+  num = 1,
+  size = '512x512',
+  style = 'vivid',
+}: GenerateImageOptions) => {
+  try {
+    const result = await openai.images.generate({
+      prompt,
+      model,
+      n: num,
+      size,
+      ...(model === 'dall-e-3' && {style}),
+      response_format: 'b64_json',
+    });
+    return {
+      status: 'success',
+      message: `${num === 1 ? 'Image' : 'Images'} generated successfully.`,
+      data: result.data.map(image => ({
+        revisedPrompt: image.revised_prompt,
+        img: `data:image/png;base64,${image.b64_json}`,
+      })),
+      createdAt: new Date(result.created * 1000),
+      created: result.created,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 'error',
+      message: (err as Error).message,
+      data: null,
+    };
+  }
 };

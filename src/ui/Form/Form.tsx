@@ -9,7 +9,6 @@ import {
   type ReactNode,
   type ComponentPropsWithRef,
 } from 'react';
-import {MotionProps, motion} from 'framer-motion';
 import clsx from 'clsx';
 import {Submit} from './Submit';
 import cls from './Form.module.css';
@@ -102,13 +101,13 @@ const Form = forwardRef<FormHandle, FormProps>(function Form(
     >
       {title && <h2 className={cls.title}>{title}</h2>}
       {children}
-      <p className={cls.actions}>
-        {useSubmitBtn && (
+      {useSubmitBtn && (
+        <p className={cls.actions}>
           <Submit isSubmitting={isSubmitting} disabled={btnDisabled}>
             {submitText}
           </Submit>
-        )}
-      </p>
+        </p>
+      )}
     </form>
   );
 });

@@ -2,19 +2,92 @@
 
 import {useState} from 'react';
 
+export type Obj = {[x: string]: any};
+
+const resolve = (path: string, obj: Obj) => {
+  return path.split('.').reduce(function (prev, curr) {
+    return prev ? prev[curr] : null;
+  }, obj);
+};
+
 const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
   const [array, setArray] = useState<Array<T>>(defaultValue);
 
-  const push = (...elements: Array<T>) => {
-    setArray(arr => [...arr, ...elements]);
+  const push = (
+    added: T | Array<T>,
+    {unique = false}: {unique?: string | boolean}
+  ) => {
+    if (!added || (added instanceof Array && added.length === 0)) return;
+    if (added instanceof Array) {
+      const toBeAdded = unique
+        ? added.filter(
+            (el: T) =>
+              !array.some(a => {
+                const addedProp =
+                  typeof unique === 'string' ? resolve(unique, a as Obj) : a;
+                const elProp =
+                  typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+                return addedProp === elProp;
+              })
+          )
+        : added;
+      setArray(arr => [...arr, ...toBeAdded]);
+    } else {
+      const addedExists = array.some(el => {
+        const addedProp =
+          typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+        const elProp =
+          typeof unique === 'string' ? resolve(unique, added as Obj) : added;
+        return addedProp === elProp;
+      });
+      if (unique && addedExists) return;
+      setArray(arr => [...arr, added]);
+    }
   };
 
-  const unshift = (...elements: Array<T>) => {
-    setArray(arr => [...elements, ...arr]);
+  const unshift = (
+    added: T | Array<T>,
+    {unique = false}: {unique?: string | boolean}
+  ) => {
+    if (!added || (added instanceof Array && added.length === 0)) return;
+    if (added instanceof Array) {
+      const toBeAdded = unique
+        ? added.filter(
+            (el: T) =>
+              !array.some(a => {
+                const addedProp =
+                  typeof unique === 'string' ? resolve(unique, a as Obj) : a;
+                const elProp =
+                  typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+                return addedProp === elProp;
+              })
+          )
+        : added;
+      setArray(arr => [...toBeAdded, ...arr]);
+    } else {
+      const addedExists = array.some(el => {
+        const addedProp =
+          typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+        const elProp =
+          typeof unique === 'string' ? resolve(unique, added as Obj) : added;
+        return addedProp === elProp;
+      });
+      if (unique && addedExists) return;
+      setArray(arr => [added, ...arr]);
+    }
   };
 
-  const enqueue = (element: T) => {
-    setArray(arr => [...arr, element]);
+  const enqueue = (added: T, {unique = false}: {unique?: string | boolean}) => {
+    const addedExists = array.some(el => {
+      const addedProp =
+        typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+      const elProp =
+        typeof unique === 'string' ? resolve(unique, added as Obj) : added;
+      return addedProp === elProp;
+    });
+    if (unique && addedExists) return;
+
+    setArray(arr => [...arr, added]);
   };
 
   const pop = (qty?: number) => {

@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+  background-color: black;
+}
+
+.header img {
+  width: 24rem;
+  block-size: 6rem;
+}

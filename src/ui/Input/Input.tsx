@@ -84,7 +84,9 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
       ? HTMLTextAreaElement
       : any
   >;
-  const appliedId = `${label?.toLowerCase?.() ?? ''}${useId()}`;
+  const appliedId = `${
+    rest?.name ?? rest?.id ?? label?.replace?.(/\s/g, '-') ?? ''
+  }${useId()}`;
   const [isTouched, setIsTouched] = useState(false);
   const [isAttempted, setIsAttempted] = useState(false);
   const inputRef =
