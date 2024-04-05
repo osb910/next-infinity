@@ -1,7 +1,7 @@
-import openai from './openai';
-import {AITextOptions, AITextResponse} from './types';
+import openai from '@/lib/ai/openai';
+import {AIWriteOptions, AIWriteResponse} from '../types';
 
-export const genAIText = async ({
+const aiWrite = async ({
   messages,
   systemMsg,
   model = 'gpt-3.5-turbo',
@@ -10,7 +10,7 @@ export const genAIText = async ({
   stop,
   presencePenalty,
   frequencyPenalty,
-}: AITextOptions): Promise<AITextResponse> => {
+}: AIWriteOptions): Promise<AIWriteResponse> => {
   const userMessages = messages.map(msg => ({
     role: 'user',
     content: msg,
@@ -66,3 +66,5 @@ export const genAIText = async ({
     };
   }
 };
+
+export default aiWrite;

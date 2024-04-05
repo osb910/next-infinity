@@ -1,13 +1,13 @@
-import openai from './openai';
-import {GenerateImageOptions} from './types';
+import openai from '@/lib/ai/openai';
+import {AIDrawOptions} from '../types';
 
-export const generateImages = async ({
+const aiDraw = async ({
   prompt,
   model = 'dall-e-2',
   num = 1,
   size = '512x512',
   style = 'vivid',
-}: GenerateImageOptions) => {
+}: AIDrawOptions) => {
   try {
     const result = await openai.images.generate({
       prompt,
@@ -36,3 +36,5 @@ export const generateImages = async ({
     };
   }
 };
+
+export default aiDraw;
