@@ -1,6 +1,5 @@
 'use client';
 
-import {type Metadata} from 'next';
 import {useState} from 'react';
 import type {AppPage, JsonRes} from '@/types';
 import cls from './StockPredictor.module.css';
@@ -8,10 +7,6 @@ import ActionPanel from '@/components/mini-apps/stock-predictor/ActionPanel';
 import Spinner from '@/ui/Spinner';
 import useArray from '@/hooks/useArray';
 import {fetchReport, fetchStockData} from './actions';
-
-export const metadata: Metadata = {
-  title: 'Stock Predictor',
-};
 
 const StockPredictor: AppPage<{}> = async ({}) => {
   const {array: tickers, push} = useArray<string>([]);

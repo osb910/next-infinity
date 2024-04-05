@@ -32,6 +32,10 @@
   gap: 1em;
 }
 
+.tickerInputCtrl label {
+  text-wrap: wrap;
+}
+
 .invalidTicker label {
   color: red;
 }

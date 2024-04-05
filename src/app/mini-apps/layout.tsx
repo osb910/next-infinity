@@ -1,11 +1,7 @@
 import Footer from '@/components/Footer';
+import type {ReactNode} from 'react';
 
-export const metadata = {
-  title: 'Next.js 30',
-  description: 'A collection of 30 mini-apps built with Next.js',
-};
-
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({children}: {children: ReactNode}) {
   return (
     <>
       {children}

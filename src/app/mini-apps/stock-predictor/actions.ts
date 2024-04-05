@@ -1,6 +1,6 @@
 'use server';
 
-import {genAIText} from '@/lib/ai/text';
+import aiWrite from '@/lib/ai/text/to-text/openai';
 import {env} from '@/lib/helpers';
 import {dates} from '@/utils/date';
 
@@ -28,10 +28,10 @@ export const fetchStockData = async (tickers: Array<string>) => {
 
 export const fetchReport = async (data: Array<string>) => {
   try {
-    const report = await genAIText({
+    const report = await aiWrite({
       messages: data,
       systemMsg:
-        'You are a trading guru with enormous stock knowledge and resources. Given data on share prices over the past 3 days, generate a report of no more than 150 words describing the stocks performance and recommending whether to buy or sell the shares. Write your response in Markdown.',
+        'You are a trading guru with enormous stock knowledge and resources. Given data on share prices over the past 3 days, generate a report of no more than 150 words describing the stocks performance and recommending whether to buy or sell the shares.',
     });
     return report.status === 'error'
       ? report
@@ -39,14 +39,4 @@ export const fetchReport = async (data: Array<string>) => {
   } catch (err) {
     console.error('error: ', err);
   }
-  /**
-   * Challenge:
-   * 1. Use the OpenAI API to generate a report advising
-   * on whether to buy or sell the shares based on the data
-   * that comes in as a parameter.
-   *
-   * 🎁 See hint.md for help!
-   *
-   * 🏆 Bonus points: use a try catch to handle errors.
-   * **/
 };

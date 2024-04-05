@@ -1,9 +1,11 @@
+import Header from '@/components/mini-apps/stock-predictor/Header';
 import {type Metadata} from 'next';
 import {type ReactNode} from 'react';
 import cls from './StockPredictor.module.css';
-import Header from '@/components/mini-apps/stock-predictor/Header';
 
-export const metadata: Metadata = {};
+export const metadata: Metadata = {
+  title: 'Stock Predictor',
+};
 
 const StockPredictorLayout = async ({children}: {children: ReactNode}) => {
   return (
