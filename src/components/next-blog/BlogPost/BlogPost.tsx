@@ -15,7 +15,6 @@ import {
   getWhatsappShareLink,
 } from '@/utils/general';
 import {env} from '@/lib/helpers';
-import {genAIText} from '@/lib/ai/text';
 
 interface BlogPostProps {
   data: {
