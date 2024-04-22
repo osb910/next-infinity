@@ -18,7 +18,7 @@ export type AITextModel =
   | 'code-llama-13b'
   | 'code-llama-13b';
 
-export type AIWriteOptions = {
+export interface AIWriteOptions {
   messages: Array<string>;
   systemMsg?: string;
   model?: AITextModel;
@@ -27,7 +27,12 @@ export type AIWriteOptions = {
   stop?: Array<string>;
   presencePenalty?: number;
   frequencyPenalty?: number;
-};
+}
+
+export interface AIWriteHFOptions {
+  input: string;
+  model: `${string}/${string}`;
+}
 
 export type AIWriteResponse =
   | {
@@ -50,6 +55,19 @@ export type AIWriteResponse =
       code: number;
       message: string;
       messages?: never;
+    };
+
+export type AIWriteHFResponse =
+  | {
+      status: 'success';
+      code: 200;
+      output: string;
+      createdAt: Date;
+    }
+  | {
+      status: 'error';
+      code: number;
+      message: string;
     };
 
 export type FineTuneAIOptions = {
