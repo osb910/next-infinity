@@ -1,30 +1,45 @@
-import {type NextRequest} from 'next/server';
-import {type Metadata, type ResolvingMetadata} from 'next';
+import type {NextRequest} from 'next/server';
+import type {Metadata, ResolvingMetadata} from 'next';
+import type {ReactNode} from 'react';
 
 export interface PageProps<
-  T = Record<string, string>,
+  T = Record<string, any>,
   K = Record<string, string | string[] | undefined>
 > {
   params: T;
-  searchParams: K;
+  searchParams: K & Record<string, string | string[] | undefined>;
+}
+
+export interface LayoutProps<
+  T = Record<string, any>,
+  K = Record<string, string | string[] | undefined>
+> {
+  params: T;
+  searchParams: K & Record<string, string | string[] | undefined>;
+  children: ReactNode;
 }
 
 export type AppPage<
-  T = Record<string, string>,
+  T = Record<string, any>,
   K = Record<string, string | string[] | undefined>
 > = (props: PageProps<T, K>) => Promise<any>;
 
 export type AppPageSync<
-  T = Record<string, string>,
+  T = Record<string, any>,
   K = Record<string, string | string[] | undefined>
 > = (props: PageProps<T, K>) => any;
+
+export type Layout<
+  T = Record<string, any>,
+  K = Record<string, string | string[] | undefined>
+> = (props: LayoutProps<T, K>) => Promise<any>;
 
 export type GetMetadata<T extends (...args: any) => any = AppPage> = (
   props: Parameters<T>[0],
   parent: ResolvingMetadata
 ) => Promise<Metadata>;
 
-export type AppRoute<T = Record<string, string>> = (
+export type AppRoute<T = Record<string, any>> = (
   req: NextRequest,
   {params}: {params: T}
 ) => Promise<any>;
