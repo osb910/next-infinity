@@ -1,6 +1,8 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
+import {getLocale as getNextBlogLocale} from './l10n/next-blog/getL10n';
+import {locales as nextBlogLocales} from './l10n/next-blog/config';
 
 export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;
@@ -32,11 +34,34 @@ export const middleware = async (req: NextRequest) => {
   }
 
   const response = NextResponse.next();
+
   response.headers.set('x-url', req.url);
+
   let ipAddress = req.ip ?? req.headers.get('x-forwarded-for') ?? '';
   response.headers.set('x-ip', ipAddress);
+
   const site = pathname.match(/^(?:\/api|\/mini-apps)?\/([-\w]+)/)?.[1];
   response.headers.set('x-site', site ?? '');
+
+  const isRoute = !pathname.match(
+    /(?=data|img|api|_next|favicon\.ico|(next|vercel)\.svg).*/
+  );
+
+  if (isRoute) {
+    if (/^(\/api)?\/next-blog/.test(pathname)) {
+      const locale =
+        nextBlogLocales.find((locale) =>
+          RegExp(`^${locale}`).test(searchParams.get('locale') ?? '')
+        ) || req.headers.get('x-locale');
+
+      if (!locale) {
+        const locale = getNextBlogLocale(req);
+        response.headers.set('x-locale', locale);
+        req.nextUrl.searchParams.set('locale', locale);
+        return NextResponse.redirect(req.nextUrl);
+      }
+    }
+  }
 
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
     if (!token && (/\/add/.test(pathname) || dialog === 'account')) {

@@ -32,6 +32,15 @@ export const randArrayEl = (
   return arr[idx];
 };
 
+export const getDeepProp = <T extends string = string>(
+  obj: object,
+  key: T,
+  {delimiter = '.'} = {}
+) => {
+  const path = key.split(delimiter);
+  return path.reduce((acc, prop) => (acc as any)?.[prop], obj);
+};
+
 export const getRelativeDate = (date: string) => {
   return moment(date).fromNow();
 };
