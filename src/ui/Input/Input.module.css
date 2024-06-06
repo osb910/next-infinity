@@ -1,10 +1,32 @@
 .label {
   position: relative;
+  padding: 0.25em 0;
   align-self: baseline;
+  text-wrap: nowrap;
 }
 
 .inputWrapper {
   flex: 1 1 auto;
+}
+
+.ctrl {
+  margin: 0 auto;
+  display: flex;
+  gap: 0.25em;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.ctrl:has(
+    :not(:where(input:where([type='radio'], [type='checkbox']), textarea))
+  ) {
+  inline-size: 100%;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.ctrl:has(textarea) {
+  inline-size: 100%;
 }
 
 .ctrl sup {
@@ -23,22 +45,65 @@
   flex: 1 1 auto;
 }
 
+.input :where(input:not(:where([type='checkbox'], [type='radio'])), textarea) {
+  inline-size: 100%;
+  padding-block: 0.25em;
+  padding-inline: 0.5em;
+  font: inherit;
+  line-height: 1.5;
+}
+
+.input > input {
+  /* max-inline-size: 28rem; */
+  flex: 1 1 auto;
+}
+
 .input.invalid :where(input, textarea):invalid {
   box-shadow: 0 0 0 2px hsla(342, 97%, 42%, 0.8);
 }
 
 .input :where(input, textarea) {
   transition: color 809ms ease-in-out;
+  position: relative;
+  z-index: 1;
 }
 
 .backdrop {
   position: absolute;
   inset: 0;
-  z-index: -1;
 }
 
 .errorMsg {
   color: hsla(342, 97%, 42%, 0.8);
   font-size: 0.875em;
   filter: drop-shadow(0 0 8px var(--shadow-color));
+}
+
+@media (min-width: 36rem) {
+  .ctrl {
+    flex-direction: column;
+    gap: 0.25em;
+    font-size: 1.125rem;
+  }
+
+  .ctrl:has(
+      :not(:where(input:where([type='radio'], [type='checkbox']), textarea))
+    ) {
+    /* align-items: baseline; */
+    gap: 0.75em;
+  }
+}
+
+@media (min-width: 45rem) {
+  .ctrl {
+    gap: 0.5em;
+    font-size: 1.25rem;
+  }
+
+  .ctrl:has(
+      :not(:where(input:where([type='radio'], [type='checkbox']), textarea))
+    ) {
+    flex-direction: row;
+    gap: 1em;
+  }
 }

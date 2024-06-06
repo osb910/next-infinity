@@ -2,23 +2,20 @@
 
 import {useState, useId, ReactNode, ChangeEvent, ComponentProps} from 'react';
 import {Eye, EyeOff} from 'react-feather';
-import styles from './PasswordInput.module.css';
+import cls from './PasswordInput.module.css';
 import {stringifyRegex} from '@/lib/text/regex';
+import {motion, type MotionProps} from 'framer-motion';
+import clsx from 'clsx';
+import Input, {type InputComponent, type InputProps} from '../Input';
 
-export interface PasswordInputProps extends ComponentProps<'input'> {
-  label: string;
+export type PasswordInputProps = InputComponent & {
   minLength?: number;
   maxLength?: number;
   requireSymbols?: boolean;
   requireDigits?: boolean;
-  className?: string;
-  setInput?: Function;
-  children?: ReactNode;
-  [x: string]: any;
-}
+};
 
 export const PasswordInput = ({
-  label = 'Password',
   minLength = 8,
   maxLength = 32,
   requireSymbols = true,
@@ -26,11 +23,9 @@ export const PasswordInput = ({
   setInput,
   className,
   children,
-  ...delegated
+  ...rest
 }: PasswordInputProps) => {
-  const generatedId = useId();
-  const appliedId = `password-${generatedId}`;
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const passwordRegex = new RegExp(
     `^(?=.*[A-Z])(?=.*[a-z])${requireDigits ? `(?=.*\\d)` : ''}(?=.*[\\p{L}${
@@ -42,37 +37,61 @@ export const PasswordInput = ({
   );
 
   return (
-    <p className={`${className ?? ''} ${styles.control}`}>
-      <label htmlFor={appliedId}>{label}</label>
-      <span className={`${styles.inputContainer}`}>
-        <input
-          onChange={(evt: ChangeEvent): void =>
-            setInput?.((evt.target as HTMLInputElement).value)
-          }
-          className={styles.input}
-          pattern={stringifyRegex(passwordRegex)}
-          title={`Must have at least an uppercase letter, a lowercase letter, ${
-            requireDigits ? `a digit, ` : ''
-          }${
-            requireSymbols ? `a special character, ` : ''
-          }and be between ${minLength} and ${maxLength} characters.`}
-          onPaste={evt => evt.preventDefault()}
-          {...delegated}
-          type={showPassword ? 'text' : 'password'}
-          id={appliedId}
-          dir='auto'
-        />
-        <span
-          tabIndex={0}
-          className={styles.eye}
-          onClick={() => setShowPassword(is => !is)}
-        >
-          {showPassword ? <EyeOff /> : <Eye />}
-        </span>
+    <Input
+      name='password'
+      pattern={stringifyRegex(passwordRegex)}
+      title={`Must have at least an uppercase letter, a lowercase letter, ${
+        requireDigits ? `a digit, ` : ''
+      }${
+        requireSymbols ? `a special character, ` : ''
+      }and be between ${minLength} and ${maxLength} characters.`}
+      onPaste={evt => evt.preventDefault()}
+      {...rest}
+      as='input'
+      type={isPasswordVisible ? 'text' : 'password'}
+    >
+      <span
+        tabIndex={0}
+        className={cls.eye}
+        onClick={() => setIsPasswordVisible(is => !is)}
+      >
+        {isPasswordVisible ? <EyeOff /> : <Eye />}
       </span>
-      {children}
-    </p>
+    </Input>
   );
+
+  // return (
+  //   <p className={`${className ?? ''} ${cls.control}`}>
+  //     <label htmlFor={appliedId}>{label}</label>
+  //     <span className={`${cls.inputContainer}`}>
+  //       <input
+  //         onChange={(evt: ChangeEvent): void =>
+  //           setInput?.((evt.target as HTMLInputElement).value)
+  //         }
+  //         className={cls.input}
+  //         pattern={stringifyRegex(passwordRegex)}
+  //         title={`Must have at least an uppercase letter, a lowercase letter, ${
+  //           requireDigits ? `a digit, ` : ''
+  //         }${
+  //           requireSymbols ? `a special character, ` : ''
+  //         }and be between ${minLength} and ${maxLength} characters.`}
+  //         onPaste={evt => evt.preventDefault()}
+  //         {...delegated}
+  //         type={isPasswordVisible ? 'text' : 'password'}
+  //         id={appliedId}
+  //         dir='auto'
+  //       />
+  //       <span
+  //         tabIndex={0}
+  //         className={cls.eye}
+  //         onClick={() => setPasswordVisible(is => !is)}
+  //       >
+  //         {isPasswordVisible ? <EyeOff /> : <Eye />}
+  //       </span>
+  //     </span>
+  //     {children}
+  //   </p>
+  // );
 };
 
 export default PasswordInput;

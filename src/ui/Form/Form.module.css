@@ -19,46 +19,6 @@
   font-weight: 700;
 }
 
-.form label {
-  padding: 0.25em 0;
-  border-radius: var(--radius);
-  text-wrap: nowrap;
-}
-
-.form p {
-  margin: 0 auto;
-  display: flex;
-  gap: 0.25em;
-  justify-content: space-between;
-}
-
-.form
-  p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
-  inline-size: 100%;
-  flex-direction: column;
-  gap: 0.5em;
-}
-
-.form p:has(textarea) {
-  inline-size: 100%;
-}
-
-.form input:not(:where([type='checkbox'], [type='radio'])),
-.form textarea {
-  inline-size: 100%;
-  padding-block: 0.25em;
-  padding-inline: 0.5em;
-  /* border: 1px solid gray; */
-  border-radius: var(--radius);
-  font: inherit;
-  line-height: 1.5;
-}
-
-.form p > input {
-  max-inline-size: 28rem;
-  flex: 1 1 auto;
-}
-
 .error {
   border-color: red;
 }
@@ -125,19 +85,6 @@
     padding: 1em;
   }
 
-  .form p {
-    flex-direction: column;
-    gap: 0.25em;
-    font-size: 1.125rem;
-  }
-
-  .form
-    p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 0.75em;
-  }
-
   .submit {
     font-size: 1.25rem;
   }
@@ -145,16 +92,6 @@
 
 @media (min-width: 45rem) {
   .form {
-    gap: 1em;
-  }
-
-  .form p {
-    gap: 0.5em;
-    font-size: 1.25rem;
-  }
-
-  .form
-    p:has(:not(:where(input[type='radio'], input[type='checkbox'], textarea))) {
     gap: 1em;
   }
 

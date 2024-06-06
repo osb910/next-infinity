@@ -11,7 +11,7 @@ import {
   type ChangeEventHandler,
   type FocusEventHandler,
 } from 'react';
-import {MotionProps, motion} from 'framer-motion';
+import {motion, type MotionProps} from 'framer-motion';
 import clsx from 'clsx';
 
 import Asterisk from '@/ui/Asterisk';
@@ -28,6 +28,7 @@ type BaseProps = {
   layoutId?: string;
   focused?: string;
   backdropStyle?: Record<string, any>;
+  asteriskText?: string;
   invalidMsg?: string;
   ctrlChildren?: ReactNode;
   removeExternalTabs?: boolean;
@@ -73,6 +74,7 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
     ctrlClass,
     layoutId,
     focused,
+    asteriskText = 'This field is required',
     backdropStyle,
     removeExternalTabs = true,
     ...delegated
@@ -112,17 +114,17 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
     remove3rdPartyTabs();
   }, [Tag, isTouched, removeExternalTabs]);
 
-  const changeInput: ChangeEventHandler = evt => {
+  const changeInput: ChangeEventHandler = (evt) => {
     setInput?.(evt.target);
     rest.onChange?.(evt);
   };
 
-  const focusInput: FocusEventHandler = evt => {
+  const focusInput: FocusEventHandler = (evt) => {
     setIsTouched(true);
     rest.onFocus?.(evt);
   };
 
-  const blurInput: FocusEventHandler = evt => {
+  const blurInput: FocusEventHandler = (evt) => {
     setIsAttempted(true);
     rest.onBlur?.(evt);
   };
@@ -132,11 +134,13 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
   return (
     <div className={clsx(cls.ctrl, ctrlClass)}>
       {label && (
-        <label htmlFor={appliedId} tabIndex={-1} className={cls.label}>
+        <label
+          htmlFor={appliedId}
+          tabIndex={-1}
+          className={cls.label}
+        >
           {label}
-          {rest.required && (
-            <Asterisk tabIndex={-1}>This field is required</Asterisk>
-          )}
+          {rest.required && <Asterisk tabIndex={-1}>{asteriskText}</Asterisk>}
         </label>
       )}
       <motion.section className={cls.inputWrapper}>
