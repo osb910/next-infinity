@@ -1,4 +1,6 @@
 import type {CSSProperties} from 'react';
+import type {PathsToStringProps, PathValue} from './object';
+import type {Join, Split} from './array';
 
 export interface P8n {
   count: number;
@@ -55,3 +57,10 @@ export interface Img {
 }
 
 export type CSSProps = CSSProperties & {[key: `--${string}`]: string | number};
+
+export type DottedPaths<T extends {[x: string]: any} = {}> = Join<
+  PathsToStringProps<T>,
+  '.'
+>;
+
+export type DotPathValue<T, S extends string> = PathValue<T, Split<S, '.'>>;
