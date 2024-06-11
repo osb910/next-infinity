@@ -1,0 +1,68 @@
+.localizer {
+  position: relative;
+  --border-radius: 6px;
+  background-color: var(--bg);
+}
+
+.rtl .currentLang {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.currentLang {
+  font-weight: 700;
+  padding: 0;
+  margin: 0;
+}
+
+.langs {
+  position: absolute;
+  inset-block-start: calc(100% + 1rem);
+  inline-size: max-content;
+  block-size: 0;
+  padding: 0;
+  border: 2px solid currentColor;
+  border-width: 0;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  cursor: pointer;
+  font-size: 1.125rem;
+  box-shadow: var(--shadow-elevation-medium);
+  backdrop-filter: blur(4px);
+  background: var(--bg-menu);
+  overflow: hidden;
+}
+
+.lang {
+  inline-size: 100%;
+  padding-block: 0.5em;
+  padding-inline: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
+  text-align: center;
+}
+
+.lang.rtl {
+  font-size: 1.125em;
+}
+
+.lang p {
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px #fff);
+}
+
+.active {
+  background: var(--bg-active);
+  pointer-events: none;
+  font-weight: 700;
+}
+
+.lang:where(:hover, :focus) {
+  background: var(--bg-active);
+}

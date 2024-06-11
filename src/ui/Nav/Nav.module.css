@@ -5,6 +5,7 @@
 
 .navList {
   display: flex;
+  overflow: hidden;
 }
 
 .overlay {
@@ -32,4 +33,5 @@
 
 .navLink {
   position: relative;
+  text-wrap: nowrap;
 }

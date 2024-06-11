@@ -7,7 +7,7 @@ export interface IconProps extends LucideProps {
 }
 const Icon = ({name, ...rest}: IconProps) => {
   const LucideIcon = dynamic(dynamicIconImports[name]);
-  return <LucideIcon {...rest} />;
+  return <LucideIcon style={{flexShrink: 0}} {...rest} />;
 };
 
 export default Icon;
