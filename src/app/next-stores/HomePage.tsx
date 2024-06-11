@@ -21,6 +21,7 @@ const HomePage = async () => {
       },
     });
     const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
+    if (json.status === 'error') throw new Error(json.message);
     return (
       <>
         <h1>Stores</h1>

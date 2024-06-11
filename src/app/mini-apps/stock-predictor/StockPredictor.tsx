@@ -1,7 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage} from '@/types';
 import cls from './StockPredictor.module.css';
 import ActionPanel from '@/components/mini-apps/stock-predictor/ActionPanel';
 import Spinner from '@/ui/Spinner';

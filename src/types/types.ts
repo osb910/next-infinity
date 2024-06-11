@@ -21,7 +21,7 @@ export type GetP8n = (
 
 export type JsonRes<T = any, K extends string = string> =
   | SuccessResponse<T>
-  | NoticeWarningResponse
+  | NoticeWarningResponse<T>
   | ErrorResponse<K>;
 
 export interface GeoLocation {

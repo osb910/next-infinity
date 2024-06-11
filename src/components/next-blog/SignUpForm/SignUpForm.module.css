@@ -1,0 +1,59 @@
+.form {
+  inline-size: 100%;
+  margin: 2em auto;
+  background-color: var(--blog-decorative-500);
+  color: var(--blog-text);
+}
+
+.form.cleared :where(input, textarea):not(:placeholder-shown) {
+  color: transparent;
+}
+
+.form :where(input, textarea, button) {
+  border: 0;
+  outline: 0;
+  background-color: var(--blog-decorative-300);
+  border-radius: 6px;
+  transition: all 300ms ease-in-out;
+}
+
+.form button[type='submit'] {
+  background-color: var(--blog-primary-500);
+  color: var(--blog-primary-contrast);
+}
+
+.form :is(input, textarea, button):focus {
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+.form label {
+  align-self: flex-start;
+}
+
+.form.rtl :where(input:not([type='tel']), textarea):placeholder-shown {
+  direction: rtl;
+}
+
+.form button[type='submit'] {
+  transition: all 300ms ease-in-out;
+}
+
+.form button[type='submit']:where(:hover, :focus) {
+  background-color: var(--blog-primary-700);
+  box-shadow: 0 0 0 2px var(--blog-decorative-500);
+  font-size: 1.25rem;
+}
+
+@media (min-width: 36rem) {
+  .form {
+    padding: 1.5em 2em;
+    gap: 2em;
+  }
+}
+
+@media (min-width: 48rem) {
+  .form {
+    padding: 2em 3em;
+    gap: 3em;
+  }
+}

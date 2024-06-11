@@ -1,5 +1,5 @@
 import {type Metadata} from 'next';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage} from '@/types';
 import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 import BlogPostCard from '@/components/next-blog/BlogPostCard';
 import BlogPosts from '@/components/next-blog/BlogPosts';

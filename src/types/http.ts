@@ -102,10 +102,11 @@ export interface SuccessResponse<T = any> extends Partial<P8n> {
   data?: T;
 }
 
-export interface NoticeWarningResponse {
+export interface NoticeWarningResponse<T = any> extends Partial<P8n> {
   status: 'notice' | 'warning';
   code: OneHundredCodes | ThreeHundredCodes;
   message: ResponseValues<OneHundredCodes | ThreeHundredCodes> | string;
+  data?: T;
 }
 
 export interface ErrorResponse<T extends string = string> {

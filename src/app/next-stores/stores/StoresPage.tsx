@@ -25,7 +25,7 @@ export const generateMetadata: GetMetadata<StoresPg> = async ({
   searchParams: {p},
 }) => {
   const json = await fetcher(p);
-  const randStore = randArrayEl(json.data ?? []);
+  const randStore = json.status === 'error' ? [] : randArrayEl(json.data ?? []);
   return {
     title: 'Stores',
     description: 'Browse all stores',

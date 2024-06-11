@@ -60,10 +60,15 @@ export const generateMetadata: GetMetadata<MapPg> = async ({
     fetcher({lng, lat}),
     getPageLocation({lng, lat}),
   ]);
-  const region = json.data?.userLocation?.region;
-  const title = pgLocationJson
-    ? `Map - ${pgLocationJson[0].properties.address.state}`
-    : `Map${!lng && !lat && region ? ` - ${region}` : ''}`;
+  let title;
+  if (json?.status === 'error') {
+    title = 'Map';
+  } else {
+    const region = json.data?.userLocation?.region;
+    title = pgLocationJson
+      ? `Map - ${pgLocationJson[0].properties.address.state}`
+      : `Map${!lng && !lat && region ? ` - ${region}` : ''}`;
+  }
 
   return {
     title,
@@ -80,7 +85,7 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
     }
 
     const locations =
-      json?.data?.stores?.map(store => ({
+      json?.data?.stores?.map((store) => ({
         lng: store.location.coordinates[0],
         lat: store.location.coordinates[1],
         id: store._id,
@@ -88,7 +93,7 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
       })) ?? [];
 
     const selectedItem = json?.data?.stores?.find(
-      store => store._id === selected
+      (store) => store._id === selected
     );
 
     const mapStyle: Record<string, any> = {
@@ -124,7 +129,12 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
             style={mapStyle}
             buttonStyle={{'--bg': 'rgba(144, 94, 38, 0.67)'}}
           >
-            {selectedItem && <StoreCard item={selectedItem} userId='' />}
+            {selectedItem && (
+              <StoreCard
+                item={selectedItem}
+                userId=''
+              />
+            )}
           </InteractiveMap>
         </section>
       </>

@@ -16,6 +16,9 @@ const TopPage = async () => {
     const json = (await res.json()) as JsonRes<
       Array<IStoreWithReviews & {averageRating: number}>
     >;
+
+    if (json.status === 'error') throw new Error(json.message);
+
     return (
       <>
         <h1>Top {json.count} Stores</h1>
@@ -30,7 +33,7 @@ const TopPage = async () => {
             </tr>
           </thead>
           <tbody>
-            {json?.data?.map((store, idx) => (
+            {json.data?.map((store, idx) => (
               <tr key={store._id}>
                 <td>
                   <Link href={`stores/${store.slug}`}>

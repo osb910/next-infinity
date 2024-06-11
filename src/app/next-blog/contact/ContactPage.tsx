@@ -1,5 +1,5 @@
 import {type Metadata} from 'next';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage} from '@/types';
 import cls from './ContactPage.module.css';
 import ContactForm from '@/components/next-blog/ContactForm';
 

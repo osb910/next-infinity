@@ -1,8 +1,8 @@
-import {notFound, redirect} from 'next/navigation';
+import {notFound} from 'next/navigation';
 
 import {getBlogPost} from '@/helpers/next-blog/requests';
 
-import type {AppPage, GetMetadata, JsonRes} from '@/types';
+import type {AppPage, GetMetadata} from '@/types';
 import cls from './BlogPostPage.module.css';
 import BlogPost from '@/components/next-blog/BlogPost';
 
@@ -26,7 +26,12 @@ const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
   try {
     const {data} = await getBlogPost(postParam);
     if (!data) notFound();
-    return <BlogPost data={data} slug={postParam} />;
+    return (
+      <BlogPost
+        data={data}
+        slug={postParam}
+      />
+    );
   } catch (err) {
     console.error(err);
     throw err;

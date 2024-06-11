@@ -1,6 +1,5 @@
 'use server';
 
-import {redirect} from 'next/navigation';
 import {revalidatePath} from 'next/cache';
 import {headers} from 'next/headers';
 import {type IStore} from '@/services/next-stores/store';
@@ -10,7 +9,7 @@ import {JsonRes} from '@/types';
 type FormState = {
   status: 'idle' | 'success' | 'error' | 'warning' | 'notice';
   message: string | null;
-  data: IStore | null;
+  data: any | null;
 };
 
 type SaveStoreAction = (prev: FormState, body: FormData) => Promise<FormState>;
@@ -31,10 +30,11 @@ export const saveStore: SaveStoreAction = async (prev, body) => {
       }
     );
     const json = (await res.json()) as JsonRes<IStore>;
+    const data = json.status === 'error' ? null : json.data;
     return {
       status: json.status,
       message: json.message,
-      data: json.data ?? null,
+      data,
     };
   } catch (err) {
     console.error(err);

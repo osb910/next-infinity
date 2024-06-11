@@ -1,5 +1,5 @@
 import {type Metadata} from 'next';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage} from '@/types';
 import styles from './NextTimer.module.css';
 import AddTimer from '@/components/next-timer/AddTimer';
 import Timers from '@/components/next-timer/Timers';

@@ -21,10 +21,11 @@ export const sendMessage: SendMessageAction = async (prev, body) => {
       method: 'POST',
     });
     const json = (await res.json()) as JsonRes;
+    const data = json.status === 'error' ? null : json.data;
     return {
       status: json.status,
       message: json.message,
-      data: json.data ?? null,
+      data,
     };
   } catch (err) {
     console.error(err);

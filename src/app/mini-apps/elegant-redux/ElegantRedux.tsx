@@ -1,5 +1,5 @@
 import {type Metadata} from 'next';
-import type {AppPage, JsonRes} from '@/types';
+import type {AppPage} from '@/types';
 import cls from './ElegantRedux.module.css';
 import Header from '@/components/elegant-redux/Header';
 import Shop from '@/components/elegant-redux/Shop';
@@ -15,7 +15,7 @@ const ElegantRedux: AppPage<{}> = async ({}) => {
     <>
       <Header />
       <Shop>
-        {DUMMY_PRODUCTS.map(product => (
+        {DUMMY_PRODUCTS.map((product) => (
           <li key={product.id}>
             <Product {...product} />
           </li>

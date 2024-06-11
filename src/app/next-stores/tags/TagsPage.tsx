@@ -34,10 +34,15 @@ const Tags: TagsPg = async ({searchParams: {tag, p}}) => {
     const [tags, res] = await Promise.all([tagsPromise, storesPromise]);
     const json = (await res.json()) as JsonRes<Array<IStoreWithReviews>>;
 
+    if (json.status === 'error') throw new Error(json.message);
+
     return (
       <>
         <h1 className={styles.title}>{tag ?? 'Tags'}</h1>
-        <TagsCrumbs active={tag} tags={tags} />
+        <TagsCrumbs
+          active={tag}
+          tags={tags}
+        />
         <Stores
           stores={json?.data ?? []}
           userId={userId}

@@ -16,7 +16,9 @@ const EditStore: StorePg = async ({params: {storeParam}}) => {
         author: string;
       }
     >;
-    if (json?.data?.author !== userId) {
+    if (json.status === 'error') throw new Error(json.message);
+
+    if (json.data?.author !== userId) {
       return (
         <ErrorAlert>
           <p>You are not the owner of this store!</p>
