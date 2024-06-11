@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "next-dev": "next dev",
-    "flask-dev": "pip install -r requirements.txt && python -m flask --app api/py/index run -p 5328",
+    "flask-dev": "pip install -r requirements.txt && python -m flask --app api/index run -p 5328",
     "dev": "concurrently \"npm run next-dev\" \"npm run flask-dev\"",
     "build": "next build",
     "start": "next start",
