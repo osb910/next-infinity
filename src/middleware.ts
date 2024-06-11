@@ -20,6 +20,7 @@ export const middleware = async (req: NextRequest) => {
     process.env.NODE_ENV === 'production'
       ? ['https://next-infinity.vercel.app', 'http://localhost:3000']
       : ['http://localhost:3000'];
+  console.log({origin});
 
   if (origin && !whitelisted.includes(origin)) {
     console.log(`Origin ${origin} not allowed`);
@@ -57,7 +58,7 @@ export const middleware = async (req: NextRequest) => {
       if (!locale) {
         const locale = readNextBlogLocale(req);
         response.headers.set('x-locale', locale);
-        req.nextUrl.searchParams.set('locale', locale);
+        // req.nextUrl.searchParams.set('locale', locale);
         return NextResponse.redirect(req.nextUrl);
       }
     }
