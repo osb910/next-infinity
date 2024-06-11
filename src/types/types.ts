@@ -1,6 +1,7 @@
 import type {CSSProperties} from 'react';
 import type {PathsToStringProps, PathValue} from './object';
 import type {Join, Split} from './array';
+import {ErrorResponse, NoticeWarningResponse, SuccessResponse} from './http';
 
 export interface P8n {
   count: number;
@@ -18,14 +19,10 @@ export type GetP8n = (
   perPage?: number | string | null
 ) => P8n;
 
-export interface JsonRes<T = any> extends Partial<P8n> {
-  status: 'success' | 'error' | 'warning' | 'notice';
-  code: number;
-  message: string;
-  data?: T & {
-    errors?: {[x: string]: any};
-  };
-}
+export type JsonRes<T = any, K extends string = string> =
+  | SuccessResponse<T>
+  | NoticeWarningResponse
+  | ErrorResponse<K>;
 
 export interface GeoLocation {
   ip: string | undefined;
@@ -64,3 +61,13 @@ export type DottedPaths<T extends {[x: string]: any} = {}> = Join<
 >;
 
 export type DotPathValue<T, S extends string> = PathValue<T, Split<S, '.'>>;
+
+export type Chainable<T = {}> = {
+  option<K extends string, V>(
+    key: Exclude<K, keyof T>,
+    value: V
+  ): Chainable<Omit<T, K> & Record<K, V>>;
+  get<P extends keyof T>(
+    path?: P
+  ): P extends never ? {[L in keyof T]: T[L]} : {[L in keyof T]: T[L]}[P];
+};

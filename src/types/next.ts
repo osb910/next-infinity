@@ -1,4 +1,4 @@
-import type {NextRequest} from 'next/server';
+import type {NextRequest, NextResponse} from 'next/server';
 import type {Metadata, ResolvingMetadata} from 'next';
 import type {ReactNode} from 'react';
 
@@ -37,4 +37,4 @@ export type GetMetadata<T extends (...args: any) => any = AppPage> = (
 export type AppRoute<T = Record<string, any>> = (
   req: NextRequest,
   {params}: {params: T}
-) => Promise<any>;
+) => Promise<NextResponse | void>;
