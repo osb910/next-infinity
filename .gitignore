@@ -38,4 +38,5 @@ next-env.d.ts
 JavaScript30
 drafts
 /src/lib/text/regex/py-regex/__pycache__
-/api/py/__pycache__/*.pyc
+# /api/py/__pycache__/*.pyc
+/api
