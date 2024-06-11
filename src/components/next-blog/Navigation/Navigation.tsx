@@ -26,7 +26,11 @@ const Navigation = ({}: NavigationProps) => {
   const {isOpen} = useNav();
   const [width] = useWindowSize();
   const insetInlineStart =
-    width >= 768 || isOpen ? '0' : width >= 480 ? '-62%' : '-100%';
+    width >= 768 || isOpen
+      ? '0'
+      : width >= 480
+      ? '-62%'
+      : 'calc(var(--width) * -1)';
   return (
     <Nav
       className={clsx(cls.nav, isOpen && cls.open)}
@@ -36,7 +40,7 @@ const Navigation = ({}: NavigationProps) => {
     >
       <NavList
         className={`${cls.navBar}`}
-        transition={{type: 'spring', damping: 20, stiffness: 150}}
+        transition={{type: 'spring', damping: 18, stiffness: 150}}
         animate={{insetInlineStart}}
       >
         {navLinks.map(({to, label}) => (
@@ -50,7 +54,10 @@ const Navigation = ({}: NavigationProps) => {
               padding: '0.5em 1em',
             }}
           >
-            <NavLink className={cls.navLink} href={to}>
+            <NavLink
+              className={cls.navLink}
+              href={to}
+            >
               {label}
             </NavLink>
           </NavItem>

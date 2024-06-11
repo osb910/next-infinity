@@ -1,31 +1,50 @@
 import Link from 'next/link';
 import {Rss} from 'react-feather';
 import clsx from 'clsx';
+import {localize} from '@/l10n/next-blog/getL10n';
+import {langs} from '@/l10n/next-blog/config';
 import Navigation from '@/components/next-blog/Navigation';
 import Logo from '@/components/next-blog/Logo';
 import ThemeSwitch from '@/ui/ThemeSwitch';
 import SfxSwitch from '@/ui/SfxSwitch';
 import IconButton from '@/ui/IconButton';
-import VisuallyHidden from '@/ui/VisuallyHidden';
-import Switch from '@/ui/Switch';
-import cls from './Header.module.css';
 import {NavProvider} from '@/ui/Nav';
+import VisuallyHidden from '@/ui/VisuallyHidden';
+import StickyHeader from './StickyHeader';
+import Localizer from '@/ui/Localizer';
+import type {Locale} from '@/l10n/next-blog/l10n.types';
+import type {CSSProps} from '@/types';
+import cls from './Header.module.css';
 
 interface HeaderProps {
+  locale: Locale;
   theme: 'light' | 'dark';
   userId: string;
 }
 
 const btnAnimation = {
   backgroundColor: 'hsla(0, 0%, 50%, 0.3)',
-  boxShadow: '0 0 0 4px hsla(0, 0%, 50%, 0.3)',
+  boxShadow: '0 0 0 6px hsla(0, 0%, 50%, 0.3)',
 };
 
-const Header = ({theme, userId}: HeaderProps) => {
+const Header = async ({locale, theme, userId}: HeaderProps) => {
+  const {l10n} = await localize({locale});
+
+  const style: CSSProps = {
+    '--border-gdt': `linear-gradient(${
+      locale === 'ar' ? '270' : '90'
+    }deg, var(--primary-100) 0%, var(--primary-700))`,
+  };
   return (
     <NavProvider>
-      <header className={clsx(cls.header)}>
-        <Link href='/next-blog' className={cls.logo}>
+      <StickyHeader
+        className={clsx(cls.header)}
+        style={style}
+      >
+        <Link
+          href='/next-blog'
+          className={cls.logo}
+        >
           <Logo width='12rem' />
         </Link>
         <Navigation />
@@ -57,8 +76,18 @@ const Header = ({theme, userId}: HeaderProps) => {
               <VisuallyHidden>View RSS feed</VisuallyHidden>
             </IconButton>
           </Link>
+          <Localizer
+            locale={locale}
+            langs={langs}
+            className={cls.localizer}
+            bgMenu='var(--bg-gdt-1)'
+            bgActive='var(--bg-gdt-3)'
+            displayLang
+            whileHover={btnAnimation}
+            whileFocus={btnAnimation}
+          />
         </section>
-      </header>
+      </StickyHeader>
     </NavProvider>
   );
 };

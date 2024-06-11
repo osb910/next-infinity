@@ -6,14 +6,20 @@ import {getDeepProp} from '@/utils/general';
 import {type NextRequest} from 'next/server';
 import type {Dictionary, DottedL10n, Locale} from './l10n.types';
 import type {Dir, DotPathValue} from '@/types';
+import {headers} from 'next/headers';
 
-export const getLocale = (req: NextRequest) => {
+export const readLocale = (req: NextRequest) => {
   const languages = new Negotiator({
     headers: Object.fromEntries(req.headers.entries()),
   }).languages();
 
   return match(languages, locales, defaultLocale);
 };
+
+export const getLocale = cache(() => {
+  const locale = (headers().get('x-locale') ?? defaultLocale) as Locale;
+  return locale;
+});
 
 export const localize = cache(
   async <T extends DottedL10n>({locale, path}: {locale?: Locale; path?: T}) => {

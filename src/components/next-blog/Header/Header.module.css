@@ -1,14 +1,27 @@
 .header {
-  z-index: 2;
+  position: sticky;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 3;
   padding: 0.5em 1em;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1.25em;
+  gap: 1.75em;
   border-bottom: 2px dashed var(--blog-decorative-800);
   background-color: var(--blog-bg-decorative);
   backdrop-filter: blur(4px);
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  height: 4px;
+  background: var(--border-gdt);
 }
 
 .logo {
@@ -23,17 +36,15 @@
   scale: 1.1;
 }
 
+@media (min-width: 24rem) {
+  .header {
+    gap: 3em;
+  }
+}
+
 @media (min-width: 48rem) {
   .header {
-    position: sticky;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    z-index: 2;
-    inline-size: 100%;
-    block-size: 4rem;
     flex-flow: row nowrap;
-    gap: 1.5em;
-    flex-basis: auto;
   }
 
   .logo {
@@ -44,6 +55,7 @@
 .settings {
   z-index: 2;
   margin-inline-start: auto;
+  margin-inline-end: 2em;
   display: flex;
   align-items: center;
   gap: 1em;

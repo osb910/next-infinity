@@ -1,5 +1,6 @@
 import {env} from '@/lib/helpers';
-import {Locale} from './l10n.types';
+import type {Locale} from './l10n.types';
+import {Dir} from '@/types';
 
 export const languages = {
   ar: {
@@ -22,3 +23,8 @@ export const languages = {
 export const defaultLocale = (env('DEFAULT_LOCALE') ?? 'en') as Locale;
 
 export const locales = Object.keys(languages) as Array<Locale>;
+
+export const langs = Object.values(languages).map((lang) => {
+  const {dictionary, ...rest} = lang;
+  return {...rest, dir: rest.dir as Dir};
+});

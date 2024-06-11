@@ -1,39 +1,70 @@
-import {cookies, headers} from 'next/headers';
+import {cookies} from 'next/headers';
+import {getLocale, localize} from '@/l10n/next-blog/getL10n';
+import {env} from '@/lib/helpers';
 import {UserDataProvider} from '@/hooks/useUserData';
-import {ThemeProvider} from '@/ui/ThemeSwitch/useTheme';
-import {type Metadata} from 'next';
 import Header from '@/components/next-blog/Header';
 import Footer from '@/components/next-blog/Footer';
-import siteInfo from '@/l10n/next-blog/site';
+import {ThemeProvider} from '@/ui/ThemeSwitch/useTheme';
+import type {GetMetadata, Layout} from '@/types';
 import cls from './HomePage.module.css';
 import './styles.css';
 
-export const metadata: Metadata = {
-  title: {
-    template: `%s • ${siteInfo['en'].siteName}`,
-    default: siteInfo['en'].siteName,
-  },
-  description: siteInfo['en'].description,
-  openGraph: {
+export const generateMetadata: GetMetadata<Layout> = async () => {
+  const locale = getLocale();
+  const {l6e} = await localize({locale});
+  const title = l6e('site.title');
+  const titleTemp = `%s • ${title}`;
+  return {
     title: {
-      template: `%s • ${siteInfo['en'].siteName}`,
-      default: siteInfo['en'].siteName,
+      template: titleTemp,
+      default: title,
     },
-    siteName: siteInfo['en'].siteName,
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    title: {
-      template: `%s • ${siteInfo['en'].siteName}`,
-      default: siteInfo['en'].siteName,
+    description: l6e('site.description'),
+    metadataBase: new URL(
+      env('DOMAIN') ?? 'https://next-infinity.vercel.app/next-blog'
+    ),
+    openGraph: {
+      title: {
+        template: titleTemp,
+        default: title,
+      },
+      description: l6e('site.description'),
+      url: env('DOMAIN') ?? 'https://next-infinity.vercel.app/next-blog',
+      siteName: title,
+      alternates: {
+        canonical: '/next-blog',
+        languages: {
+          'en-US': '/next-blog',
+          'ar-EG': '/next-blog?locale=ar',
+        },
+      },
+      locale: `${locale}_${locale === 'ar' ? 'EG' : 'US'}`,
+      images: '/opengraph-image.png',
+      type: 'website',
     },
-  },
+    twitter: {
+      title: {
+        template: titleTemp,
+        default: title,
+      },
+      description: l6e('site.description'),
+      images: [
+        `${
+          `${env('DOMAIN')}/next-blog` ??
+          'https://next-infinity.vercel.app/next-blog'
+        }/opengraph-image.png`,
+      ],
+    },
+  };
 };
 
-const RootLayout = async ({children}: {children: React.ReactNode}) => {
-  const headerStore = headers();
+export async function generateStaticParams() {
+  return [''];
+}
+
+const RootLayout: Layout = async ({children}) => {
   const cookieStore = cookies();
+  const locale = getLocale();
   const userId = cookieStore.get('next-blog-user-id')?.value ?? '';
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'
@@ -45,9 +76,13 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
         userEndpoint='/api/next-blog/auth/me'
         userIdCookie='next-blog-user-id'
       >
-        <Header theme={theme} userId={userId} />
+        <Header
+          locale={locale}
+          theme={theme}
+          userId={userId}
+        />
         <main className={cls.main}>{children}</main>
-        <Footer />
+        <Footer locale={locale} />
       </UserDataProvider>
     </ThemeProvider>
   );

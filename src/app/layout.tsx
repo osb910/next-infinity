@@ -15,21 +15,35 @@ import Toaster, {ToastProvider} from '@/ui/Toaster';
 import ObeyMotionPref from '@/ui/ObeyMotionPref';
 import {TooltipProvider} from '@/ui/Tooltip';
 import {type Metadata} from 'next';
+import {getLocale} from '@/l10n/next-blog/getL10n';
+import {languages} from '@/l10n/next-blog/config';
+import {env} from '@/lib/helpers';
+
+const title = 'Next Infinity';
+const description =
+  'An assortment of full-stack projects and miniature applications crafted using Next.js, TypeScript, MongoDB, and Framer Motion.';
 
 export const metadata: Metadata = {
-  title: 'Next Infinity',
-  description:
-    'An assortment of full-stack projects and miniature applications crafted using Next.js, TypeScript, MongoDB, and Framer Motion.',
+  title,
+  description,
   metadataBase: new URL('https://next-infinity.vercel.app'),
   openGraph: {
-    title: 'Next Infinity',
+    title,
+    description,
     url: 'https://next-infinity.vercel.app',
-    siteName: 'Next Infinity',
+    siteName: title,
     locale: 'en_US',
+    images: '/opengraph-image.png',
     type: 'website',
   },
   twitter: {
-    title: 'Next Infinity',
+    title,
+    description,
+    images: [
+      `${
+        `${env('DOMAIN')}` ?? 'https://next-infinity.vercel.app'
+      }/opengraph-image.png`,
+    ],
   },
 };
 
@@ -80,16 +94,21 @@ const splineSansMono = Spline_Sans_Mono({
 });
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+  const locale = getLocale();
+  const headerStore = headers();
+  const site = headerStore.get('site');
   const cookieStore = cookies();
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'
     | 'dark';
 
+  const {dir: blogDir} = languages[locale];
+
   return (
     <html
-      lang='en'
-      data-color-theme={theme}
+      lang={site === 'next-blog' ? locale : 'en'}
       className={clsx(
+        site === 'next-blog' && blogDir,
         theme,
         atkinson.variable,
         roboto.variable,
@@ -100,12 +119,15 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         splineSansMono.variable
       )}
     >
-      <body suppressHydrationWarning>
+      <body
+        dir={site === 'next-blog' ? blogDir : 'ltr'}
+        suppressHydrationWarning
+      >
         <ObeyMotionPref>
           <SoundProvider>
             <ToastProvider>
               <TooltipProvider>{children}</TooltipProvider>
-              <Toaster lang='en' />
+              <Toaster lang={site === 'next-blog' ? locale : 'en'} />
             </ToastProvider>
           </SoundProvider>
         </ObeyMotionPref>
