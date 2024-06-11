@@ -1,22 +1,28 @@
-import {spawn, ChildProcess} from 'child_process';
+import {spawn, type ChildProcess} from 'child_process';
 import {getPath} from '@/utils/path';
-import type {RunRegexOptions} from './types';
+import type {RunRegex, RunRegexOptions, RunRegexResponse} from './types';
 
-const regexPath = getPath('src/lib/text/regex/py-regex/regex.py');
+const regexPath = getPath('src/lib/text/regex/py-regex/pypi-regex.py');
 
-export const runRegex = ({
+const pyRegex = async ({
   method,
-  str,
+  text,
   pattern,
-  flags = '',
+  flags = [],
+  repl,
 }: RunRegexOptions) => {
-  const args = [method, str, pattern];
-  flags && args.push('--flags', flags);
+  const args = [method, pattern, text];
+  repl && args.push('--r', repl);
+  flags && args.push('--flags', flags.join(''));
   try {
     const pyRegex: ChildProcess = spawn('python', [regexPath, ...args]);
-    return new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       pyRegex.stdout?.on('data', (data) => {
-        resolve(data.toString().trim());
+        const res = JSON.parse(data.toString().trim());
+        if (res.errors) {
+          reject(res);
+        }
+        resolve(res);
       });
       pyRegex.stderr?.on('data', (data) => {
         reject(data.toString());
@@ -25,9 +31,13 @@ export const runRegex = ({
         console.log(`Process exited with code ${code}`)
       );
     }).catch((err) => {
-      console.error('Error occurred during Python script execution:', err);
+      console.error('Error in Python script execution:', err);
+      return err;
     });
+    return promise as Promise<RunRegexResponse>;
   } catch (err) {
-    console.log(err);
+    console.log('catch pyregex', err);
   }
 };
+
+export default pyRegex;
