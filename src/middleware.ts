@@ -1,7 +1,7 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
-import {getLocale as getNextBlogLocale} from './l10n/next-blog/getL10n';
+import {readLocale as readNextBlogLocale} from './l10n/next-blog/getL10n';
 import {locales as nextBlogLocales} from './l10n/next-blog/config';
 
 export const middleware = async (req: NextRequest) => {
@@ -55,7 +55,7 @@ export const middleware = async (req: NextRequest) => {
         ) || req.headers.get('x-locale');
 
       if (!locale) {
-        const locale = getNextBlogLocale(req);
+        const locale = readNextBlogLocale(req);
         response.headers.set('x-locale', locale);
         req.nextUrl.searchParams.set('locale', locale);
         return NextResponse.redirect(req.nextUrl);
