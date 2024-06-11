@@ -4,9 +4,10 @@ import {fileURLToPath} from 'url';
 
 export const root = (): string => {
   const filename = fileURLToPath(import.meta.url);
-  return env('NODE_ENV') === 'development'
-    ? join(dirname(filename), '..', '..')
-    : process.cwd();
+  // return env('NODE_ENV') === 'development'
+  //   ? join(dirname(filename), '..', '..')
+  //   : process.cwd();
+  return process.cwd();
 };
 
 export const getPath = (pathFromRoot: string): string =>

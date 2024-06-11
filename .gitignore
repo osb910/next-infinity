@@ -40,4 +40,3 @@ drafts
 /src/lib/text/regex/py-regex/__pycache__
 # /api/py/__pycache__/*.pyc
 api
-requirements.txt

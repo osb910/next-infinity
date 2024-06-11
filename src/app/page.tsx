@@ -15,30 +15,29 @@ const Home = async () => {
     const appPath = 'src/app';
     const appDirPromise = getDirNames(appPath);
     const miniAppsDirPromise = getDirNames(`${appPath}/mini-apps`);
-    const [appDir, miniAppsDir] = await Promise.all([
+    const [appDir, miniApps] = await Promise.all([
       appDirPromise,
       miniAppsDirPromise,
     ]);
 
-    const projectsPromises = appDir
-      .filter(
-        ({name}) =>
-          !['api', 'mini-apps', 'nasa-mission-control', 'test'].includes(name)
-      )
-      .map(async ({name}) => ({
-        name,
-        size: await calculateDirSize(join(appPath, name)),
-      }));
+    const projects = appDir.filter(
+      ({name}) =>
+        !['api', 'mini-apps', 'nasa-mission-control', 'test'].includes(name)
+    );
+    // .map(async ({name}) => ({
+    //   name,
+    //   size: await calculateDirSize(join(appPath, name)),
+    // }));
 
-    const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
-      name,
-      size: await calculateDirSize(join(appPath, 'mini-apps', name)),
-    }));
+    // const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
+    //   name,
+    //   size: await calculateDirSize(join(appPath, 'mini-apps', name)),
+    // }));
 
-    const [projects, miniApps] = await Promise.all([
-      Promise.all(projectsPromises),
-      Promise.all(miniAppsPromises),
-    ]);
+    // const [projects, miniApps] = await Promise.all([
+    //   Promise.all(projectsPromises),
+    //   Promise.all(miniAppsPromises),
+    // ]);
 
     return (
       <>
@@ -55,12 +54,16 @@ const Home = async () => {
             <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
             <ol className={styles.apps}>
               {projects
-                .sort((a, b) => b.size - a.size)
+                // .sort((a, b) => b.size - a.size)
                 .map(({name}) => (
-                  <Poster poster={`/img/${name}.png`} link={name} key={name}>
+                  <Poster
+                    poster={`/img/${name}.png`}
+                    link={name}
+                    key={name}
+                  >
                     {name
                       .split('-')
-                      .map(word => word[0].toUpperCase() + word.slice(1))
+                      .map((word) => word[0].toUpperCase() + word.slice(1))
                       .join(' ')}
                   </Poster>
                 ))}
@@ -70,7 +73,7 @@ const Home = async () => {
             <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
             <ol className={styles.apps}>
               {miniApps
-                .sort((a, b) => b.size - a.size)
+                // .sort((a, b) => b.size - a.size)
                 .map(({name}) => (
                   <Poster
                     poster={`/img/${name}.png`}
@@ -79,7 +82,7 @@ const Home = async () => {
                   >
                     {name
                       .split('-')
-                      .map(word => word[0].toUpperCase() + word.slice(1))
+                      .map((word) => word[0].toUpperCase() + word.slice(1))
                       .join(' ')}
                   </Poster>
                 ))}
