@@ -35,6 +35,8 @@ export const AR_UNICODE = Object.freeze({
 });
 
 export const AR_REGEX = Object.freeze({
+  ALLAH:
+    /[\u0627\u0671]\u0644{2}(?:\u0651[\u0670\u064E]?)?\u0647\p{Mn}?|\uFDF2/gu,
   // @ts-ignore
   anyChar: /\p{Script_Extensions=Arabic}/gu,
   anyCharU: '\\p{Script_Extensions=Arabic}',
@@ -123,7 +125,7 @@ export const buildArRegex = (
   return (
     str
       // Consider Holy Name ornament
-      .replace(/(الله)/g, '(?:$1|\\uFDF2)')
+      .replace(AR_REGEX.ALLAH, '(?:$0|\\uFDF2)')
       // Consider Muhammad ornament
       .replace(/(محمد)/g, '(?:$1|\\uFDF4)')
       // Consider salah ornament
@@ -152,5 +154,44 @@ export const buildArRegex = (
       .replace(/\u064C/g, `(?:${AR_UNICODE.dammNunation.join('|')})`)
       // Consider 3 shapes of kasr nunation
       .replace(/\u064D/g, `(?:${AR_UNICODE.kasrNunation.join('|')})`)
+  );
+};
+
+// EXPERIMENTAL
+export const buildArPyRegex = (
+  str: string,
+  {
+    diacs = false,
+    kashida = false,
+    alif = false,
+    hamza = false,
+  }: BuildArRegexOptions = {}
+): string => {
+  const diacsClass = '\\p{Script_Extensions=Arabic})&&\\p{Mn}';
+  let optional = !diacs
+    ? !kashida
+      ? `${diacsClass}${AR_UNICODE.kashida}`
+      : diacsClass
+    : !kashida
+    ? `${AR_UNICODE.kashida}`
+    : '';
+  const maxFuzzy = kashida ? 64 : 16;
+  const fuzzyBlock = optional ? `{i<=${maxFuzzy}:[${optional}]}` : '';
+
+  return (
+    str
+      // Consider Holy Name ornament
+      .replace(AR_REGEX.ALLAH, '(?:$0|\\uFDF2)')
+      // Consider Muhammad ornament
+      .replace(/(محمد)/g, '(?:$1|\\uFDF4)')
+      // Consider salah ornament
+      .replace(/(صلى الله عليه وسلم)/g, '(?:$1|\\uFDFA)')
+      // Consider jalla jalaluhou ornament
+      .replace(/(جل جلاله)/g, '(?:$1|\\uFDFB)')
+      // Consider basmala ornament
+      .replace(/(بسم الله الرحمن الرحيم)/g, '(?:$1|\\uFDFD)')
+      // Consider 2 positions of fath nunation around alif
+      .replace(AR_REGEX.nunationAlif, '(?:$1$2|$2$1)')
+      .replace(AR_REGEX.alifNunation, '(?:$1$2|$2$1)')
   );
 };
