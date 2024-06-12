@@ -1,6 +1,6 @@
 'use client';
 
-import {useRouter, usePathname} from 'next/navigation';
+import {useRouter, usePathname, useSearchParams} from 'next/navigation';
 import {useEffect, useState, type FocusEvent, type MouseEvent} from 'react';
 import clsx from 'clsx';
 import {motion} from 'framer-motion';
@@ -17,6 +17,9 @@ export type LocalizerProps = Partial<IconButtonProps> & {
   langs: Array<Omit<Lang, 'dictionary'>>;
   locale: Locale;
   displayLang?: boolean;
+  method?: 'param' | 'searchParam';
+  useDefaultSearchParam?: boolean;
+  defaultLocale?: Locale;
   radius?: string;
   bg?: string;
   bgMenu?: string;
@@ -27,6 +30,9 @@ const Localizer = ({
   langs,
   locale = 'en',
   displayLang,
+  method = 'param',
+  useDefaultSearchParam = false,
+  defaultLocale = 'en',
   radius = '6px',
   bg = 'transparent',
   bgMenu = 'var(--gray-500)',
@@ -35,6 +41,7 @@ const Localizer = ({
 }: LocalizerProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isOpen, toggleIsOpen] = useToggle();
   const [targetLocale, setTargetLocale] = useState<string>('');
   const language = langs.find((lang) => lang.code === locale);
@@ -52,11 +59,27 @@ const Localizer = ({
     evt.stopPropagation();
     const newLocale = (evt.target as HTMLLIElement).dataset.locale ?? '';
     setTargetLocale(newLocale);
-    const target = pathname.replace(
-      /^\/[a-z]{2}(?:-[A-Z]{2})?/,
-      `/${newLocale}`
-    );
-    router.replace(target);
+    if (method === 'param') {
+      const target = pathname.replace(
+        /^\/[a-z]{2}(?:-[A-Z]{2})?/,
+        `/${newLocale}`
+      );
+      router.replace(target);
+    }
+
+    if (method === 'searchParam') {
+      const current = searchParams.get('locale');
+      const allSP = searchParams.toString();
+      const modSearchParams = allSP.replace(RegExp(`locale=${current}`), '');
+      const localeSP =
+        useDefaultSearchParam && newLocale === defaultLocale
+          ? ''
+          : `locale=${newLocale}`;
+      const newSP = modSearchParams + localeSP;
+      const target = `${pathname}${newSP ? `?${newSP}` : ''}`;
+      console.log({allSP, modSearchParams, newSP, target});
+      router.push(target);
+    }
   };
 
   const prefetch = (locale: Locale) => {

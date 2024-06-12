@@ -2,7 +2,10 @@ import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
 import {readLocale as readNextBlogLocale} from './l10n/next-blog/getL10n';
-import {locales as nextBlogLocales} from './l10n/next-blog/config';
+import {
+  defaultLocale,
+  locales as nextBlogLocales,
+} from './l10n/next-blog/config';
 
 export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;
@@ -20,7 +23,6 @@ export const middleware = async (req: NextRequest) => {
     process.env.NODE_ENV === 'production'
       ? ['https://next-infinity.vercel.app', 'http://localhost:3000']
       : ['http://localhost:3000'];
-  console.log({origin});
 
   if (origin && !whitelisted.includes(origin)) {
     console.log(`Origin ${origin} not allowed`);
@@ -52,13 +54,17 @@ export const middleware = async (req: NextRequest) => {
     if (/^(\/api)?\/next-blog/.test(pathname)) {
       const locale =
         nextBlogLocales.find((locale) =>
-          RegExp(`^${locale}`).test(searchParams.get('locale') ?? '')
+          (searchParams.get('locale') ?? '').match(RegExp(`^${locale}`))
         ) || req.headers.get('x-locale');
 
+      let newLocale = locale ?? readNextBlogLocale(req);
+
+      if (locale !== defaultLocale) {
+        req.nextUrl.searchParams.set('locale', newLocale);
+      }
+
+      response.headers.set('x-locale', newLocale);
       if (!locale) {
-        const locale = readNextBlogLocale(req);
-        response.headers.set('x-locale', locale);
-        // req.nextUrl.searchParams.set('locale', locale);
         return NextResponse.redirect(req.nextUrl);
       }
     }
