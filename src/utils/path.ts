@@ -14,7 +14,9 @@ export const getPath = (pathFromRoot: string): string =>
   join(root(), pathFromRoot);
 
 export const getURL = (path: string) => {
-  const baseURL = IS_SERVER ? process.env.ORIGIN! : window.location.origin;
+  const baseURL = (
+    IS_SERVER ? process.env.ORIGIN : window.location.origin
+  ) as string;
   return new URL(path, baseURL).toString();
 };
 
