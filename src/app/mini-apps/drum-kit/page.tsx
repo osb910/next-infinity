@@ -85,10 +85,11 @@ const DrumKit = () => {
 
   useEffect(() => {
     keySoundsMap.forEach(({key, length}) => {
-      setStatus(draft => {
+      setStatus((draft) => {
         draft[key] = {active: false, duration: length};
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const hotkeys = keySoundsMap.map(({key, play, length}) => ({
@@ -96,7 +97,7 @@ const DrumKit = () => {
     run: () => {
       if (!soundEnabled) return;
       play();
-      setStatus(draft => {
+      setStatus((draft) => {
         draft[key] = {active: true, duration: length + Math.random() * 10};
       });
     },

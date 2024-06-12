@@ -15,8 +15,10 @@ const nextConfig = {
         './src/app/**/*',
         './src/data/**/*',
         './src/dictionaries/**/*',
-        '/api/**/*',
       ],
+    },
+    outputFileTracingExcludes: {
+      '*': ['node_modules/canvas'],
     },
   },
   images: {
@@ -48,9 +50,9 @@ const nextConfig = {
       },
     ];
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
 };
 
 module.exports = nextConfig;
