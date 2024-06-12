@@ -17,9 +17,6 @@ const nextConfig = {
         './src/dictionaries/**/*',
       ],
     },
-    outputFileTracingExcludes: {
-      '*': ['node_modules/canvas'],
-    },
   },
   images: {
     remotePatterns: [
