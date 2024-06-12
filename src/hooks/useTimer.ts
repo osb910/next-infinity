@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 type UseTimerProps = {
   duration?: number;
@@ -11,7 +11,7 @@ const useTimer = ({
   isRunning = false,
   tickEvery = 50,
 }: UseTimerProps = {}) => {
-  const timerInterval = useRef<NodeJS.Timer | null>(null);
+  const timerInterval = useRef<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(duration * 1000);
   const [status, setStatus] = useState<'stopped' | 'running' | 'paused'>(
     'stopped'
@@ -30,10 +30,10 @@ const useTimer = ({
     }
     setStatus('running');
     const interval = setInterval(() => {
-      setTimeLeft(current => (current > 0 ? current - tickEvery : current));
+      setTimeLeft((current) => (current > 0 ? current - tickEvery : current));
     }, tickEvery);
 
-    timerInterval.current = interval;
+    timerInterval.current = +interval;
 
     return () => clearInterval(interval);
   }, [isRunning, tickEvery]);
