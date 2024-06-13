@@ -24,19 +24,19 @@ const Reviews = ({reviews, endpoint}: ReviewsProps) => {
       <ReviewForm
         user={userData}
         endpoint={endpoint}
-        addReview={review => {
-          setReviewList(current => [review, ...current]);
+        addReview={(review) => {
+          setReviewList((current) => [review, ...current]);
         }}
       />
       <ul className={styles.reviews}>
-        {sortedReviews.map(review => (
+        {sortedReviews.map((review) => (
           <Review
             key={review._id}
             review={review}
-            userId={userData?._id ?? ''}
-            editReview={updatedReview => {
-              setReviewList(current =>
-                current.map(item =>
+            userId={userData?._id?.toString() ?? ''}
+            editReview={(updatedReview) => {
+              setReviewList((current) =>
+                current.map((item) =>
                   item._id === updatedReview._id
                     ? {
                         ...item,
@@ -49,8 +49,8 @@ const Reviews = ({reviews, endpoint}: ReviewsProps) => {
               );
             }}
             removeReview={() => {
-              setReviewList(current =>
-                current.filter(item => item._id !== review._id)
+              setReviewList((current) =>
+                current.filter((item) => item._id !== review._id)
               );
             }}
           />

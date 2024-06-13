@@ -115,7 +115,10 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
           </span>
           <span>({review.rating}/5)</span>
         </p>
-        <time dateTime={review.updatedAt} className={styles.reviewTime}>
+        <time
+          dateTime={review.updatedAt}
+          className={styles.reviewTime}
+        >
           {reviewTime}
         </time>
       </header>
@@ -138,18 +141,26 @@ const Review = ({review, editReview, removeReview, userId}: ReviewProps) => {
               />
             </p>
             <RatingStars selectedRating={review.rating} />
-            <button type='button' onClick={() => setIsEditing(false)}>
+            <button
+              type='button'
+              onClick={() => setIsEditing(false)}
+            >
               Cancel
             </button>
           </Form>
         ) : (
           <>
             <p className={styles.reviewText}>{review.text}</p>
-            {userId === review.author._id && (
+            {userId === review.author._id?.toString() && (
               <>
                 <IconButton
                   onClick={() => setIsEditing(true)}
-                  icon={<Edit fill='var(--color-gray-900)' size={28} />}
+                  icon={
+                    <Edit
+                      fill='var(--color-gray-900)'
+                      size={28}
+                    />
+                  }
                   className={styles.editButton}
                   title='Edit review'
                   aria-label='Edit review'

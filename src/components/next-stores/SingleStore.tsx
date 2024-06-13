@@ -68,7 +68,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
     author,
   } = store;
 
-  const id = typeof _id === 'object' ? _id.toString() : _id;
+  const id = typeof _id === 'object' ? _id.toString() : _id ?? '';
   const authorId = typeof author === 'object' ? author.toString() : author;
 
   const headersList = headers();
@@ -97,7 +97,10 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
               <Link href={`/next-stores/stores/${id}/edit`}>
                 <Edit size={28} />
               </Link>
-              <Eraser itemId={id!} endpoint={`/api/next-stores/stores/${id}`} />
+              <Eraser
+                itemId={id!}
+                endpoint={`/api/next-stores/stores/${id}`}
+              />
             </>
           )}
         </section>
@@ -119,7 +122,10 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
           buttonStyle={{'--bg': 'rgba(144, 94, 38, 0.67)'}}
         />
         <p className={styles.storeLocation}>{address}</p>
-        <p className={styles.storeDescription} dir='auto'>
+        <p
+          className={styles.storeDescription}
+          dir='auto'
+        >
           {description}
         </p>
         {tags && <Tags tags={tags} />}

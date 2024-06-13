@@ -88,12 +88,12 @@ const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
       json?.data?.stores?.map((store) => ({
         lng: store.location.coordinates[0],
         lat: store.location.coordinates[1],
-        id: store._id,
+        id: store._id?.toString() ?? '',
         title: store.name,
       })) ?? [];
 
     const selectedItem = json?.data?.stores?.find(
-      (store) => store._id === selected
+      (store) => store._id?.toString() === selected
     );
 
     const mapStyle: Record<string, any> = {

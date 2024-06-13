@@ -24,9 +24,12 @@ const Stores = ({
 
   return (
     <ul className={styles.stores}>
-      {stores?.map(store => (
-        <li key={store._id}>
-          <StoreCard item={store} userId={userId!} />
+      {stores?.map((store) => (
+        <li key={store._id?.toString()}>
+          <StoreCard
+            item={store}
+            userId={userId!}
+          />
         </li>
       ))}
       {paginate && (

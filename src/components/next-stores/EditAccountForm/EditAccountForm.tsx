@@ -20,7 +20,7 @@ const EditAccountForm = ({user}: EditAccountFormProps) => {
     const res = await ky.put('/api/next-stores/auth/me', {
       json: data,
       headers: {
-        'X-USER-ID': user._id,
+        'X-USER-ID': user._id?.toString(),
       },
       throwHttpErrors: false,
       timeout: 20000,
@@ -38,7 +38,11 @@ const EditAccountForm = ({user}: EditAccountFormProps) => {
       submitText='Update My Account'
       onSave={updateAccount}
     >
-      <Input label='Name' name='name' defaultValue={user?.name} />
+      <Input
+        label='Name'
+        name='name'
+        defaultValue={user?.name}
+      />
       <Input
         type='email'
         label='Email'

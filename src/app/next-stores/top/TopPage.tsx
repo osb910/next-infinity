@@ -34,7 +34,7 @@ const TopPage = async () => {
           </thead>
           <tbody>
             {json.data?.map((store, idx) => (
-              <tr key={store._id}>
+              <tr key={store._id?.toString()}>
                 <td>
                   <Link href={`stores/${store.slug}`}>
                     <Image
