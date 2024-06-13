@@ -11,6 +11,7 @@ import './styles.css';
 
 export const generateMetadata: GetMetadata<Layout> = async () => {
   const locale = getLocale();
+  console.log({locale});
   const {l6e} = await localize({locale});
   const title = l6e('site.title');
   const titleTemp = `%s • ${title}`;
@@ -57,10 +58,6 @@ export const generateMetadata: GetMetadata<Layout> = async () => {
     },
   };
 };
-
-export async function generateStaticParams() {
-  return [''];
-}
 
 const RootLayout: Layout = async ({children}) => {
   const cookieStore = cookies();

@@ -5,8 +5,14 @@ import {defaultLocale, languages, locales} from './config';
 import {getDeepProp} from '@/utils/general';
 import {type NextRequest} from 'next/server';
 import type {Dictionary, DottedL10n, Locale} from './l10n.types';
-import type {Dir, DotPathValue} from '@/types';
-import {headers} from 'next/headers';
+import type {
+  Dir,
+  DotPathValue,
+  DottedPaths,
+  NonDotted,
+  PathValue,
+} from '@/types';
+import {cookies, headers} from 'next/headers';
 
 export const readLocale = (req: NextRequest) => {
   const languages = new Negotiator({
@@ -17,26 +23,31 @@ export const readLocale = (req: NextRequest) => {
 };
 
 export const getLocale = cache(() => {
-  const locale = (headers().get('x-locale') ?? defaultLocale) as Locale;
+  const locale = (cookies().get('locale')?.value ?? defaultLocale) as Locale;
   return locale;
 });
 
 export const localize = cache(
-  async <T extends DottedL10n>({locale, path}: {locale?: Locale; path?: T}) => {
+  async <T extends keyof Dictionary | '' | undefined>({
+    locale,
+    path = '',
+  }: {
+    locale?: Locale;
+    path?: T;
+  } = {}) => {
     const usedLocale = locale ?? defaultLocale;
 
     let dictionary = await languages[usedLocale].dictionary();
 
     // if (path) {
-    //   dictionary = getDeepProp(dictionary, path) as DotPathValue<Dictionary, T>;
+    //   const deepDictionary = dictionary[path] as Dictionary[T];
     // }
 
-    const l6e = <
-      L extends DottedL10n
-      // DottedPaths<DotPathValue<Dictionary, T>>
-    >(
-      key: L
-    ) => {
+    const l6e = <L extends DottedPaths<Dictionary>>(key: L) => {
+      // const deepDictionary = (
+      //   path && path.length ? dictionary[path] : dictionary
+      // ) as T extends keyof Dictionary ? Dictionary[T] : Dictionary;
+
       const value = getDeepProp(dictionary, key);
       return (!value ? '' : value) as DotPathValue<Dictionary, L>;
     };

@@ -33,7 +33,7 @@ export type Push<T extends Array<any>, U> = [...T, U];
 
 export type Unshift<T extends Array<any>, U> = [U, ...T];
 
-export type Join<T extends string[], D extends string> = T extends []
+export type Join<T extends string[], D extends string> = T extends undefined
   ? never
   : T extends [infer F]
   ? F
@@ -48,3 +48,11 @@ export type Split<S extends string, D extends string> = string extends S
   : S extends `${infer T}${D}${infer U}`
   ? [T, ...Split<U, D>]
   : [S];
+
+export type NonDotted<T extends string> = T extends `${infer S}.${infer U}`
+  ? never
+  : T;
+
+export type Reverse<T extends any[]> = T extends [infer F, ...infer R]
+  ? [...Reverse<R>, F]
+  : T;

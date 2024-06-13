@@ -96,7 +96,7 @@ const splineSansMono = Spline_Sans_Mono({
 export default function RootLayout({children}: {children: React.ReactNode}) {
   const locale = getLocale();
   const headerStore = headers();
-  const site = headerStore.get('site');
+  const site = headerStore.get('x-site');
   const cookieStore = cookies();
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'

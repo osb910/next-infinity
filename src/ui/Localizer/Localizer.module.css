@@ -4,6 +4,10 @@
   background-color: var(--bg);
 }
 
+.icons {
+  display: flex;
+}
+
 .rtl .currentLang {
   font-weight: 700;
   font-size: 1.125rem;

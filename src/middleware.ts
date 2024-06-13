@@ -11,6 +11,9 @@ export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;
   const dialog = searchParams.get('dialog');
   const origin = req.headers.get('origin');
+  const localeCookie = req.cookies.get('locale');
+  const localeHeader = req.headers.get('x-locale');
+  const locale = localeCookie?.value ?? localeHeader;
   const authCookie = req.cookies.get('nextStoresToken');
   const authHeader = req.headers.get('Authorization');
   const token = authCookie
@@ -52,21 +55,9 @@ export const middleware = async (req: NextRequest) => {
 
   if (isRoute) {
     if (/^(\/api)?\/next-blog/.test(pathname)) {
-      const locale =
-        nextBlogLocales.find((locale) =>
-          (searchParams.get('locale') ?? '').match(RegExp(`^${locale}`))
-        ) || req.headers.get('x-locale');
-
       let newLocale = locale ?? readNextBlogLocale(req);
-
-      if (locale !== defaultLocale) {
-        req.nextUrl.searchParams.set('locale', newLocale);
-      }
-
       response.headers.set('x-locale', newLocale);
-      if (!locale) {
-        return NextResponse.redirect(req.nextUrl);
-      }
+      response.cookies.set('locale', newLocale);
     }
   }
 

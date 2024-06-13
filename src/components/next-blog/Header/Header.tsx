@@ -79,8 +79,7 @@ const Header = async ({locale, theme, userId}: HeaderProps) => {
           <Localizer
             locale={locale}
             langs={langs}
-            method='searchParam'
-            useDefaultSearchParam
+            method='cookie'
             className={cls.localizer}
             bgMenu='var(--bg-gdt-1)'
             bgActive='var(--bg-gdt-3)'

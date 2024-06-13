@@ -2,13 +2,15 @@
 
 import {useRouter, usePathname, useSearchParams} from 'next/navigation';
 import {useEffect, useState, type FocusEvent, type MouseEvent} from 'react';
+import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import {motion} from 'framer-motion';
 import {Locale} from '@/l10n/next-blog/l10n.types';
 import useToggle from '@/hooks/useToggle';
 import {TIME} from '@/constants/numbers';
 import IconButton, {type IconButtonProps} from '@/ui/IconButton';
-import Icon from '@/ui/Icon/iconify';
+// import Icon from '@/ui/Icon/iconify';
+import Icon from '@/ui/Icon';
 import Spinner from '@/ui/Spinner';
 import cls from './Localizer.module.css';
 import {CSSProps, Lang} from '@/types';
@@ -17,7 +19,7 @@ export type LocalizerProps = Partial<IconButtonProps> & {
   langs: Array<Omit<Lang, 'dictionary'>>;
   locale: Locale;
   displayLang?: boolean;
-  method?: 'param' | 'searchParam';
+  method?: 'param' | 'cookie' | 'searchParam';
   useDefaultSearchParam?: boolean;
   defaultLocale?: Locale;
   radius?: string;
@@ -46,6 +48,7 @@ const Localizer = ({
   const [targetLocale, setTargetLocale] = useState<string>('');
   const language = langs.find((lang) => lang.code === locale);
 
+  // close on click outside this component
   useEffect(() => {
     document.body.addEventListener('click', (evt) => {
       const localizer = (evt.target as HTMLBodyElement).closest(
@@ -55,16 +58,32 @@ const Localizer = ({
     });
   }, [toggleIsOpen]);
 
+  useEffect(() => {
+    // properly set to closed and fix arrow
+    toggleIsOpen(false);
+    // remove loader
+    setTargetLocale('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
+
   const changeLocale = (evt: MouseEvent<HTMLLIElement>): void => {
     evt.stopPropagation();
     const newLocale = (evt.target as HTMLLIElement).dataset.locale ?? '';
     setTargetLocale(newLocale);
+
     if (method === 'param') {
       const target = pathname.replace(
         /^\/[a-z]{2}(?:-[A-Z]{2})?/,
         `/${newLocale}`
       );
       router.replace(target);
+    }
+
+    if (method === 'cookie') {
+      Cookies.set('locale', newLocale, {
+        expires: 1000,
+      });
+      router.refresh();
     }
 
     if (method === 'searchParam') {
@@ -77,14 +96,13 @@ const Localizer = ({
           : `locale=${newLocale}`;
       const newSP = modSearchParams + localeSP;
       const target = `${pathname}${newSP ? `?${newSP}` : ''}`;
-      console.log({allSP, modSearchParams, newSP, target});
       router.push(target);
     }
   };
 
   const prefetch = (locale: Locale) => {
     const exists = langs.some((lang) => lang.code === locale);
-    if (!exists) return;
+    if (!exists || method !== 'param') return;
     setTimeout(() => {
       const target = pathname.replace(
         /^\/[a-z]{2}(?:-[A-Z]{2})?/,
@@ -116,10 +134,12 @@ const Localizer = ({
   return (
     <IconButton
       icon={
-        <>
-          <Icon icon='lucide:globe' />
-          <Icon icon={`iconamoon:arrow-${isOpen ? 'up' : 'down'}-2-fill`} />
-        </>
+        <figure className={cls.icons}>
+          <Icon name='globe' />
+          <Icon name={`chevron-down`} />
+          {/* <Icon icon='lucide:globe' />
+          <Icon icon={`iconamoon:arrow-${isOpen ? 'up' : 'down'}-2-fill`} /> */}
+        </figure>
       }
       {...rest}
       className={clsx(cls.localizer, rest.className)}
@@ -165,7 +185,7 @@ const Localizer = ({
           >
             <p>{name}</p>
             {targetLocale === code && <Spinner color='currentColor' />}
-            {code === language?.code && <Icon icon='lucide:check' />}
+            {code === language?.code && <Icon name='check' />}
           </li>
         ))}
       </motion.ul>
