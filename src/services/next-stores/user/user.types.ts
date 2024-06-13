@@ -1,6 +1,6 @@
 import type {Model, Types, Document} from 'mongoose';
 
-export interface IUser extends Document {
+export interface IUser extends Document<Types.ObjectId> {
   email: string;
   name: string;
   password: string;

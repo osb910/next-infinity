@@ -5,7 +5,7 @@ export interface CategoryBase {
   name: string;
   description?: string;
 }
-export interface ICategory extends Document, CategoryBase {
+export interface ICategory extends Document<Types.ObjectId>, CategoryBase {
   slug: string;
   posts: Array<Types.ObjectId>;
   l10n: Array<CategoryBase>;

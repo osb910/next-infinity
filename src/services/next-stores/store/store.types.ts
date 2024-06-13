@@ -2,7 +2,7 @@ import type {Model, Types, Document} from 'mongoose';
 import type {P8n} from '@/types';
 import type {IReview} from '../review';
 
-export interface IStore extends Document {
+export interface IStore extends Document<Types.ObjectId> {
   name: string;
   slug: string;
   description: string;

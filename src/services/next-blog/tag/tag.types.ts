@@ -5,7 +5,7 @@ export interface TagBase {
   name: string;
   description?: string;
 }
-export interface ITag extends Document, TagBase {
+export interface ITag extends Document<Types.ObjectId>, TagBase {
   slug: string;
   posts: Array<Types.ObjectId>;
   l10n: Array<TagBase>;

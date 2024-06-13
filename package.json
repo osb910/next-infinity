@@ -67,6 +67,7 @@
     "original-fs": "^1.2.0",
     "postcss": "^8.4.38",
     "pretty-print-json": "^3.0.1",
+    "pythonia": "^1.2.1",
     "react": "^19.0.0-rc-a26e3f403e-20240611",
     "react-dom": "^19.0.0-rc-a26e3f403e-20240611",
     "react-feather": "^2.0.10",

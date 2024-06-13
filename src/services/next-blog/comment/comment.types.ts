@@ -6,7 +6,7 @@ export interface CommentBase {
   likedBy: Array<Types.ObjectId>;
 }
 
-export interface IComment extends Document {
+export interface IComment extends Document<Types.ObjectId> {
   post: Types.ObjectId;
   replies: Array<CommentBase>;
 }

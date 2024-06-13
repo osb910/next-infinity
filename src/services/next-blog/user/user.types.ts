@@ -1,7 +1,7 @@
 import type {Document, Model, Types} from 'mongoose';
 import type {GeoLocation} from '@/types';
 
-export interface IUser extends Document {
+export interface IUser extends Document<Types.ObjectId> {
   email: string;
   name: {
     first: string;

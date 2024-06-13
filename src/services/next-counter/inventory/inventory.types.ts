@@ -1,6 +1,6 @@
 import {Document, Model, Types} from 'mongoose';
 
-export interface IInventory extends Document {
+export interface IInventory extends Document<Types.ObjectId> {
   name: string;
   slug: string;
   location: string;

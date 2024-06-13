@@ -16,7 +16,7 @@ export interface PostBase {
   };
 }
 
-export interface IPost extends Document, PostBase {
+export interface IPost extends Document<Types.ObjectId>, PostBase {
   slug: string;
   publishedOn: Date;
   status: 'draft' | 'published';
