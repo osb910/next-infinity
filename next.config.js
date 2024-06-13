@@ -19,9 +19,10 @@ const nextConfig = {
     },
     outputFileTracingExcludes: {
       '/*': [
-        'node_modules/@swc/core-linux-x64-gnu',
-        'node_modules/@swc/core-linux-x64-musl',
-        'node_modules/@esbuild/linux-x64',
+        'node_modules/@swc/**/*',
+        'node_modules/@esbuild/**/*',
+        'node_modules/terser/**/*',
+        'node_modules/webpack/**/*',
       ],
     },
   },
