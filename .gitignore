@@ -41,8 +41,4 @@ drafts
 /api/__pycache__
 /src/python/py-regex/__pycache__
 /src/python/py-regex/regex/__pycache__
-/src/python/bin
-/src/python/include
-/src/python/lib
-/src/python/licenses
-/src/python/share
+/src/python/windows

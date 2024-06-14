@@ -1,14 +1,12 @@
 import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
-import pyRegex from '@/lib/text/regex/py-regex';
+// import pyRegex from '@/lib/text/regex/py-regex';
 // import which from 'which';
 // import {python} from 'pythonia';
 import pythonExe from '@bjia56/portable-python-3.12';
 import {PythonShell} from 'python-shell';
-import {join} from 'path';
 import {getPath} from '@/utils/path';
-import {getDirNames} from '@/utils/file';
-import {execSync, spawn} from 'child_process';
+import {env} from '@/lib/helpers';
 
 export type GetRoute = AppRoute;
 
@@ -17,9 +15,11 @@ export const dynamic = 'force-dynamic';
 type Mode = 'text' | 'json' | 'binary' | undefined;
 
 export const GET: GetRoute = async (req) => {
-  const pythonExe = (await import('@bjia56/portable-python-3.12')).default;
+  const isDev = env('NODE_ENV') === 'development';
+  const pythonExe = getPath(
+    `src/python/${isDev ? 'windows' : 'linux'}/bin/python${isDev ? '' : '3'}`
+  );
 
-  console.log({pythonExe});
   let options = {
     mode: 'json' as Mode,
     pythonPath: pythonExe as string,
