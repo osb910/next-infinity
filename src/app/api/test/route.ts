@@ -1,8 +1,9 @@
 import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
 import pyRegex from '@/lib/text/regex/py-regex';
-import which from 'which';
-import {python} from 'pythonia';
+// import which from 'which';
+// import {python} from 'pythonia';
+import pythonExe from '@bjia56/portable-python-3.12';
 import {PythonShell} from 'python-shell';
 import {join} from 'path';
 import {getPath} from '@/utils/path';
@@ -15,20 +16,21 @@ export const dynamic = 'force-dynamic';
 type Mode = 'text' | 'json' | 'binary' | undefined;
 
 export const GET: GetRoute = async (req) => {
+  console.log({pythonExe});
   let options = {
     mode: 'json' as Mode,
-    pythonPath: getPath('src/python/python.exe'),
+    // pythonPath: getPath('src/python/python.exe'),
     pythonOptions: ['-u'], // get print results in real-time
     scriptPath: getPath('/src/python/py-regex'),
     args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
   };
   try {
-    const pathsPromises = [
-      getDirNames('src'),
-      getDirNames('src/python'),
-      getDirNames('src/python/py-regex'),
-    ];
-    const [src, python, pyRegex] = await Promise.all(pathsPromises);
+    // const pathsPromises = [
+    //   getDirNames('src'),
+    //   getDirNames('src/python'),
+    //   getDirNames('src/python/py-regex'),
+    // ];
+    // const [src, python, pyRegex] = await Promise.all(pathsPromises);
     // const res = await PythonShell.run('pypi-regex.py', options);
     // pyShell.on('message', function (message) {
     //   console.log(message);
@@ -59,7 +61,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {src, python, pyRegex},
+        data: {pythonExe},
       },
       {status: 200}
     );
