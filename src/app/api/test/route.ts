@@ -8,6 +8,7 @@ import {PythonShell} from 'python-shell';
 import {join} from 'path';
 import {getPath} from '@/utils/path';
 import {getDirNames} from '@/utils/file';
+import {execSync, spawn} from 'child_process';
 
 export type GetRoute = AppRoute;
 
@@ -16,22 +17,18 @@ export const dynamic = 'force-dynamic';
 type Mode = 'text' | 'json' | 'binary' | undefined;
 
 export const GET: GetRoute = async (req) => {
+  const pythonExe = (await import('@bjia56/portable-python-3.12')).default;
+
   console.log({pythonExe});
   let options = {
     mode: 'json' as Mode,
-    // pythonPath: getPath('src/python/python.exe'),
+    pythonPath: pythonExe as string,
     pythonOptions: ['-u'], // get print results in real-time
     scriptPath: getPath('/src/python/py-regex'),
     args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
   };
   try {
-    // const pathsPromises = [
-    //   getDirNames('src'),
-    //   getDirNames('src/python'),
-    //   getDirNames('src/python/py-regex'),
-    // ];
-    // const [src, python, pyRegex] = await Promise.all(pathsPromises);
-    // const res = await PythonShell.run('pypi-regex.py', options);
+    const res = await PythonShell.run('pypi-regex.py', options);
     // pyShell.on('message', function (message) {
     //   console.log(message);
     //   // res = message;
@@ -61,7 +58,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe},
+        data: {pythonExe, res},
       },
       {status: 200}
     );
