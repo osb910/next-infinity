@@ -10,11 +10,10 @@ export const dynamic = 'force-dynamic';
 
 export const GET: GetRoute = async (req) => {
   try {
-    const py3 = await which('python3');
     const py = await which('python');
     // const tk = python('regex');
 
-    console.log({py, py3});
+    console.log({py});
     // const res = await pyRegex({
     //   method: 'findall',
     //   text: `كَتَب كُتِب كِـتَــابًا ضُرِب`,
@@ -37,7 +36,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {py, py3},
+        data: {py},
       },
       {status: 200}
     );
