@@ -15,7 +15,7 @@ export const GET: GetRoute = async (req) => {
   const isWin = process.platform === 'win32';
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
-  const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip.pyz`);
+  const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip`);
   const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   const pyPiLibDir = getPath(`${libDir}/site-packages`);
 
