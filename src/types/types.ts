@@ -71,9 +71,3 @@ export type Chainable<T = {}> = {
     path?: P
   ): P extends never ? {[L in keyof T]: T[L]} : {[L in keyof T]: T[L]}[P];
 };
-
-// export type NonDotted<T extends string> = IsDotted<T> extends true ? never : T;
-
-type Test = NonDotted<'a.kb' | 'sdfsd' | 'sdfsdfsdfsd'>;
-
-// type FirstNonDotted<T extends string> =

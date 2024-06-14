@@ -36,6 +36,7 @@
     "@types/slug": "^5.0.8",
     "@types/styled-components": "^5.1.34",
     "@types/validator": "^13.11.10",
+    "@types/which": "^3.0.4",
     "adm-zip": "^0.5.14",
     "autoprefixer": "^10.4.19",
     "aws-crt": "^1.21.2",
@@ -91,6 +92,7 @@
     "typescript": "^5.4.5",
     "use-immer": "^0.10.0",
     "use-sound": "^4.0.1",
-    "validator": "^13.12.0"
+    "validator": "^13.12.0",
+    "which": "^4.0.0"
   }
 }

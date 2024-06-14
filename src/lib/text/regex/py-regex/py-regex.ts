@@ -17,7 +17,7 @@ const pyRegex = async ({
   repl && args.push('--r', repl);
   flags && args.push('--flags', flags.join(''));
   try {
-    const pyRegex: ChildProcess = spawn('python3', [pypiRegexPath, ...args]);
+    const pyRegex: ChildProcess = spawn('python', [pypiRegexPath, ...args]);
     const promise = new Promise((resolve, reject) => {
       pyRegex.stdout?.on('data', (data) => {
         const res = JSON.parse(data.toString().trim());
