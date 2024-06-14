@@ -15,6 +15,7 @@ export const GET: GetRoute = async (req) => {
   const isWin = process.platform === 'win32';
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
+  const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts/pip3' : 'bin/pip3'}`);
   const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   const pyPiLibDir = getPath(`${libDir}/site-packages`);
 
@@ -27,7 +28,7 @@ export const GET: GetRoute = async (req) => {
   };
   try {
     const installRegex = execSync(
-      `pip install --target ${pyPiLibDir} regex --upgrade`
+      `${pipExe} install --target ${pyPiLibDir} regex`
     ).toString();
     const res = await PythonShell.run('pypi-regex.py', options);
 
