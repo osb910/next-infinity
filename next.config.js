@@ -14,6 +14,7 @@ const nextConfig = {
         './public/**/*',
         './src/app/**/*',
         './src/data/**/*',
+        './src/python/**/*',
         './src/dictionaries/**/*',
       ],
     },

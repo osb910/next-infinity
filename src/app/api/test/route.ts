@@ -3,17 +3,33 @@ import type {AppRoute} from '@/types';
 import pyRegex from '@/lib/text/regex/py-regex';
 import which from 'which';
 import {python} from 'pythonia';
+import {PythonShell} from 'python-shell';
+import {join} from 'path';
+import {getPath} from '@/utils/path';
 
 export type GetRoute = AppRoute;
 
 export const dynamic = 'force-dynamic';
 
+type Mode = 'text' | 'json' | 'binary' | undefined;
+
 export const GET: GetRoute = async (req) => {
+  let options = {
+    mode: 'json' as Mode,
+    pythonPath: getPath('src/python/python.exe'),
+    pythonOptions: ['-u'], // get print results in real-time
+    scriptPath: getPath('/src/python/py-regex'),
+    args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
+  };
   try {
-    const py = await which('python');
+    const res = await PythonShell.run('pypi-regex.py', options);
+    // pyShell.on('message', function (message) {
+    //   console.log(message);
+    //   // res = message;
+    // });
+    // console.log({pyShell});
     // const tk = python('regex');
 
-    console.log({py});
     // const res = await pyRegex({
     //   method: 'findall',
     //   text: `كَتَب كُتِب كِـتَــابًا ضُرِب`,
@@ -36,7 +52,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {py},
+        data: res,
       },
       {status: 200}
     );
