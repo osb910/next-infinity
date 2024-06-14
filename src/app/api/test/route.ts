@@ -6,6 +6,7 @@ import {python} from 'pythonia';
 import {PythonShell} from 'python-shell';
 import {join} from 'path';
 import {getPath} from '@/utils/path';
+import {getDirNames} from '@/utils/file';
 
 export type GetRoute = AppRoute;
 
@@ -22,7 +23,13 @@ export const GET: GetRoute = async (req) => {
     args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
   };
   try {
-    const res = await PythonShell.run('pypi-regex.py', options);
+    const pathsPromises = [
+      getDirNames('src'),
+      getDirNames('src/python'),
+      getDirNames('src/python/py-regex'),
+    ];
+    const [src, python, pyRegex] = await Promise.all(pathsPromises);
+    // const res = await PythonShell.run('pypi-regex.py', options);
     // pyShell.on('message', function (message) {
     //   console.log(message);
     //   // res = message;
@@ -52,7 +59,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: res,
+        data: {src, python, pyRegex},
       },
       {status: 200}
     );
