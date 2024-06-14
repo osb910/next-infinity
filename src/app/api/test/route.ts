@@ -15,7 +15,9 @@ export const GET: GetRoute = async (req) => {
   const isWin = process.platform === 'win32';
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
-  const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts/pip3' : 'bin/pip3'}`);
+  const pipExe = getPath(
+    `${pythonDir}/${isWin ? 'Scripts/pip.pyz' : 'bin/pip3'}`
+  );
   const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   const pyPiLibDir = getPath(`${libDir}/site-packages`);
 
@@ -27,6 +29,10 @@ export const GET: GetRoute = async (req) => {
     args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
   };
   try {
+    const installPip = execSync(
+      `${pythonExe} -m ensurepip --upgrade`
+    ).toString();
+    console.log({installPip});
     const installRegex = execSync(
       `${pipExe} install --target ${pyPiLibDir} regex`
     ).toString();
@@ -54,7 +60,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, res, installRegex},
+        data: {pythonExe, res, installPip, installRegex},
       },
       {status: 200}
     );
