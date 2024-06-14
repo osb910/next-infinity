@@ -1,12 +1,9 @@
 import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
 // import pyRegex from '@/lib/text/regex/py-regex';
-// import which from 'which';
-// import {python} from 'pythonia';
-import pythonExe from '@bjia56/portable-python-3.12';
 import {PythonShell} from 'python-shell';
 import {getPath} from '@/utils/path';
-import {env} from '@/lib/helpers';
+import {execSync} from 'child_process';
 
 export type GetRoute = AppRoute;
 
@@ -15,10 +12,11 @@ export const dynamic = 'force-dynamic';
 type Mode = 'text' | 'json' | 'binary' | undefined;
 
 export const GET: GetRoute = async (req) => {
-  const isDev = env('NODE_ENV') === 'development';
-  const pythonExe = getPath(
-    `src/python/${isDev ? 'windows' : 'linux'}/bin/python${isDev ? '' : '3'}`
-  );
+  const isWin = process.platform === 'win32';
+  const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
+  const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
+  const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
+  const pyPiLibDir = getPath(`${libDir}/site-packages`);
 
   let options = {
     mode: 'json' as Mode,
@@ -28,13 +26,10 @@ export const GET: GetRoute = async (req) => {
     args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
   };
   try {
+    const installRegex = execSync(
+      `pip install --target ${pyPiLibDir} regex --upgrade`
+    ).toString();
     const res = await PythonShell.run('pypi-regex.py', options);
-    // pyShell.on('message', function (message) {
-    //   console.log(message);
-    //   // res = message;
-    // });
-    // console.log({pyShell});
-    // const tk = python('regex');
 
     // const res = await pyRegex({
     //   method: 'findall',
@@ -58,7 +53,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, res},
+        data: {pythonExe, res, installRegex},
       },
       {status: 200}
     );
