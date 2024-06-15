@@ -1,9 +1,11 @@
 import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
 // import pyRegex from '@/lib/text/regex/py-regex';
+import which from 'which';
 import {PythonShell} from 'python-shell';
 import {getPath} from '@/utils/path';
 import {execSync} from 'child_process';
+import {python} from 'pythonia';
 
 export type GetRoute = AppRoute;
 
@@ -12,6 +14,7 @@ export const dynamic = 'force-dynamic';
 type Mode = 'text' | 'json' | 'binary' | undefined;
 
 export const GET: GetRoute = async (req) => {
+  // const pyPath = python()
   const isWin = process.platform === 'win32';
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
@@ -24,7 +27,7 @@ export const GET: GetRoute = async (req) => {
     pythonPath: pythonExe as string,
     pythonOptions: ['-u'], // get print results in real-time
     scriptPath: getPath('/src/python/py-regex'),
-    args: ['findall', '\\w+', 'Hello, world.', '--flags', 'imv'],
+    args: ['findall', '\\w+', 'Hello, people!', '--flags', 'imv'],
   };
   try {
     // const installRegex = execSync(
