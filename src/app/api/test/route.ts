@@ -33,7 +33,11 @@ export const GET: GetRoute = async (req) => {
     // const installRegex = execSync(
     //   `${pipExe} install --target ${pyPiLibDir} regex --upgrade`
     // ).toString();
-    const res = await PythonShell.run('pypi-regex.py', options);
+    const whichPip = execSync('pip').toString();
+    const pip = execSync(
+      `${pythonExe} -m pip install --upgrade pip`
+    ).toString();
+    // const res = await PythonShell.run('pypi-regex.py', options);
 
     // const res = await pyRegex({
     //   method: 'findall',
@@ -57,7 +61,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, res},
+        data: {pythonExe, whichPip, pip},
       },
       {status: 200}
     );
