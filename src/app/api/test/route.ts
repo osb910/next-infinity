@@ -33,7 +33,7 @@ export const GET: GetRoute = async (req) => {
     // const installRegex = execSync(
     //   `${pipExe} install --target ${pyPiLibDir} regex --upgrade`
     // ).toString();
-    const whichPip = execSync('pip').toString();
+    const whichPip = execSync('which pip').toString();
     const pip = execSync(
       `${pythonExe} -m pip install --upgrade pip`
     ).toString();
