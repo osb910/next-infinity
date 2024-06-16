@@ -33,7 +33,6 @@ export const GET: GetRoute = async (req) => {
     // const installRegex = execSync(
     //   `${pipExe} install --target ${pyPiLibDir} regex --upgrade`
     // ).toString();
-    const whichPip = execSync('which pip').toString();
     const pip = execSync(
       `${pythonExe} -m pip install --upgrade pip`
     ).toString();
@@ -61,7 +60,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, whichPip, pip},
+        data: {pythonExe, pip},
       },
       {status: 200}
     );
