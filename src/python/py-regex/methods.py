@@ -2,7 +2,7 @@ import sys
 from flags import flag_map
 
 from pathlib import Path
-path_root = Path(__file__).parents[0]
+path_root = Path(__file__).parents[1]
 
 # sys.path.append(f'{str(path_root)}/regex')
 import regex
