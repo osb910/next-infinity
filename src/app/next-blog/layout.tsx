@@ -1,5 +1,5 @@
 import {cookies} from 'next/headers';
-import {getLocale, localize} from '@/l10n/next-blog/getL10n';
+import {getLocale, localize} from '@/l10n/getL10n';
 import {env} from '@/lib/helpers';
 import {UserDataProvider} from '@/hooks/useUserData';
 import Header from '@/components/next-blog/Header';

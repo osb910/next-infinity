@@ -5,14 +5,8 @@ import {defaultLocale, languages, locales} from './config';
 import {getDeepProp} from '@/utils/general';
 import {type NextRequest} from 'next/server';
 import type {Dictionary, DottedL10n, Locale} from './l10n.types';
-import type {
-  Dir,
-  DotPathValue,
-  DottedPaths,
-  NonDotted,
-  PathValue,
-} from '@/types';
-import {cookies, headers} from 'next/headers';
+import type {Dir, DotPathValue, DottedPaths} from '@/types';
+import {cookies} from 'next/headers';
 import THE_DICTIONARY from '@/dictionaries/the-dictionary';
 
 export const readLocale = (req: NextRequest) => {

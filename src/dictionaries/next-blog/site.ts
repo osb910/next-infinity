@@ -1,4 +1,4 @@
-import {Locale} from '@/l10n/next-blog/l10n.types';
+import {Locale} from '@/l10n/l10n.types';
 
 const site = (locale: Locale) => {
   const dict = {

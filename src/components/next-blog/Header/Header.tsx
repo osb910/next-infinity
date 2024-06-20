@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import {Rss} from 'react-feather';
 import clsx from 'clsx';
-import {localize} from '@/l10n/next-blog/getL10n';
-import {langs} from '@/l10n/next-blog/config';
+import {localize} from '@/l10n/getL10n';
+import {langs} from '@/l10n/config';
 import Navigation from '@/components/next-blog/Navigation';
 import Logo from '@/components/next-blog/Logo';
 import ThemeSwitch from '@/ui/ThemeSwitch';
@@ -12,7 +12,7 @@ import {NavProvider} from '@/ui/Nav';
 import VisuallyHidden from '@/ui/VisuallyHidden';
 import StickyHeader from './StickyHeader';
 import Localizer from '@/ui/Localizer';
-import type {Locale} from '@/l10n/next-blog/l10n.types';
+import type {Locale} from '@/l10n/l10n.types';
 import type {CSSProps} from '@/types';
 import cls from './Header.module.css';
 

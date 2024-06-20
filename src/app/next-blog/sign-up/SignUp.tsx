@@ -1,7 +1,7 @@
 import {type Metadata} from 'next';
 import type {AppPage} from '@/types';
 import SignUpForm from '@/components/next-blog/SignUpForm';
-import {getLocale, localize} from '@/l10n/next-blog/getL10n';
+import {getLocale, localize} from '@/l10n/getL10n';
 
 export const metadata: Metadata = {
   title: 'Sign Up',

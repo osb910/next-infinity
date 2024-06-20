@@ -1,4 +1,4 @@
-import {type Locale} from '@/l10n/next-blog/l10n.types';
+import {type Locale} from '@/l10n/l10n.types';
 
 import {nextBlog} from './next-blog/dic';
 

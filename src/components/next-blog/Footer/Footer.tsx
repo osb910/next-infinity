@@ -6,8 +6,8 @@ import cls from './Footer.module.css';
 import Icon from '@/ui/Icon/lucide';
 import {FaDiscord} from 'react-icons/fa';
 import IconLabel from '../IconLabel';
-import {Locale} from '@/l10n/next-blog/l10n.types';
-import {localize} from '@/l10n/next-blog/getL10n';
+import {Locale} from '@/l10n/l10n.types';
+import {localize} from '@/l10n/getL10n';
 
 interface FooterProps {
   locale: Locale;

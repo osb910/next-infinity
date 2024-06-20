@@ -5,7 +5,7 @@ import {useEffect, useState, type FocusEvent, type MouseEvent} from 'react';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import {motion} from 'framer-motion';
-import {Locale} from '@/l10n/next-blog/l10n.types';
+import {Locale} from '@/l10n/l10n.types';
 import useToggle from '@/hooks/useToggle';
 import {TIME} from '@/constants/numbers';
 import IconButton, {type IconButtonProps} from '@/ui/IconButton';

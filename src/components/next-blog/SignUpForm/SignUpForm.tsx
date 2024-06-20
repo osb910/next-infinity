@@ -12,7 +12,7 @@ import Input from '@/ui/Input';
 import PasswordInput from '@/ui/PasswordInput';
 import {useToaster} from '@/ui/Toaster';
 import cls from './SignUpForm.module.css';
-import type {Dictionary, L6e, Locale} from '@/l10n/next-blog/l10n.types';
+import type {Dictionary, L6e, Locale} from '@/l10n/l10n.types';
 import type {Dir} from '@/types';
 
 interface SignUpFormProps {

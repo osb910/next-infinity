@@ -1,11 +1,8 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
-import {readLocale as readNextBlogLocale} from './l10n/next-blog/getL10n';
-import {
-  defaultLocale,
-  locales as nextBlogLocales,
-} from './l10n/next-blog/config';
+import {readLocale as readNextBlogLocale} from './l10n/getL10n';
+import {defaultLocale, locales as nextBlogLocales} from './l10n/config';
 
 export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;

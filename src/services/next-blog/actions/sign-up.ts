@@ -4,7 +4,7 @@ import {redirect} from 'next/navigation';
 import {getURL} from '@/utils/path';
 import type {JsonRes} from '@/types';
 import {type IUser} from '@/services/next-blog/user';
-import type {Locale} from '@/l10n/next-blog/l10n.types';
+import type {Locale} from '@/l10n/l10n.types';
 
 export type FormState = {
   status: 'success' | 'error' | 'warning' | 'notice';

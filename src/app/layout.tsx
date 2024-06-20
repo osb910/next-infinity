@@ -15,8 +15,8 @@ import Toaster, {ToastProvider} from '@/ui/Toaster';
 import ObeyMotionPref from '@/ui/ObeyMotionPref';
 import {TooltipProvider} from '@/ui/Tooltip';
 import {type Metadata} from 'next';
-import {getLocale} from '@/l10n/next-blog/getL10n';
-import {languages} from '@/l10n/next-blog/config';
+import {getLocale} from '@/l10n/getL10n';
+import {languages} from '@/l10n/config';
 import {env} from '@/lib/helpers';
 
 const title = 'Next Infinity';

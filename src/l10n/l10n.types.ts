@@ -5,7 +5,7 @@ import THE_DICTIONARY from '@/dictionaries/the-dictionary';
 export type Languages = Langs<typeof languages>;
 export type Language = Omit<Languages[Locale], 'dictionary'>;
 export type Locale = Loc<Languages>;
-export type Dictionary = typeof THE_DICTIONARY;
+export type Dictionary = ReturnType<typeof THE_DICTIONARY>;
 export type DottedL10n = DottedPaths<Dictionary>;
 export type Localize = (options: {
   locale?: Locale;
