@@ -29,7 +29,7 @@ const Footer = async ({locale}: FooterProps) => {
       external: true,
     },
     {
-      to: l6e('links.github'),
+      to: l6e('nextBlog.links.github'),
       label: (
         <IconLabel
           label='GitHub'
@@ -40,7 +40,7 @@ const Footer = async ({locale}: FooterProps) => {
       ),
     },
     {
-      to: l6e('links.linkedin'),
+      to: l6e('nextBlog.links.linkedin'),
       label: (
         <IconLabel
           label='LinkedIn'
@@ -51,7 +51,7 @@ const Footer = async ({locale}: FooterProps) => {
       ),
     },
     {
-      to: l6e('links.twitter'),
+      to: l6e('nextBlog.links.twitter'),
       label: (
         <IconLabel
           label='Twitter'
@@ -62,7 +62,7 @@ const Footer = async ({locale}: FooterProps) => {
       ),
     },
     {
-      to: l6e('links.discord'),
+      to: l6e('nextBlog.links.discord'),
       label: (
         <IconLabel
           label='Discord'
@@ -83,11 +83,11 @@ const Footer = async ({locale}: FooterProps) => {
         <DecorativeSwoops />
         <section className={cls.body}>
           <Logo width='10rem' />
-          <p className={cls.description}>{l6e('site.description')}</p>
+          <p className={cls.description}>{l6e('nextBlog.site.description')}</p>
           <p className={cls.attribution}>
             Blog created with ❤️ by{' '}
             <Link
-              href={l6e('links.github')}
+              href={l6e('nextBlog.links.github')}
               target='_blank'
             >
               Omar Shareef

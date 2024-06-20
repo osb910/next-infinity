@@ -13,6 +13,7 @@ import type {
   PathValue,
 } from '@/types';
 import {cookies, headers} from 'next/headers';
+import THE_DICTIONARY from '@/dictionaries/the-dictionary';
 
 export const readLocale = (req: NextRequest) => {
   const languages = new Negotiator({
@@ -37,7 +38,8 @@ export const localize = cache(
   } = {}) => {
     const usedLocale = locale ?? defaultLocale;
 
-    let dictionary = await languages[usedLocale].dictionary();
+    // let dictionary = await languages[usedLocale].dictionary();
+    const dictionary = THE_DICTIONARY(usedLocale);
 
     // if (path) {
     //   const deepDictionary = dictionary[path] as Dictionary[T];

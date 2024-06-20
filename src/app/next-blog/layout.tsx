@@ -12,14 +12,15 @@ import './styles.css';
 export const generateMetadata: GetMetadata<Layout> = async () => {
   const locale = getLocale();
   const {l6e} = await localize({locale});
-  const title = l6e('site.title');
+  const title = l6e('nextBlog.site.title');
+  const description = l6e('nextBlog.site.description');
   const titleTemp = `%s • ${title}`;
   return {
     title: {
       template: titleTemp,
       default: title,
     },
-    description: l6e('site.description'),
+    description,
     metadataBase: new URL(
       env('DOMAIN') ?? 'https://next-infinity.vercel.app/next-blog'
     ),
@@ -28,7 +29,7 @@ export const generateMetadata: GetMetadata<Layout> = async () => {
         template: titleTemp,
         default: title,
       },
-      description: l6e('site.description'),
+      description,
       url: env('DOMAIN') ?? 'https://next-infinity.vercel.app/next-blog',
       siteName: title,
       alternates: {
@@ -47,7 +48,7 @@ export const generateMetadata: GetMetadata<Layout> = async () => {
         template: titleTemp,
         default: title,
       },
-      description: l6e('site.description'),
+      description,
       images: [
         `${
           `${env('DOMAIN')}/next-blog` ??
