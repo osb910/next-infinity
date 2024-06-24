@@ -5,7 +5,7 @@ import which from 'which';
 import {PythonShell} from 'python-shell';
 import {getPath} from '@/utils/path';
 import {execSync} from 'child_process';
-import {python} from 'pythonia';
+import {getDirNames} from '@/utils/file';
 
 export type GetRoute = AppRoute;
 
@@ -18,6 +18,8 @@ export const GET: GetRoute = async (req) => {
   const isWin = process.platform === 'win32';
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
+  const vercelPy = getPath('..');
+  const vercelDir = await getDirNames('..');
   // const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip`);
   // const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   // const pyPiLibDir = getPath(`${libDir}/site-packages`);
@@ -33,9 +35,7 @@ export const GET: GetRoute = async (req) => {
     // const installRegex = execSync(
     //   `${pipExe} install --target ${pyPiLibDir} regex --upgrade`
     // ).toString();
-    const pip = execSync(
-      `${pythonExe} -m pip install --upgrade pip`
-    ).toString();
+    const pip = execSync(`${pythonExe} -m pip install regex`).toString();
     // const res = await PythonShell.run('pypi-regex.py', options);
 
     // const res = await pyRegex({
@@ -60,7 +60,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, pip},
+        data: {pythonExe, vercelPy, vercelDir, pip},
       },
       {status: 200}
     );

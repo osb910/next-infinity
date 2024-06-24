@@ -9,8 +9,8 @@ app = Flask(__name__)
 # Set the correct path to your script
 SCRIPT_PATH = path.join('src', 'python', 'py-regex', 'pypi-regex.py')
 # Use the full path to the Python interpreter
-# PYTHON_PATH = 'python' if sys.platform.startswith('win') else 'python3'
-PYTHON_PATH = sys.executable
+PYTHON_PATH = 'python' if sys.platform.startswith('win') else 'python3'
+# PYTHON_PATH = sys.executable
 
 # Define a route that listens to GET requests
 @app.route("/api/py-regex", methods=['GET'])
