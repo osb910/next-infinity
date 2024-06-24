@@ -1,11 +1,25 @@
-import sys
-from flags import flag_map
-
-# from pathlib import Path
-# path_root = Path(__file__).parents[1]
-
-# sys.path.append(f'{str(path_root)}/regex')
 import regex
+# from flags import flag_map
+
+flag_map = {
+    't': regex.TEMPLATE,
+    'i': regex.IGNORECASE,
+    'l': regex.LOCALE,
+    'm': regex.MULTILINE,
+    's': regex.DOTALL,
+    'u': regex.UNICODE,
+    'x': regex.VERBOSE,
+    'a': regex.ASCII,
+    'v': regex.VERSION1,
+    'd': regex.DEBUG,
+    'r': regex.REVERSE,
+    'w': regex.WORD,
+    'v0': regex.VERSION0,
+    'b': regex.BESTMATCH,
+    'f': regex.FULLCASE,
+    'e': regex.ENHANCEMATCH,
+    'p': regex.POSIX,
+}
 
 def parse_match(match):
   """
@@ -147,3 +161,14 @@ def regex_subn(pattern, text, repl, flags=''):
   replaced_text, count = compiled_regex.subn(repl, text)
 
   return replaced_text, count
+
+methods = {
+  'match': regex_match,
+  'fullmatch': regex_fullmatch,
+  'search': regex_search,
+  'findall': regex_findall,
+  'finditer': regex_finditer,
+  'split': regex_split,
+  'sub': regex_sub,
+  'subn': regex_subn
+}

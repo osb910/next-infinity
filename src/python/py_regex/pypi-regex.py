@@ -1,17 +1,6 @@
 import argparse
 import json
-from methods import *
-
-methods = {
-  'match': regex_match,
-  'fullmatch': regex_fullmatch,
-  'search': regex_search,
-  'findall': regex_findall,
-  'finditer': regex_finditer,
-  'split': regex_split,
-  'sub': regex_sub,
-  'subn': regex_subn
-}
+from methods import methods
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Regex matcher')

@@ -28,7 +28,7 @@ export const GET: GetRoute = async (req) => {
     mode: 'json' as Mode,
     pythonPath: pythonExe as string,
     pythonOptions: ['-u'], // get print results in real-time
-    scriptPath: getPath('/src/python/py-regex'),
+    scriptPath: getPath('/src/python/py_regex'),
     args: ['findall', '\\w+', 'Hello, people!', '--flags', 'imv'],
   };
   try {
