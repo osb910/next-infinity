@@ -5,7 +5,7 @@ import which from 'which';
 import {PythonShell} from 'python-shell';
 import {getPath} from '@/utils/path';
 import {execSync} from 'child_process';
-import {getDirNames} from '@/utils/file';
+import {getDirNames, readDir} from '@/utils/file';
 
 export type GetRoute = AppRoute;
 
@@ -19,8 +19,7 @@ export const GET: GetRoute = async (req) => {
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
   const vercelPy = getPath('../lang/bin/python');
-  const vercelDir = await getDirNames('../lib');
-  const vercelBinDir = await getDirNames('../lang/bin');
+  const vercelBinDir = await readDir('../lang/bin');
   // const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip`);
   // const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   // const pyPiLibDir = getPath(`${libDir}/site-packages`);
@@ -39,7 +38,7 @@ export const GET: GetRoute = async (req) => {
     // const pip = execSync(
     //   `${pythonExe} -m pip install regex --trusted-host pypi.org --trusted-host files.pythonhosted.org`
     // ).toString();
-    // const res = await PythonShell.run('pypi-regex.py', options);
+    const res = await PythonShell.run('pypi-regex.py', options);
 
     // const res = await pyRegex({
     //   method: 'findall',
@@ -63,7 +62,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, vercelPy, vercelDir, vercelBinDir},
+        data: {vercelPy, vercelBinDir, res},
       },
       {status: 200}
     );
