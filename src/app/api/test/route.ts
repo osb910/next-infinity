@@ -20,6 +20,7 @@ export const GET: GetRoute = async (req) => {
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
   const vercelPy = getPath('..');
   const vercelDir = await getDirNames('..');
+  const vercelLangDir = await getDirNames('../lang');
   // const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip`);
   // const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   // const pyPiLibDir = getPath(`${libDir}/site-packages`);
@@ -62,7 +63,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, vercelPy, vercelDir},
+        data: {pythonExe, vercelPy, vercelDir, vercelLangDir},
       },
       {status: 200}
     );
