@@ -35,7 +35,9 @@ export const GET: GetRoute = async (req) => {
     // const installRegex = execSync(
     //   `${pipExe} install --target ${pyPiLibDir} regex --upgrade`
     // ).toString();
-    const pip = execSync(`${pythonExe} -m pip install regex`).toString();
+    const pip = execSync(
+      `${pythonExe} -m pip install regex --trusted-host pypi.org --trusted-host files.pythonhosted.org`
+    ).toString();
     // const res = await PythonShell.run('pypi-regex.py', options);
 
     // const res = await pyRegex({
