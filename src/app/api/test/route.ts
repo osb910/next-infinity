@@ -18,16 +18,16 @@ export const GET: GetRoute = async (req) => {
   const isWin = process.platform === 'win32';
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
-  const vercelPy = getPath('..');
-  const vercelDir = await getDirNames('..');
-  const vercelLangDir = await getDirNames('../lang');
+  const vercelPy = getPath('../lang/bin/python');
+  const vercelDir = await getDirNames('../lib');
+  const vercelBinDir = await getDirNames('../lang/bin');
   // const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip`);
   // const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   // const pyPiLibDir = getPath(`${libDir}/site-packages`);
 
   let options = {
     mode: 'json' as Mode,
-    pythonPath: pythonExe as string,
+    pythonPath: vercelPy as string,
     pythonOptions: ['-u'], // get print results in real-time
     scriptPath: getPath('/src/python/py_regex'),
     args: ['findall', '\\w+', 'Hello, people!', '--flags', 'imv'],
@@ -63,7 +63,7 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {pythonExe, vercelPy, vercelDir, vercelLangDir},
+        data: {pythonExe, vercelPy, vercelDir, vercelBinDir},
       },
       {status: 200}
     );
