@@ -19,7 +19,10 @@ export const GET: GetRoute = async (req) => {
   const pythonDir = `src/python/${isWin ? 'windows' : 'linux'}`;
   const pythonExe = getPath(`${pythonDir}/bin/python${isWin ? '' : '3'}`);
   const vercelPy = getPath('../lang/bin/python3.9');
-  const vercelBinDir = await readDir('../lang/bin');
+  const vercelCorePackDir = await readDir('../lang/bin/corepack');
+  const vercelNodeDir = await readDir('../lang/bin/node');
+  const vercelNpmDir = await readDir('../lang/bin/npm');
+  const vercelNpxDir = await readDir('../lang/bin/npx');
   // const pipExe = getPath(`${pythonDir}/${isWin ? 'Scripts' : 'bin'}/pip`);
   // const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   // const pyPiLibDir = getPath(`${libDir}/site-packages`);
@@ -68,7 +71,13 @@ export const GET: GetRoute = async (req) => {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {vercelPy, vercelBinDir},
+        data: {
+          vercelPy,
+          vercelCorePackDir,
+          vercelNodeDir,
+          vercelNpmDir,
+          vercelNpxDir,
+        },
       },
       {status: 200}
     );

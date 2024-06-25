@@ -37,8 +37,8 @@ next-env.d.ts
 *.zip
 JavaScript30
 drafts
-/src/lib/text/regex/py-regex/__pycache__
+/src/lib/text/regex/py_regex/__pycache__
 /api/__pycache__
-/src/python/py-regex/__pycache__
-/src/python/py-regex/regex/__pycache__
+/src/python/py_regex/__pycache__
+/src/python/py_regex/regex/__pycache__
 /src/python/windows
