@@ -24,11 +24,11 @@ export const GET: GetRoute = async (req) => {
   // const libDir = `${pythonDir}/${isWin ? 'Lib' : 'lib/python3.12'}`;
   // const pyPiLibDir = getPath(`${libDir}/site-packages`);
 
-  if (process.platform === 'linux') {
-    execSync(`chmod +x ${vercelPy}`);
-    execSync(`chmod +x ${vercelPy.replace(/3(\.\d+)?$/, '')}`);
-    // execSync(`chmod +x ${pipExe}`)
-  }
+  // if (process.platform === 'linux') {
+  //   execSync(`chmod +x ${vercelPy}`);
+  //   execSync(`chmod +x ${vercelPy.replace(/3(\.\d+)?$/, '')}`);
+  //   // execSync(`chmod +x ${pipExe}`)
+  // }
 
   let options = {
     mode: 'json' as Mode,
