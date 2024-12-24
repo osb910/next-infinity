@@ -7,6 +7,15 @@ export const emailRegex =
 export const noFullStop =
   /^(?!.+[؟؛]["»\])]?$|[«"][.!:،].+|.+[.!:،]["»]$)(["«]?)([^.!،:].*?[^.!،:؟؛])(["»]?)$/g;
 
+export const hasMdx = (text: string): boolean =>
+  /<[^>]*?>/.test(text) ||
+  /\[[^]]+\]\(https?:\/\/\S+\)/.test(text) ||
+  /(^|[\n\r])\s*\d\.\s.*\s+\d\.\s/.test(text) ||
+  /\s([_*]){2}(?!\1).+?\1{2}/.test(text);
+
+// Octal escape sequences and backreferences are not allowed in a character class. If this was intended as an escape sequence, use the syntax '\x01' instead.
+// /\s([_*]){2}([^\1])+?\1{2}/.test(text);
+
 export const stringifyRegex = (regex: RegExp): string => {
   const pattern = regex.source;
   const charSetsRegex = /(?<=\[((?!\]).)*)(?:(?!(?<!\\)\]).)+(?=\])/g;

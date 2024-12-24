@@ -37,22 +37,17 @@ export const AR_UNICODE = Object.freeze({
 export const AR_REGEX = Object.freeze({
   ALLAH:
     /[\u0627\u0671]\u0644{2}(?:\u0651[\u0670\u064E]?)?\u0647\p{Mn}?|\uFDF2/gu,
-  // @ts-ignore
   anyChar: /\p{Script_Extensions=Arabic}/gu,
   anyCharU: '\\p{Script_Extensions=Arabic}',
-  // @ts-ignore
   char: /(?=\p{Script_Extensions=Arabic})[^\p{N}\p{P}]/gu,
   charU: '(?:(?=\\p{Script_Extensions=Arabic})[^\\p{N}\\p{P}])',
-  // @ts-ignore
   //   char: /(?=\p{Script_Extensions=Arabic})[\p{L}\p{Mn}]/gu,
   // charU: '(?:(?=\\p{Script_Extensions=Arabic})[\\p{L}\\p{Mn}])',
   letter: /(?=\p{Script=Arabic})\p{L}/gu,
   letterU: '(?:(?=\\p{Script=Arabic})\\p{L})',
-  // @ts-ignore
   diacritic: /(?=\p{Script_Extensions=Arabic})\p{Mn}/gu,
   diacriticU: '(?:(?=\\p{Script_Extensions=Arabic})\\p{Mn})',
   wholeLetter:
-    // @ts-ignore
     /((?=\p{Script=Arabic})\p{L})((?=\p{Script_Extensions=Arabic})\p{Mn}{0,4})/gu,
   wholeLetterU:
     '(?:(?=\\p{Script=Arabic})\\p{L})(?:(?=\\p{Script_Extensions=Arabic})\\p{Mn}{0,4})',
@@ -60,7 +55,7 @@ export const AR_REGEX = Object.freeze({
   //            لࢭ  |  ٱ  |  لٰ  |  لٖ  |  ا
   alifVar: /[\u0627\u0656\u0670\u0671\u08AD]/g,
   alifForms: /[\u0622\u0623\u0625\u0627\u0656\u0670-\u0673\u0675\u08AD]/g,
-  alifSounds: /[\u0622\u0627\u0649\u0656\u0670\u0671\06CC\u08AD]/g,
+  alifSounds: /[\u0622\u0627\u0649\u0656\u0670\u0671\u06CC\u08AD]/g,
   fathNunation: /([\u064B\u0657\u08F0]|\u064E\u06E2)/g,
   dammNunation: /([\u064C\u065E\u08F1]|\u064F\u06E2)/g,
   kasrNunation: /([\u064D\u0656\u08F2]|\u0650\u06ED)/g,
@@ -114,7 +109,7 @@ export const buildArRegex = (
     hamza = false,
   }: BuildArRegexOptions = {}
 ): string => {
-  let optionalPattern = !diacs
+  const optionalPattern = !diacs
     ? !kashida
       ? `${AR_UNICODE.kashida}*${AR_REGEX.diacriticU}{0,4}${AR_UNICODE.kashida}*`
       : `${AR_REGEX.diacriticU}{0,4}`
@@ -163,19 +158,22 @@ export const buildArPyRegex = (
   {
     diacs = false,
     kashida = false,
-    alif = false,
-    hamza = false,
-  }: BuildArRegexOptions = {}
+  }: // alif = false,
+  // hamza = false,
+  BuildArRegexOptions = {}
 ): string => {
   const diacsClass = '\\p{Script_Extensions=Arabic})&&\\p{Mn}';
-  let optional = !diacs
+  const optional = !diacs
     ? !kashida
       ? `${diacsClass}${AR_UNICODE.kashida}`
       : diacsClass
     : !kashida
     ? `${AR_UNICODE.kashida}`
     : '';
+
   const maxFuzzy = kashida ? 64 : 16;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fuzzyBlock = optional ? `{i<=${maxFuzzy}:[${optional}]}` : '';
 
   return (
