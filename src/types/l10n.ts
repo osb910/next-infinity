@@ -5,15 +5,13 @@ export interface Lang {
   engName: string;
   code: string;
   dir: Dir;
-  dictionary: {[x: string]: any};
 }
 
-export type Langs<T extends {[x: string]: any} = {}> = {
-  [K in keyof T]: T[K];
-};
+export type Langs<T extends Record<string, unknown> = Record<string, unknown>> =
+  {
+    [K in keyof T]: T[K];
+  };
 
 export type Loc<T extends Langs> = keyof T;
 
-export type Dict<T extends {dictionary: any}> = Awaited<
-  ReturnType<T['dictionary']>
->;
+export type Dict<T extends () => Record<string, unknown>> = ReturnType<T>;
