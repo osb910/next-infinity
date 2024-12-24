@@ -15,6 +15,7 @@
     "jsx": "react-jsx",
     "types": ["react"],
     "incremental": true,
+    "declaration": true,
     "plugins": [{"name": "next"}, {"name": "typescript-plugin-css-modules"}],
     "paths": {
       "@/*": ["./src/*"]
