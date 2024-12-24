@@ -30,8 +30,8 @@
     "@types/js-cookie": "^3.0.6",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^20.14.2",
-    "@types/react": "^18.2.58",
-    "@types/react-dom": "^18.2.19",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
     "@types/request-ip": "^0.0.41",
     "@types/rss": "^0.0.32",
     "@types/slug": "^5.0.8",
@@ -62,7 +62,7 @@
     "moment": "^2.30.1",
     "mongoose": "^8.0.0",
     "negotiator": "^0.6.3",
-    "next": "^15.0.0-rc.0",
+    "next": "^15.1.2",
     "next-mdx-remote": "^5.0.0",
     "ol": "^9.2.4",
     "openai": "^4.50.0",
@@ -71,8 +71,8 @@
     "pretty-print-json": "^3.0.1",
     "python-shell": "^5.0.0",
     "pythonia": "^1.2.1",
-    "react": "^19.0.0-rc-a26e3f403e-20240611",
-    "react-dom": "^19.0.0-rc-a26e3f403e-20240611",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-feather": "^2.0.10",
     "react-focus-lock": "^2.12.1",
     "react-icons": "^5.2.1",
@@ -96,5 +96,8 @@
     "use-sound": "^4.0.1",
     "validator": "^13.12.0",
     "which": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript-plugin-css-modules": "^5.1.0"
   }
 }
