@@ -4,12 +4,12 @@ import {useState, useEffect, useRef, RefObject} from 'react';
 
 const useIsOnscreen = (
   selector?: string
-): [boolean, RefObject<HTMLElement>] => {
+): [boolean, RefObject<HTMLElement | null>] => {
   const [isOnscreen, setIsOnscreen] = useState<boolean>(false);
   const elementRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
+    const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
       setIsOnscreen(entry.isIntersecting);
     });
