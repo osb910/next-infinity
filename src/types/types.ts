@@ -2,6 +2,10 @@ import type {CSSProperties} from 'react';
 import type {PathsToStringProps, PathValue} from './object';
 import type {Join, Split} from './array';
 
+export type AnyFn = (...args: unknown[]) => unknown;
+
+export type ImpureFn = (...args: unknown[]) => void;
+
 export interface P8n {
   count: number;
   skip: number;
@@ -56,7 +60,8 @@ export interface Img {
   caption?: string;
 }
 
-export type CSSProps = CSSProperties & {[key: `--${string}`]: string | number};
+// export type CSSProps = CSSProperties & {[key: `--${string}`]: string | number};
+export type CSSProps = CSSProperties & Record<`--${string}`, string | number>;
 
 export type DottedPaths<
   T extends {[x: string]: unknown} = Record<string, unknown>

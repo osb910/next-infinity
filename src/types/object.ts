@@ -1,11 +1,11 @@
+import type {AnyFn} from './types';
+
 export type TupleToObject<T extends readonly PropertyKey[]> = {
   [K in T[number]]: K;
 };
 
-type AnyFunction = (...args: unknown[]) => unknown;
-
 export type PathsToStringProps<T> = T extends object
-  ? T extends AnyFunction
+  ? T extends AnyFn
     ? []
     :
         | {[K in Extract<keyof T, string>]: [K]}[Extract<keyof T, string>]
