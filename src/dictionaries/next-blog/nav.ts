@@ -3,10 +3,16 @@ import {Locale} from '@/l10n/l10n.types';
 const nav = (locale: Locale) => {
   const dict = {
     ar: {
-      articles: 'Articles',
+      home: 'المدخل',
+      articles: 'المقالات',
+      categories: 'الأبواب',
+      contact: 'راسلني',
     },
     en: {
-      articles: 'المقالات',
+      home: 'Homepage',
+      articles: 'Articles',
+      categories: 'Categories',
+      contact: 'Contact',
     },
   };
   return dict[locale];

@@ -6,11 +6,13 @@ const site = (locale: Locale) => {
       title: 'مدونة نكست',
       description:
         'مدونتي في ميادينَ شتى، أبرزها برمجة الوِب والترجمة واللغة العربية.',
+      logo: 'شعار مدونة نِكست',
     },
     en: {
       title: 'Next Blog',
       description:
         'Read about different topics, mainly web development, translation, and the Arabic language.',
+      logo: 'Next Blog logo',
     },
   };
   return dict[locale];

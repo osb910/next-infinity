@@ -1,6 +1,6 @@
 import {type Locale} from '@/l10n/l10n.types';
 
-import {nextBlog} from './next-blog/dic';
+import {nextBlog} from './next-blog';
 
 const THE_DICTIONARY = (locale: Locale) => {
   const dictionary = {
