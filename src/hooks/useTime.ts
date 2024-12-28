@@ -1,23 +1,25 @@
 'use client';
 
-import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
 import {useState, useEffect} from 'react';
 import useSound from 'use-sound';
+import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
 
 interface useTimeProps {
   showTime?: boolean;
   tickEvery?: number;
   tickSound?: boolean;
+  tickPath?: string;
 }
 
 const useTime = ({
   showTime = true,
   tickEvery = 1000,
   tickSound = false,
+  tickPath = '/sfx/single-tick.mp3',
 }: useTimeProps = {}) => {
   const [time, setTime] = useState<Date | null>(null);
   const {soundEnabled} = useSoundEnabled();
-  const [playTick] = useSound('/sfx/single-tick.mp3', {
+  const [playTick] = useSound(tickPath, {
     soundEnabled,
     volume: 0.5,
   });
