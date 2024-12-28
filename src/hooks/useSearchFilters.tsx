@@ -1,7 +1,7 @@
 'use client';
 
 import {createContext, type ReactNode, useContext} from 'react';
-import {useLocalImmer} from '@/hooks/useLocalState';
+import {useStoredImmer} from '@/hooks/useStoredState';
 
 type Filters = {
   [key: string]: any;
@@ -24,7 +24,7 @@ const SearchFiltersContext = createContext<FiltersContextProps>({
 });
 
 export const SearchFiltersProvider = ({children}: {children: ReactNode}) => {
-  const [filters, setFilters] = useLocalImmer<Filters>(
+  const [filters, setFilters] = useStoredImmer<Filters>(
     {},
     {key: 'searchFilters'}
   );
