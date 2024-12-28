@@ -1,3 +1,5 @@
+'use client';
+
 import {useEffect, useState} from 'react';
 
 const useStopwatch = (
@@ -15,7 +17,7 @@ const useStopwatch = (
   useEffect(() => {
     if (!isRunning) return;
     const interval = setInterval(
-      () => setTimeElapsed(current => current + every),
+      () => setTimeElapsed((current) => current + every),
       every * 1000
     );
     return () => clearInterval(interval);
