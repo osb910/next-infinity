@@ -5,6 +5,7 @@ import {
   useEffect,
   createContext,
   useContext,
+  ReactElement,
   type ReactNode,
 } from 'react';
 import Cookies from 'js-cookie';
@@ -33,7 +34,7 @@ export const UserDataProvider = ({
   userEndpoint: string;
   userIdCookie: string;
   children: ReactNode;
-}): JSX.Element => {
+}): ReactElement => {
   const userId = Cookies.get(userIdCookie);
   const [userData, setUserData] = useState<User | any>(null);
 
