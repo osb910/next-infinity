@@ -1,9 +1,10 @@
 'use client';
 
 import {useEffect, useRef} from 'react';
+import type {ImpureFn} from '@/types';
 
-const useUpdateEffect = (cb: Function, deps: Array<any>) => {
-  const firstRender = useRef<boolean>();
+const useUpdateEffect = (cb: ImpureFn, deps: Array<unknown>) => {
+  const firstRender = useRef<boolean>(true);
 
   useEffect(() => {
     if (firstRender.current) {
