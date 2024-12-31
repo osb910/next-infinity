@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   type Dispatch,
   type SetStateAction,
+  useCallback,
 } from 'react';
 import {
   useImmer,
@@ -33,8 +34,8 @@ export type StorageOptions = {key: string} & (
     }
 );
 
-export type ReducerStorageOptions<T> = StorageOptions & {
-  initialDispatch: (value: string) => T;
+export type ReducerStorageOptions<T, A> = StorageOptions & {
+  initialDispatch: (value: T) => A;
 };
 
 export type GetStoredValue = <T>(options: {
@@ -49,27 +50,34 @@ export type SetStoredValue = (options: {
   cookieOptions?: Cookies.CookieAttributes;
 }) => void;
 
-export type UseStoredState = <T>(
-  initialValue: T | (() => T),
-  {key, storage}: StorageOptions
-) => [T, Dispatch<SetStateAction<T>>, boolean];
+export type RemoveStoredValue = (key: string, storage: Storage) => void;
 
-export type UseStoredImmer = <T>(
-  initialValue: T | (() => T),
-  {key, storage}: StorageOptions
-) => [T, Updater<T>, boolean];
+export type ReturnObject = {
+  isLoading: boolean;
+  remove: () => void;
+};
+
+// export type UseStoredState = <T>(
+//   initialValue: T | (() => T),
+//   {key, storage, cookieOptions}: StorageOptions
+// ) => [T | undefined, Dispatch<SetStateAction<T | undefined>>, ReturnObject];
+
+// export type UseStoredImmer = <T>(
+//   initialValue: T | (() => T),
+//   {key, storage, cookieOptions}: StorageOptions
+// ) => [T | undefined, Updater<T | undefined>, ReturnObject];
 
 export type UseStoredReducer = <T, A>(
   reducer: (state: T, action: A) => T,
-  initialValue: any,
-  options: ReducerStorageOptions<A>
-) => [T, Dispatch<A>, boolean];
+  initialValue: T,
+  options: ReducerStorageOptions<T, A>
+) => [T, Dispatch<A>, {isLoading: boolean}];
 
 export type UseStoredImmerReducer = <T, A>(
   reducer: (state: DraftFunction<T>, action: A) => void | T,
   initialValue: any,
-  options: ReducerStorageOptions<A>
-) => [T, Dispatch<A>, boolean];
+  options: ReducerStorageOptions<T, A>
+) => [T, Dispatch<A>, {isLoading: boolean}];
 
 export const getStoredValue: GetStoredValue = ({
   key,
@@ -79,15 +87,16 @@ export const getStoredValue: GetStoredValue = ({
   const getInitialValue = () =>
     initialValue instanceof Function ? initialValue() : initialValue;
 
-  const storedValue =
+  const jsonValue =
     storage === Storage.Local
       ? window.localStorage.getItem(key)
       : storage === Storage.Session
       ? window.sessionStorage.getItem(key)
       : Cookies.get(key);
-  if (!storedValue) return getInitialValue();
+  if (!jsonValue) return getInitialValue();
+  //  if (jsonValue != null) return JSON.parse(jsonValue); // alternative
   try {
-    const parsedValue = JSON.parse(storedValue);
+    const parsedValue = JSON.parse(jsonValue);
     return parsedValue;
   } catch (err) {
     console.warn(
@@ -130,31 +139,29 @@ const setStoredValue: SetStoredValue = ({
   storageMethods[storage]();
 };
 
-export const useStoredState: UseStoredState = (
-  initialValue,
-  {key, storage = Storage.Local, cookieOptions}
-) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [state, setState] = useState(initialValue);
+const removeStoredValue: RemoveStoredValue = (key, storage) => {
+  const storageMethods = {
+    local: () => window.localStorage.removeItem(key),
+    session: () => window.sessionStorage.removeItem(key),
+    cookie: () => Cookies.remove(key),
+  };
 
-  useLayoutEffect(() => {
-    setState(getStoredValue({key, initialValue, storage}));
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    setStoredValue({key, value: state, storage, cookieOptions});
-  }, [state, key]);
-
-  return [state, setState, isLoading];
+  storageMethods[storage]();
 };
 
-export const useStoredImmer: UseStoredImmer = (
-  initialValue,
-  {key, storage = Storage.Local, cookieOptions}
-) => {
-  const [isLoading, setIsLoading] = useImmer(true);
-  const [state, setState] = useImmer(initialValue);
+export const useStoredState = <T>(
+  initialValue: T | (() => T),
+  {key, storage = Storage.Local, cookieOptions}: StorageOptions
+): [
+  T | undefined,
+  Dispatch<SetStateAction<T | undefined>>,
+  {
+    isLoading: boolean;
+    remove: () => void;
+  }
+] => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [state, setState] = useState<T | undefined>(initialValue);
 
   useLayoutEffect(() => {
     setState(getStoredValue({key, initialValue, storage}));
@@ -162,10 +169,39 @@ export const useStoredImmer: UseStoredImmer = (
   }, []);
 
   useEffect(() => {
+    if (state === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: state, storage, cookieOptions});
-  }, [state, key]);
+  }, [state, key, storage]);
 
-  return [state, setState, isLoading];
+  const remove = useCallback(() => {
+    setState(undefined);
+  }, []);
+
+  return [state, setState, {isLoading, remove}];
+};
+
+export const useStoredImmer = <T>(
+  initialValue: T | (() => T),
+  {key, storage = Storage.Local, cookieOptions}: StorageOptions
+): [T | undefined, Updater<T | undefined>, ReturnObject] => {
+  const [isLoading, setIsLoading] = useImmer(true);
+  const [state, setState] = useImmer<T | undefined>(initialValue);
+
+  useLayoutEffect(() => {
+    setState(getStoredValue({key, initialValue, storage}));
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (state === undefined) return removeStoredValue(key, storage);
+    setStoredValue({key, value: state, storage, cookieOptions});
+  }, [state, key, storage]);
+
+  const remove = useCallback(() => {
+    setState(undefined);
+  }, []);
+
+  return [state, setState, {isLoading, remove}];
 };
 
 export const useStoredReducer: UseStoredReducer = (
@@ -173,7 +209,7 @@ export const useStoredReducer: UseStoredReducer = (
   initialValue,
   {key, initialDispatch, storage = Storage.Local, cookieOptions}
 ) => {
-  const [loading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialValue);
 
   useLayoutEffect(() => {
@@ -185,10 +221,11 @@ export const useStoredReducer: UseStoredReducer = (
   }, []);
 
   useEffect(() => {
+    if (state === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: state, storage, cookieOptions});
-  }, [state, key]);
+  }, [state, key, storage]);
 
-  return [state, dispatch, loading];
+  return [state, dispatch, {isLoading}];
 };
 
 export const useStoredImmerReducer: UseStoredImmerReducer = (
@@ -196,7 +233,7 @@ export const useStoredImmerReducer: UseStoredImmerReducer = (
   initialValue,
   {key, initialDispatch, storage = Storage.Local, cookieOptions}
 ) => {
-  const [loading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [immerState, immerDispatch] = useImmerReducer(reducer, initialValue);
 
   useEffect(() => {
@@ -208,8 +245,9 @@ export const useStoredImmerReducer: UseStoredImmerReducer = (
   }, []);
 
   useEffect(() => {
+    if (immerState === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: immerState, storage, cookieOptions});
-  }, [immerState, key]);
+  }, [immerState, key, storage]);
 
-  return [immerState, immerDispatch, loading];
+  return [immerState, immerDispatch, {isLoading}];
 };
