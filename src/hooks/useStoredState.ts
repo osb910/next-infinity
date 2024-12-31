@@ -75,6 +75,7 @@ export type UseStoredReducer = <T, A>(
 
 export type UseStoredImmerReducer = <T, A>(
   reducer: (state: DraftFunction<T>, action: A) => void | T,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValue: any,
   options: ReducerStorageOptions<T, A>
 ) => [T, Dispatch<A>, {isLoading: boolean}];
@@ -166,12 +167,12 @@ export const useStoredState = <T>(
   useLayoutEffect(() => {
     setState(getStoredValue({key, initialValue, storage}));
     setIsLoading(false);
-  }, []);
+  }, [initialValue, key, storage]);
 
   useEffect(() => {
     if (state === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: state, storage, cookieOptions});
-  }, [state, key, storage]);
+  }, [state, key, storage, cookieOptions]);
 
   const remove = useCallback(() => {
     setState(undefined);
@@ -190,15 +191,17 @@ export const useStoredImmer = <T>(
   useLayoutEffect(() => {
     setState(getStoredValue({key, initialValue, storage}));
     setIsLoading(false);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValue, key, storage]);
 
   useEffect(() => {
     if (state === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: state, storage, cookieOptions});
-  }, [state, key, storage]);
+  }, [state, key, storage, cookieOptions]);
 
   const remove = useCallback(() => {
     setState(undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [state, setState, {isLoading, remove}];
@@ -218,12 +221,12 @@ export const useStoredReducer: UseStoredReducer = (
       dispatch(initialDispatch(storedValue));
     }
     setIsLoading(false);
-  }, []);
+  }, [initialDispatch, initialValue, key, storage]);
 
   useEffect(() => {
     if (state === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: state, storage, cookieOptions});
-  }, [state, key, storage]);
+  }, [state, key, storage, cookieOptions]);
 
   return [state, dispatch, {isLoading}];
 };
@@ -242,12 +245,13 @@ export const useStoredImmerReducer: UseStoredImmerReducer = (
       immerDispatch(initialDispatch(storedValue));
     }
     setIsLoading(false);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValue, initialDispatch, key, storage]);
 
   useEffect(() => {
     if (immerState === undefined) return removeStoredValue(key, storage);
     setStoredValue({key, value: immerState, storage, cookieOptions});
-  }, [immerState, key, storage]);
+  }, [immerState, key, storage, cookieOptions]);
 
   return [immerState, immerDispatch, {isLoading}];
 };
