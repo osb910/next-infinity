@@ -8,7 +8,7 @@ type Filters = {
 };
 
 interface FiltersContextProps {
-  filters: Filters;
+  filters: Filters | undefined;
   setFilters: (filters: Filters) => void;
   setFilter: (name: string, value: string) => void;
   removeFilter: (name: string) => void;
@@ -31,13 +31,13 @@ export const SearchFiltersProvider = ({children}: {children: ReactNode}) => {
 
   const setFilter = (name: string, value: any) => {
     setFilters((draft): any => {
-      draft[name] = value;
+      draft![name] = value;
     });
   };
 
   const removeFilter = (name: string) => {
     setFilters((draft): any => {
-      delete draft[name];
+      delete draft?.[name];
     });
   };
 

@@ -16,7 +16,7 @@ export type HotKey = {
 };
 
 const useHotKeys = <T>(keyMap: HotKey[], ref?: RefObject<T>): string[] => {
-  const keyActions = useRef<any>();
+  const keyActions = useRef<any>(null);
 
   const hotKeyRegex = useMemo(
     (): RegExp =>
