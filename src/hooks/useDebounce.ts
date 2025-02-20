@@ -3,7 +3,7 @@
 import {useEffect} from 'react';
 import useTimeout from './useTimeout';
 
-const useDebounce = (cb: Function, delay: number, deps: Array<any>) => {
+const useDebounce = (cb: () => void, delay: number, deps: Array<unknown>) => {
   const {reset, clear} = useTimeout(cb, delay);
 
   useEffect(reset, [...deps, reset]);

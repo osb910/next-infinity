@@ -1,16 +1,38 @@
 'use client';
 
+import {getDeepProp} from '@/utils/general';
 import {useState} from 'react';
 
-export type Obj = {[x: string]: any};
+export type Obj = {[x: string]: unknown};
 
-const resolve = (path: string, obj: Obj) => {
-  return path.split('.').reduce(function (prev, curr) {
-    return prev ? prev[curr] : null;
-  }, obj);
-};
+export interface UniqueOptions {
+  unique?: string | boolean;
+}
 
-const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
+export type FilterCallback<T> = (
+  value: T,
+  index: number,
+  array: T[]
+) => boolean;
+
+// Return type for the hook
+export interface UseArrayReturn<T> {
+  array: T[];
+  push: (added: T | T[], options: UniqueOptions) => void;
+  unshift: (added: T | T[], options: UniqueOptions) => void;
+  enqueue: (added: T, options: UniqueOptions) => void;
+  pop: (qty?: number) => T[] | undefined;
+  shift: (qty?: number) => T[] | undefined;
+  dequeue: () => T | undefined;
+  filter: (callback: FilterCallback<T>) => void;
+  update: (index: number, newElement: T) => void;
+  remove: (...indexes: number[]) => T[];
+  clear: () => void;
+}
+
+const useArray = <T = unknown>(
+  defaultValue: Array<T> | (() => Array<T>)
+): UseArrayReturn<T> => {
   const [array, setArray] = useState<Array<T>>(defaultValue);
 
   const push = (
@@ -22,26 +44,32 @@ const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
       const toBeAdded = unique
         ? added.filter(
             (el: T) =>
-              !array.some(a => {
+              !array.some((a) => {
                 const addedProp =
-                  typeof unique === 'string' ? resolve(unique, a as Obj) : a;
+                  typeof unique === 'string'
+                    ? getDeepProp(a as Obj, unique)
+                    : a;
                 const elProp =
-                  typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+                  typeof unique === 'string'
+                    ? getDeepProp(el as Obj, unique)
+                    : el;
                 return addedProp === elProp;
               })
           )
         : added;
-      setArray(arr => [...arr, ...toBeAdded]);
+      setArray((arr) => [...arr, ...toBeAdded]);
     } else {
-      const addedExists = array.some(el => {
+      const addedExists = array.some((el) => {
         const addedProp =
-          typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+          typeof unique === 'string' ? getDeepProp(el as Obj, unique) : el;
         const elProp =
-          typeof unique === 'string' ? resolve(unique, added as Obj) : added;
+          typeof unique === 'string'
+            ? getDeepProp(added as Obj, unique)
+            : added;
         return addedProp === elProp;
       });
       if (unique && addedExists) return;
-      setArray(arr => [...arr, added]);
+      setArray((arr) => [...arr, added]);
     }
   };
 
@@ -54,45 +82,51 @@ const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
       const toBeAdded = unique
         ? added.filter(
             (el: T) =>
-              !array.some(a => {
+              !array.some((a) => {
                 const addedProp =
-                  typeof unique === 'string' ? resolve(unique, a as Obj) : a;
+                  typeof unique === 'string'
+                    ? getDeepProp(a as Obj, unique)
+                    : a;
                 const elProp =
-                  typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+                  typeof unique === 'string'
+                    ? getDeepProp(el as Obj, unique)
+                    : el;
                 return addedProp === elProp;
               })
           )
         : added;
-      setArray(arr => [...toBeAdded, ...arr]);
+      setArray((arr) => [...toBeAdded, ...arr]);
     } else {
-      const addedExists = array.some(el => {
+      const addedExists = array.some((el) => {
         const addedProp =
-          typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+          typeof unique === 'string' ? getDeepProp(el as Obj, unique) : el;
         const elProp =
-          typeof unique === 'string' ? resolve(unique, added as Obj) : added;
+          typeof unique === 'string'
+            ? getDeepProp(added as Obj, unique)
+            : added;
         return addedProp === elProp;
       });
       if (unique && addedExists) return;
-      setArray(arr => [added, ...arr]);
+      setArray((arr) => [added, ...arr]);
     }
   };
 
   const enqueue = (added: T, {unique = false}: {unique?: string | boolean}) => {
-    const addedExists = array.some(el => {
+    const addedExists = array.some((el) => {
       const addedProp =
-        typeof unique === 'string' ? resolve(unique, el as Obj) : el;
+        typeof unique === 'string' ? getDeepProp(el as Obj, unique) : el;
       const elProp =
-        typeof unique === 'string' ? resolve(unique, added as Obj) : added;
+        typeof unique === 'string' ? getDeepProp(added as Obj, unique) : added;
       return addedProp === elProp;
     });
     if (unique && addedExists) return;
 
-    setArray(arr => [...arr, added]);
+    setArray((arr) => [...arr, added]);
   };
 
   const pop = (qty?: number) => {
     let removed;
-    setArray(arr => {
+    setArray((arr) => {
       if (qty && qty < 1) return arr;
       const kept = arr.slice(0, (qty ?? 1) * -1);
       removed = arr.slice(arr.length - (qty ?? 1));
@@ -103,7 +137,7 @@ const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
 
   const shift = (qty?: number) => {
     let removed;
-    setArray(arr => {
+    setArray((arr) => {
       if (qty && qty < 1) return arr;
       const kept = arr.slice(qty ?? 1);
       removed = arr.slice(0, qty ?? 1);
@@ -114,7 +148,7 @@ const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
 
   const dequeue = () => {
     let removed;
-    setArray(arr => {
+    setArray((arr) => {
       const [first, ...rest] = arr;
       removed = first;
       return rest;
@@ -123,18 +157,26 @@ const useArray = <T = any>(defaultValue: Array<T> | (() => Array<T>)) => {
   };
 
   const filter = (cb: (v: T, idx: number, arr: Array<T>) => boolean) => {
-    setArray(arr => arr.filter(cb));
+    setArray((arr) => arr.filter(cb));
   };
 
   const update = (idx: number, newElement: T) => {
-    setArray(arr => [...arr.slice(0, idx), newElement, ...arr.slice(idx + 1)]);
+    setArray((arr) => [
+      ...arr.slice(0, idx),
+      newElement,
+      ...arr.slice(idx + 1),
+    ]);
   };
 
   const remove = (...indexes: Array<number>) => {
     const newArr: Array<T> = [];
     const removed: Array<T> = [];
     array.forEach((el, idx) => {
-      indexes.includes(idx) ? removed.push(el) : newArr.push(el);
+      if (indexes.includes(idx)) {
+        removed.push(el);
+      } else {
+        newArr.push(el);
+      }
     });
     setArray(newArr);
     return removed;

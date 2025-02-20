@@ -1,3 +1,5 @@
+'use client';
+
 import {useState, useEffect} from 'react';
 import {TIME} from '@/constants/numbers';
 
@@ -17,7 +19,7 @@ const useFullscreen = ({
 
   useEffect(() => {
     const toggleFullscreen = () => {
-      const isFull = !!document.fullscreenElement;
+      const isFull = !!document?.fullscreenElement;
       setIsFullscreen(isFull);
       if (useMaximize && !isFull) {
         setTimeout(() => setIsMaximized(isFull), delay);
@@ -29,7 +31,7 @@ const useFullscreen = ({
       document.removeEventListener('fullscreenchange', toggleFullscreen);
   }, [useMaximize, delay]);
 
-  if (!document)
+  if (typeof document === 'undefined')
     return {
       isFullscreen: false,
       isMaximized: false,

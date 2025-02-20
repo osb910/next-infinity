@@ -11,7 +11,7 @@ import {
 import Cookies from 'js-cookie';
 
 export type User = {
-  bookmarks?: Array<string>;
+  bookmarks: Array<string>;
 };
 
 interface UserContextProps {
@@ -36,7 +36,7 @@ export const UserDataProvider = ({
   children: ReactNode;
 }): ReactElement => {
   const userId = Cookies.get(userIdCookie);
-  const [userData, setUserData] = useState<User | any>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
     if (userData || !userId) return;
@@ -49,7 +49,9 @@ export const UserDataProvider = ({
           cache: 'no-store',
         });
         const json = await res.json();
-        json.status === 'success' && setUserData(json.data);
+        if (json.status === 'success') {
+          setUserData(json.data);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -58,12 +60,12 @@ export const UserDataProvider = ({
   }, [userId, userData, userEndpoint]);
 
   const toggleBookmark = (bookmark: string) => {
-    if (!userData) return;
+    if (!userData?.bookmarks) return;
     const isBookmarked = userData.bookmarks.includes(bookmark);
     const newBookmarks = isBookmarked
       ? userData.bookmarks.filter((f: string) => f !== bookmark)
       : [...userData.bookmarks, bookmark];
-    setUserData((current: User) => ({
+    setUserData((current: User | null) => ({
       ...current,
       bookmarks: newBookmarks,
     }));

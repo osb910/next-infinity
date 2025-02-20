@@ -4,7 +4,7 @@ import {createContext, type ReactNode, useContext} from 'react';
 import {useStoredImmer} from '@/hooks/useStoredState';
 
 type Filters = {
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 interface FiltersContextProps {
@@ -29,14 +29,14 @@ export const SearchFiltersProvider = ({children}: {children: ReactNode}) => {
     {key: 'searchFilters'}
   );
 
-  const setFilter = (name: string, value: any) => {
-    setFilters((draft): any => {
+  const setFilter = (name: string, value: unknown) => {
+    setFilters((draft): void => {
       draft![name] = value;
     });
   };
 
   const removeFilter = (name: string) => {
-    setFilters((draft): any => {
+    setFilters((draft): void => {
       delete draft?.[name];
     });
   };

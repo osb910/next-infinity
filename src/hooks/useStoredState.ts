@@ -17,7 +17,7 @@ import {
 } from 'use-immer';
 import Cookies from 'js-cookie';
 
-enum Storage {
+export enum Storage {
   Local = 'local',
   Session = 'session',
   Cookie = 'cookie',
