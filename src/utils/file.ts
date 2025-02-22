@@ -5,17 +5,27 @@ import {extname, join} from 'path';
 export const readFile = async (
   pathFromRoot: string,
   {encoding, fallback}: {encoding?: BufferEncoding; fallback?: string} = {}
-): Promise<any> => {
-  const filePath = join(process.cwd(), pathFromRoot);
+): Promise<{
+  data: Buffer | string | null;
+  ext: string | undefined;
+  message: string;
+  code: number;
+  name?: string;
+}> => {
+  const filePath = getPath(pathFromRoot);
   const ext = extname(filePath).split('.').pop();
   try {
     const data = await fs.readFile(filePath, {encoding});
     return {data, ext, message: 'File read successfully', code: 200};
   } catch (err) {
-    if (!(err instanceof Error)) return;
+    if (!(err instanceof Error)) {
+      throw new Error(`Unknown error on reading ${filePath}`);
+    }
+
     if (fallback) {
       return await readFile(fallback, {encoding});
     }
+
     console.error(err.message);
     return {data: null, ext, message: err.message, name: err.name, code: 404};
   }
@@ -59,7 +69,7 @@ export const getDirNames = async (
       withFileTypes: true,
     });
     const folders = list
-      .filter(item => item.isDirectory())
+      .filter((item) => item.isDirectory())
       .map(({path, name}) => ({
         name,
         dir: path,
@@ -74,20 +84,29 @@ export const getDirNames = async (
 
 export const writeFile = async (
   pathFromRoot: string,
-  content: any,
+  content: string | NodeJS.ArrayBufferView,
   {
     stringify = false,
     encoding,
     log = false,
   }: {log?: boolean; stringify?: boolean; encoding?: BufferEncoding} = {}
-): Promise<void> => {
+): Promise<{success: boolean; error?: string}> => {
   const path = getPath(pathFromRoot);
-  const body = stringify ? JSON.stringify(content, null, 2) : content;
+  const body =
+    stringify && typeof content === 'object'
+      ? JSON.stringify(content, null, 2)
+      : content;
   try {
     await fs.writeFile(path, body, {encoding});
-    log && console.log(`Wrote file to ${pathFromRoot}`);
+    if (log) {
+      console.log(`Wrote file to ${pathFromRoot}`);
+    }
+    return {success: true};
   } catch (err) {
+    const message =
+      err instanceof Error ? err.message : `Unknown error writing ${path}`;
     console.error(err);
+    return {success: false, error: message};
   }
 };
 
@@ -107,7 +126,7 @@ export const deleteFile = async (pathFromRoot: string): Promise<void> => {
 export const calculateDirSize = async (dir: string): Promise<number> => {
   const files = await fs.readdir(dir, {withFileTypes: true});
 
-  const sizesPromises = files.map(async file => {
+  const sizesPromises = files.map(async (file) => {
     const path = join(file.path, file.name);
 
     if (file.isDirectory()) return await calculateDirSize(path);
