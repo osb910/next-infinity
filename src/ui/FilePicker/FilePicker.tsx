@@ -3,82 +3,115 @@
 import {useRef, useState} from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
-import Input, {type InputProps, type InputComponent} from '@/ui/Input';
+import Input, {type InputComponent} from '@/ui/Input';
 import cls from './FilePicker.module.css';
+
+// Better type definitions
+export type FileData = {
+  name: string;
+  type: string;
+  data: string | ArrayBuffer | null;
+};
 
 export interface FilePickerProps extends InputComponent {
   ctaText?: string;
   noPreviewText?: string;
   overwrite?: boolean;
+  onFilesChange?: (files: FileData[]) => void;
 }
 
+// Component improvements
 const FilePicker = ({
   ctaText = 'Pick a File',
   noPreviewText = 'No files picked yet',
   overwrite = true,
-  ...delegated
+  onFilesChange,
+  ...rest
 }: FilePickerProps) => {
   const filePicker = useRef<HTMLInputElement>(null);
-  const [pickedFiles, setPickedFiles] = useState<
-    Array<{name: string; type: string; data: string | ArrayBuffer | null}>
-  >([]);
+  const [pickedFiles, setPickedFiles] = useState<Array<FileData>>([]);
 
   const pick = () => {
     filePicker.current?.click();
   };
 
   const changeFiles = (target: HTMLInputElement) => {
-    const files = target.files;
+    const files = Array.from(target.files || []);
 
-    if (!files) {
+    if (!files.length) {
       setPickedFiles([]);
+      onFilesChange?.([]);
       return;
     }
 
-    if (overwrite) setPickedFiles([]);
+    const newFiles: Array<FileData> = [];
 
-    for (let file of files) {
-      const fileReader = new FileReader();
+    const processFile = (file: File) => {
+      const reader = new FileReader();
 
-      fileReader.onload = evt => {
-        fileReader.result &&
-          setPickedFiles(current => [
-            ...current,
-            {name: file.name, type: file.type, data: fileReader.result},
-          ]);
+      reader.onload = () => {
+        if (reader.result) {
+          const fileData: FileData = {
+            name: file.name,
+            type: file.type,
+            data: reader.result,
+          };
+
+          newFiles.push(fileData);
+          if (newFiles.length === files.length) {
+            const updatedFiles = overwrite
+              ? newFiles
+              : [...pickedFiles, ...newFiles];
+            setPickedFiles(updatedFiles);
+            onFilesChange?.(updatedFiles);
+          }
+        }
       };
 
-      fileReader.readAsDataURL(file);
-    }
+      reader.readAsDataURL(file);
+    };
+
+    files.forEach(processFile);
   };
 
+  const renderPreview = (file: FileData) =>
+    file.type.startsWith('image') ? (
+      <Image
+        key={file.name}
+        src={file.data as string}
+        fill
+        alt={file.name}
+        sizes='100vw'
+      />
+    ) : (
+      <p key={file.name}>{file.name}</p>
+    );
+
   return (
-    <div className={cls.root}>
+    <div className={cls.container}>
       <Input
-        {...delegated}
+        {...rest}
         type='file'
         ref={filePicker}
         setInput={changeFiles}
-        className={clsx(cls.input, delegated.className)}
-        ctrlClass={clsx(cls.picker, delegated.ctrlClass)}
+        className={clsx(cls.input, rest.className)}
+        ctrlClass={clsx(cls.picker, rest.ctrlClass)}
       >
-        <button type='button' className={cls.btn} onClick={pick}>
+        <button
+          type='button'
+          className={cls.btn}
+          onClick={pick}
+        >
           {ctaText}
         </button>
       </Input>
-      <div className={cls.preview}>
-        {!pickedFiles.length ? (
-          <p>{noPreviewText}</p>
+      <section className={cls.preview}>
+        {pickedFiles.length ? (
+          pickedFiles.map(renderPreview)
         ) : (
-          pickedFiles.map(file =>
-            file.type.startsWith('image') ? (
-              <Image key={file.name} src={file.data as string} fill alt='' />
-            ) : (
-              <p key={file.name}>{file.name}</p>
-            )
-          )
+          <p>{noPreviewText}</p>
         )}
-      </div>
+      </section>
     </div>
   );
 };

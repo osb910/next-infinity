@@ -1,6 +1,6 @@
-import {ComponentProps} from 'react';
+import {type ComponentPropsWithoutRef} from 'react';
 
-export interface P8nProps extends ComponentProps<'ul'> {
+export interface P8nProps extends ComponentPropsWithoutRef<'ul'> {
   page: number;
   pages: number;
   rtl?: boolean;

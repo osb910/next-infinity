@@ -1,7 +1,7 @@
-import {motion, type MotionProps} from 'framer-motion';
+import {type HTMLMotionProps, motion} from 'framer-motion';
 import cls from './MotionBackdrop.module.css';
 
-export interface MotionBackdropProps extends Partial<MotionProps> {
+export interface MotionBackdropProps extends HTMLMotionProps<'div'> {
   layoutId: string;
 }
 

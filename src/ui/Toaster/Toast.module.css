@@ -1,4 +1,5 @@
 .toast {
+  --bg-opacity: 0.8;
   position: relative;
   display: flex;
   align-items: center;
@@ -7,8 +8,8 @@
   color: black;
   color-scheme: light;
   background: white;
-  max-width: 100%;
-  width: 350px;
+  max-inline-size: 100%;
+  inline-size: 22rem;
   box-shadow: var(--shadow-elevation-medium);
   will-change: all;
 }
@@ -39,19 +40,19 @@
 }
 
 .notice .content :where(button, a) {
-  color: var(--color-notice);
+  color: var(--notice);
 }
 
 .warning .content :where(button, a) {
-  color: var(--color-warning);
+  color: var(--warning);
 }
 
 .success .content :where(button, a) {
-  color: var(--color-success);
+  color: var(--success);
 }
 
 .error .content :where(button, a) {
-  color: var(--color-error);
+  color: var(--error);
 }
 
 .content :where(button, a):where(:hover, :focus) {
@@ -79,33 +80,33 @@
 }
 
 .notice {
-  background: var(--color-notice-bg);
+  background: hsl(var(--notice-bg-hsl), var(--bg-opacity));
 }
 
 .notice .iconContainer {
-  color: var(--color-notice);
+  color: var(--notice);
 }
 
 .warning {
-  background: var(--color-warning-bg);
+  background: hsl(var(--warning-bg-hsl), var(--bg-opacity));
 }
 
 .warning .iconContainer {
-  color: var(--color-warning);
+  color: var(--warning);
 }
 
 .success {
-  background: var(--color-success-bg);
+  background: hsl(var(--success-bg-hsl), var(--bg-opacity));
 }
 
 .success .iconContainer {
-  color: var(--color-success);
+  color: var(--success);
 }
 
 .error {
-  background: var(--color-error-bg);
+  background: hsl(var(--error-bg-hsl), var(--bg-opacity));
 }
 
 .error .iconContainer {
-  color: var(--color-error);
+  color: var(--error);
 }

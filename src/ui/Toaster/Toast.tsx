@@ -5,7 +5,7 @@ import {AlertOctagon, AlertTriangle, CheckCircle, Info, X} from 'react-feather';
 import {motion} from 'framer-motion';
 import clsx from 'clsx';
 import VisuallyHidden from '@/ui/VisuallyHidden';
-import {TIME} from '@/constants/numbers';
+import {TIME} from '@/utils/constants';
 import type {ToastProps} from './types';
 import cls from './Toast.module.css';
 
@@ -17,12 +17,12 @@ const ICONS_BY_VARIANT = {
 };
 
 const Toast = ({
-  id,
+  // id,
   variant,
   dismiss,
   delay = 60000,
   children,
-  ...delegated
+  ...rest
 }: ToastProps) => {
   const Icon = ICONS_BY_VARIANT[variant];
   const [exiting, setExiting] = useState<boolean>(false);
@@ -54,7 +54,7 @@ const Toast = ({
       animate={{
         insetInlineStart: exiting ? exitKeyframes : enterKeyframes,
       }}
-      {...delegated}
+      {...rest}
     >
       <section className={`iconContainer ${cls.iconContainer}`}>
         <Icon size={24} />

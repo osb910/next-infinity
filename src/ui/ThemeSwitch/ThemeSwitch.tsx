@@ -7,7 +7,6 @@ import VisuallyHidden from '@/ui/VisuallyHidden';
 import {useTheme} from './useTheme';
 import cls from './ThemeSwitch.module.css';
 
-type Theme = 'light' | 'dark';
 export interface ThemeSwitchProps extends Partial<IconButtonProps> {
   lightIcon?: Icon;
   darkIcon?: Icon;

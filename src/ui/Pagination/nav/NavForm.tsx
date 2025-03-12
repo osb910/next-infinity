@@ -24,7 +24,11 @@ export const NavForm = ({pages, page, buttonText}: NavFormProps) => {
     router.push(newUrl.href);
   };
   return (
-    <Form onSave={navigate} submitText={buttonText} className={styles.navForm}>
+    <Form
+      onSave={navigate}
+      submitText={buttonText}
+      className={styles.navForm}
+    >
       <Input
         label='Page'
         type='number'

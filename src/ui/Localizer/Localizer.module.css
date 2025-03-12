@@ -8,6 +8,18 @@
   display: flex;
 }
 
+.chevron {
+  transition: all 300ms ease-in-out;
+}
+
+.up {
+  transform: rotate(180deg);
+}
+
+:root[lang='ar'] .up {
+  transform: rotate(-180deg);
+}
+
 .rtl .currentLang {
   font-weight: 700;
   font-size: 1.125rem;
@@ -19,7 +31,7 @@
   margin: 0;
 }
 
-.langs {
+.localizer > ul:first-child {
   position: absolute;
   inset-block-start: calc(100% + 1rem);
   inline-size: max-content;
@@ -54,6 +66,10 @@
 
 .lang.rtl {
   font-size: 1.125em;
+}
+
+.lang.ltr {
+  font-size: 1em;
 }
 
 .lang p {

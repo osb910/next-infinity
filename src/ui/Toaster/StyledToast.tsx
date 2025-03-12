@@ -1,20 +1,20 @@
-import styled, {css, keyframes} from 'styled-components';
+import styled, {css} from 'styled-components';
 
-const slideInX = (x?: number) => keyframes`
-  from {
-    transform: translateX(calc(${101 * (x ?? 1)}%));
-  }
-`;
+// const slideInX = (x?: number) => keyframes`
+//   from {
+//     transform: translateX(calc(${101 * (x ?? 1)}%));
+//   }
+// `;
 
-const slideOutX = (x?: number) => keyframes`
-  40% {
-    transform: translateX(${-10 * (x ?? 1)}%);
-  }
+// const slideOutX = (x?: number) => keyframes`
+//   40% {
+//     transform: translateX(${-10 * (x ?? 1)}%);
+//   }
 
-  to {
-    transform: translateX(calc(${101 * (x ?? 1)}% + ${2 * (x ?? 1)}rem));
-  }
-`;
+//   to {
+//     transform: translateX(calc(${101 * (x ?? 1)}% + ${2 * (x ?? 1)}rem));
+//   }
+// `;
 
 const Wrapper = styled.li`
   position: relative;
@@ -72,35 +72,35 @@ const Wrapper = styled.li`
   }
 
   &.notice {
-    background: var(--color-notice-bg);
+    background: hsl(var(--notice-bg-hsl), var(--bg-opacity));
   }
 
   &.notice .iconContainer {
-    color: var(--color-notice);
+    color: var(--notice);
   }
 
   &.warning {
-    background: var(--color-warning-bg);
+    background: hsl(var(--warning-bg-hsl), var(--bg-opacity));
   }
 
   &.warning .iconContainer {
-    color: var(--color-warning);
+    color: var(--warning);
   }
 
   &.success {
-    background: var(--color-success-bg);
+    background: hsl(var(--success-bg-hsl), var(--bg-opacity));
   }
 
   &.success .iconContainer {
-    color: var(--color-success);
+    color: var(--success);
   }
 
   &.error {
-    background: var(--color-error-bg);
+    background: hsl(var(--error-bg-hsl), var(--bg-opacity));
   }
 
   &.error .iconContainer {
-    color: var(--color-error);
+    color: var(--error);
   }
 `;
 

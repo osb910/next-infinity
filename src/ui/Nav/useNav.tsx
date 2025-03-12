@@ -3,6 +3,7 @@
 import {usePathname} from 'next/navigation';
 import {
   createContext,
+  ReactElement,
   useContext,
   useId,
   useState,
@@ -20,7 +21,11 @@ const NavContext = createContext<NavContextProps>({
   toggleNav: () => {},
 });
 
-export const NavProvider = ({children}: {children: ReactNode}): JSX.Element => {
+export const NavProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): ReactElement => {
   const [hoveredItem, setHoveredItem] = useState('');
   const [isOpen, toggleNav] = useToggle(false);
   const pathName = usePathname();

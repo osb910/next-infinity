@@ -1,27 +1,22 @@
-import {
-  HTMLAttributes,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from 'react';
+import type {ElementType, ComponentPropsWithoutRef, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import styles from './Card.module.css';
 
-export type CardProps = ComponentPropsWithoutRef<'div'> & {
+export type CardProps = {
   children: ReactNode;
-  as?: string;
-};
+  as?: ElementType;
+} & ComponentPropsWithoutRef<'article'>;
 
-function Card({children, as: Element = 'article', ...delegated}: CardProps) {
+const Card = ({children, as: Element = 'article', ...rest}: CardProps) => {
   return (
-    // @ts-ignore
     <Element
-      className={clsx(styles.wrapper, delegated.className)}
-      {...delegated}
+      className={clsx(styles.wrapper, rest.className)}
+      {...rest}
     >
       {children}
     </Element>
   );
-}
+};
 
 export default Card;

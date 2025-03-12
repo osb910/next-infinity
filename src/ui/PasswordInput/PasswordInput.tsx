@@ -1,12 +1,10 @@
 'use client';
 
-import {useState, useId, ReactNode, ChangeEvent, ComponentProps} from 'react';
+import {useState} from 'react';
 import {Eye, EyeOff} from 'react-feather';
 import cls from './PasswordInput.module.css';
 import {stringifyRegex} from '@/lib/text/regex';
-import {motion, type MotionProps} from 'framer-motion';
-import clsx from 'clsx';
-import Input, {type InputComponent, type InputProps} from '../Input';
+import Input, {type InputComponent} from '../Input';
 
 export type PasswordInputProps = InputComponent & {
   minLength?: number;
@@ -20,9 +18,6 @@ export const PasswordInput = ({
   maxLength = 32,
   requireSymbols = true,
   requireDigits = true,
-  setInput,
-  className,
-  children,
   ...rest
 }: PasswordInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -45,7 +40,7 @@ export const PasswordInput = ({
       }${
         requireSymbols ? `a special character, ` : ''
       }and be between ${minLength} and ${maxLength} characters.`}
-      onPaste={evt => evt.preventDefault()}
+      onPaste={(evt) => evt.preventDefault()}
       {...rest}
       as='input'
       type={isPasswordVisible ? 'text' : 'password'}
@@ -53,7 +48,7 @@ export const PasswordInput = ({
       <span
         tabIndex={0}
         className={cls.eye}
-        onClick={() => setIsPasswordVisible(is => !is)}
+        onClick={() => setIsPasswordVisible((is) => !is)}
       >
         {isPasswordVisible ? <EyeOff /> : <Eye />}
       </span>

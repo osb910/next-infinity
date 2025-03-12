@@ -1,14 +1,9 @@
-import type {MotionProps, MotionStyle} from 'framer-motion';
+import type {HTMLMotionProps} from 'framer-motion';
 import {type LinkProps} from 'next/link';
-import type {
-  CSSProperties,
-  ComponentProps,
-  ComponentPropsWithoutRef,
-  ReactNode,
-} from 'react';
+import type {ComponentPropsWithoutRef, ReactNode} from 'react';
 
 export type NavProps = ComponentPropsWithoutRef<'nav'> &
-  Partial<MotionProps> & {
+  HTMLMotionProps<'nav'> & {
     children: ReactNode;
     useBurger?: boolean;
     burgerClass?: string;
@@ -16,21 +11,22 @@ export type NavProps = ComponentPropsWithoutRef<'nav'> &
   };
 
 export type NavListProps = ComponentPropsWithoutRef<'ul'> &
-  Partial<MotionProps> & {
+  HTMLMotionProps<'ul'> & {
     children: ReactNode;
   };
 
 export type NavItemProps = ComponentPropsWithoutRef<'li'> &
-  Partial<MotionProps> & {
+  HTMLMotionProps<'li'> & {
     slug: string;
     children: ReactNode;
     highlightClass?: string;
-    highlightStyle?: Record<string, any>;
+    highlightStyle?: Record<string, string | number>;
+    backdropProps?: ComponentPropsWithoutRef<'div'> & HTMLMotionProps<'div'>;
   };
 export type NavLinkProps = ComponentPropsWithoutRef<'a'> &
   LinkProps & {
     highlightClass?: string;
-    highlightStyle?: Record<string, any>;
+    highlightStyle?: Record<string, string | number>;
     slug?: string;
     external?: boolean;
   };

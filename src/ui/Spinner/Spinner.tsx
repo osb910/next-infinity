@@ -1,10 +1,9 @@
-import {ComponentProps, memo} from 'react';
+import {memo, type ComponentPropsWithoutRef} from 'react';
 import {Loader} from 'react-feather';
 import VisuallyHidden from '@/ui/VisuallyHidden';
 import styles from './Spinner.module.css';
-// import SpinnerWrapper from './StyledWrapper';
 
-export interface SpinnerProps extends ComponentProps<'span'> {
+export interface SpinnerProps extends ComponentPropsWithoutRef<'span'> {
   color?: string;
   size?: number;
   opacity?: number;
@@ -18,7 +17,7 @@ export const Spinner = ({
   size = 24,
   opacity = 0.5,
   speed = 1200,
-  ...delegated
+  ...rest
 }: SpinnerProps) => {
   const style = {
     opacity,
@@ -29,11 +28,14 @@ export const Spinner = ({
   };
   return (
     <span
-      {...delegated}
-      style={{...style, ...delegated.style}}
-      className={`${styles.wrapper} ${delegated?.className ?? ''}`}
+      {...rest}
+      style={{...style, ...rest.style}}
+      className={`${styles.wrapper} ${rest?.className ?? ''}`}
     >
-      <Loader size={size} color={color} />
+      <Loader
+        size={size}
+        color={color}
+      />
       <VisuallyHidden>{loadingText}</VisuallyHidden>
     </span>
   );

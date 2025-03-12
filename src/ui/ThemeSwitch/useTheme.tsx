@@ -3,9 +3,11 @@
 import {createContext, useContext, useState, type ReactNode} from 'react';
 import Cookies from 'js-cookie';
 
+export type Theme = 'light' | 'dark';
+
 export interface ThemeContextProps {
-  theme: 'light' | 'dark';
-  toggleTheme: (newTheme?: 'light' | 'dark') => void;
+  theme: Theme;
+  toggleTheme: (newTheme?: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextProps>({
@@ -20,13 +22,13 @@ export const ThemeProvider = ({
   cookieOptions,
 }: {
   children: ReactNode;
-  initialTheme?: 'light' | 'dark';
+  initialTheme?: Theme;
   name?: string;
   cookieOptions?: Cookies.CookieAttributes;
 }) => {
   const [theme, setTheme] = useState(initialTheme);
 
-  const toggleTheme = (newTheme?: 'light' | 'dark') => {
+  const toggleTheme = (newTheme?: Theme) => {
     const nextTheme = newTheme ?? theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
 
@@ -34,8 +36,7 @@ export const ThemeProvider = ({
 
     root.setAttribute(`data-${name}`, nextTheme);
 
-    root.classList.remove('dark');
-    root.classList.remove('light');
+    root.classList.remove('dark', 'light');
     root.classList.add(nextTheme);
 
     Cookies.set(name, nextTheme, {

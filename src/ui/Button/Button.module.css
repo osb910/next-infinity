@@ -1,0 +1,97 @@
+.btn {
+  --primary: hsl(240, 100%, 60%);
+  --primary-light: hsl(235, 100%, 65%);
+  --light: hsl(0, 0%, 100%);
+  --off-light: hsl(235, 85%, 97%);
+  --gray: hsl(240, 10%, 50%);
+  --gray-25: hsl(240, 10%, 50%, 0.25);
+  --gray-75: hsl(240, 10%, 50%, 0.75);
+  --dark: hsl(0, 0%, 0%);
+
+  position: relative;
+  padding-block: var(--padding-y);
+  padding-inline: var(--padding-x);
+  border: 2px solid transparent;
+  border-radius: var(--radius, 2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  align-self: center;
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: var(--fs, 1rem);
+  cursor: pointer;
+  box-shadow: var(--shadow-medium);
+  transition: all 250ms ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: 0 0 2px solid var(--primary);
+    }
+  }
+
+  &:focus {
+    outline-color: var(--primary);
+    outline-offset: 4px;
+  }
+}
+
+:root.dark .btn {
+  --light: hsl(0, 0%, 0%);
+  --off-light: hsl(235, 85%, 3%);
+  --gray: hsl(240, 10%, 50%);
+  --gray-25: hsl(240, 10%, 50%, 0.75);
+  --gray-75: hsl(240, 10%, 50%, 0.25);
+  --dark: hsl(0, 0%, 100%);
+}
+
+.btn span {
+  display: flex;
+}
+
+.btn svg {
+  font-size: 1.5em;
+  margin: 0;
+  border-radius: 50%;
+}
+
+.fill {
+  background-color: var(--primary);
+  color: var(--light);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--primary-light);
+    }
+  }
+}
+
+.outline {
+  background-color: var(--light);
+  color: var(--primary);
+  border: 2px solid currentColor;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--off-light);
+    }
+  }
+}
+
+.ghost {
+  background-color: var(--off-light);
+  color: var(--gray);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--gray25);
+      color: var(--dark);
+      box-shadow: 0 0 2px solid transparent;
+    }
+  }
+
+  &:focus {
+    outline-color: currentColor;
+  }
+}

@@ -5,7 +5,7 @@ export const navigate = async (pages: number, body: FormData) => {
   try {
     const dest = body.get('p');
     if (typeof dest !== 'string' || isNaN(+dest)) return;
-    const newUrl = new URL(headers().get('referer') ?? '');
+    const newUrl = new URL((await headers()).get('referer') ?? '');
     newUrl.searchParams.set(
       'p',
       +dest < 1 ? '1' : +dest > pages ? `${pages}` : dest

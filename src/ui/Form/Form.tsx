@@ -49,15 +49,15 @@ const Form = forwardRef<FormHandle, FormProps>(function Form(
     form.current?.reset();
     const formData = new FormData(form.current as HTMLFormElement);
     const inputs = [...formData.keys()].map(
-      key =>
+      (key) =>
         form.current?.elements?.namedItem(key) as
           | HTMLInputElement
           | HTMLTextAreaElement
           | RadioNodeList
     );
-    inputs.forEach(el => {
+    inputs.forEach((el) => {
       if (NodeList.prototype.isPrototypeOf(el)) {
-        (el as NodeList).forEach(subEl => {
+        (el as NodeList).forEach((subEl) => {
           if (subEl instanceof HTMLInputElement) {
             subEl.checked = false;
           }
@@ -77,7 +77,7 @@ const Form = forwardRef<FormHandle, FormProps>(function Form(
 
     try {
       await onSave?.(data);
-      resetAfterSubmit && clearForm();
+      if (resetAfterSubmit) clearForm();
     } catch (err) {
       if (!(err instanceof Error)) return;
       console.error(err);
@@ -103,7 +103,10 @@ const Form = forwardRef<FormHandle, FormProps>(function Form(
       {children}
       {useSubmitBtn && (
         <p className={cls.actions}>
-          <Submit isSubmitting={isSubmitting} disabled={btnDisabled}>
+          <Submit
+            isSubmitting={isSubmitting}
+            disabled={btnDisabled}
+          >
             {submitText}
           </Submit>
         </p>

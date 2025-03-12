@@ -1,14 +1,14 @@
 'use client';
 
 import {Volume2, VolumeX} from 'react-feather';
-import useSoundEnabled from './sound-enabled';
+import useSfx from './useSfx';
 import IconButton, {type IconButtonProps} from '@/ui/IconButton';
 import VisuallyHidden from '@/ui/VisuallyHidden';
-import type {MouseEvent, ReactNode} from 'react';
+import type {MouseEvent, ReactElement, ReactNode} from 'react';
 
 export interface SfxSwitchProps extends Partial<IconButtonProps> {
-  sfxOnIcon?: JSX.Element;
-  sfxOffIcon?: JSX.Element;
+  sfxOnIcon?: ReactElement;
+  sfxOffIcon?: ReactElement;
   dir?: string;
   children?: ReactNode;
 }
@@ -20,7 +20,7 @@ export const SfxSwitch = ({
   children,
   ...delegated
 }: SfxSwitchProps) => {
-  const {soundEnabled, toggleSound} = useSoundEnabled();
+  const {soundEnabled, toggleSound} = useSfx();
 
   return (
     <IconButton

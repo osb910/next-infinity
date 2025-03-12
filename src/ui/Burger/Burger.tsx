@@ -1,10 +1,11 @@
-import {MotionProps, motion} from 'framer-motion';
+import {type HTMLMotionProps, motion} from 'framer-motion';
 import {ComponentPropsWithoutRef} from 'react';
 import cls from './Burger.module.css';
 import clsx from 'clsx';
+import type {CSSProps} from '@/types';
 
-export type BurgerProps = Partial<MotionProps> &
-  ComponentPropsWithoutRef<'button'> & {
+export type BurgerProps = ComponentPropsWithoutRef<'button'> &
+  HTMLMotionProps<'button'> & {
     isOpen: boolean;
     color?: string;
     size?: string;
@@ -17,19 +18,23 @@ const Burger = ({isOpen, color, size, ...rest}: BurgerProps) => {
     stiffness: 120,
     restDelta: 0.01,
   };
-  const style = {'--color': color ?? 'var(--gray-500)', '--size': size};
+  const style: CSSProps = {
+    '--color': color ?? 'var(--gray-500)',
+    '--size': size ?? '1.5rem',
+  };
 
   return (
     <motion.button
       whileHover={{scale: 1.1, rotate: isOpen ? '90deg' : '0'}}
       whileFocus={{scale: 1.1, rotate: isOpen ? '90deg' : '0'}}
       whileTap={{scale: 0.95}}
+      aria-label='Open menu'
       {...rest}
+      // @ts-expect-error unknown prop
       type='button'
       className={clsx(cls.burger, rest.className)}
       style={{...style, ...rest.style}}
       transition={{...transition, ...rest.transition}}
-      aria-label='Open menu'
       aria-expanded={isOpen}
     >
       <motion.span

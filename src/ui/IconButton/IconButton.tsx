@@ -1,16 +1,26 @@
 'use client';
-import type {ReactNode, MouseEvent, ComponentPropsWithoutRef} from 'react';
-import {motion, type MotionProps} from 'framer-motion';
+import type {
+  ReactNode,
+  MouseEvent,
+  ComponentPropsWithoutRef,
+  ReactElement,
+} from 'react';
+import {
+  motion,
+  type MotionProps,
+  type TargetAndTransition,
+} from 'framer-motion';
 import useSound from 'use-sound';
-import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
-import styles from './IconButton.module.css';
+import clsx from 'clsx';
+import useSfx from '@/ui/SfxSwitch/useSfx';
+import cls from './IconButton.module.css';
 
 export type IconButtonProps = ComponentPropsWithoutRef<'button'> &
   Partial<MotionProps> & {
-    icon: JSX.Element;
+    icon: ReactElement;
     noSfx?: boolean;
     children?: ReactNode;
-    highlightDeps?: any[];
+    highlightDeps?: Array<unknown>;
   };
 
 export const IconButton = ({
@@ -18,9 +28,15 @@ export const IconButton = ({
   noSfx = false,
   children,
   highlightDeps,
-  ...delegated
+  onMouseDown,
+  onMouseUp,
+  whileHover: userWhileHover,
+  whileFocus: userWhileFocus,
+  whileTap: userWhileTap,
+  transition: userTransition,
+  ...rest
 }: IconButtonProps) => {
-  const {soundEnabled} = useSoundEnabled();
+  const {soundEnabled} = useSfx();
   const sfxOn = !noSfx && soundEnabled;
   const [playActive] = useSound('/sfx/pop-down.mp3', {
     soundEnabled: sfxOn,
@@ -30,46 +46,55 @@ export const IconButton = ({
     soundEnabled: sfxOn,
     volume: 0.25,
   });
+  // Combine default animations with user-provided ones
   const whileHover = {
     scale: 1.1,
-    ...(delegated.whileHover as Record<string, any>),
+    ...(userWhileHover as TargetAndTransition),
   };
+
   const whileFocus = {
     scale: 1.1,
-    ...(delegated.whileFocus as Record<string, any>),
+    ...(userWhileFocus as TargetAndTransition),
   };
+
   const whileTap = {
     scale: 0.95,
-    ...(delegated.whileTap as Record<string, any>),
+    ...(userWhileTap as TargetAndTransition),
   };
+
   const transition = {
     type: 'spring',
     damping: 30,
     stiffness: 500,
     restDelta: 0.01,
-    ...delegated.transition,
+    ...userTransition,
+  };
+
+  // Event handlers with sound effects
+  const handleMouseDown = (evt: MouseEvent<HTMLButtonElement>) => {
+    onMouseDown?.(evt);
+    playActive();
+  };
+
+  const handleMouseUp = (evt: MouseEvent<HTMLButtonElement>) => {
+    onMouseUp?.(evt);
+    playOn();
   };
 
   return (
     <motion.button
       type='button'
       key={highlightDeps?.join('')}
-      {...delegated}
-      onMouseDown={(evt: MouseEvent<HTMLButtonElement>) => {
-        delegated.onMouseDown?.(evt);
-        playActive();
-      }}
-      onMouseUp={(evt: MouseEvent<HTMLButtonElement>) => {
-        delegated.onMouseUp?.(evt);
-        playOn();
-      }}
+      {...rest}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       whileHover={whileHover}
       whileFocus={whileFocus}
       whileTap={whileTap}
       transition={transition}
-      className={`${delegated.className ?? ''} ${styles.button}`}
+      className={clsx(rest.className, cls.button)}
     >
-      {icon}
+      <span>{icon}</span>
       {children}
     </motion.button>
   );

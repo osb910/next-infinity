@@ -5,18 +5,17 @@ import {useEffect, useState, type FocusEvent, type MouseEvent} from 'react';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 import {motion} from 'framer-motion';
-import {Locale} from '@/l10n/l10n.types';
+import {Globe, ChevronDown, Check} from 'react-feather';
+import {type Locale} from '@/l10n';
 import useToggle from '@/hooks/useToggle';
-import {TIME} from '@/constants/numbers';
 import IconButton, {type IconButtonProps} from '@/ui/IconButton';
-// import Icon from '@/ui/Icon/iconify';
-import Icon from '@/ui/Icon';
 import Spinner from '@/ui/Spinner';
 import cls from './Localizer.module.css';
-import {CSSProps, Lang} from '@/types';
+import type {CSSProps, Lang} from '@/types';
+import {TIME} from '@/utils/constants';
 
 export type LocalizerProps = Partial<IconButtonProps> & {
-  langs: Array<Omit<Lang, 'dictionary'>>;
+  langs: Array<Lang>;
   locale: Locale;
   displayLang?: boolean;
   method?: 'param' | 'cookie' | 'searchParam';
@@ -54,7 +53,7 @@ const Localizer = ({
       const localizer = (evt.target as HTMLBodyElement).closest(
         `.${cls.localizer}`
       );
-      !localizer && toggleIsOpen(false);
+      if (!localizer) toggleIsOpen(false);
     });
   }, [toggleIsOpen]);
 
@@ -124,6 +123,20 @@ const Localizer = ({
 
   const height = `${langs.length * 100}% + ${langs.length * 2 + 1}px`;
 
+  // Define variants outside of the return statement
+  // const listVariants = {
+  //   open: {
+  //     blockSize: `calc(${height})`,
+  //     borderWidth: '2px',
+  //     filter: 'blur(0px)',
+  //   },
+  //   closed: {
+  //     blockSize: '0',
+  //     borderWidth: '0',
+  //     filter: 'blur(2px)',
+  //   },
+  // };
+
   const style: CSSProps = {
     '--border-radius': radius,
     '--bg': bg,
@@ -135,10 +148,8 @@ const Localizer = ({
     <IconButton
       icon={
         <figure className={cls.icons}>
-          <Icon name='globe' />
-          <Icon name={`chevron-down`} />
-          {/* <Icon icon='lucide:globe' />
-          <Icon icon={`iconamoon:arrow-${isOpen ? 'up' : 'down'}-2-fill`} /> */}
+          <Globe />
+          <ChevronDown className={clsx(cls.chevron, isOpen && cls.up)} />
         </figure>
       }
       {...rest}
@@ -153,7 +164,10 @@ const Localizer = ({
         </p>
       )}
       <motion.ul
-        className={clsx(cls.langs, isOpen && cls.open)}
+        // className={cls.langs}
+        // variants={listVariants}
+        // initial='closed'
+        // animate={isOpen ? 'open' : 'closed'}
         animate={
           isOpen
             ? {
@@ -185,7 +199,7 @@ const Localizer = ({
           >
             <p>{name}</p>
             {targetLocale === code && <Spinner color='currentColor' />}
-            {code === language?.code && <Icon name='check' />}
+            {code === language?.code && <Check />}
           </li>
         ))}
       </motion.ul>

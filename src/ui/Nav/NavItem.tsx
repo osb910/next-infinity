@@ -1,44 +1,47 @@
 'use client';
 
 import {motion} from 'framer-motion';
+import clsx from 'clsx';
 import {useNav} from './useNav';
 import type {NavItemProps} from './types';
-import styles from './Nav.module.css';
-import {FocusEvent, MouseEvent} from 'react';
+import {type FocusEvent, type MouseEvent} from 'react';
+import cls from './Nav.module.css';
 
 export const NavItem = ({
   slug,
   children,
   highlightClass,
   highlightStyle,
-  ...delegated
+  backdropProps,
+  ...rest
 }: NavItemProps) => {
   const {hoveredItem, changeHovered, pathName, layoutId} = useNav();
 
   return (
     <motion.li
-      {...delegated}
-      className={`${styles.navItem} ${delegated.className ?? ''}`}
-      style={{...delegated.style, zIndex: hoveredItem === slug ? 1 : 2}}
+      {...rest}
+      className={clsx(cls.navItem, rest.className)}
+      style={{...rest.style, zIndex: hoveredItem === slug ? 1 : 2}}
       onMouseEnter={(evt: MouseEvent<HTMLLIElement>) => {
-        delegated.onMouseEnter?.(evt);
+        rest.onMouseEnter?.(evt);
         changeHovered(slug);
       }}
       onFocus={(evt: FocusEvent<HTMLLIElement>) => {
-        delegated.onFocus?.(evt);
+        rest.onFocus?.(evt);
         changeHovered(slug);
       }}
     >
       {(hoveredItem === slug || pathName === slug) && (
         <motion.div
           layoutId={layoutId}
-          className={`${highlightClass ?? ''} ${styles.backdrop}`}
+          className={clsx(highlightClass, cls.backdrop)}
           initial={highlightStyle}
           transition={{
             type: 'spring',
-            damping: 26,
-            stiffness: 320,
+            damping: 24,
+            stiffness: 400,
           }}
+          {...backdropProps}
         />
       )}
       {children}

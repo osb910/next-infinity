@@ -5,16 +5,17 @@
   text-wrap: nowrap;
 }
 
-.inputWrapper {
-  flex: 1 1 auto;
-}
-
 .ctrl {
   margin: 0 auto;
   display: flex;
   gap: 0.25em;
   justify-content: space-between;
   align-self: center;
+}
+
+/* input wrapper */
+.ctrl > section:first-child {
+  flex: 1 1 auto;
 }
 
 .ctrl:has(

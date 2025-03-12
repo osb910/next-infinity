@@ -2,7 +2,7 @@ import {prettyPrintJson} from 'pretty-print-json';
 import '@/../pretty-print-json/dist/css/pretty-print-json.css';
 
 interface PrettyDumpProps {
-  data: any;
+  data: unknown;
 }
 
 export const PrettyDump = ({data}: PrettyDumpProps) => {

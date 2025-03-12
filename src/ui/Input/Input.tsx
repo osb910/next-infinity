@@ -11,7 +11,7 @@ import {
   type ChangeEventHandler,
   type FocusEventHandler,
 } from 'react';
-import {motion, type MotionProps} from 'framer-motion';
+import {motion, type HTMLMotionProps} from 'framer-motion';
 import clsx from 'clsx';
 
 import Asterisk from '@/ui/Asterisk';
@@ -20,14 +20,18 @@ import {removeGrammarlyTab} from './util';
 import cls from './Input.module.css';
 import MotionBackdrop from '../MotionBackdrop';
 
+export type SetInput = (
+  target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)
+) => void;
+
 type BaseProps = {
   label?: string;
-  setInput?: Function;
+  setInput?: SetInput;
   children?: ReactNode;
   ctrlClass?: string;
   layoutId?: string;
   focused?: string;
-  backdropStyle?: Record<string, any>;
+  backdropStyle?: Record<string, string | number>;
   asteriskText?: string;
   invalidMsg?: string;
   ctrlChildren?: ReactNode;
@@ -36,13 +40,13 @@ type BaseProps = {
 
 export type InputComponent = BaseProps &
   ComponentPropsWithRef<'input'> &
-  Partial<MotionProps> & {
+  HTMLMotionProps<'input'> & {
     as?: 'input';
   };
 
 export type TextAreaComponent = BaseProps &
   ComponentPropsWithRef<'textarea'> &
-  Partial<MotionProps> & {
+  HTMLMotionProps<'textarea'> & {
     as: 'textarea';
     type?: never;
   };
@@ -84,7 +88,8 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
       ? HTMLInputElement
       : typeof Tag extends 'textarea'
       ? HTMLTextAreaElement
-      : any
+      : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        any
   >;
   const appliedId = `${
     rest?.name ?? rest?.id ?? label?.replace?.(/\s/g, '-') ?? ''
@@ -115,7 +120,7 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
   }, [Tag, isTouched, removeExternalTabs]);
 
   const changeInput: ChangeEventHandler = (evt) => {
-    setInput?.(evt.target);
+    setInput?.(evt.target as InputElement);
     rest.onChange?.(evt);
   };
 
@@ -143,7 +148,7 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
           {rest.required && <Asterisk tabIndex={-1}>{asteriskText}</Asterisk>}
         </label>
       )}
-      <motion.section className={cls.inputWrapper}>
+      <motion.section>
         <div className={clsx(cls.input, isInValid && cls.invalid)}>
           <Element
             {...(isTextAreaProps(props)

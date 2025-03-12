@@ -29,7 +29,6 @@ import {approx, getCoords} from '@/utils/numbers';
 import {IS_SERVER} from '@/utils/path';
 import {delay} from '@/utils/promises';
 import {copy} from '@/utils/text/clipboard';
-import {TIME} from '@/constants/numbers';
 import {type MapBrowserEvent} from 'ol';
 import type {Coordinate} from 'ol/coordinate';
 import {type RView} from 'rlayers/RMap';
@@ -37,6 +36,7 @@ import type {InteractiveMapProps} from './types';
 import styles from './InteractiveMap.module.css';
 import 'rlayers/control/layers.css';
 import 'ol/ol.css';
+import {TIME} from '@/utils/constants';
 
 const markerIcon = '/img/icons/marker.svg';
 const liveLocationIcon = '/img/icons/location-crosshairs.svg';
@@ -230,7 +230,7 @@ export const InteractiveMap = ({
       maxZoom: zoom ?? currentZoom,
     });
 
-    return new Promise(resolve =>
+    return new Promise((resolve) =>
       resolve(
         setTimeout(
           () => setView({center: coordinate, zoom: zoom ?? currentZoom}),
@@ -245,8 +245,16 @@ export const InteractiveMap = ({
   };
 
   return (
-    <motion.section style={wrapperStyle} className={`${styles.wrapper}`}>
-      {!domLoaded && <Spinner size={36} className={styles.loader} />}
+    <motion.section
+      style={wrapperStyle}
+      className={`${styles.wrapper}`}
+    >
+      {!domLoaded && (
+        <Spinner
+          size={36}
+          className={styles.loader}
+        />
+      )}
       {domLoaded && (
         <motion.figure
           {...delegated}
@@ -258,8 +266,16 @@ export const InteractiveMap = ({
           layout={true}
           transition={{...delegated.transition, ...transition}}
         >
-          <motion.div layout={'position'} transition={transition}>
-            {!!isLoading && <Spinner size={36} className={styles.loader} />}
+          <motion.div
+            layout={'position'}
+            transition={transition}
+          >
+            {!!isLoading && (
+              <Spinner
+                size={36}
+                className={styles.loader}
+              />
+            )}
             <RMap
               className={styles.rMap}
               initial={initial}
@@ -352,7 +368,10 @@ export const InteractiveMap = ({
                         })
                     }
                   >
-                    <RPopup trigger={'click'} className={styles.popup}>
+                    <RPopup
+                      trigger={'click'}
+                      className={styles.popup}
+                    >
                       <h3 dir='auto'>Here</h3>
                       <p>
                         {liveLocation.coordinates[0]},{' '}
@@ -396,7 +415,10 @@ export const InteractiveMap = ({
                         anchor={[0.5, 0.8]}
                       />
                     </RStyle.RStyle>
-                    <RPopup trigger={'click'} className={styles.popup}>
+                    <RPopup
+                      trigger={'click'}
+                      className={styles.popup}
+                    >
                       {title && <h3 dir='auto'>{title}</h3>}
                       <p>
                         {lng}, {lat}
@@ -416,7 +438,10 @@ export const InteractiveMap = ({
           </motion.div>
         </motion.figure>
       )}
-      <motion.section layout={true} transition={transition}>
+      <motion.section
+        layout={true}
+        transition={transition}
+      >
         {children}
       </motion.section>
     </motion.section>

@@ -1,0 +1,41 @@
+.fancyBtn {
+  --outer-y: 0.25em;
+  --outer-x: 0.25em;
+  inline-size: fit-content;
+  inset: 0;
+  margin-block: var(--outer-y);
+  margin-inline: var(--outer-x);
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--gray-900);
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    background-color: transparent;
+    color: #000;
+  }
+
+  &:hover .icon {
+    margin-inline-start: 0.5em; /* Translate X-axis by 0.75vw on hover */
+  }
+}
+
+.fancyBtn::before {
+  content: '';
+  position: absolute;
+  inline-size: calc(100% + var(--outer-x));
+  block-size: calc(100% + var(--outer-y));
+  z-index: -1;
+  background-image: var(--bg-gradient);
+  border-radius: 1rem;
+  padding-block: 0.125em;
+  padding-inline: 0.125em;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.875rem;
+  cursor: pointer;
+}
+
+.icon {
+  transition: all 200ms ease-in-out;
+}

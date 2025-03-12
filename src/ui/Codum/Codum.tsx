@@ -1,4 +1,4 @@
-import {type ComponentProps, type ReactNode} from 'react';
+import {type ComponentPropsWithoutRef} from 'react';
 import {Code, type BrightProps} from 'bright';
 import clsx from 'clsx';
 import theme from './theme';
@@ -6,17 +6,17 @@ import cls from './Codum.module.css';
 
 export type CodeProps = Pick<BrightProps, 'code'> &
   Partial<Omit<BrightProps, 'code'>> &
-  ComponentProps<'pre'>;
+  ComponentPropsWithoutRef<'pre'>;
 
-const CodeSnippet = ({...delegated}: CodeProps) => {
+const Codum = ({...rest}: CodeProps) => {
   return (
     <Code
-      {...delegated}
-      code={delegated.code.trim()}
+      {...rest}
+      code={rest.code.trim()}
       theme={theme}
-      className={clsx(cls.wrapper, delegated.className)}
+      className={clsx(cls.wrapper, rest.className)}
     />
   );
 };
 
-export default CodeSnippet;
+export default Codum;

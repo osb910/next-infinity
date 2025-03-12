@@ -4,7 +4,7 @@ import {Root, Thumb, type PrimitiveButtonProps} from '@radix-ui/react-switch';
 import {motion} from 'framer-motion';
 import useSound from 'use-sound';
 import useToggle from '@/hooks/useToggle';
-import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
+import useSfx from '@/ui/SfxSwitch/useSfx';
 import cls from './Switch.module.css';
 
 export interface SwitchProps extends PrimitiveButtonProps {
@@ -21,11 +21,11 @@ export const Switch = ({
   switchOnColor = 'hsla(210, 8%, 25%, 0.9)',
   thumbColor = 'hsl(0, 0%, 85%)',
   noSfx = false,
-  ...delegated
+  ...rest
 }: SwitchProps) => {
   const [isOn, toggleSwitch] = useToggle(false);
 
-  const {soundEnabled} = useSoundEnabled();
+  const {soundEnabled} = useSfx();
   const sfxOn = !noSfx && soundEnabled;
   const [playToggle] = useSound('/sfx/tink.wav', {
     soundEnabled: sfxOn,
@@ -47,16 +47,16 @@ export const Switch = ({
 
   return (
     <Root
-      {...delegated}
+      {...rest}
       asChild
-      onCheckedChange={checked => {
+      onCheckedChange={() => {
         playToggle();
         toggleSwitch();
       }}
     >
       <motion.button
-        className={`${cls.SwitchRoot} ${delegated.className ?? ''}`}
-        style={{...style, ...delegated.style}}
+        className={`${cls.SwitchRoot} ${rest.className ?? ''}`}
+        style={{...style, ...rest.style}}
         animate={{
           backgroundColor: isOn ? switchOnColor : switchColor,
           boxShadow: isOn

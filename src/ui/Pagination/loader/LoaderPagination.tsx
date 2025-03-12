@@ -11,7 +11,7 @@ import styles from '../Pagination.module.css';
 
 interface PaginationProps extends P8nProps {
   endpoint: string;
-  addItems: (data: Array<any>) => void;
+  addItems: (data: Array<unknown>) => void;
   type?: 'manual' | 'auto';
   observedSelector?: string;
 }
@@ -27,7 +27,7 @@ export const LoaderPagination = ({
 }: PaginationProps) => {
   const [chunkPage, setChunkPage] = useState(page);
   const [isLoading, setIsLoading] = useState(false);
-  const [isOnScreen] = useIsOnscreen(observedSelector);
+  const {isVisible} = useIsOnscreen({selector: observedSelector});
 
   const loadMore = useCallback(async () => {
     const newUrl = new URL(endpoint);
@@ -44,7 +44,7 @@ export const LoaderPagination = ({
       .json()) as {
       status: string;
       message: string;
-      data: Array<any>;
+      data: Array<unknown>;
     } & P8n;
     if (json.status === 'error') throw new Error(json.message);
     addItems(json.data);
@@ -53,16 +53,19 @@ export const LoaderPagination = ({
   }, [chunkPage, endpoint, addItems]);
 
   useEffect(() => {
-    if (type === 'manual' || !isOnScreen || chunkPage >= pages) return;
+    if (type === 'manual' || !isVisible || chunkPage >= pages) return;
     (async () => await loadMore())();
-  }, [type, isOnScreen, chunkPage, pages, loadMore]);
+  }, [type, isVisible, chunkPage, pages, loadMore]);
 
   if (pages < 2) return null;
 
   return (
     <section className={styles.pagination}>
       {type === 'manual' && pages > 1 && chunkPage < pages && (
-        <Form onSave={loadMore} submitText={buttonText}>
+        <Form
+          onSave={loadMore}
+          submitText={buttonText}
+        >
           <></>
         </Form>
       )}
