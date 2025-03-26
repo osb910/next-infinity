@@ -8,15 +8,17 @@ import emailVerifier from './email-verifier';
 
 const getErrorMap = (errors: Array<{field: string; message: string}>) =>
   errors.reduce((acc, err) => {
-    acc[err.field]
-      ? (acc[err.field] = [...acc[err.field], err.message])
-      : (acc[err.field] = [err.message]);
-    acc.count ? (acc.count = acc.count + 1) : (acc.count = 1);
+    if (acc[err.field]) {
+      acc[err.field] = [...acc[err.field], err.message];
+    } else {
+      acc[err.field] = [err.message];
+    }
+    acc.count = acc.count ? (acc.count = acc.count + 1) : (acc.count = 1);
     return acc;
   }, {} as {count: number} & Record<string, any>);
 
-const registerValidator = async (body: any) => {
-  let newBody = {...body};
+const registerValidator = async (body: Record<string, string>) => {
+  const newBody = {...body};
   const errors = [];
   const {email, name, password, confirmPassword} = body;
   if (isEmpty(name)) {
@@ -40,11 +42,12 @@ const registerValidator = async (body: any) => {
 
   if (email) {
     const verifiedEmail = await emailVerifier(email);
-    !verifiedEmail?.status &&
+    if (!verifiedEmail?.status) {
       errors.push({
         field: 'email',
         message: verifiedEmail?.error.message ?? 'Invalid email address',
       });
+    }
   }
 
   if (isEmpty(password)) {
@@ -106,8 +109,8 @@ const registerValidator = async (body: any) => {
   return [newBody, errors];
 };
 
-const loginValidator = (body: any) => {
-  let newBody = {...body};
+const loginValidator = (body: Record<string, string>) => {
+  const newBody = {...body};
   const errors = [];
   const {email, password} = body;
   if (isEmpty(email)) {
@@ -129,12 +132,18 @@ const loginValidator = (body: any) => {
   return [newBody, errors];
 };
 
-export const contactValidator = (
-  {email, name, message}: any,
-  lang?: string
-): {
-  validated: Record<string, any>;
-  errorMap: {count: number} & Record<string, any>;
+export const contactValidator = ({
+  email,
+  name,
+  message,
+}: {
+  email: string;
+  name: string;
+  message: string;
+}): // lang?: string
+{
+  validated: Record<string, string>;
+  errorMap: {count: number} & Record<string, string[]>;
 } => {
   const validated = {email, name, message};
   const errors = [];
@@ -182,6 +191,32 @@ export const contactValidator = (
 
   validated.name = trim(name);
   validated.message = trim(message);
+
+  const errorMap = getErrorMap(errors);
+
+  return {validated, errorMap};
+};
+
+export const urlValidator = ({url, domain}: {url: string; domain?: string}) => {
+  const validated = {url};
+  const errors = [];
+
+  if (isEmpty(url)) {
+    errors.push({field: 'url', message: 'Please provide a URL'});
+  }
+
+  if (!url.startsWith('http')) {
+    errors.push({field: 'url', message: 'Invalid URL. Must start with http'});
+  }
+
+  if (domain && !url.includes(domain)) {
+    errors.push({
+      field: 'url',
+      message: `URL must contain ${domain}`,
+    });
+  }
+
+  validated.url = trim(url);
 
   const errorMap = getErrorMap(errors);
 

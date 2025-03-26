@@ -1,4 +1,4 @@
-import {GetP8n} from '@/types';
+import {GetP8n, ResponseStatus} from '@/types';
 import {NextResponse} from 'next/server';
 
 export const env = (key: string): string | null => {
@@ -48,4 +48,46 @@ export const sendError = <T>(
       headers: {'Content-Type': 'application/json'},
     }
   );
+};
+
+export const jsonifyError = ({
+  err,
+  status = 'error',
+  message,
+  code = 500,
+  errorMap,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  err?: any;
+  message?: string;
+  code?: number;
+  status?: ResponseStatus;
+  errorMap?: {count: number} & Record<string, unknown>;
+} = {}) => {
+  if (err?.code === 11000) {
+    code = 409;
+    message = `${Object.keys(err.keyPattern)[0]} ${
+      err.keyValue[Object.keys(err.keyPattern)[0]]
+    } already exists.`;
+  }
+  let error = err;
+  if (!error && message) {
+    error = new Error(message);
+  }
+  const callerMatch = error.stack?.split('\n')[2].match(/\s*at (\w+)/);
+  const caller = callerMatch?.[1];
+  console.log(`[${caller}]:`, error);
+
+  if (errorMap) {
+    console.log(`[${caller}]:`, JSON.stringify(errorMap, null, 2));
+  }
+
+  const json = {
+    status,
+    message: error.message,
+    code,
+    ...(errorMap ?? {errors: errorMap}),
+  };
+
+  return json;
 };

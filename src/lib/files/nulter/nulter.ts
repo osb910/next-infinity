@@ -36,14 +36,14 @@ export const parseFile: FileParser = async (file, options) => {
       buffer,
     };
 
-    if (options?.resize) {
+    if (options?.resize && type.includes('image')) {
       data = await resize(data);
     }
 
     if (options.storage === 'disk') {
       const destination = getPath(options.dest).replace(/\\/g, '/');
       const path = `${destination}/${fileName}`;
-      const res = await writeFile(`${options.dest}/${fileName}`, buffer);
+      await writeFile(`${options.dest}/${fileName}`, buffer);
       data = {...data, destination, path};
     }
 
@@ -60,7 +60,7 @@ const nulter: Nulter = async (body, options) => {
 
   if (!files || (files.length === 1 && files[0].name === 'undefined')) return;
 
-  const promises = files.map(file =>
+  const promises = files.map((file) =>
     parseFile(file, {
       field,
       ...(options.storage === 'disk'
