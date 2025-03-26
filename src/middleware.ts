@@ -2,15 +2,18 @@ import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
 import {readLocale as readNextBlogLocale} from './l10n/getL10n';
-import {defaultLocale, locales as nextBlogLocales} from './l10n/config';
+// import {defaultLocale, locales as nextBlogLocales} from './l10n/config';
 
 export const middleware = async (req: NextRequest) => {
   const {pathname, searchParams} = req.nextUrl;
   const dialog = searchParams.get('dialog');
   const origin = req.headers.get('origin');
+  const themeCookie = req.cookies.get('theme');
+  const theme = themeCookie?.value ?? 'light';
+  // const userIdCookie = req.cookies.get('user-id-token');
   const localeCookie = req.cookies.get('locale');
   const localeHeader = req.headers.get('x-locale');
-  const locale = localeCookie?.value ?? localeHeader;
+  let locale = localeHeader ?? localeCookie?.value;
   const authCookie = req.cookies.get('nextStoresToken');
   const authHeader = req.headers.get('Authorization');
   const token = authCookie
@@ -40,8 +43,10 @@ export const middleware = async (req: NextRequest) => {
 
   response.headers.set('x-url', req.url);
 
-  let ipAddress = req.ip ?? req.headers.get('x-forwarded-for') ?? '';
+  const ipAddress = req.headers.get('x-forwarded-for') ?? '';
   response.headers.set('x-ip', ipAddress);
+  response.headers.set('x-theme', theme);
+  response.cookies.set('theme', theme);
 
   const site = pathname.match(/^(?:\/api|\/mini-apps)?\/([-\w]+)/)?.[1];
   response.headers.set('x-site', site ?? '');
@@ -52,9 +57,9 @@ export const middleware = async (req: NextRequest) => {
 
   if (isRoute) {
     if (/^(\/api)?\/next-blog/.test(pathname)) {
-      let newLocale = locale ?? readNextBlogLocale(req);
-      response.headers.set('x-locale', newLocale);
-      response.cookies.set('locale', newLocale);
+      locale = locale ?? readNextBlogLocale(req);
+      response.headers.set('x-locale', locale);
+      response.cookies.set('locale', locale);
     }
   }
 
@@ -82,8 +87,6 @@ export const middleware = async (req: NextRequest) => {
       }
 
       response.headers.set('X-USER-ID', sub);
-
-      return response;
     } catch (err) {
       if (!(err instanceof Error)) return;
       if (/\/api/.test(pathname)) {
