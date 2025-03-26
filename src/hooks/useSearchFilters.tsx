@@ -1,7 +1,7 @@
 'use client';
 
 import {createContext, type ReactNode, useContext} from 'react';
-import {useStoredImmer} from '@/hooks/useStoredState';
+import {useStoredState} from '@/hooks/useStoredState';
 
 type Filters = {
   [key: string]: unknown;
@@ -24,20 +24,20 @@ const SearchFiltersContext = createContext<FiltersContextProps>({
 });
 
 export const SearchFiltersProvider = ({children}: {children: ReactNode}) => {
-  const [filters, setFilters] = useStoredImmer<Filters>(
+  const [filters, setFilters] = useStoredState<Filters>(
     {},
     {key: 'searchFilters'}
   );
 
   const setFilter = (name: string, value: unknown) => {
-    setFilters((draft): void => {
-      draft![name] = value;
-    });
+    setFilters((current) => ({...current, [name]: value}));
   };
 
   const removeFilter = (name: string) => {
-    setFilters((draft): void => {
-      delete draft?.[name];
+    setFilters((current) => {
+      const next = {...current};
+      delete next[name];
+      return next;
     });
   };
 

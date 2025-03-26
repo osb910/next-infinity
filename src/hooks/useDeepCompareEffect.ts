@@ -6,7 +6,7 @@ import {
   type DependencyList,
   type EffectCallback,
 } from 'react';
-import isEqual from '@/utils/isEqual';
+import {isEqual} from '@/utils/objects';
 
 /**
  * Options for useDeepCompareEffect

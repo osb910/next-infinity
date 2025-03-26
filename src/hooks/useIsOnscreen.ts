@@ -3,14 +3,14 @@
 import {useState, useEffect, useRef, type RefObject} from 'react';
 
 // Types
-export interface UseIsOnscreenOptions {
+export type UseIsOnscreenOptions = {
   selector?: string;
   rootMargin?: string;
   threshold?: number | number[];
   root?: Element | Document | null;
   once?: boolean; // Stop observing after first appearance
   defaultValue?: boolean; // Initial visibility state
-}
+};
 
 export interface UseIsOnscreenReturn {
   isVisible: boolean;

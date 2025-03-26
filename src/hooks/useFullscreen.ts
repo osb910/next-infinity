@@ -1,7 +1,7 @@
 'use client';
 
+import {TIME} from '@/utils/constants';
 import {useState, useEffect} from 'react';
-import {TIME} from '@/constants/numbers';
 
 export type FullscreenOptions = {
   id?: string;

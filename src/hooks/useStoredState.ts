@@ -167,7 +167,8 @@ export const useStoredState = <T>(
   useLayoutEffect(() => {
     setState(getStoredValue({key, initialValue, storage}));
     setIsLoading(false);
-  }, [initialValue, key, storage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, storage]);
 
   useEffect(() => {
     if (state === undefined) return removeStoredValue(key, storage);
@@ -192,7 +193,7 @@ export const useStoredImmer = <T>(
     setState(getStoredValue({key, initialValue, storage}));
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialValue, key, storage]);
+  }, [key, storage]);
 
   useEffect(() => {
     if (state === undefined) return removeStoredValue(key, storage);

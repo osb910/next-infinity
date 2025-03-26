@@ -26,8 +26,10 @@ export type GetP8n = (
   perPage?: number | string | null
 ) => P8n;
 
+export type ResponseStatus = 'success' | 'error' | 'warning' | 'notice';
+
 export interface JsonRes<T = unknown> extends Partial<P8n> {
-  status: 'success' | 'error' | 'warning' | 'notice';
+  status: ResponseStatus;
   code: number;
   message: string;
   data?: T & {

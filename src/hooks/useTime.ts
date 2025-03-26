@@ -2,9 +2,9 @@
 
 import {useState, useEffect} from 'react';
 import useSound from 'use-sound';
-import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
+import useSfx from '@/ui/SfxSwitch/useSfx';
 
-interface useTimeProps {
+export interface UseTimeProps {
   showTime?: boolean;
   tickEvery?: number;
   tickSound?: boolean;
@@ -16,9 +16,9 @@ const useTime = ({
   tickEvery = 1000,
   tickSound = false,
   tickPath = '/sfx/single-tick.mp3',
-}: useTimeProps = {}) => {
+}: UseTimeProps = {}) => {
   const [time, setTime] = useState<Date | null>(null);
-  const {soundEnabled} = useSoundEnabled();
+  const {soundEnabled} = useSfx();
   const [playTick] = useSound(tickPath, {
     soundEnabled,
     volume: 0.5,
