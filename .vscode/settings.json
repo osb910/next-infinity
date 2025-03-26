@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["nulter"]
+  "cSpell.words": ["nulter"],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

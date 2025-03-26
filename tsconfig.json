@@ -15,6 +15,9 @@
     "jsx": "preserve",
     "types": ["react"],
     "incremental": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "ignoreDeprecations": "5.0",
     "declaration": true,
     "plugins": [{"name": "next"}, {"name": "typescript-plugin-css-modules"}],
     "paths": {

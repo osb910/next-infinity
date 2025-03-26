@@ -3,7 +3,7 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   serverExternalPackages: ['mongoose'],
   /**
-   * allows us to specify which files should be included on a route-by-route basis. Here, we're saying that the '/src/database.json' file should be made available for all routes (represented by the wildcard /*).
+   * allows us to specify which files should be included on a route-by-route basis. Here, we're saying that the '/src/dictionaries' folder should be made available for all routes (represented by the wildcard /*).
    * Essentially, we're telling Next: Hey, this application requires these files, please upload them along with the compiled application during deployment.
    */
   outputFileTracingIncludes: {
@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
   rewrites: async () => {
     return [
       {
-        source: '/api/:path*',
+        source: '/api/py/:path*',
         destination:
           process.env.NODE_ENV === 'development'
             ? 'http://127.0.0.1:5328/api/:path*'
