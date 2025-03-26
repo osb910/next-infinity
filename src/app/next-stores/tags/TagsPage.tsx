@@ -4,27 +4,27 @@ import Store, {type IStoreWithReviews} from '@/services/next-stores/store';
 import styles from './Tags.module.css';
 import Stores from '@/components/next-stores/Stores';
 import {getURL} from '@/utils/path';
-import {AppPage, GetMetadata, JsonRes, P8n} from '@/types';
+import {AppPage, GetMetadata, JsonRes} from '@/types';
 
-type TagsPg = AppPage<
-  {},
-  {
-    tag: string;
-    p: string;
-  }
->;
-
-export const generateMetadata: GetMetadata<TagsPg> = async (
-  {searchParams: {tag}},
-  parent
-) => {
-  return {
-    title: tag ? `${tag} Stores` : 'Tags',
-  };
+type SearchParams = {
+  tag: string;
+  p: string;
 };
+export type TagsPg = AppPage<unknown, SearchParams>;
+export type TagsGenMetadata = GetMetadata<unknown, SearchParams>;
 
-const Tags: TagsPg = async ({searchParams: {tag, p}}) => {
-  const userId = headers().get('X-USER-ID') ?? '';
+export const generateMetadata: TagsGenMetadata = async ({searchParams}) =>
+  // parent
+  {
+    const {tag} = await searchParams;
+    return {
+      title: tag ? `${tag} Stores` : 'Tags',
+    };
+  };
+
+const Tags: TagsPg = async ({searchParams}) => {
+  const {tag, p} = await searchParams;
+  const userId = (await headers()).get('X-USER-ID') ?? '';
   try {
     const tagsPromise = Store.getTagsList();
     const storesPromise = fetch(

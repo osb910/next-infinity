@@ -1,17 +1,20 @@
 import {cookies} from 'next/headers';
-import {getLocale, localize} from '@/l10n/getL10n';
+import {getLocale} from '@/l10n/getL10n';
 import {env} from '@/lib/helpers';
 import {UserDataProvider} from '@/hooks/useUserData';
 import Header from '@/components/next-blog/Header';
 import Footer from '@/components/next-blog/Footer';
 import {ThemeProvider} from '@/ui/ThemeSwitch/useTheme';
-import type {GetMetadata, Layout} from '@/types';
+import type {GetLayoutMetadata, Layout} from '@/types';
 import cls from './HomePage.module.css';
 import './styles.css';
+import {localize} from '@/l10n';
 
-export const generateMetadata: GetMetadata<Layout> = async () => {
-  const locale = getLocale();
-  const {l6e} = await localize({locale});
+type NextBlogLayout = GetLayoutMetadata;
+
+export const generateMetadata: NextBlogLayout = async () => {
+  const locale = await getLocale();
+  const {l6e} = await localize(locale);
   const title = l6e('nextBlog.site.title');
   const description = l6e('nextBlog.site.description');
   const titleTemp = `%s • ${title}`;
@@ -60,8 +63,8 @@ export const generateMetadata: GetMetadata<Layout> = async () => {
 };
 
 const RootLayout: Layout = async ({children}) => {
-  const cookieStore = cookies();
-  const locale = getLocale();
+  const cookieStore = await cookies();
+  const locale = await getLocale();
   const userId = cookieStore.get('next-blog-user-id')?.value ?? '';
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'
@@ -76,7 +79,6 @@ const RootLayout: Layout = async ({children}) => {
         <Header
           locale={locale}
           theme={theme}
-          userId={userId}
         />
         <main className={cls.main}>{children}</main>
         <Footer locale={locale} />

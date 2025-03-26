@@ -2,13 +2,13 @@ import {headers} from 'next/headers';
 import Stores from '@/components/next-stores/Stores';
 import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
-import {type Metadata} from 'next';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GetMetadata, JsonRes} from '@/types';
 import {cache} from 'react';
 import {randArrayEl} from '@/utils/general';
 
-export type StoresPg = AppPage<{}, {p: string}>;
+export type StoresPg = AppPage<unknown, {p: string}>;
+export type StoresGenMetadata = GetMetadata<unknown, {p: string}>;
 
 const fetcher = cache(async (p: string) => {
   const res = await fetch(getURL(`/api/next-stores/stores?p=${p}&limit=6`), {
@@ -21,9 +21,8 @@ const fetcher = cache(async (p: string) => {
   return json;
 });
 
-export const generateMetadata: GetMetadata<StoresPg> = async ({
-  searchParams: {p},
-}) => {
+export const generateMetadata: StoresGenMetadata = async ({searchParams}) => {
+  const {p} = await searchParams;
   const json = await fetcher(p);
   const randStore = json.status === 'error' ? [] : randArrayEl(json.data ?? []);
   return {
@@ -49,8 +48,9 @@ export const generateMetadata: GetMetadata<StoresPg> = async ({
   };
 };
 
-const StoresPage: StoresPg = async ({searchParams: {p}}) => {
-  const userId = headers().get('X-USER-ID') ?? '';
+const StoresPage: StoresPg = async ({searchParams}) => {
+  const {p} = await searchParams;
+  const userId = (await headers()).get('X-USER-ID') ?? '';
   try {
     const json = (await fetcher(p)) as JsonRes<Array<IStoreWithReviews>>;
     if (json.status === 'error') throw new Error(json.message);

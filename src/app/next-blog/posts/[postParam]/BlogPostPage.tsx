@@ -3,14 +3,14 @@ import {notFound} from 'next/navigation';
 import {getBlogPost} from '@/helpers/next-blog/requests';
 
 import type {AppPage, GetMetadata} from '@/types';
-import cls from './BlogPostPage.module.css';
+// import cls from './BlogPostPage.module.css';
 import BlogPost from '@/components/next-blog/BlogPost';
 
 export type BlogPostPg = AppPage<{postParam: string}>;
+export type BlogPostGenMetadata = GetMetadata<{postParam: string}>;
 
-export const generateMetadata: GetMetadata<BlogPostPg> = async ({
-  params: {postParam},
-}) => {
+export const generateMetadata: BlogPostGenMetadata = async ({params}) => {
+  const {postParam} = await params;
   const {data} = await getBlogPost(postParam);
   return data
     ? {
@@ -22,7 +22,8 @@ export const generateMetadata: GetMetadata<BlogPostPg> = async ({
       };
 };
 
-const BlogPostPage: BlogPostPg = async ({params: {postParam}}) => {
+const BlogPostPage: BlogPostPg = async ({params}) => {
+  const {postParam} = await params;
   try {
     const {data} = await getBlogPost(postParam);
     if (!data) notFound();

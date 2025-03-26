@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect} from 'react';
-import useSoundEnabled from '@/ui/SfxSwitch/sound-enabled';
+import useSfx from '@/ui/SfxSwitch/useSfx';
 import DrumButton from './DrumButton';
 import styles from './page.module.css';
 import useSound from 'use-sound';
@@ -23,7 +23,7 @@ type SoundProps = {
 };
 
 const DrumKit = () => {
-  const {soundEnabled} = useSoundEnabled();
+  const {soundEnabled} = useSfx();
   const keySoundsMap: SoundProps[] = [
     {
       key: 'A',

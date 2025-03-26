@@ -1,5 +1,5 @@
 import {cache} from 'react';
-import Store, {type IStoreWithReviews} from '@/services/next-stores/store';
+import {type IStoreWithReviews} from '@/services/next-stores/store';
 import SingleStore from '@/components/next-stores/SingleStore';
 import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
@@ -7,6 +7,7 @@ import type {AppPage, GetMetadata, JsonRes} from '@/types';
 import {Metadata} from 'next';
 
 export type StorePg = AppPage<{storeParam: string}>;
+export type StoreGenMetadata = GetMetadata<{storeParam: string}>;
 
 export const revalidate = 60 * 60 * 12;
 
@@ -16,9 +17,8 @@ const fetcher = cache(async (param: string) => {
   return json;
 });
 
-export const generateMetadata: GetMetadata<StorePg> = async ({
-  params: {storeParam},
-}) => {
+export const generateMetadata: StoreGenMetadata = async ({params}) => {
+  const {storeParam} = await params;
   const json = await fetcher(storeParam);
   const metadata: Metadata =
     json?.status === 'error'
@@ -49,7 +49,8 @@ export const generateMetadata: GetMetadata<StorePg> = async ({
   return metadata;
 };
 
-const StorePage: StorePg = async ({params: {storeParam}}) => {
+const StorePage: StorePg = async ({params}) => {
+  const {storeParam} = await params;
   try {
     const json = await fetcher(storeParam);
     if (

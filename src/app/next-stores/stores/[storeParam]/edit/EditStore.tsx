@@ -7,9 +7,10 @@ import type {IStoreWithReviews} from '@/services/next-stores/store';
 import type {JsonRes} from '@/types';
 import {type StorePg} from '../StorePage';
 
-const EditStore: StorePg = async ({params: {storeParam}}) => {
-  const userId = headers().get('X-USER-ID');
+const EditStore: StorePg = async ({params}) => {
   try {
+    const {storeParam} = await params;
+    const userId = (await headers()).get('X-USER-ID');
     const res = await fetch(getURL(`/api/next-stores/stores/${storeParam}`));
     const json = (await res.json()) as JsonRes<
       IStoreWithReviews & {

@@ -1,5 +1,5 @@
 'use client';
-import useLocalState from '@/hooks/useLocalState';
+import useLocalState from '@/hooks/useStoredState';
 import styles from './ScopedCSSVar.module.css';
 import {useEffect, useCallback, ChangeEvent} from 'react';
 
@@ -41,7 +41,7 @@ const Form = () => {
     const newVar = evt.target.value;
     const suffix = evt.target.dataset?.suffix ?? '';
 
-    setVars(current => ({
+    setVars((current) => ({
       ...current,
       [varName]: newVar,
     }));

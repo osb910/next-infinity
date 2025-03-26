@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: local('Atkinson Hyperlegible'),
+    url('../../public/fonts/atkinson-hyperlegible-latin-400-normal.woff2')
+      format('woff2'),
+    url('../../public/fonts/atkinson-hyperlegible-latin-400-normal.woff')
+      format('woff'),
+    url('../../public/fonts/atkinson-hyperlegible-latin-400-normal.ttf')
+      format('truetype');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-weight: 700;
+  src: local('Atkinson Hyperlegible'),
+    url('../../public/fonts/atkinson-hyperlegible-latin-700-normal.woff2')
+      format('woff2'),
+    url('../../public/fonts/atkinson-hyperlegible-latin-700-normal.woff')
+      format('woff'),
+    url('../../public/fonts/atkinson-hyperlegible-latin-700-normal.ttf')
+      format('truetype');
+}
+
+@font-face {
+  font-family: 'Berlin Sans FB';
+  src: local('Berlin Sans FB'),
+    url('../../public/fonts/BRLNSR.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Berlin Sans FB';
+  font-weight: 700;
+  src: local('Berlin Sans FB Bold'),
+    url('../../public/fonts/BRLNSB.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-weight: 400;
+  src: local('Noto Sans Arabic'),
+    url('../../public/fonts/noto-sans-arabic-arabic-400-normal.woff2')
+      format('woff2'),
+    url('../../public/fonts/noto-sans-arabic-arabic-400-normal.woff')
+      format('woff');
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-weight: 700;
+  src: local('Noto Sans Arabic'),
+    url('../../public/fonts/noto-sans-arabic-arabic-700-normal.woff2')
+      format('woff2'),
+    url('../../public/fonts/noto-sans-arabic-arabic-700-normal.woff')
+      format('woff');
+}
+
+@font-face {
+  font-family: 'IPM Plex Sans Arabic';
+  font-weight: 400;
+  src: local('IPM Plex Sans Arabic'),
+    url('../../public/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2')
+      format('woff2'),
+    url('../../public/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff')
+      format('woff'),
+    url('../../public/fonts/ibm-plex-sans-arabic-arabic-400-normal.ttf')
+      format('truetype');
+}
+
+@font-face {
+  font-family: 'IPM Plex Sans Arabic';
+  font-weight: 700;
+  src: local('IPM Plex Sans Arabic'),
+    url('../../public/fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2')
+      format('woff2'),
+    url('../../public/fonts/ibm-plex-sans-arabic-arabic-700-normal.woff')
+      format('woff'),
+    url('../../public/fonts/ibm-plex-sans-arabic-arabic-700-normal.ttf')
+      format('truetype');
+}
+
+@font-face {
+  font-family: 'Uthman Taha';
+  src: local('KFGQPC Uthman Taha Naskh'),
+    url('../../public/fonts/UthmanTN1\ Ver10.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Uthman Taha';
+  font-weight: 700;
+  src: local('KFGQPC Uthman Taha Naskh'),
+    url('../../public/fonts/UthmanTN1B\ Ver10.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Lotus';
+  src: local('adwa-assalaf'),
+    url('../../public/fonts/adwa-assalaf.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lotus';
+  font-weight: 700;
+  src: local('adwa-assalaf'),
+    url('../../public/fonts/adwa-assalaf.ttf') format('truetype');
+}

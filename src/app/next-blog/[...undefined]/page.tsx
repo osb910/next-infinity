@@ -2,21 +2,26 @@ import Link from 'next/link';
 import type {AppPage, GetMetadata} from '@/types';
 import styles from '../HomePage.module.css';
 
-type UndefinedPg = AppPage<{undefined: Array<string>}, {type: string}>;
+type Params = {undefined: Array<string>};
+type SearchParams = {type: string};
+type UndefinedPg = AppPage<Params, SearchParams>;
 
-export const generateMetadata: GetMetadata<UndefinedPg> = async ({
-  params: {undefined},
-  searchParams: {type},
+type UndefinedMetadata = GetMetadata<Params, SearchParams>;
+
+export const generateMetadata: UndefinedMetadata = async ({
+  params,
+  searchParams,
 }) => {
+  const {undefined} = await params;
+  const {type} = await searchParams;
   return {
     title: `${type ?? 'Page'} Not Found`,
   };
 };
 
-const Undefined: UndefinedPg = async ({
-  params: {undefined},
-  searchParams: {type},
-}) => {
+const Undefined: UndefinedPg = async ({params, searchParams}) => {
+  const {undefined} = await params;
+  const {type} = await searchParams;
   return (
     <>
       <h1>{type ?? 'Page'} not found</h1>

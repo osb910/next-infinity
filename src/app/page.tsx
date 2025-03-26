@@ -1,8 +1,11 @@
-import {join} from 'path';
+// import {join} from 'path';
 import Link from 'next/link';
 import Poster from '@/components/Poster/Poster';
 import Logo from '@/components/Logo';
-import {calculateDirSize, getDirNames} from '@/utils/file';
+import {
+  // calculateDirSize,
+  getDirNames,
+} from '@/utils/file';
 import styles from './page.module.css';
 
 const Home = async () => {

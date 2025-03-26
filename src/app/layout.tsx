@@ -10,7 +10,7 @@ import {
 } from 'next/font/google';
 import {headers, cookies} from 'next/headers';
 import clsx from 'clsx';
-import {SoundProvider} from '@/ui/SfxSwitch/sound-enabled';
+import {SfxProvider} from '@/ui/SfxSwitch/useSfx';
 import Toaster, {ToastProvider} from '@/ui/Toaster';
 import ObeyMotionPref from '@/ui/ObeyMotionPref';
 import {TooltipProvider} from '@/ui/Tooltip';
@@ -93,11 +93,13 @@ const splineSansMono = Spline_Sans_Mono({
   variable: '--fn-spline-sans-mono',
 });
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
-  const locale = getLocale();
-  const headerStore = headers();
+const RootLayout = async ({children}: {children: React.ReactNode}) => {
+  const [locale, headerStore, cookieStore] = await Promise.all([
+    getLocale(),
+    headers(),
+    cookies(),
+  ]);
   const site = headerStore.get('x-site');
-  const cookieStore = cookies();
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'
     | 'dark';
@@ -124,14 +126,16 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         suppressHydrationWarning
       >
         <ObeyMotionPref>
-          <SoundProvider>
+          <SfxProvider>
             <ToastProvider>
               <TooltipProvider>{children}</TooltipProvider>
               <Toaster lang={site === 'next-blog' ? locale : 'en'} />
             </ToastProvider>
-          </SoundProvider>
+          </SfxProvider>
         </ObeyMotionPref>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

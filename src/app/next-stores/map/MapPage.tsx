@@ -16,7 +16,7 @@ const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
 });
 
 type SearchParams = {lng: string; lat: string; selected: string};
-type MapPg = AppPage<{}, SearchParams>;
+type MapPg = AppPage<unknown, SearchParams>;
 
 const fetcher = cache(async ({lng, lat}: {lng: string; lat: string}) => {
   const res = await fetch(
@@ -53,12 +53,11 @@ const getPageLocation = async ({lng, lat}: {lng: string; lat: string}) => {
 // export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export const generateMetadata: GetMetadata<MapPg> = async ({
-  searchParams: {lng, lat},
-}) => {
+export const generateMetadata: GetMetadata<MapPg> = async ({searchParams}) => {
+  const {lng, lat} = await searchParams;
   const [json, pgLocationJson] = await Promise.all([
-    fetcher({lng, lat}),
-    getPageLocation({lng, lat}),
+    fetcher({lng: `${lng}`, lat: `${lat}`}),
+    getPageLocation({lng: `${lng}`, lat: `${lat}`}),
   ]);
   let title;
   if (json?.status === 'error') {
@@ -76,7 +75,8 @@ export const generateMetadata: GetMetadata<MapPg> = async ({
   };
 };
 
-const MapPage: MapPg = async ({searchParams: {lng, lat, selected}}) => {
+const MapPage: MapPg = async ({searchParams}) => {
+  const {lng, lat, selected} = await searchParams;
   try {
     const json = await fetcher({lng, lat});
 
