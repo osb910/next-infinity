@@ -52,7 +52,7 @@ export interface GeoLocation {
   source?: string;
 }
 
-export interface Img {
+export interface FileInfo {
   key: string;
   ogName: string;
   title: string;

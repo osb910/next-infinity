@@ -30,9 +30,13 @@ export type Layout<T = Record<string, unknown>> = (
 ) => Promise<unknown>;
 
 export type GetMetadata<
-  T extends (props: PageProps<Record<string, unknown>>) => unknown = AppPage
+  T = Record<string, unknown>,
+  K = Record<string, string | string[] | undefined>
 > = (
-  props: Awaited<Parameters<T>>[0],
+  props: {
+    params: Promise<T>;
+    searchParams: Promise<K & Record<string, string | string[] | undefined>>;
+  },
   parent: ResolvingMetadata
 ) => Promise<Metadata>;
 
@@ -43,5 +47,5 @@ export type GetLayoutMetadata<T = Record<string, unknown>> = (
 
 export type AppRoute<T = Record<string, unknown>> = (
   req: NextRequest,
-  {params}: {params: T}
+  {params}: {params: Promise<T>}
 ) => Promise<unknown>;
