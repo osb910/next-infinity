@@ -1,50 +1,17 @@
-import {NextRequest, NextResponse} from 'next/server';
-import Event from '@/app/next-events/Event.model';
-import {isEmail} from '@/utils/validators';
+import {NextResponse} from 'next/server';
+import {jsonifyError} from '@/lib/helpers';
+import type {EventParams} from '../route';
+import type {AppRoute} from '@/types';
+import {addComment} from '@/services/next-events/event/controllers';
 
-export const PUT = async (
-  req: NextRequest,
-  {params}: {params: {event: string}}
-) => {
+export const PUT: AppRoute<EventParams> = async (req, {params}) => {
+  let json;
   try {
+    const {event} = await params;
     const body = await req.json();
-    const {author, email, comment} = body;
-    if (
-      !email ||
-      !isEmail(email) ||
-      !author ||
-      !author.trim() ||
-      !comment ||
-      !comment.trim()
-    ) {
-      return NextResponse.json(
-        {
-          status: 'warning',
-          message: 'Invalid name, comment, or email address.',
-        },
-        {status: 422}
-      );
-    }
-    const res = await Event.findByIdAndUpdate(params.event, {
-      // alternative to unshift: adds to the beginning of the array
-      $push: {comments: {$each: [body], $position: 0}},
-    });
-
-    if (!res) throw new Error('Inserting comment failed.');
-
-    return NextResponse.json(
-      {...body, status: 'success', message: 'Comment added!'},
-      {status: 201}
-    );
+    json = await addComment(event, body);
   } catch (err) {
-    if (!(err instanceof Error)) return;
-    console.error(err);
-    return NextResponse.json(
-      {
-        status: 'error',
-        message: err.message,
-      },
-      {status: 500}
-    );
+    json = jsonifyError({err});
   }
+  return NextResponse.json(json, {status: json.code});
 };

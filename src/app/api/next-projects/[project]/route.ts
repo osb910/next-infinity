@@ -1,11 +1,10 @@
-import {NextRequest, NextResponse} from 'next/server';
+import {NextResponse} from 'next/server';
 import Project from '@/app/mini-apps/next-projects/Project.model';
+import {AppRoute} from '@/types';
 
-export const PUT = async (
-  req: NextRequest,
-  {params}: {params: {project: string}}
-) => {
+export const PUT: AppRoute<{project: string}> = async (req, {params}) => {
   try {
+    const {project} = await params;
     const body = await req.json();
     const {title, description, people} = body;
     if (title && title.length < 3) {
@@ -36,7 +35,7 @@ export const PUT = async (
       );
     }
 
-    const res = await Project.findByIdAndUpdate(params.project, body, {
+    const res = await Project.findByIdAndUpdate(project, body, {
       new: true,
     });
     if (!res) throw new Error('Project not found');
@@ -49,13 +48,13 @@ export const PUT = async (
     );
   } catch (err) {
     if (!(err instanceof Error)) return;
-    // @ts-ignore
+    // @ts-expect-error mongo error
     if (err.codeName === 'DuplicateKey') {
       return NextResponse.json(
         {
           status: 'notice',
           message: `${
-            // @ts-ignore
+            // @ts-expect-error mongo error
             err.keyValue[Object.keys(err.keyPattern)[0]]
           } already exists as a project.`,
         },
@@ -69,12 +68,10 @@ export const PUT = async (
   }
 };
 
-export const DELETE = async (
-  req: NextRequest,
-  {params}: {params: {project: string}}
-) => {
+export const DELETE: AppRoute<{project: string}> = async (req, {params}) => {
   try {
-    const res = await Project.findByIdAndDelete(params.project);
+    const {project} = await params;
+    const res = await Project.findByIdAndDelete(project);
     if (!res) throw new Error('Project not found');
     return NextResponse.json(
       {

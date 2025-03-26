@@ -1,10 +1,8 @@
 import {NextResponse} from 'next/server';
-import Event from '@/app/next-events/Event.model';
-import {connectDB} from '@/lib/database';
+import Event from '@/services/next-events/event/event-model';
 
 export const GET = async () => {
   try {
-    await connectDB();
     // const isFeatured = req.nextUrl.searchParams.has('featured');
     // const filter = isFeatured ? {isFeatured: true} : {};
     const res = await Event.find().sort({date: 1});

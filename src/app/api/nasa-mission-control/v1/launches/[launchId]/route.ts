@@ -6,11 +6,9 @@ import loadNASAData from '@/services/nasa-mission-control/nasa.middleware';
 import {NextRequest, NextResponse} from 'next/server';
 
 type Params = {params: {launchId: string}};
-export const DELETE = async (
-  req: NextRequest,
-  {params: {launchId}}: Params
-) => {
+export const DELETE = async (req: NextRequest, {params}: Params) => {
   try {
+    const {launchId} = params;
     await loadNASAData();
     const existingLaunch = await getLaunchById(+launchId);
     if (!existingLaunch) {

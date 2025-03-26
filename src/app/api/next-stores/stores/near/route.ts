@@ -1,6 +1,6 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import Store from '@/services/next-stores/store';
-import {getNearby} from '@/services/services.lib';
+import {getNearby} from '@/services/lib';
 import {type Request} from 'request-ip';
 
 export const dynamic = 'force-dynamic';

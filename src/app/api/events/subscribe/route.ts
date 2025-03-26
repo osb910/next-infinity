@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Subscriber from '@/app/next-events/Subscriber.model';
+import Subscriber from '@/services/next-events/subscriber-model';
 import {isEmail} from '@/utils/validators';
 
 export const POST = async (req: NextRequest) => {
@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json(
         {
           status: 'notice',
-          // @ts-ignore
+          // @ts-expect-error - mongo error
           message: `${err.keyValue.email} is already subscribed to the newsletter.`,
         },
         {status: 409}

@@ -4,9 +4,10 @@ import {type StoreRoute} from '../../route';
 
 type ReviewRoute = StoreRoute<{reviewId: string}>;
 
-export const PUT: ReviewRoute = async (req, {params: {reviewId}}) => {
+export const PUT: ReviewRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
+    const {reviewId} = await params;
     const {reviewText, rating} = await req.json();
     if (!reviewText && !rating) {
       return NextResponse.json(
@@ -55,9 +56,10 @@ export const PUT: ReviewRoute = async (req, {params: {reviewId}}) => {
   }
 };
 
-export const DELETE: ReviewRoute = async (req, {params: {reviewId}}) => {
+export const DELETE: ReviewRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
+    const {reviewId} = await params;
     const res = (await Review.findOneAndDelete({
       _id: reviewId,
       author: userId,

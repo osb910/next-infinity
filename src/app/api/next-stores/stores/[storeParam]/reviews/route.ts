@@ -1,14 +1,15 @@
 import {NextResponse} from 'next/server';
 import Review, {type IReview} from '@/services/next-stores/review';
 import Store, {type IStore} from '@/services/next-stores/store';
-import {getModelQuery} from '@/services/services.lib';
+import {getModelQuery} from '@/services/lib';
 import {type HydratedDocument} from 'mongoose';
 import {type StoreRoute} from '../route';
 
-export const POST: StoreRoute = async (req, {params: {storeParam}}) => {
+export const POST: StoreRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
-  const storeQuery = getModelQuery(storeParam);
   try {
+    const {storeParam} = await params;
+    const storeQuery = getModelQuery(storeParam);
     const store = (await Store.findOne(storeQuery)) as IStore;
     const {reviewText, rating} = await req.json();
     if (!rating || !reviewText) {

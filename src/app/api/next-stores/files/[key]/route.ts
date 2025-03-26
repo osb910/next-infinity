@@ -1,25 +1,26 @@
-import {NextRequest, NextResponse} from 'next/server';
+import {NextResponse} from 'next/server';
 import {getObject} from '@/lib/files/s3';
 import {readFile} from '@/utils/file';
+import {AppRoute} from '@/types';
 
-export const GET = async (
-  req: NextRequest,
-  {params}: {params: {key: string}}
-) => {
+export const GET: AppRoute<{key: string}> = async (req, {params}) => {
   try {
-    const s3File = await getObject(`next-stores/${params.key}`);
+    const {key} = await params;
+    const s3File = await getObject(`next-stores/${key}`);
     const file = s3File?.data
       ? s3File
-      : await readFile(`public/uploads/next-stores/${params.key}`, {
+      : await readFile(`public/uploads/next-stores/${key}`, {
           fallback: 'public/uploads/store.png',
         });
     if (!file.data) {
       const err = new Error('Something went wrong!');
       throw err;
     }
-    const response = new NextResponse(
-      s3File?.data ? file?.data?.transformToWebStream() : file?.data
-    );
+    const responseBody = s3File?.data
+      ? s3File?.data?.transformToWebStream()
+      : file?.data;
+    // @ts-expect-error response error
+    const response = new NextResponse(responseBody);
     response.headers.set('content-type', `image/${file.ext}`);
     return response;
   } catch (err) {

@@ -1,5 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server';
-import Event, {IEvent} from '@/app/next-events/Event.model';
+import Event, {IEvent} from '@/services/next-events/event/event-model';
+import {jsonifyError} from '@/lib/helpers';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -13,7 +14,7 @@ export const POST = async (req: NextRequest) => {
       (type !== 'any' && type !== 'upcoming' && type !== 'past')
     ) {
       return NextResponse.json(
-        {error: 'Invalid filter values', status: 422},
+        jsonifyError({message: 'Invalid filter values', code: 422}),
         {status: 422}
       );
     }
@@ -61,11 +62,17 @@ export const POST = async (req: NextRequest) => {
 
     if (!res || res.length === 0) {
       return NextResponse.json(
-        {error: 'No events found for the chosen filter!', status: 404},
+        jsonifyError({
+          message: 'No events found for the chosen filter!',
+          code: 404,
+        }),
         {status: 404}
       );
     }
-    return NextResponse.json({events: res, count: res.length}, {status: 200});
+    return NextResponse.json(
+      {status: 'success', code: 200, data: res, count: res.length},
+      {status: 200}
+    );
   } catch (err) {
     console.error(err);
   }

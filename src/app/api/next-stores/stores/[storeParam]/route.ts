@@ -4,7 +4,7 @@ import Store, {
   updateStore,
   type IStore,
 } from '@/services/next-stores/store';
-import {getModelQuery} from '@/services/services.lib';
+import {getModelQuery} from '@/services/lib';
 import type {AppRoute} from '@/types';
 
 export type StoreRoute<T = Record<string, string>> = AppRoute<
@@ -13,8 +13,9 @@ export type StoreRoute<T = Record<string, string>> = AppRoute<
   } & T
 >;
 
-export const GET: StoreRoute = async (_, {params: {storeParam}}) => {
+export const GET: StoreRoute = async (_, {params}) => {
   try {
+    const {storeParam} = await params;
     const json = await getStore(storeParam);
     return NextResponse.json(json, {status: json.code});
   } catch (err) {
@@ -27,8 +28,9 @@ export const GET: StoreRoute = async (_, {params: {storeParam}}) => {
   }
 };
 
-export const PUT: StoreRoute = async (req, {params: {storeParam}}) => {
+export const PUT: StoreRoute = async (req, {params}) => {
   try {
+    const {storeParam} = await params;
     const json = await updateStore(req, storeParam);
     return NextResponse.json(json, {status: json.code});
   } catch (err) {
@@ -41,10 +43,11 @@ export const PUT: StoreRoute = async (req, {params: {storeParam}}) => {
   }
 };
 
-export const DELETE: StoreRoute = async (req, {params: {storeParam}}) => {
+export const DELETE: StoreRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
-  const storeQuery = getModelQuery(storeParam);
   try {
+    const {storeParam} = await params;
+    const storeQuery = getModelQuery(storeParam);
     const store = (await Store.findOne(storeQuery)) as IStore;
     if (store.author.toString() !== userId) {
       return NextResponse.json(

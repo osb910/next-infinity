@@ -3,9 +3,10 @@ import User, {type IUser} from '@/services/next-stores/user';
 import {type StoreRoute} from '../route';
 import type {HDoc} from '@/types';
 
-export const GET: StoreRoute = async (req, {params: {storeParam}}) => {
+export const GET: StoreRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
+    const {storeParam} = await params;
     const user = (await User.findById(userId)) as HDoc<IUser>;
     if (!user) {
       return NextResponse.json(

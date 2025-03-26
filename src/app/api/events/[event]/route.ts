@@ -1,17 +1,16 @@
-import {NextRequest, NextResponse} from 'next/server';
-import Event, {IEvent} from '@/app/next-events/Event.model';
+import {NextResponse} from 'next/server';
+import type {AppRoute} from '@/types';
+import {jsonifyError} from '@/lib/helpers';
+import {getEvent} from '@/services/next-events/event/controllers';
 
-export const GET = async (
-  req: NextRequest,
-  {params}: {params: {event: string}}
-) => {
+export type EventParams = {event: string};
+export const GET: AppRoute<EventParams> = async (req, {params}) => {
+  let json;
   try {
-    const event: IEvent | null = await Event.findById(params.event);
-    if (!event) throw new Error('Event not found');
-    return NextResponse.json(event, {status: 200});
+    const {event: eventParam} = await params;
+    json = await getEvent(eventParam);
   } catch (err) {
-    if (!(err instanceof Error)) return;
-    console.error(err);
-    return NextResponse.json({error: err.message}, {status: 404});
+    json = jsonifyError({err});
   }
+  return NextResponse.json(json, {status: json.code});
 };
