@@ -1,10 +1,9 @@
 import EventsSearch from '@/components/events/EventsSearch';
 import EventItem from '@/components/events/EventItem';
 import styles from './Events.module.css';
-import {IEvent} from '../Event.model';
+import {IEvent} from '../../../services/next-events/event/event-model';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
-import {connectDB} from '@/lib/database';
 
 export const metadata: Metadata = {
   title: 'All Events',
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
 
 const AllEvents = async () => {
   try {
-    await connectDB();
     const res = await fetch(getURL('/api/events'), {
       next: {revalidate: 1800}, // 30 minutes
     });
@@ -22,7 +20,7 @@ const AllEvents = async () => {
       <>
         <EventsSearch />
         <ul className={styles.list}>
-          {events.map(item => (
+          {events.map((item) => (
             <EventItem
               key={item._id?.toString()}
               {...item}

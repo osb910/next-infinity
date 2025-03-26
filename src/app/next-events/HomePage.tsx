@@ -1,5 +1,5 @@
 import EventItem from '@/components/events/EventItem';
-import {IEvent} from './Event.model';
+import {IEvent} from '../../services/next-events/event/event-model';
 import styles from './page.module.css';
 import {getURL} from '@/utils/path';
 import NewsletterRegistration from '@/components/events/input/NewsletterRegistration';
@@ -14,7 +14,7 @@ const HomePage = async () => {
       <section>
         <NewsletterRegistration />
         <ul className={styles.list}>
-          {events.map(item => (
+          {events.map((item) => (
             <EventItem
               key={item._id?.toString()}
               {...item}

@@ -3,12 +3,29 @@ import ButtonLink from '../ButtonLink/ButtonLink';
 import styles from './EventsSearch.module.css';
 import SearchForm from '../SearchForm/SearchForm';
 
-const EventsSearch = () => {
+const EventsSearch = ({
+  type,
+  year,
+  month,
+  q,
+}: {
+  type?: 'any' | 'upcoming' | 'past';
+  year?: string;
+  month?: string;
+  q?: string;
+}) => {
   return (
-    <SearchForm searchPath='/next-events/events/search' className={styles.form}>
+    <SearchForm
+      searchPath='/next-events/events/search'
+      className={styles.form}
+    >
       <p className={styles.control}>
         <label htmlFor='type'>Type</label>
-        <select name='type' id='type'>
+        <select
+          name='type'
+          id='type'
+          defaultValue={type}
+        >
           <option value='any'>Any</option>
           <option value='upcoming'>Upcoming</option>
           <option value='past'>Past</option>
@@ -16,7 +33,11 @@ const EventsSearch = () => {
       </p>
       <p className={styles.control}>
         <label htmlFor='year'>Year</label>
-        <select name='year' id='year'>
+        <select
+          name='year'
+          id='year'
+          defaultValue={year}
+        >
           <option value='any'>Any</option>
           <option value='2023'>2023</option>
           <option value='2024'>2024</option>
@@ -25,7 +46,11 @@ const EventsSearch = () => {
       </p>
       <p className={styles.control}>
         <label htmlFor='month'>Month</label>
-        <select name='month' id='month'>
+        <select
+          name='month'
+          id='month'
+          defaultValue={month}
+        >
           <option value='any'>Any</option>
           <option value='1'>January</option>
           <option value='2'>February</option>
@@ -43,7 +68,12 @@ const EventsSearch = () => {
       </p>
       <p className={styles.control}>
         <label htmlFor='q'>Query</label>
-        <input type='text' id='q' name='q' />
+        <input
+          type='text'
+          id='q'
+          name='q'
+          defaultValue={q}
+        />
       </p>
       <ButtonLink>Find Events</ButtonLink>
     </SearchForm>

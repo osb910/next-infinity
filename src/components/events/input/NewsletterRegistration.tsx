@@ -10,7 +10,7 @@ import ky from 'ky';
 
 const NewsletterRegistration = () => {
   const {value, inputRef, changeValue, hasError, onBlur, reset} = useInput(
-    value => isEmail(value)
+    (value) => isEmail(value)
   );
   const [loading, setLoading] = useState(false);
   const {createToast} = useToaster();
@@ -26,7 +26,7 @@ const NewsletterRegistration = () => {
         })
         .json();
 
-      createToast(json.status, json.message);
+      createToast(json.status, json.message, 'infinite');
       reset();
     } catch (err) {
       if (!(err instanceof Error)) return;
