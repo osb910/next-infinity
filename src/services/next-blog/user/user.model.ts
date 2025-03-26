@@ -1,7 +1,7 @@
 import {connection} from 'mongoose';
 import userSchema from './user.schema';
 import {UserModel} from './user.types';
-import {comparePassword, getDomain, preSaveDoc} from '@/services/services.lib';
+import {comparePassword, getDomain, preSaveDoc} from '@/services/lib';
 
 const db = connection.useDb('next-blog');
 

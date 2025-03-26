@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IUser, IUserMethods, UserModel} from './user.types';
+import type {IUser, IUserMethods, UserModel} from './user.types';
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
@@ -10,9 +10,13 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       trim: true,
       required: true,
     },
-    name: {
+    firstName: {
       type: String,
       required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
       trim: true,
     },
     password: {
@@ -25,10 +29,25 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
         ref: 'Post',
       },
     ],
-    resetPasswordToken: String,
+    resetPasswordCode: String,
     resetPasswordExpires: Date,
-    avatar: String,
+    avatar: {
+      key: String,
+      ogName: String,
+      title: String,
+      ogTitle: String,
+      ext: String,
+      mimeType: String,
+      size: Number,
+      readableSize: String,
+      caption: String,
+    },
     preferredLocale: String,
+    gender: {
+      type: String,
+      enum: ['M', 'F'],
+      default: 'M',
+    },
     location: {
       address: String,
       ip: String,

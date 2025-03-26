@@ -2,7 +2,7 @@ import Store from './store.model';
 import User, {type IUser} from '../user';
 import Review, {type IReview} from '../review';
 import {processUploadFile} from '@/lib/files/file.middleware';
-import {getModelQuery} from '@/services/services.lib';
+import {getModelQuery} from '@/services/lib';
 import {getP8n} from '@/lib/helpers';
 import type {IStore, IStoreWithReviews, StoreModel} from './store.types';
 import {type HydratedDocument} from 'mongoose';
@@ -141,7 +141,7 @@ export const getStore = async (
       updatedAt: -1,
     })) as Array<HydratedDocument<IReview>>;
     reviews = await Promise.all(
-      reviews.map(async r => {
+      reviews.map(async (r) => {
         let user = (await User.findById(
           r.author,
           '-password -resetPasswordToken -resetPasswordExpires -__v'

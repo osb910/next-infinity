@@ -1,31 +1,27 @@
 import type {Document, Model, Types} from 'mongoose';
-import type {GeoLocation} from '@/types';
+import type {FileInfo, GeoLocation} from '@/types';
+import {IPost} from '../post';
 
 export interface IUser extends Document<Types.ObjectId> {
   email: string;
-  name: {
-    first: string;
-    last?: string;
-  };
+  firstName: string;
+  lastName?: string;
   password: string;
-  bookmarks: Array<Types.ObjectId>;
-  resetPasswordToken?: string;
+  bookmarks: Array<Types.ObjectId | string | IPost>;
+  resetPasswordCode?: string;
   resetPasswordExpires?: Date;
-  avatar?: string;
+  gender: 'M' | 'F';
+  avatar?: FileInfo;
   preferredLocale?: string;
-  location: {
-    type: 'Point';
-    address?: string;
-  } & GeoLocation;
+  location?: GeoLocation;
+  comparePassword(password: string): Promise<boolean>;
+  addBookmark(id: Types.ObjectId | string): Promise<boolean>;
+  removeBookmark(id: Types.ObjectId | string): Promise<boolean>;
 }
 
 export interface IUserMethods {
-  comparePassword(password: string): Promise<boolean>;
+  domain(): string;
+  fullName(): string;
 }
 
-export interface IUserVirtuals {
-  domain: string;
-}
-
-export interface UserModel
-  extends Model<IUser, {}, IUserMethods, IUserVirtuals> {}
+export type UserModel = Model<IUser, object, IUserMethods>;

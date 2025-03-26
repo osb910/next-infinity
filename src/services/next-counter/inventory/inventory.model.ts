@@ -1,6 +1,6 @@
 import {connection} from 'mongoose';
 import inventorySchema from './inventory.schema';
-import {preSaveDoc} from '@/services/services.lib';
+import {preSaveDoc} from '@/services/lib';
 import type {InventoryModel} from './inventory.types';
 
 const db = connection.useDb('next-stores');

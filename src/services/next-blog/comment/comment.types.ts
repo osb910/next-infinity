@@ -1,14 +1,14 @@
 import type {Document, Model, Types} from 'mongoose';
 
 export interface CommentBase {
-  author: Types.ObjectId;
+  author: Types.ObjectId | string;
   body: string;
-  likedBy: Array<Types.ObjectId>;
+  likedBy: Array<Types.ObjectId | string>;
 }
 
 export interface IComment extends Document<Types.ObjectId> {
-  post: Types.ObjectId;
+  post: Types.ObjectId | string;
   replies: Array<CommentBase>;
 }
 
-export interface CommentModel extends Model<IComment> {}
+export type CommentModel = Model<IComment>;

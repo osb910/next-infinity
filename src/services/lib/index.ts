@@ -4,9 +4,23 @@ import {Md5} from 'ts-md5';
 import slug from 'slug';
 import {genSalt, hash, compare} from 'bcrypt';
 import {getP8n} from '@/lib/helpers';
-import {P8n} from '@/types';
+import {GeoLocation, P8n} from '@/types';
 import {getLocationFromIp} from '@/lib/geo';
 import {type Request} from 'request-ip';
+
+// Define interfaces for common types
+export interface DocWithNameAndSlug {
+  name?: string;
+  slug?: string;
+  title?: string;
+  password?: string;
+  // [x: string]: any;
+}
+
+export interface Location {
+  longitude: number;
+  latitude: number;
+}
 
 export const getModelQuery = (
   prop: string,
@@ -26,16 +40,17 @@ export const getModelQuery = (
   };
 };
 
-export const getDomain = (email: string) => {
+export const getDomain = (email: string): string => {
   return email.split('@')[1];
 };
 
-export const getGravatar = (email: string) => {
+export const getGravatar = (email: string): string => {
   const gravatarHash: string = Md5.hashStr(email.trim().toLowerCase());
   return `https://www.gravatar.com/avatar/${gravatarHash}?s=150&d=retro`;
 };
 
-export const preSaveDoc = async <T>(
+export const preSaveDoc = async <T extends DocWithNameAndSlug>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   doc: HydratedDocument<any & T>,
   {
     nameProp = 'name',
@@ -46,11 +61,11 @@ export const preSaveDoc = async <T>(
   } = {}
 ) => {
   console.log(`saving ${doc?.[nameProp] ?? doc?.title ?? doc._id}...`);
-  if (doc.isModified(nameProp)) {
+  if (doc.isModified(nameProp) && doc.slug) {
     const newSlug = slug(doc[nameProp]);
     const slugRegex = new RegExp(`^${doc.slug}((-\\d*$)?)$`, 'i');
     try {
-      const count = await doc.constructor.countDocuments({
+      const count = await (doc.constructor as Model<T>).countDocuments({
         slug: slugRegex,
       });
       doc.slug = count ? `${newSlug}-${count + 1}` : newSlug;
@@ -71,18 +86,24 @@ export const preSaveDoc = async <T>(
   }
 };
 
-export const comparePassword = async (password: string, hash: string) => {
+export const comparePassword = async (
+  password: string,
+  hash: string
+): Promise<boolean> => {
   try {
     const match: boolean = await compare(password, hash);
     return match;
   } catch (err) {
-    if (!(err instanceof Error)) return;
+    if (!(err instanceof Error)) return false;
     console.error(err);
     return false;
   }
 };
 
-export const getFieldList = async (Model: Model<any>, field: string) => {
+export const getFieldList = async <T>(
+  Model: Model<T>,
+  field: keyof T & string
+) => {
   return await Model.aggregate([
     {$unwind: `$${field}`},
     {$group: {_id: `$${field}`, count: {$sum: 1}}},
@@ -90,8 +111,8 @@ export const getFieldList = async (Model: Model<any>, field: string) => {
   ]);
 };
 
-export const getTopRated = async (
-  Model: Model<any>,
+export const getTopRated = async <T>(
+  Model: Model<T>,
   {
     page,
     limit,
@@ -105,7 +126,7 @@ export const getTopRated = async (
     collection?: string;
     addedField?: string;
   }
-): Promise<{docs: Array<any>; p8n: P8n}> => {
+): Promise<{docs: Array<T & {[key: string]: number}>; p8n: P8n}> => {
   const pipeline = [
     {
       $lookup: {
@@ -146,16 +167,24 @@ export const getTopRated = async (
   }
 };
 
-export const getNearby = async (
-  Model: Model<any>,
+export const getNearby = async <T extends {location: Location}>(
+  Model: Model<T>,
   req: NextRequest & Request
-) => {
+): Promise<{
+  status: string;
+  message: string;
+  code: number;
+  data: {
+    userLocation: GeoLocation | undefined;
+    stores: T[];
+  };
+}> => {
   const {
     nextUrl: {searchParams},
   } = req;
   const lng = searchParams.get('lng');
   const lat = searchParams.get('lat');
-  const page = searchParams.get('p');
+  // const page = searchParams.get('p');
   const maxDistance = searchParams.get('max-distance');
   const limit = searchParams.get('limit');
   try {
@@ -186,6 +215,78 @@ export const getNearby = async (
     };
   } catch (err) {
     console.error(err);
+    throw err;
+  }
+};
+
+export const getBookQuery = (bookParam: string) => {
+  const isObjectId = isValidObjectId(bookParam);
+  const isNumber = /^\d+$/.test(bookParam);
+  return {
+    [isObjectId ? '_id' : isNumber ? 'bookId' : 'slug']: isObjectId
+      ? bookParam
+      : isNumber
+      ? +bookParam
+      : {$regex: `^${bookParam}`, $options: 'i'},
+  };
+};
+
+export const getAuthorQuery = (authorId: string) => {
+  const isObjectId = isValidObjectId(authorId);
+  return {
+    [isObjectId ? '_id' : 'authorId']: isObjectId ? authorId : +authorId,
+  };
+};
+
+export const getTranslatorQuery = (translatorId: string) => {
+  const isObjectId = isValidObjectId(translatorId);
+  return {
+    [isObjectId ? '_id' : 'translatorId']: isObjectId
+      ? translatorId
+      : +translatorId,
+  };
+};
+
+export const getSegmentQuery = (segmentParam: string) => {
+  const isObjectId = isValidObjectId(segmentParam);
+  return {
+    [isObjectId ? '_id' : 'order']: isObjectId ? segmentParam : +segmentParam,
+  };
+};
+
+export const incrementId = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Model: Model<any>,
+  {prop = 'order'}: {prop?: string} = {}
+) => {
+  const count = await Model.countDocuments();
+  const maxSegment = await Model.findOne().sort(`-${prop}`);
+  return Math.max(count, Number(maxSegment?.[prop]) ?? 0) + 1;
+};
+
+export const updateIds = async ({
+  Model,
+  minId = 1,
+  prop,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Model: Model<any>;
+  minId?: number;
+  prop?: string;
+}) => {
+  const modelName = Model.modelName.toLowerCase();
+  const query = {[prop ?? `${modelName}Id`]: {$gte: minId}};
+  try {
+    for await (const doc of Model.find(query)) {
+      await Model.updateOne(
+        {_id: doc._id},
+        {
+          [prop ?? `${modelName}Id`]: minId,
+        }
+      );
+      minId++;
+    }
+  } catch (err) {
     throw err;
   }
 };

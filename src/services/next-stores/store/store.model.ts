@@ -2,7 +2,7 @@ import {connection, type UpdateQuery} from 'mongoose';
 import storeSchema from './store.schema';
 import {postDeleteStore, preUpdateStore} from './store.middleware';
 import {findStoresWithReviews} from './store.controllers';
-import {getFieldList, getTopRated, preSaveDoc} from '@/services/services.lib';
+import {getFieldList, getTopRated, preSaveDoc} from '@/services/lib';
 import type {IStore, StoreModel} from './store.types';
 
 const db = connection.useDb('next-stores');

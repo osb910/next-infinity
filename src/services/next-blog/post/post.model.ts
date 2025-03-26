@@ -1,7 +1,7 @@
 import {connection} from 'mongoose';
 import postSchema from './post.schema';
 import type {PostModel} from './post.types';
-import {preSaveDoc} from '@/services/services.lib';
+import {preSaveDoc} from '@/services/lib';
 
 const db = connection.useDb('next-blog');
 

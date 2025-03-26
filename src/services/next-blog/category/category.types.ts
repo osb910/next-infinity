@@ -11,4 +11,4 @@ export interface ICategory extends Document<Types.ObjectId>, CategoryBase {
   l10n: Array<CategoryBase>;
 }
 
-export interface CategoryModel extends Model<ICategory> {}
+export type CategoryModel = Model<ICategory>;

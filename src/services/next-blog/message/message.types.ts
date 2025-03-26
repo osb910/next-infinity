@@ -6,4 +6,4 @@ export interface IMessage extends Document<Types.ObjectId> {
   body: string;
 }
 
-export interface MessageModel extends Model<IMessage> {}
+export type MessageModel = Model<IMessage>;

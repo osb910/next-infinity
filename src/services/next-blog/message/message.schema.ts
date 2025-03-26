@@ -1,6 +1,5 @@
 import {Schema} from 'mongoose';
 import type {IMessage, MessageModel} from './message.types';
-import isEmail from 'validator/lib/isEmail';
 
 const messageSchema = new Schema<IMessage, MessageModel>(
   {
@@ -14,7 +13,6 @@ const messageSchema = new Schema<IMessage, MessageModel>(
       required: true,
       trim: true,
       lowercase: true,
-      validate: [isEmail, 'Invalid Email Address'],
     },
     body: {
       type: String,

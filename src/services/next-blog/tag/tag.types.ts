@@ -7,8 +7,8 @@ export interface TagBase {
 }
 export interface ITag extends Document<Types.ObjectId>, TagBase {
   slug: string;
-  posts: Array<Types.ObjectId>;
+  posts: Array<Types.ObjectId | string>;
   l10n: Array<TagBase>;
 }
 
-export interface TagModel extends Model<ITag> {}
+export type TagModel = Model<ITag>;

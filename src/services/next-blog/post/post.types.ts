@@ -1,5 +1,5 @@
 import type {Document, Model, Types} from 'mongoose';
-import type {Img, JsonRes} from '@/types';
+import type {FileInfo, JsonRes} from '@/types';
 import type {IComment} from '../comment';
 
 export interface PostBase {
@@ -16,23 +16,20 @@ export interface PostBase {
   };
 }
 
-export interface IPost extends Document<Types.ObjectId>, PostBase {
+export interface IPost extends PostBase, Document<Types.ObjectId> {
   slug: string;
   publishedOn: Date;
   status: 'draft' | 'published';
   isFeatured: boolean;
-  author: Types.ObjectId;
+  author: Types.ObjectId | string;
+  translator?: string;
   by?: string;
-  category: Types.ObjectId;
-  tags: Array<Types.ObjectId>;
-  likes: Array<Types.ObjectId>;
-  comments: Array<Types.ObjectId>;
-  images: Array<Img>;
-  l10n: Array<
-    PostBase & {
-      translator?: string;
-    }
-  >;
+  category: Types.ObjectId | string;
+  tags: Array<Types.ObjectId | string>;
+  likes: Array<Types.ObjectId | string>;
+  comments: Array<Types.ObjectId | string>;
+  images: Array<FileInfo>;
+  l10n: Array<PostBase>;
 }
 
 export interface IPostWithComments extends Omit<IPost, 'comments'> {

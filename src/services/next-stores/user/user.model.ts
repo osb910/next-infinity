@@ -6,7 +6,7 @@ import {
   getDomain,
   getGravatar,
   preSaveDoc,
-} from '@/services/services.lib';
+} from '@/services/lib';
 
 const db = connection.useDb('next-stores');
 
