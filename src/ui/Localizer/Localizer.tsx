@@ -13,6 +13,7 @@ import Spinner from '@/ui/Spinner';
 import cls from './Localizer.module.css';
 import type {CSSProps, Lang} from '@/types';
 import {TIME} from '@/utils/constants';
+// import {defaultLocale} from '@/l10n/config';
 
 export type LocalizerProps = Partial<IconButtonProps> & {
   langs: Array<Lang>;
@@ -168,6 +169,7 @@ const Localizer = ({
         // variants={listVariants}
         // initial='closed'
         // animate={isOpen ? 'open' : 'closed'}
+        className={clsx(cls.langs)}
         animate={
           isOpen
             ? {

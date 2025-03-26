@@ -1,0 +1,6 @@
+.magnetic {
+  position: relative;
+  inline-size: fit-content;
+  margin: 0 auto;
+  padding: 0.5em 1.25em;
+}

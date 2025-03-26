@@ -31,7 +31,7 @@
   margin: 0;
 }
 
-.localizer > ul:first-child {
+.langs {
   position: absolute;
   inset-block-start: calc(100% + 1rem);
   inline-size: max-content;
