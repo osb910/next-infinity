@@ -75,7 +75,6 @@ export type UseStoredReducer = <T, A>(
 
 export type UseStoredImmerReducer = <T, A>(
   reducer: (state: DraftFunction<T>, action: A) => void | T,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValue: any,
   options: ReducerStorageOptions<T, A>
 ) => [T, Dispatch<A>, {isLoading: boolean}];

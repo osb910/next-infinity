@@ -1,7 +1,6 @@
 import type {Locale} from '@/l10n';
 import {parseFiveNouns} from '@/lib/text/ar/five-nouns';
 
-// eslint-disable-next-line
 const auth = (locale: Locale, options?: Record<string, any>) => {
   const parsing = options?.parsing || 'nominative';
   const gender = options?.gender ?? 'M';

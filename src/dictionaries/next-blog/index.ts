@@ -6,7 +6,6 @@ import articles from './articles';
 import home from './home';
 import contact from './contact';
 
-// eslint-disable-next-line
 export const nextBlog = (locale: Locale, options?: Record<string, any>) => ({
   site: site(locale, options),
   nav: nav(locale, options),
