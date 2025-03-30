@@ -6,7 +6,7 @@ from src.python.py_regex.methods import methods, flag_map
  
 app = Flask(__name__)
 
-@app.route("/api/py-regex", methods=['POST'])
+@app.route("/api/py/py-regex", methods=['POST'])
 def py_regex():
     data = request.json
     
