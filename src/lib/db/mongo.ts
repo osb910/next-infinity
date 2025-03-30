@@ -13,7 +13,7 @@ if (!cached) {
 }
 
 const opts = {
-  bufferCommands: false,
+  // bufferCommands: false,
   maxPoolSize: 1,
   minPoolSize: 1,
   serverSelectionTimeoutMS: 5000, // Fail fast if no server is found

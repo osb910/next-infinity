@@ -64,6 +64,7 @@ export const middleware = async (req: NextRequest) => {
   }
 
   if (/^(\/api)?\/next-stores(?!\/(auth|map))/.test(pathname)) {
+    console.log('> middleware stores', pathname);
     if (!token && (/\/add/.test(pathname) || dialog === 'account')) {
       return NextResponse.redirect(
         new URL(
