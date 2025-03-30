@@ -41,7 +41,5 @@ drafts
 /api/__pycache__
 /src/python/py_regex/__pycache__
 /src/python/py_regex/regex/__pycache__
-/src/python/windows
-/src/python/linux
 /src/services/missing-persons
 .qodo
