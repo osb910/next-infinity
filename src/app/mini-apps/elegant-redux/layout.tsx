@@ -1,6 +1,6 @@
 import {type Metadata} from 'next';
 import {type ReactNode} from 'react';
-import cls from './ElegantRedux.module.css';
+// import cls from './ElegantRedux.module.css';
 import './styles.css';
 import {ElegantProvider} from '@/store/elegant-redux/store';
 

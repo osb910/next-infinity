@@ -1,8 +1,7 @@
 'use client';
 
-import {useId, useLayoutEffect, useRef, useState} from 'react';
+import {useActionState, useId, useLayoutEffect, useRef, useState} from 'react';
 import {LayoutGroup} from 'framer-motion';
-import {useFormState} from 'react-dom';
 
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';
 import Form, {Submit, type FormHandle} from '@/ui/Form';
@@ -13,17 +12,22 @@ import {sendMessage} from './actions';
 
 import cls from './ContactForm.module.css';
 import clsx from 'clsx';
-import {TIME} from '@/constants/numbers';
+import {TIME} from '@/utils/constants';
+import {Dir, PathValue} from '@/types';
+import {Dictionary} from '@/l10n';
 
-interface ContactFormProps {}
+interface ContactFormProps {
+  l10n: PathValue<Dictionary, ['nextBlog', 'contact']>;
+  dir: Dir;
+}
 
 const initial = {
   borderRadius: 6,
   boxShadow: '0 0 0 2px var(--blog-decorative-800)',
 };
 
-const ContactForm = ({}: ContactFormProps) => {
-  const [formState, formAction] = useFormState(sendMessage, {
+const ContactForm = ({l10n, dir}: ContactFormProps) => {
+  const [formState, formAction] = useActionState(sendMessage, {
     status: 'notice',
     message: null,
     data: null,
@@ -41,7 +45,7 @@ const ContactForm = ({}: ContactFormProps) => {
     const toast = () =>
       createToast(formState.status, <p>{formState.message}</p>, 'infinite');
 
-    formState.status === 'error' && formState.message && toast();
+    if (formState.status === 'error' && formState.message) toast();
 
     if (formState.status === 'success' && formState.message) {
       toast();
@@ -66,12 +70,12 @@ const ContactForm = ({}: ContactFormProps) => {
         // onBlur={() => setFocused('')}
       >
         <Input
-          label='Your Email'
+          label={l10n.emailLabel}
           type='email'
           name='email'
           required
           pattern={stringifyRegex(emailRegex)}
-          title='Please enter a valid email address.'
+          title={l10n.emailTitle}
           onFocus={() => changeFocused('email')}
           // animate={formState.status === 'success' && {color: 'transparent'}}
           // transition={{type: 'spring'}}
@@ -82,7 +86,7 @@ const ContactForm = ({}: ContactFormProps) => {
           invalidMsg={errors?.email?.[0]}
         />
         <Input
-          label='Your Name'
+          label={l10n.nameLabel}
           name='name'
           required
           onFocus={() => changeFocused('name')}
@@ -93,9 +97,10 @@ const ContactForm = ({}: ContactFormProps) => {
         />
         <Input
           as='textarea'
-          label='Your Message'
+          label={l10n.messageLabel}
           name='message'
-          placeholder='How can I help you?'
+          dir={dir}
+          placeholder={l10n.messagePlaceholder}
           required
           onFocus={() => changeFocused('message')}
           focused={focused}
@@ -109,9 +114,12 @@ const ContactForm = ({}: ContactFormProps) => {
           whileFocus={{scale: 1.05}}
           whileTap={{scale: 0.95}}
         >
-          Send Message
+          {l10n.sendBtn}
           {focused === 'submit' && (
-            <MotionBackdrop layoutId={layoutId} initial={initial} />
+            <MotionBackdrop
+              layoutId={layoutId}
+              initial={initial}
+            />
           )}
         </Submit>
       </Form>

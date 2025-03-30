@@ -65,7 +65,6 @@ const useScript = (url: string | null, options: UseScriptOptions = {}) => {
 
     // Create load promise
     const loadPromise = new Promise<HTMLScriptElement>((resolve, reject) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const handleLoad = (evt: Event) => {
         script.removeEventListener('load', handleLoad);
         script.removeEventListener('error', handleError);

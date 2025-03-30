@@ -1,4 +1,3 @@
-import styles from './AddStore.module.css';
 import {Metadata} from 'next';
 
 export const metadata: Metadata = {

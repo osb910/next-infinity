@@ -8,7 +8,7 @@ import {IStoreWithReviews} from '@/services/next-stores/store';
 
 const Favorites = async () => {
   try {
-    const userId = headers().get('X-USER-ID') ?? '';
+    const userId = (await headers()).get('X-USER-ID') ?? '';
     const json = (await ky
       .get(getURL('/api/next-stores/auth/me?populateFavorites=true'), {
         headers: {

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 const HomePage = async () => {
-  const userId = headers().get('X-USER-ID') ?? '';
+  const userId = (await headers()).get('X-USER-ID') ?? '';
   try {
     const res = await fetch(getURL('/api/next-stores/stores?limit=9'), {
       headers: {

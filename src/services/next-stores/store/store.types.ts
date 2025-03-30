@@ -1,8 +1,8 @@
-import type {Model, Types, Document} from 'mongoose';
-import type {P8n} from '@/types';
+import type {Model, Types} from 'mongoose';
+import type {DocResult, P8n} from '@/types';
 import type {IReview} from '../review';
 
-export interface IStore extends Document<Types.ObjectId> {
+export interface IStore extends DocResult<IStore> {
   name: string;
   slug: string;
   description: string;

@@ -34,7 +34,7 @@ export const processUploadFile = async (
     // Upload to S3
     const uploaded = await uploadObject(
       `${folder && `${folder}/`}${file?.fileName}`,
-      file?.buffer!
+      file?.buffer
     );
 
     if (!uploaded || uploaded.$metadata.httpStatusCode !== 200) {

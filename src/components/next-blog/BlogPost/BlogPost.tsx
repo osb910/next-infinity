@@ -1,10 +1,10 @@
 import {getReadingTime} from '@/lib/text/analysis';
 import COMPONENT_MAP from '@/helpers/next-blog/mdx-components';
+import {FaTelegram, FaWhatsapp} from 'react-icons/fa';
 import BlogPostHero from '../BlogPostHero';
-import Mdx from '@/ui/Mdx';
+import Mdx from '@/ui/Mdx/remote-client';
 import Icon from '@/ui/Icon/lucide';
 import Spinner from '@/ui/Spinner';
-import {FaTelegram, FaWhatsapp} from 'react-icons/fa';
 import cls from './BlogPost.module.css';
 import Link from 'next/link';
 import {
@@ -15,13 +15,13 @@ import {
   getWhatsappShareLink,
 } from '@/utils/general';
 import {env} from '@/lib/helpers';
+import {localize} from '@/l10n';
+import {getLocale} from '@/l10n/getL10n';
 
 interface BlogPostProps {
   data: {
     frontmatter: {
-      title: string;
-      publishedOn: string;
-      abstract: string;
+      [x: string]: string;
     };
     content: string;
   };
@@ -29,7 +29,9 @@ interface BlogPostProps {
 }
 
 const BlogPost = async ({data, slug}: BlogPostProps) => {
-  const readingTime = getReadingTime(data.content).text;
+  const locale = await getLocale();
+  const {l6e} = await localize(locale);
+  const readingTime = getReadingTime(data.content, {locale}).text;
   const shareUrl = `${env('ORIGIN')}/next-blog/posts/${slug}`;
   return (
     <article className={cls.post}>
@@ -38,10 +40,20 @@ const BlogPost = async ({data, slug}: BlogPostProps) => {
         publishedOn={data.frontmatter.publishedOn}
         slug={slug}
         readingTime={readingTime}
+        category={l6e('nextBlog.articles.defaultCategory')}
+        locale={locale}
       />
-      <aside className={cls.abstract}>{data.frontmatter.abstract}</aside>
+      <aside
+        className={cls.abstract}
+        dir='auto'
+      >
+        {data.frontmatter.abstract}
+      </aside>
       <section className={cls.content}>
-        <main className={cls.body}>
+        <main
+          className={cls.body}
+          dir='auto'
+        >
           <Mdx
             source={data.content}
             loader={<Spinner />}

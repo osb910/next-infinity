@@ -88,6 +88,10 @@
   overflow-x: hidden;
 }
 
+.modal.exiting {
+  animation: disappear 600ms ease-in both;
+}
+
 .modal.rtl {
   font-family: 'Calibri', sans-serif;
 }

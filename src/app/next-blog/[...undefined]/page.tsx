@@ -15,7 +15,7 @@ export const generateMetadata: UndefinedMetadata = async ({
   const {undefined} = await params;
   const {type} = await searchParams;
   return {
-    title: `${type ?? 'Page'} Not Found`,
+    title: `${type ?? 'Page'} Not Found at ${undefined}`,
   };
 };
 
@@ -25,7 +25,7 @@ const Undefined: UndefinedPg = async ({params, searchParams}) => {
   return (
     <>
       <h1>{type ?? 'Page'} not found</h1>
-      <section className={styles.notFound}>
+      <section>
         <p>
           The {type ? type.toLowerCase() : 'page'} you are looking for at
           &ldquo;{undefined.join('/')}&rdquo; does not exist.

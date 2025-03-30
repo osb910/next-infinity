@@ -28,11 +28,13 @@ export const Portal = ({
     ).body.firstChild as HTMLElement;
     const firstPortal = document.querySelector(`[data-portal]`);
     const lastEl = document.querySelector(`body > :last-child`);
-    firstPortal
-      ? firstPortal.insertAdjacentElement('beforebegin', portal)
-      : lastEl
-      ? lastEl.insertAdjacentElement('afterend', portal)
-      : document.body.append(portal);
+    if (firstPortal) {
+      firstPortal.insertAdjacentElement('beforebegin', portal);
+    } else if (lastEl) {
+      lastEl.insertAdjacentElement('afterend', portal);
+    } else {
+      document.body.append(portal);
+    }
     setHost(portal);
 
     return () => portal.remove();
@@ -46,7 +48,11 @@ const Portal2 = ({children, lang}: {lang?: string; children: ReactNode}) => {
   const id = useId();
   const dir = lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr';
   return createPortal(
-    <div data-portal={id} dir={dir} className={dir}>
+    <div
+      data-portal={id}
+      dir={dir}
+      className={dir}
+    >
       {children}
     </div>,
     document.body

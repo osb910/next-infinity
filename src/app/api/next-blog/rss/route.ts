@@ -1,15 +1,16 @@
+import {NextResponse} from 'next/server';
 import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 import {generateRss} from '@/lib/files/rss';
-import {NextRequest, NextResponse} from 'next/server';
+import type {AppRoute} from '@/types';
 
-export const GET = async (req: NextRequest) => {
+export const GET: AppRoute = async () => {
   try {
     const blogPosts = await getBlogPostList();
     const feed = generateRss({
       title: 'Next Blog',
       description: 'Read about different topics',
       site: `https://next-infinity.vercel.app/next-blog`,
-      items: blogPosts.map(p => ({
+      items: blogPosts.map((p) => ({
         title: p.title,
         description: p.abstract,
         date: p.publishedOn,

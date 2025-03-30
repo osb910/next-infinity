@@ -1,6 +1,6 @@
 'use server';
 
-import {revalidatePath} from 'next/cache';
+// import {revalidatePath} from 'next/cache';
 import {headers} from 'next/headers';
 import {type IStore} from '@/services/next-stores/store';
 import {getURL} from '@/utils/path';
@@ -15,7 +15,7 @@ type FormState = {
 type SaveStoreAction = (prev: FormState, body: FormData) => Promise<FormState>;
 
 export const saveStore: SaveStoreAction = async (prev, body) => {
-  const headerStore = headers();
+  const headerStore = await headers();
   const userId = headerStore.get('x-user-id');
   const method = prev.data ? 'PUT' : 'POST';
   try {

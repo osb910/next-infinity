@@ -71,7 +71,7 @@ const timersReducer = (state: TimersState, action: Action): TimersState => {
     }),
     start: () => ({
       ...state,
-      timers: state.timers.map(timer => ({
+      timers: state.timers.map((timer) => ({
         ...timer,
         status: 'running',
       })),
@@ -79,7 +79,7 @@ const timersReducer = (state: TimersState, action: Action): TimersState => {
     }),
     stop: () => ({
       ...state,
-      timers: state.timers.map(timer => ({
+      timers: state.timers.map((timer) => ({
         ...timer,
         // status: 'stopped',
       })),
@@ -87,7 +87,7 @@ const timersReducer = (state: TimersState, action: Action): TimersState => {
     }),
     'change-status': () => ({
       ...state,
-      timers: state.timers.map(timer =>
+      timers: state.timers.map((timer) =>
         timer.name === action.payload!.name
           ? {...timer, status: action.payload!.status}
           : timer
@@ -95,7 +95,7 @@ const timersReducer = (state: TimersState, action: Action): TimersState => {
     }),
     '': () => state,
   };
-  // @ts-ignore
+  // @ts-expect-error - return function
   return actions[action.type]();
 };
 
@@ -124,7 +124,7 @@ export const TimersProvider = ({children}: TimersProviderProps) => {
   }, []);
 
   useEffect(() => {
-    if (timersState.timers.every(t => t.status === 'stopped')) {
+    if (timersState.timers.every((t) => t.status === 'stopped')) {
       stopTimers();
     }
   }, [timersState.timers, stopTimers]);

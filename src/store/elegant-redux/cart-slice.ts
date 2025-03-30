@@ -24,9 +24,11 @@ export const cartSlice = createSlice({
     addToCart: (state, action: PayloadAction<Omit<CartItem, 'quantity'>>) => {
       const itemIdx = state.items.findIndex(({id}) => id === action.payload.id);
 
-      itemIdx >= 0
-        ? state.items[itemIdx].quantity++
-        : state.items.push({...action.payload, quantity: 1});
+      if (itemIdx >= 0) {
+        state.items[itemIdx].quantity++;
+      } else {
+        state.items.push({...action.payload, quantity: 1});
+      }
     },
     removeFromCart: (state, action: PayloadAction<{id: string}>) => {
       state = {

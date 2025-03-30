@@ -1,4 +1,3 @@
-import styles from './HomePage.module.css';
 import Spinner from '@/ui/Spinner';
 
 const HomePageLoading = () => {

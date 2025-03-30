@@ -17,7 +17,7 @@ const StickyHeader = ({
   ...rest
 }: StickyHeaderProps) => {
   const {scrollDir} = useScroll();
-  const [width] = useWindowSize();
+  const {width} = useWindowSize();
 
   const needsHiding = width >= (minWindowWidth ?? 50) && scrollDir === 'down';
 

@@ -11,11 +11,13 @@ export type BlogPostGenMetadata = GetMetadata<{postParam: string}>;
 
 export const generateMetadata: BlogPostGenMetadata = async ({params}) => {
   const {postParam} = await params;
-  const {data} = await getBlogPost(postParam);
+  const data = await getBlogPost(postParam);
+  if (!data) return {};
+  const {data: post} = data;
   return data
     ? {
-        title: data.frontmatter.title,
-        description: data.frontmatter.abstract,
+        title: post.frontmatter.title,
+        description: post.frontmatter.abstract,
       }
     : {
         title: 'Post Not Found',
@@ -25,17 +27,17 @@ export const generateMetadata: BlogPostGenMetadata = async ({params}) => {
 const BlogPostPage: BlogPostPg = async ({params}) => {
   const {postParam} = await params;
   try {
-    const {data} = await getBlogPost(postParam);
+    const data = await getBlogPost(postParam);
     if (!data) notFound();
+    const {data: post} = data;
     return (
       <BlogPost
-        data={data}
+        data={post}
         slug={postParam}
       />
     );
   } catch (err) {
     console.error(err);
-    throw err;
   }
 };
 

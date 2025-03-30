@@ -1,5 +1,5 @@
 'use client';
-import useLocalState from '@/hooks/useStoredState';
+import {useStoredState} from '@/hooks/useStoredState';
 import styles from './ScopedCSSVar.module.css';
 import {useEffect, useCallback, ChangeEvent} from 'react';
 
@@ -10,7 +10,7 @@ type Vars = {
 };
 
 const Form = () => {
-  const [vars, setVars, loading] = useLocalState<Vars>(
+  const [vars, setVars, loading] = useStoredState<Vars>(
     {
       spacing: 10,
       blur: 10,
@@ -31,20 +31,24 @@ const Form = () => {
 
   useEffect(() => {
     if (loading) return;
+    if (!vars) return;
     Object.entries(vars).forEach(([varName, varValue]: [string, any]) => {
       updateVar(varName, varValue, /^\d+$/.test(varValue) ? 'px' : '');
     });
-  }, [loading, updateVar]);
+  }, [vars, loading, updateVar]);
 
   const changeVar = (evt: ChangeEvent<HTMLInputElement>) => {
     const varName = evt.target.name;
     const newVar = evt.target.value;
     const suffix = evt.target.dataset?.suffix ?? '';
 
-    setVars((current) => ({
-      ...current,
-      [varName]: newVar,
-    }));
+    setVars((current) => {
+      if (!current) return;
+      return {
+        ...current,
+        [varName]: newVar,
+      };
+    });
 
     updateVar(varName, newVar, suffix);
   };
@@ -59,7 +63,7 @@ const Form = () => {
           name='spacing'
           min='4'
           max='160'
-          value={vars.spacing}
+          value={vars?.spacing}
           onInput={changeVar}
           data-suffix='px'
         />
@@ -73,7 +77,7 @@ const Form = () => {
           name='blur'
           min='0'
           max='25'
-          value={vars.blur}
+          value={vars?.blur}
           onInput={changeVar}
           data-suffix='px'
         />
@@ -85,7 +89,7 @@ const Form = () => {
           id='base'
           type='color'
           name='base'
-          value={vars.base}
+          value={vars?.base}
           onInput={changeVar}
         />
       </p>

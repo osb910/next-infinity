@@ -1,9 +1,9 @@
 import {Schema} from 'mongoose';
 import validator from 'validator';
 const {isEmail} = validator;
-import {IUser, IUserMethods, UserModel} from './user.types';
+import {IUser, UserModel} from './user.types';
 
-const userSchema = new Schema<IUser, UserModel, IUserMethods>(
+const userSchema = new Schema<IUser, UserModel>(
   {
     email: {
       type: String,

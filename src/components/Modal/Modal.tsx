@@ -3,13 +3,13 @@ import {X as Close} from 'react-feather';
 import FocusLock from 'react-focus-lock';
 import {RemoveScroll} from 'react-remove-scroll';
 import VisuallyHidden from '@/ui/VisuallyHidden';
-import Wrapper from './StyledModal';
+// import Wrapper from './StyledModal';
 import styles from './Modal.module.css';
 import {motion} from 'framer-motion';
 
 export interface ModalProps {
   title: string;
-  dismiss: Function;
+  dismiss: () => void;
   dismissText: string;
   children: ReactNode;
   lang?: string;
@@ -36,7 +36,7 @@ const Modal = ({
 
   useEffect(() => {
     const handleKeyDown = ({key}: {key: string}) => {
-      key === 'Escape' && smoothlyDismiss();
+      if (key === 'Escape') smoothlyDismiss();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);

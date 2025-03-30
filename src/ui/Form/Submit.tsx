@@ -30,7 +30,6 @@ export const Submit = ({children, isSubmitting, ...rest}: SubmitProps) => {
       }}
       disabled={pending || isSubmitting}
       {...otherProps}
-      // @ts-expect-error className is not a valid prop for motion button
       className={clsx(cls.submit, className)}
       type='submit'
     >

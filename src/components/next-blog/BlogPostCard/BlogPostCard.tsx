@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
-// import {format} from 'date-fns';
 
 import Card from '@/ui/Card';
 
-import {type CSSProperties} from 'react';
 import cls from './BlogPostCard.module.css';
 import {getReadingTime} from '@/lib/text/analysis';
 import DateTooltip from '../DateTooltip';
 import Separator from '@/ui/Separator';
+import {getLocale} from '@/l10n/getL10n';
+import {CSSProps} from '@/types';
+import {localize} from '@/l10n';
 
 export interface BlogPostCardProps {
   slug: string;
@@ -20,7 +21,7 @@ export interface BlogPostCardProps {
   img?: string;
 }
 
-const BlogPostCard = ({
+const BlogPostCard = async ({
   slug,
   title,
   publishedOn,
@@ -29,16 +30,23 @@ const BlogPostCard = ({
   category = 'Web',
   img,
 }: BlogPostCardProps) => {
+  const locale = await getLocale();
+  const {l6e, dir} = await localize(locale);
   const href = `/next-blog/posts/${slug}`;
-  const readingTime = getReadingTime(body);
+  const readingTime = getReadingTime(body, {locale});
   const truncatedAbstract =
     abstract.split(/[- ]/).length <= 24
       ? abstract
       : `${abstract.split(/[ ]/).slice(0, 24).join(' ')}...`;
-  const style: CSSProperties & {[x: string]: any} = {'--padding': '1em'};
+
+  const style: CSSProps = {'--padding': '1em'};
 
   return (
-    <Card className={cls.wrapper} style={style}>
+    <Card
+      className={cls.wrapper}
+      style={style}
+      dir='auto'
+    >
       {img && (
         <figure className={cls.image}>
           <Image
@@ -49,20 +57,33 @@ const BlogPostCard = ({
           />
         </figure>
       )}
-      <Link href={href} className={cls.title}>
-        <h3>{title}</h3>
+      <Link
+        href={href}
+        className={cls.title}
+      >
+        <h3 dir='auto'>{title}</h3>
       </Link>
-      <section className={cls.meta}>
-        <p>{category}</p>
+      <section
+        className={cls.meta}
+        dir={dir}
+      >
+        <p>{l6e('nextBlog.articles.categories.web') ?? category}</p>
         <Separator color='var(--blog-decorative-800)' />
         <p>{readingTime.text}</p>
         <Separator color='var(--blog-decorative-800)' />
-        <DateTooltip date={publishedOn} />
+        <DateTooltip
+          date={publishedOn}
+          locale={locale}
+        />
       </section>
-      <p>
-        {truncatedAbstract}{' '}
-        <Link href={href} className={cls.readMoreLink}>
-          Read more&nbsp;<span className={cls.arrow}>→</span>
+      <p dir={dir}>
+        <span dir='auto'>{truncatedAbstract}</span>{' '}
+        <Link
+          href={href}
+          className={cls.readMoreLink}
+        >
+          {l6e('nextBlog.articles.readMore')}&nbsp;
+          <span className={cls.arrow}>{dir === 'rtl' ? '←' : '→'}</span>
         </Link>
       </p>
     </Card>

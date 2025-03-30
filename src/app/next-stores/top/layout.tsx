@@ -1,4 +1,3 @@
-import styles from './TopPage.module.css';
 import {Metadata} from 'next';
 
 export const metadata: Metadata = {};

@@ -8,19 +8,19 @@ import Link from 'next/link';
 import Spinner from '../../ui/Spinner';
 import {IStore} from '@/services/next-stores/store';
 import {VscCaseSensitive} from 'react-icons/vsc';
-interface SearchProps {}
 
-const Search = ({}: SearchProps) => {
+const Search = () => {
   const [results, setResults] = useState<IStore[] | string>([]); // TODO: type this
   const [loading, setLoading] = useState<boolean>(false);
   const searchResultsRef = useRef<HTMLUListElement>(null);
   const caseRef = useRef<HTMLInputElement>(null);
 
   const handleKeyDown = (evt: KeyboardEvent) => {
-    evt.key === 'Escape' && setResults([]);
+    if (evt.key === 'Escape') setResults([]);
 
     if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(evt.key)) return;
-    ['ArrowDown', 'ArrowUp', 'Enter'].includes(evt.key) && evt.preventDefault();
+    if (['ArrowDown', 'ArrowUp', 'Enter'].includes(evt.key))
+      evt.preventDefault();
 
     const searchResults = searchResultsRef.current;
     if (!searchResults) return;
@@ -66,18 +66,23 @@ const Search = ({}: SearchProps) => {
       const {status, stores, message} = (await res.json()) as
         | {status: 'success'; stores: IStore[]; message: string}
         | {status: 'error' | 'notice'; message: string; stores?: IStore[]};
-      status === 'error' || status === 'notice'
-        ? setResults(message)
-        : status === 'success'
-        ? setResults(stores)
-        : setResults('Something went wrong.');
+      setResults(
+        status === 'error' || status === 'notice'
+          ? message
+          : status === 'success'
+          ? stores
+          : 'Something went wrong.'
+      );
     } catch (err) {
       console.error(err);
     }
     setLoading(false);
   };
   return (
-    <div className={styles.search} onKeyDown={handleKeyDown}>
+    <div
+      className={styles.search}
+      onKeyDown={handleKeyDown}
+    >
       <input
         type='text'
         className={styles.searchInput}
@@ -92,11 +97,17 @@ const Search = ({}: SearchProps) => {
           id='caseSensitive'
           ref={caseRef}
         />
-        <label htmlFor='caseSensitive' title='Case sensitive'>
+        <label
+          htmlFor='caseSensitive'
+          title='Case sensitive'
+        >
           <VscCaseSensitive />
         </label>
       </p>
-      <ul className={styles.searchResults} ref={searchResultsRef}>
+      <ul
+        className={styles.searchResults}
+        ref={searchResultsRef}
+      >
         {loading && (
           <span className={styles.centered}>
             <Spinner />
@@ -105,7 +116,7 @@ const Search = ({}: SearchProps) => {
         {typeof results === 'string' ? (
           <p className={styles.searchResult}>{results}</p>
         ) : (
-          results.map(store => (
+          results.map((store) => (
             <li
               key={store._id?.toString()}
               data-slug={store.slug}

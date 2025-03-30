@@ -3,19 +3,20 @@ import {type HydratedDocument} from 'mongoose';
 import User, {type IUser} from '@/services/next-stores/user';
 import {signJWT} from '@/lib/token';
 import {loginValidator} from '@/lib/validators';
-import {env} from '@/lib/helpers';
+import {env, jsonifyError} from '@/lib/helpers';
+import {defaultLocale, localize} from '@/l10n';
 
 export const POST = async (req: NextRequest) => {
-  const [body, errors] = loginValidator(await req.json());
-  const {email, password} = body;
-  if (errors.length) {
-    return NextResponse.json(
-      {
-        status: 'error',
-        errors,
-      },
-      {status: 422}
-    );
+  const {validated, errorMap} = loginValidator(await req.json());
+  const {email, password} = validated;
+  const {l6e} = await localize(defaultLocale);
+  if (errorMap.count) {
+    const json = jsonifyError({
+      code: 422,
+      errorMap,
+      message: l6e('auth.invalidInput'),
+    });
+    return NextResponse.json(json, {status: json.code});
   }
 
   try {
@@ -33,11 +34,7 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    console.log({user});
-
-    // @ts-ignore
     const match = await user.comparePassword(password);
-    console.log({match});
 
     if (!match) {
       return NextResponse.json(

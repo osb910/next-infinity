@@ -16,7 +16,7 @@ import {
   type RFeatureUIEvent,
 } from 'rlayers';
 import {motion} from 'framer-motion';
-import {FaLocationCrosshairs} from 'react-icons/fa6';
+// import {FaLocationCrosshairs} from 'react-icons/fa6';
 import {MdCenterFocusWeak} from 'react-icons/md';
 import {AiOutlineFullscreen, AiOutlineFullscreenExit} from 'react-icons/ai';
 import {TbLiveView} from 'react-icons/tb';

@@ -11,7 +11,7 @@ const aiWrite = async ({
   presencePenalty,
   frequencyPenalty,
 }: AIWriteOptions): Promise<AIWriteResponse> => {
-  const userMessages = messages.map(msg => ({
+  const userMessages = messages.map((msg) => ({
     role: 'user',
     content: msg,
   }));
@@ -23,7 +23,7 @@ const aiWrite = async ({
       model,
       // stream: false,
       temperature,
-      // @ts-ignore
+      // @ts-expect-error - unknown error
       messages: chatMessages,
       ...(maxTokens && {max_tokens: maxTokens}),
       ...(stop && {stop}),
@@ -34,7 +34,7 @@ const aiWrite = async ({
       status: 'success',
       code: 200,
       ...result,
-      messages: result.choices.map(msg => ({
+      messages: result.choices.map((msg) => ({
         role: msg.message.role,
         content: msg.message.content,
         finishReason: msg.finish_reason,
@@ -48,7 +48,7 @@ const aiWrite = async ({
     };
   } catch (err) {
     console.log(JSON.stringify(err, null, 2));
-    // @ts-ignore
+    // @ts-expect-error - has cause
     if (err.cause?.code === 'ENOTFOUND') {
       return {
         status: 'error',

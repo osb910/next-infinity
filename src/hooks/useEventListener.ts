@@ -106,7 +106,6 @@ const useEventListener = <
 };
 
 // Type guard
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isEventTarget = (element: any): element is EventTarget => {
   return element && typeof element.addEventListener === 'function';
 };

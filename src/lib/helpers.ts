@@ -1,4 +1,4 @@
-import {GetP8n, ResponseStatus} from '@/types';
+import type {GetP8n, ResponseStatus} from '@/types';
 import {NextResponse} from 'next/server';
 
 export const env = (key: string): string | null => {
@@ -57,7 +57,6 @@ export const jsonifyError = ({
   code = 500,
   errorMap,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err?: any;
   message?: string;
   code?: number;

@@ -10,20 +10,14 @@ import Tags from './TagsList';
 import {type IStore} from '@/services/next-stores/store';
 import {type IReview} from '@/services/next-stores/review';
 import styles from './Store.module.css';
-import dynamic from 'next/dynamic';
-import Spinner from '@/ui/Spinner';
-
-const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
-  loading: () => <Spinner />,
-  ssr: false,
-});
+import StoreMap from './StoreMap';
 
 interface SingleStoreProps {
   store?: IStore & {reviews?: Array<IReview>};
   isPlaceholder?: boolean;
 }
 
-const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
+const SingleStore = async ({store, isPlaceholder}: SingleStoreProps) => {
   if (isPlaceholder || !store)
     return (
       <article
@@ -71,7 +65,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
   const id = typeof _id === 'object' ? _id.toString() : _id ?? '';
   const authorId = typeof author === 'object' ? author.toString() : author;
 
-  const headersList = headers();
+  const headersList = await headers();
   const userId = headersList.get('X-USER-ID');
   const mapStyle: Record<string, any> = {
     '--bg-img': `linear-gradient(
@@ -113,7 +107,7 @@ const SingleStore = ({store, isPlaceholder}: SingleStoreProps) => {
         />
       </section>
       <section className={styles.storeDetails}>
-        <InteractiveMap
+        <StoreMap
           locations={[{lng, lat, id, title: name}]}
           useAttribution={false}
           useScaleLine={false}

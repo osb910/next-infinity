@@ -64,7 +64,6 @@ const AutoCompleter = ({
         inputValue={value}
         options={suggestions}
         onInputChange={changeValue}
-        // @ts-ignore
         onChange={changeSelected}
         menuIsOpen={suggestions.length > 0 && value.length >= (minLength ?? 3)}
         isLoading={loading}

@@ -3,10 +3,15 @@ import links from './links';
 import site from './site';
 import nav from './nav';
 import articles from './articles';
+import home from './home';
+import contact from './contact';
 
-export const nextBlog = (locale: Locale) => ({
-  site: site(locale),
-  nav: nav(locale),
-  links: links(locale),
-  articles: articles(locale),
+// eslint-disable-next-line
+export const nextBlog = (locale: Locale, options?: Record<string, any>) => ({
+  site: site(locale, options),
+  nav: nav(locale, options),
+  links: links(locale, options),
+  articles: articles(locale, options),
+  home: home(locale, options),
+  contact: contact(locale, options),
 });

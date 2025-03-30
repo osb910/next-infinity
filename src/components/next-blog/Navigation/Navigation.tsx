@@ -5,26 +5,13 @@ import Nav, {NavItem, NavLink, NavList, useNav} from '@/ui/Nav';
 import useWindowSize from '@/hooks/useWindowSize';
 import cls from './Navigation.module.css';
 
-export interface NavigationProps {}
+export interface NavigationProps {
+  navLinks: Array<{to: string; label: string}>;
+}
 
-const navLinks = [
-  {
-    to: '/next-blog/posts',
-    label: 'Posts',
-  },
-  {
-    to: '/next-blog/categories',
-    label: 'Categories',
-  },
-  {
-    to: '/next-blog/contact',
-    label: 'Contact',
-  },
-];
-
-const Navigation = ({}: NavigationProps) => {
+const Navigation = ({navLinks}: NavigationProps) => {
   const {isOpen} = useNav();
-  const [width] = useWindowSize();
+  const {width} = useWindowSize();
   const insetInlineStart =
     width >= 768 || isOpen
       ? '0'

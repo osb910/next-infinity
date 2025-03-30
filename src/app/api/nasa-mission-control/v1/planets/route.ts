@@ -1,8 +1,9 @@
-import {NextRequest, NextResponse} from 'next/server';
+import {NextResponse} from 'next/server';
 import {getAllPlanets} from '@/services/nasa-mission-control/planet';
 import loadNASAData from '@/services/nasa-mission-control/nasa.middleware';
+import type {AppRoute} from '@/types';
 
-export const GET = async (req: NextRequest) => {
+export const GET: AppRoute = async () => {
   try {
     await loadNASAData();
     const planets = await getAllPlanets();

@@ -1,7 +1,14 @@
 'use client';
 
 import {type IUser} from '@/services/next-stores/user';
-import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import {
+  createContext,
+  ReactElement,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import Cookies from 'js-cookie';
 
 export type User = Omit<IUser, 'password'>;
@@ -26,7 +33,7 @@ export const UserProvider = ({
   userEndpoint: string;
   userIdCookie: string;
   children: ReactNode;
-}): JSX.Element => {
+}): ReactElement => {
   const userId = Cookies.get(userIdCookie);
   const [userData, setUserData] = useState<User | any>(null);
 
@@ -41,7 +48,7 @@ export const UserProvider = ({
           cache: 'no-store',
         });
         const json = await res.json();
-        json.status === 'success' && setUserData(json.data);
+        if (json.status === 'success') setUserData(json.data);
       } catch (err) {
         console.error(err);
       }

@@ -35,7 +35,7 @@ export const ToastProvider = ({children}: {children: ReactNode}) => {
       message: Toast['message'],
       delay?: Toast['delay']
     ) => {
-      setToasts(current => [
+      setToasts((current) => [
         {id: crypto.randomUUID(), variant, message, delay},
         ...current,
       ]);
@@ -48,10 +48,9 @@ export const ToastProvider = ({children}: {children: ReactNode}) => {
   );
 
   const dismissToast = (id: string) => {
-    setToasts(current => current.filter(toast => toast.id !== id));
+    setToasts((current) => current.filter((toast) => toast.id !== id));
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clearToasts = useCallback(() => setToasts([]), []);
 
   const keyboardShortcuts = useMemo((): HotKey[] => {

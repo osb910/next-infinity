@@ -58,7 +58,7 @@ export const getObject = async (fileKey: string) => {
     if (!(err instanceof S3ServiceException)) return;
     console.log(JSON.stringify(err, null, 2));
     return {
-      // @ts-ignore
+      // @ts-expect-error Key
       key: err.Key ?? fileKey,
       ext: extname(fileKey).split('.').pop(),
       fault: err.$fault,
@@ -86,7 +86,7 @@ export const deleteObjects = async (fileKeys: string[]) => {
     const {Deleted} = await client.deleteObjects({
       Bucket: process.env.AWS_BUCKET_NAME,
       Delete: {
-        Objects: fileKeys.map(key => ({Key: key})),
+        Objects: fileKeys.map((key) => ({Key: key})),
       },
     });
 
@@ -94,7 +94,7 @@ export const deleteObjects = async (fileKeys: string[]) => {
       `Successfully deleted ${
         Deleted?.length ?? 0
       } objects from S3 bucket. Deleted objects:
-      ${Deleted?.map(d => ` • ${d.Key}`).join('\n')}
+      ${Deleted?.map((d) => ` • ${d.Key}`).join('\n')}
       `
     );
 
@@ -117,28 +117,35 @@ export const listFileObjects = async (): Promise<
 
     if (!contents.Contents) return [files, folders];
 
-    contents.Contents.forEach(({Key, LastModified, ETag, Size}) => {
-      if (!Key) return;
-      const paths = Key.split('/');
-      const name = paths.pop()!;
-      const [title, ext] = name.split('.');
-      const folder = paths.join('/');
-      if (Key.match(/\/$/)) {
-        folders.push(Key);
-      } else {
-        const file: FileMetaData = {
-          key: Key,
-          name,
-          title,
-          ext,
-          folder,
-          bucket: process.env.AWS_BUCKET_NAME!,
-          lastModified: LastModified ?? new Date(),
-          size: Size ?? 0,
-        };
-        files.push(file);
+    contents.Contents.forEach(
+      ({
+        Key,
+        LastModified,
+        // ETag,
+        Size,
+      }) => {
+        if (!Key) return;
+        const paths = Key.split('/');
+        const name = paths.pop()!;
+        const [title, ext] = name.split('.');
+        const folder = paths.join('/');
+        if (Key.match(/\/$/)) {
+          folders.push(Key);
+        } else {
+          const file: FileMetaData = {
+            key: Key,
+            name,
+            title,
+            ext,
+            folder,
+            bucket: process.env.AWS_BUCKET_NAME!,
+            lastModified: LastModified ?? new Date(),
+            size: Size ?? 0,
+          };
+          files.push(file);
+        }
       }
-    });
+    );
 
     return ([files, folders] as [FileMetaData[], string[]]) ?? [];
   } catch (err) {

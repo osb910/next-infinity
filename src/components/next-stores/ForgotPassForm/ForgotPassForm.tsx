@@ -5,9 +5,7 @@ import {useToaster} from '@/ui/Toaster';
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';
 import ky from 'ky';
 
-interface ForgotPassFormProps {}
-
-const ForgotPassForm = ({}: ForgotPassFormProps) => {
+const ForgotPassForm = () => {
   const {createToast} = useToaster();
   const resetPassword = async (
     data: Record<string, FormDataEntryValue | null>

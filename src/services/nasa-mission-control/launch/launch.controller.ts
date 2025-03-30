@@ -78,7 +78,7 @@ const populateLaunches = async () => {
   const json = (await res.json()) as {docs: any[]};
 
   const launchDocs = json.docs;
-  launchDocs.forEach(async launchDoc => {
+  launchDocs.forEach(async (launchDoc) => {
     const payloads = launchDoc['payloads'];
     const customers = payloads.flatMap((payload: any) => payload['customers']);
 
@@ -104,9 +104,11 @@ export const loadLaunchesData = async () => {
     mission: 'FalconSat',
   });
 
-  firstLaunch
-    ? console.log('Launch data already loaded!')
-    : await populateLaunches();
+  if (firstLaunch) {
+    console.log('Launch data already loaded!');
+  } else {
+    await populateLaunches();
+  }
 };
 
 export const scheduleNewLaunch = async (launch: ILaunch) => {

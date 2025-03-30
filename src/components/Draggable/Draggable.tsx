@@ -16,7 +16,7 @@ const Draggable = ({
   setDataTransfer,
   ...delegated
 }: DraggableProps) => {
-  const Component = as as keyof JSX.IntrinsicElements;
+  const Component = as as keyof HTMLElementTagNameMap;
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const dragStartHandler = (evt: DragEvent) => {
@@ -29,15 +29,15 @@ const Draggable = ({
     setIsDragging(true);
   };
 
-  const dragEndHandler = (_: DragEvent) => {
+  const dragEndHandler = () => {
     setIsDragging(false);
   };
 
   return (
     <Component
       draggable
-      onDragStart={evt => dragStartHandler(evt)}
-      onDragEnd={evt => dragEndHandler(evt)}
+      onDragStart={(evt) => dragStartHandler(evt)}
+      onDragEnd={() => dragEndHandler()}
       {...delegated}
       className={`${styles.draggable} ${isDragging ? styles.dragging : ''} ${
         className ?? ''

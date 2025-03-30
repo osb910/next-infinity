@@ -1,7 +1,8 @@
-import {Document, type Model, type Types} from 'mongoose';
+import {type Model, type Types} from 'mongoose';
 import {type IUser} from '../user';
+import {DocResult} from '@/types';
 
-export interface IReview extends Document<Types.ObjectId> {
+export interface IReview extends DocResult<IReview> {
   author: Types.ObjectId | IUser;
   store: Types.ObjectId;
   text: string;

@@ -68,7 +68,7 @@ export const PUT: AppRoute<{project: string}> = async (req, {params}) => {
   }
 };
 
-export const DELETE: AppRoute<{project: string}> = async (req, {params}) => {
+export const DELETE: AppRoute<{project: string}> = async (_, {params}) => {
   try {
     const {project} = await params;
     const res = await Project.findByIdAndDelete(project);

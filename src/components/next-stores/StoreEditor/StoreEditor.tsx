@@ -1,6 +1,6 @@
 'use client';
 
-import {useLayoutEffect, useRef, type ChangeEvent} from 'react';
+import {useActionState, useLayoutEffect, useRef, type ChangeEvent} from 'react';
 import Image from 'next/image';
 import {type IStore} from '@/services/next-stores/store';
 import {useToaster} from '@/ui/Toaster';
@@ -8,7 +8,6 @@ import Form from '@/ui/Form';
 import Input from '@/ui/Input';
 import AutoCompleter from '../../AutoCompleter';
 import cls from './StoreEditor.module.css';
-import {useFormState} from 'react-dom';
 import {saveStore} from './actions';
 
 interface StoreEditorProps {
@@ -32,7 +31,7 @@ const features = [
 ];
 
 const StoreEditor = ({store}: StoreEditorProps) => {
-  const [formState, formAction] = useFormState(saveStore, {
+  const [formState, formAction] = useActionState(saveStore, {
     status: 'idle',
     message: null,
     data: store ?? null,
@@ -172,7 +171,10 @@ const StoreEditor = ({store}: StoreEditorProps) => {
       <label>Tags</label>
       <ul className={cls.tags}>
         {features.map((choice, index) => (
-          <li className={cls.tagChoice} key={index}>
+          <li
+            className={cls.tagChoice}
+            key={index}
+          >
             <input
               type='checkbox'
               value={choice}

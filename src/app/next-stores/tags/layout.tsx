@@ -1,4 +1,3 @@
-import styles from './Tags.module.css';
 import {Metadata} from 'next';
 
 export const metadata: Metadata = {};

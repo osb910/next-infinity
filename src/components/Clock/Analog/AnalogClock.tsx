@@ -4,12 +4,12 @@ import {useMemo} from 'react';
 import styles from './AnalogClock.module.css';
 import {range} from '@/utils/numbers';
 import Spinner from '@/ui/Spinner/Spinner';
-import SecondHand from './SecondHand';
+// import SecondHand from './SecondHand';
 // import clockFace from '/img/AnalogClock_still_frame.svg';
 
 const AnalogClock = () => {
   const time = useTime({tickSound: true});
-  const numbers = useMemo(() => [12, ...range(1, 12)], []);
+  // const numbers = useMemo(() => [12, ...range(1, 12)], []);
   if (!time) return <Spinner />;
   let hours = time?.getHours() ?? 0;
 
@@ -21,7 +21,10 @@ const AnalogClock = () => {
   const minutesDegrees = (minutes / 60) * 360 + 90 + (seconds / 60) * 6;
   const hoursDegrees = (hours / 12) * 360 + 90 + (minutes / 60) * 30;
   return (
-    <time dateTime={time.toISOString()} className={styles.clock}>
+    <time
+      dateTime={time.toISOString()}
+      className={styles.clock}
+    >
       <div className={styles.clockFace}>
         {/* {numbers.map(number => (
           <span key={number} className={styles.label}>

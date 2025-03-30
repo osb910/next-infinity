@@ -140,6 +140,7 @@ export const getStore = async (
     let reviews = (await Review.find({store: store._id}).sort({
       updatedAt: -1,
     })) as Array<HydratedDocument<IReview>>;
+    // @ts-expect-error - reviews
     reviews = await Promise.all(
       reviews.map(async (r) => {
         let user = (await User.findById(
@@ -155,7 +156,6 @@ export const getStore = async (
           gravatar: await user.gravatar,
         };
         return {
-          // @ts-ignore
           ...r._doc,
           author: user,
         };

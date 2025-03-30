@@ -1,22 +1,28 @@
 'use client';
 
-import {useEffect, useId, useLayoutEffect, useRef, useState} from 'react';
-import {useFormState} from 'react-dom';
+import {
+  useActionState,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import {LayoutGroup} from 'framer-motion';
 import clsx from 'clsx';
 import signUp from '@/services/next-blog/actions/sign-up';
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';
-import {TIME} from '@/constants/numbers';
 import Form, {FormHandle} from '@/ui/Form';
 import Input from '@/ui/Input';
 import PasswordInput from '@/ui/PasswordInput';
 import {useToaster} from '@/ui/Toaster';
 import cls from './SignUpForm.module.css';
-import type {Dictionary, L6e, Locale} from '@/l10n/l10n.types';
+import type {Dictionary, L6eFn, Locale} from '@/l10n/l10n.types';
 import type {Dir} from '@/types';
+import {TIME} from '@/utils/constants';
 
 interface SignUpFormProps {
-  l6e: L6e;
+  l6e: L6eFn;
   locale: Locale;
   dir: Dir;
 }
@@ -26,8 +32,12 @@ const initial = {
   boxShadow: '0 0 0 2px var(--blog-decorative-800)',
 };
 
-const SignUpForm = ({l6e, locale, dir}: SignUpFormProps) => {
-  const [formState, formAction] = useFormState(signUp, {
+const SignUpForm = ({
+  // l6e,
+  locale,
+  dir,
+}: SignUpFormProps) => {
+  const [formState, formAction] = useActionState(signUp, {
     status: 'notice',
     message: null,
     data: null,
@@ -46,7 +56,7 @@ const SignUpForm = ({l6e, locale, dir}: SignUpFormProps) => {
     const toast = () =>
       createToast(formState.status, <p>{formState.message}</p>, 'infinite');
 
-    formState.status === 'error' && formState.message && toast();
+    if (formState.status === 'error' && formState.message) toast();
 
     if (formState.status === 'success' && formState.message) {
       toast();
@@ -60,7 +70,7 @@ const SignUpForm = ({l6e, locale, dir}: SignUpFormProps) => {
   useEffect(() => {
     document.body.addEventListener('click', (evt) => {
       const form = (evt.target as HTMLBodyElement).closest(`.${cls.form}`);
-      !form && changeFocused('');
+      if (!form) changeFocused('');
     });
   }, []);
 

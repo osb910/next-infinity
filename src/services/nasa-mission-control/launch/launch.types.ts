@@ -11,4 +11,4 @@ export interface ILaunch {
   target?: string;
 }
 
-export interface LaunchModel extends Model<ILaunch> {}
+export type LaunchModel = Model<ILaunch>;

@@ -6,7 +6,7 @@ import {XCircle} from 'react-feather';
 import ky from 'ky';
 import {getURL} from '@/utils/path';
 import {IProject} from './Project.model';
-import {motion} from 'framer-motion';
+// import {motion} from 'framer-motion';
 import {useToaster} from '@/ui/Toaster';
 import Draggable from '@/components/Draggable/Draggable';
 import Droppable from '@/components/Droppable/Droppable';

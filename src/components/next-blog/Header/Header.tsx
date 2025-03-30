@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import {Rss} from 'react-feather';
 import clsx from 'clsx';
-import {localize} from '@/l10n/getL10n';
+import {localize} from '@/l10n';
 import {langs} from '@/l10n/config';
 import Navigation from '@/components/next-blog/Navigation';
 import Logo from '@/components/next-blog/Logo';
@@ -19,7 +19,6 @@ import cls from './Header.module.css';
 interface HeaderProps {
   locale: Locale;
   theme: 'light' | 'dark';
-  userId: string;
 }
 
 const btnAnimation = {
@@ -27,8 +26,24 @@ const btnAnimation = {
   boxShadow: '0 0 0 6px hsla(0, 0%, 50%, 0.3)',
 };
 
-const Header = async ({locale, theme, userId}: HeaderProps) => {
-  const {l10n} = await localize({locale});
+const transition = {
+  damping: 10,
+  stiffness: 400,
+};
+
+const Header = async ({locale}: HeaderProps) => {
+  const {l6e} = await localize(locale);
+
+  const navLinks = [
+    {
+      to: '/next-blog/posts',
+      label: l6e('nextBlog.nav.articles'),
+    },
+    {
+      to: '/next-blog/contact',
+      label: l6e('nextBlog.nav.contact'),
+    },
+  ];
 
   const style: CSSProps = {
     '--border-gdt': `linear-gradient(${
@@ -47,17 +62,19 @@ const Header = async ({locale, theme, userId}: HeaderProps) => {
         >
           <Logo width='12rem' />
         </Link>
-        <Navigation />
+        <Navigation navLinks={navLinks} />
         <section className={cls.settings}>
           <ThemeSwitch
             whileHover={btnAnimation}
             whileFocus={btnAnimation}
-            className={cls.themeSwitch}
+            transition={transition}
+            // className={cls.themeSwitch}
           />
           <SfxSwitch
             whileHover={btnAnimation}
             whileFocus={btnAnimation}
-            className={cls.sfxSwitch}
+            transition={transition}
+            // className={cls.sfxSwitch}
           />
           <Link href='/api/next-blog/rss'>
             <IconButton
@@ -69,9 +86,10 @@ const Header = async ({locale, theme, userId}: HeaderProps) => {
                   }}
                 />
               }
+              transition={transition}
               whileHover={btnAnimation}
               whileFocus={btnAnimation}
-              className={cls.rssBtn}
+              // className={cls.rssBtn}
             >
               <VisuallyHidden>View RSS feed</VisuallyHidden>
             </IconButton>
@@ -84,8 +102,9 @@ const Header = async ({locale, theme, userId}: HeaderProps) => {
             bgMenu='var(--bg-gdt-1)'
             bgActive='var(--bg-gdt-3)'
             displayLang
-            whileHover={btnAnimation}
-            whileFocus={btnAnimation}
+            transition={transition}
+            whileHover={{...btnAnimation, scale: 1}}
+            whileFocus={{...btnAnimation, scale: 1}}
           />
         </section>
       </StickyHeader>

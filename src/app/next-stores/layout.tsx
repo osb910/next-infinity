@@ -43,7 +43,7 @@ type User = IUser & {gravatar?: string};
 
 const RootLayout = async ({children}: {children: ReactNode}) => {
   try {
-    const headersStore = headers();
+    const headersStore = await headers();
     const userId = headersStore.get('X-USER-ID');
     let user: any | User;
     if (!user) {

@@ -28,6 +28,9 @@
   font-size: 1.125rem;
 }
 
+.image {
+}
+
 @media (min-width: 35rem) {
   .hero p {
     font-size: 1.25rem;

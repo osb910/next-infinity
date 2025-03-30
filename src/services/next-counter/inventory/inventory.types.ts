@@ -1,10 +1,11 @@
-import {Document, Model, Types} from 'mongoose';
+import {DocResult} from '@/types';
+import {Model, Types} from 'mongoose';
 
-export interface IInventory extends Document<Types.ObjectId> {
+export interface IInventory extends DocResult<IInventory> {
   name: string;
   slug: string;
   location: string;
   items: Array<Types.ObjectId>;
 }
 
-export interface InventoryModel extends Model<IInventory> {}
+export type InventoryModel = Model<IInventory>;

@@ -1,6 +1,6 @@
 'use client';
 
-import {getDeepProp} from '@/utils/general';
+import {getDeepProp} from '@/utils/objects';
 import {useState} from 'react';
 
 export type Obj = {[x: string]: unknown};

@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {type ReactNode, type MouseEventHandler} from 'react';
-import {usePathname} from 'next/navigation';
+// import {usePathname} from 'next/navigation';
 import styles from './ButtonLink.module.css';
 
 interface ButtonLinkProps {

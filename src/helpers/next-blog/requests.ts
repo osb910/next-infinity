@@ -1,5 +1,5 @@
 import {cache} from 'react';
-import {loadBlogPost} from './blog-helpers';
+// import {loadBlogPost} from './blog-helpers';
 import {readFile} from '@/utils/file';
 import matter from 'gray-matter';
 
@@ -11,7 +11,7 @@ export const getBlogPost = cache(async (postParam: string) => {
     }
   );
 
-  if (!data) return {data, message, code};
+  if (!data) return null;
 
   const {data: frontmatter, content} = matter(data);
 

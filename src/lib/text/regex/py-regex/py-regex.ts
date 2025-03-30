@@ -1,7 +1,7 @@
 import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 import {spawn, type ChildProcess} from 'child_process';
-import type {RunRegex, RunRegexOptions, RunRegexResponse} from './types';
+import type {RunRegexOptions, RunRegexResponse} from './types';
 
 const filename = fileURLToPath(import.meta.url);
 const pypiRegexPath = join(dirname(filename), 'pypi-regex.py');
@@ -14,8 +14,8 @@ const pyRegex = async ({
   repl,
 }: RunRegexOptions) => {
   const args = [method, pattern, text];
-  repl && args.push('--r', repl);
-  flags && args.push('--flags', flags.join(''));
+  if (repl) args.push('--r', repl);
+  if (flags) args.push('--flags', flags.join(''));
   try {
     const pyRegex: ChildProcess = spawn('python', [pypiRegexPath, ...args]);
     const promise = new Promise((resolve, reject) => {

@@ -1,7 +1,6 @@
 import styles from './FlexImageGallery.module.css';
-interface FlexImageGalleryProps {}
 
-const FlexImageGallery = ({}: FlexImageGalleryProps) => {
+const FlexImageGallery = () => {
   return (
     <div>
       <div className={styles.panels}>

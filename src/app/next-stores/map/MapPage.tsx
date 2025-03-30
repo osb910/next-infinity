@@ -1,5 +1,4 @@
 import {cache} from 'react';
-import dynamic from 'next/dynamic';
 import StoreCard from '@/components/next-stores/StoreCard';
 import AddressAutoComplete from '@/components/next-stores/AddressAutoComplete';
 import ErrorAlert from '@/components/ErrorAlert';
@@ -7,13 +6,8 @@ import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
 import {type IStoreWithReviews} from '@/services/next-stores/store';
 import type {AppPage, GeoLocation, GetMetadata, JsonRes} from '@/types';
-import Spinner from '@/ui/Spinner';
 import styles from './MapPage.module.css';
-
-const InteractiveMap = dynamic(() => import('@/ui/InteractiveMap'), {
-  loading: () => <Spinner />,
-  ssr: false,
-});
+import StoreMap from '@/components/next-stores/StoreMap';
 
 type SearchParams = {lng: string; lat: string; selected: string};
 type MapPg = AppPage<unknown, SearchParams>;
@@ -115,7 +109,7 @@ const MapPage: MapPg = async ({searchParams}) => {
             name='geolocate'
             placeholder='Search for anywhere'
           />
-          <InteractiveMap
+          <StoreMap
             locations={locations}
             userLocation={json?.data?.userLocation}
             height='60vh'
@@ -135,7 +129,7 @@ const MapPage: MapPg = async ({searchParams}) => {
                 userId=''
               />
             )}
-          </InteractiveMap>
+          </StoreMap>
         </section>
       </>
     );

@@ -2,7 +2,8 @@ import {getBlogPostList} from '@/helpers/next-blog/blog-helpers';
 import {type Metadata} from 'next';
 import BlogHero from '@/components/next-blog/BlogHero';
 import BlogPosts from '@/components/next-blog/BlogPosts';
-import cls from './HomePage.module.css';
+import {getLocale} from '@/l10n/getL10n';
+import {localize} from '@/l10n';
 
 export const metadata: Metadata = {
   title: 'Next Blog',
@@ -10,11 +11,12 @@ export const metadata: Metadata = {
 
 const HomePage = async () => {
   try {
-    const posts = await getBlogPostList();
+    const [locale, posts] = await Promise.all([getLocale(), getBlogPostList()]);
+    const {l6e} = await localize(locale);
     return (
       <>
         <BlogHero />
-        <h2>Latest Content:</h2>
+        <h2>{l6e('nextBlog.home.latest')}</h2>
         <BlogPosts posts={posts} />
       </>
     );

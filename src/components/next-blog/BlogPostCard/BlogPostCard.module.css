@@ -49,6 +49,9 @@
   border-radius: 4px;
 } */
 
+.image {
+}
+
 .wrapper time {
   display: block;
   font-weight: 500;
@@ -67,7 +70,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--blog-primary-500);
-  transition: transform 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
 }
 
 .readMoreLink {
@@ -82,5 +85,5 @@
 }
 
 .readMoreLink:hover .arrow {
-  transform: translateX(4px);
+  margin-inline-start: 4px;
 }

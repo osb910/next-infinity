@@ -2,9 +2,7 @@ import Image from 'next/image';
 import img from '/public/img/stock-predictor/logo-dave-text.png';
 import cls from './Header.module.css';
 
-interface HeaderProps {}
-
-const Header = ({}: HeaderProps) => {
+const Header = () => {
   return (
     <header className={cls.header}>
       <Image

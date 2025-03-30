@@ -1,6 +1,6 @@
 'use server';
 
-import {redirect} from 'next/navigation';
+// import {redirect} from 'next/navigation';
 import {getURL} from '@/utils/path';
 import type {JsonRes} from '@/types';
 import {type IUser} from '@/services/next-blog/user';
@@ -33,7 +33,7 @@ const signUp: SignUpAction = async (prev, body) => {
       message: json.message,
       data,
       locale: prev.locale,
-      ...(json.status === 'error' && {errors: json.errors}),
+      // ...(json.status === 'error' && {errors: json.errors}),
     };
   } catch (err) {
     console.error(err);

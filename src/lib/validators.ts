@@ -5,6 +5,8 @@ import isEmpty from 'validator/es/lib/isEmpty';
 import isStrongPassword from 'validator/es/lib/isStrongPassword';
 import equals from 'validator/es/lib/equals';
 import emailVerifier from './email-verifier';
+import THE_DICTIONARY from '@/dictionaries';
+import {Locale, defaultLocale} from '@/l10n';
 
 const getErrorMap = (errors: Array<{field: string; message: string}>) =>
   errors.reduce((acc, err) => {
@@ -17,47 +19,58 @@ const getErrorMap = (errors: Array<{field: string; message: string}>) =>
     return acc;
   }, {} as {count: number} & Record<string, any>);
 
-const registerValidator = async (body: Record<string, string>) => {
-  const newBody = {...body};
+export const signUpValidator = async (
+  body: Record<string, string>,
+  {
+    locale,
+    blockBurnerEmails = true,
+  }: {locale?: Locale | null; blockBurnerEmails?: boolean} = {}
+) => {
+  const l10n = THE_DICTIONARY(locale ?? defaultLocale);
+  const validated = {...body};
   const errors = [];
   const {email, name, password, confirmPassword} = body;
-  if (isEmpty(name)) {
-    errors.push({field: 'name', message: 'Please provide a name'});
+  if (!name || isEmpty(name)) {
+    errors.push({field: 'name', message: l10n.auth.noNameErr});
   }
 
-  if (name && name.length < 3) {
-    errors.push({field: 'name', message: 'Name must be at least 3 characters'});
+  if (name && trim(name).length < 2) {
+    errors.push({field: 'name', message: l10n.auth.shortNameErr});
   }
 
-  if (isEmpty(email)) {
-    errors.push({field: 'email', message: 'Please provide an email address'});
+  if (!email || isEmpty(email)) {
+    errors.push({field: 'email', message: l10n.auth.noEmailErr});
   }
 
-  // if (email && !isEmail(email)) {
-  //   errors.push({
-  //     field: 'email',
-  //     message: 'Invalid email address',
-  //   });
-  // }
+  if (email && !isEmail(email)) {
+    errors.push({
+      field: 'email',
+      message: l10n.auth.invalidEmailErr,
+    });
+  }
 
-  if (email) {
+  if (email && isEmail(email) && blockBurnerEmails) {
     const verifiedEmail = await emailVerifier(email);
     if (!verifiedEmail?.status) {
+      const message =
+        verifiedEmail?.error.message === 'Disposable email address'
+          ? l10n.auth.burnerEmailErr
+          : verifiedEmail?.error.message ?? l10n.auth.invalidEmailErr;
       errors.push({
         field: 'email',
-        message: verifiedEmail?.error.message ?? 'Invalid email address',
+        message,
       });
     }
   }
 
-  if (isEmpty(password)) {
-    errors.push({field: 'password', message: 'Please provide a password'});
+  if (!password || isEmpty(password)) {
+    errors.push({field: 'password', message: l10n.auth.noPasswordErr});
   }
 
-  if (isEmpty(confirmPassword)) {
+  if (!confirmPassword || isEmpty(confirmPassword)) {
     errors.push({
       field: 'confirmPassword',
-      message: 'Confirmed password cannot be blank',
+      message: l10n.auth.noCofirmedPasswordErr,
     });
   }
 
@@ -73,63 +86,66 @@ const registerValidator = async (body: Record<string, string>) => {
   ) {
     errors.push({
       field: 'password',
-      message:
-        'Password must be at least 8 characters and contain at least 1 lowercase, 1 uppercase, 1 number and 1 symbol',
+      message: l10n.auth.weakPasswordErr,
     });
   }
 
   if (password && confirmPassword && !equals(password, confirmPassword)) {
     errors.push({
       field: 'confirmPassword',
-      message: 'Passwords do not match',
+      message: l10n.auth.noPasswordMatchErr,
     });
   }
 
-  newBody.email = trim(
-    normalizeEmail(email, {
-      gmail_remove_dots: false,
-      gmail_remove_subaddress: false,
-      all_lowercase: true,
-    }) as string
-  );
+  if (email && isEmail(email)) {
+    validated.email = trim(
+      normalizeEmail(email, {
+        gmail_remove_dots: false,
+        gmail_remove_subaddress: false,
+        all_lowercase: true,
+      }) as string
+    );
+  }
 
-  newBody.name = trim(name);
+  validated.name = name && trim(name);
 
-  // errors.reduce(
-  //   (
-  //     acc: {[idx: string]: string},
-  //     {field, message}: {field: string; message: string}
-  //   ) => {
-  //     acc[field] = message;
-  //     return acc;
-  //   },
-  //   {}
-  // ),
+  const errorMap = getErrorMap(errors);
 
-  return [newBody, errors];
+  return {validated, errorMap};
 };
 
-const loginValidator = (body: Record<string, string>) => {
-  const newBody = {...body};
+export const loginValidator = (
+  body: Record<string, string>,
+  {locale}: {locale?: Locale | null} = {}
+) => {
+  const l10n = THE_DICTIONARY(locale ?? defaultLocale);
+  const validated = {...body};
   const errors = [];
   const {email, password} = body;
-  if (isEmpty(email)) {
-    errors.push({field: 'email', message: 'Please provide an email address'});
+  if (!email || isEmpty(email)) {
+    errors.push({
+      field: 'email',
+      message: l10n.auth.noEmailOrUsernameErr,
+    });
   }
 
-  if (isEmpty(password)) {
-    errors.push({field: 'password', message: 'Please provide a password'});
+  if (isEmail(email)) {
+    validated.email = trim(
+      normalizeEmail(email, {
+        gmail_remove_dots: false,
+        gmail_remove_subaddress: false,
+        all_lowercase: true,
+      }) as string
+    );
   }
 
-  newBody.email = trim(
-    normalizeEmail(email, {
-      gmail_remove_dots: false,
-      gmail_remove_subaddress: false,
-      all_lowercase: true,
-    }) as string
-  );
+  if (!password || isEmpty(password)) {
+    errors.push({field: 'password', message: l10n.auth.noPasswordErr});
+  }
 
-  return [newBody, errors];
+  const errorMap = getErrorMap(errors);
+
+  return {validated, errorMap};
 };
 
 export const contactValidator = ({
@@ -222,5 +238,3 @@ export const urlValidator = ({url, domain}: {url: string; domain?: string}) => {
 
   return {validated, errorMap};
 };
-
-export {registerValidator, loginValidator};

@@ -7,14 +7,14 @@ import Icon from '@/ui/Icon/lucide';
 import {FaDiscord} from 'react-icons/fa';
 import IconLabel from '../IconLabel';
 import {Locale} from '@/l10n/l10n.types';
-import {localize} from '@/l10n/getL10n';
+import {localize} from '@/l10n';
 
 interface FooterProps {
   locale: Locale;
 }
 
 const Footer = async ({locale}: FooterProps) => {
-  const {l6e} = await localize({locale});
+  const {l6e} = await localize(locale);
   const navLinks = [
     {
       to: '/api/next-blog/rss',

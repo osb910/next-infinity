@@ -23,7 +23,11 @@ const BoulevardsForm = ({setData}: BoulevardsFormProps) => {
   const [rawDataVisible, setRawDataVisible] = useState<boolean>(false);
   const showRawData = () => setRawDataVisible(true);
   const hideRawData = () => setRawDataVisible(false);
-  const {data, error, isLoading} = useSWR(
+  const {
+    data,
+    // error,
+    isLoading,
+  } = useSWR(
     'https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris',
     fetcher
   );
@@ -33,8 +37,8 @@ const BoulevardsForm = ({setData}: BoulevardsFormProps) => {
   }, [isLoading, phrase]);
   const getBoulevards = ({phrase}: {phrase: string}) => {
     const de = data!
-      .map(link => link.textContent)
-      .filter(name => name!.match(RegExp(`${phrase}`, 'i')));
+      .map((link) => link.textContent)
+      .filter((name) => name!.match(RegExp(`${phrase}`, 'i')));
     setData(de);
   };
 
@@ -43,7 +47,10 @@ const BoulevardsForm = ({setData}: BoulevardsFormProps) => {
   ) : (
     <QuestionForm process={getBoulevards}>
       <p>Which</p>
-      <button type='button' onClick={showRawData}>
+      <button
+        type='button'
+        onClick={showRawData}
+      >
         boulevards
       </button>
       <p>in Paris contain the phrase</p>
@@ -52,16 +59,20 @@ const BoulevardsForm = ({setData}: BoulevardsFormProps) => {
         name='phrase'
         id='phrase'
         value={phrase}
-        onInput={evt => {
+        onInput={(evt) => {
           setPhrase((evt.target as HTMLInputElement).value);
         }}
         ref={phraseRef}
       />
       {rawDataVisible && (
         <Portal>
-          <Modal dismiss={hideRawData} title='Inventors' dismissText='Dismiss'>
+          <Modal
+            dismiss={hideRawData}
+            title='Inventors'
+            dismissText='Dismiss'
+          >
             <ul>
-              {data!.map(a => (
+              {data!.map((a) => (
                 <li key={a.textContent}>{a.textContent}</li>
               ))}
             </ul>

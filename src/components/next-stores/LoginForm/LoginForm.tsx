@@ -36,13 +36,13 @@ const LoginForm = ({
 
   useEffect(() => {
     if (!error) return;
-    error &&
+    if (error)
       createToast(
         'error',
         <p>{error === 'bad_token' ? badTokenMessage : error}</p>,
         4800
       );
-    success && createToast('success', <p>{success}</p>, 5000);
+    if (success) createToast('success', <p>{success}</p>, 5000);
   }, [createToast, error, success, badTokenMessage]);
 
   const login = async (data: Record<string, FormDataEntryValue | null>) => {
@@ -79,7 +79,7 @@ const LoginForm = ({
 
   return (
     <Form
-      className={styles.form}
+      // className={styles.form}
       onSave={login}
       throwErr={throwError}
       submitText='Log In →'

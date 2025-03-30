@@ -1,10 +1,10 @@
 'use client';
 
-import {motion, type MotionProps} from 'framer-motion';
+import {HTMLMotionProps, motion} from 'framer-motion';
 import {ComponentPropsWithoutRef, ReactNode} from 'react';
 
 export type WrapperProps = ComponentPropsWithoutRef<'figure'> &
-  Partial<MotionProps> & {
+  HTMLMotionProps<'figure'> & {
     children: ReactNode;
   };
 

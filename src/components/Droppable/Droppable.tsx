@@ -18,12 +18,12 @@ const Droppable = ({
   drop,
   ...delegated
 }: DroppableProps) => {
-  const Component = as as keyof JSX.IntrinsicElements;
+  const Component = as as keyof HTMLElementTagNameMap;
   const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false);
   const [dropping, setDropping] = useState<boolean>(false);
 
   const dragOverHandler = (evt: DragEvent) => {
-    evt.dataTransfer?.types?.[0] === 'text/plain' && evt.preventDefault();
+    if (evt.dataTransfer?.types?.[0] === 'text/plain') evt.preventDefault();
     setIsDraggedOver(true);
   };
 
@@ -36,7 +36,7 @@ const Droppable = ({
     setDropping(false);
   };
 
-  const dragLeaveHandler = (_: DragEvent) => {
+  const dragLeaveHandler = () => {
     setIsDraggedOver(false);
   };
 

@@ -1,7 +1,8 @@
+import type {AppRoute} from '@/types';
 import {NextRequest, NextResponse} from 'next/server';
 
-export const POST = async (req: NextRequest) => {
-  const referer = req.headers.get('referer');
+export const POST: AppRoute = async () => {
+  // const referer = req.headers.get('referer');
   const response = NextResponse.json(
     {
       status: 'success',

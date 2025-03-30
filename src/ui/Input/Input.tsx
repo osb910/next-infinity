@@ -88,8 +88,7 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
       ? HTMLInputElement
       : typeof Tag extends 'textarea'
       ? HTMLTextAreaElement
-      : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        any
+      : any
   >;
   const appliedId = `${
     rest?.name ?? rest?.id ?? label?.replace?.(/\s/g, '-') ?? ''

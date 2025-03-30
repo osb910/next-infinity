@@ -1,10 +1,10 @@
-import {NextRequest} from 'next/server';
+import {type NextRequest} from 'next/server';
 import {isValidObjectId, type Model, type HydratedDocument} from 'mongoose';
 import {Md5} from 'ts-md5';
 import slug from 'slug';
 import {genSalt, hash, compare} from 'bcrypt';
 import {getP8n} from '@/lib/helpers';
-import {GeoLocation, P8n} from '@/types';
+import type {GeoLocation, P8n} from '@/types';
 import {getLocationFromIp} from '@/lib/geo';
 import {type Request} from 'request-ip';
 
@@ -50,7 +50,6 @@ export const getGravatar = (email: string): string => {
 };
 
 export const preSaveDoc = async <T extends DocWithNameAndSlug>(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   doc: HydratedDocument<any & T>,
   {
     nameProp = 'name',
@@ -167,8 +166,8 @@ export const getTopRated = async <T>(
   }
 };
 
-export const getNearby = async <T extends {location: Location}>(
-  Model: Model<T>,
+export const getNearby = async (
+  Model: Model<any>,
   req: NextRequest & Request
 ): Promise<{
   status: string;
@@ -176,7 +175,7 @@ export const getNearby = async <T extends {location: Location}>(
   code: number;
   data: {
     userLocation: GeoLocation | undefined;
-    stores: T[];
+    stores: any[];
   };
 }> => {
   const {
@@ -255,7 +254,6 @@ export const getSegmentQuery = (segmentParam: string) => {
 };
 
 export const incrementId = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Model: Model<any>,
   {prop = 'order'}: {prop?: string} = {}
 ) => {
@@ -269,7 +267,6 @@ export const updateIds = async ({
   minId = 1,
   prop,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Model: Model<any>;
   minId?: number;
   prop?: string;

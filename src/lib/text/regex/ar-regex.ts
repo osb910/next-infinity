@@ -173,7 +173,6 @@ export const buildArPyRegex = (
 
   const maxFuzzy = kashida ? 64 : 16;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fuzzyBlock = optional ? `{i<=${maxFuzzy}:[${optional}]}` : '';
 
   return (

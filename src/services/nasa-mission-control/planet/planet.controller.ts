@@ -46,10 +46,10 @@ export const loadPlanetsData = () => {
           columns: true,
         })
       )
-      .on('data', async data => {
-        isHabitablePlanet(data) && (await savePlanet(data));
+      .on('data', async (data) => {
+        if (isHabitablePlanet(data)) await savePlanet(data);
       })
-      .on('error', err => {
+      .on('error', (err) => {
         console.log(err);
         reject(err);
       })

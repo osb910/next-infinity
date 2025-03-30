@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, type ReactElement} from 'react';
 import ky from 'ky';
 import {Trash2} from 'react-feather';
 import useUser from './useUser';
@@ -12,7 +12,7 @@ import {useToaster} from '@/ui/Toaster';
 interface EraserProps {
   itemId: string;
   endpoint: string;
-  icon?: JSX.Element;
+  icon?: ReactElement;
   confirmationText?: string;
   itemSelector?: string;
   removeItem?: () => void;
@@ -63,7 +63,7 @@ const Eraser = ({
       if (json.status === 'success') {
         setIsDeleted(true);
         const isFavored = userData?.favorites?.includes(itemId);
-        isFavored && toggleFavorite(itemId);
+        if (isFavored) toggleFavorite(itemId);
       } else if (json.status === 'error') {
         throw new Error(json.message);
       } else {

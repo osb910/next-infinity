@@ -1,14 +1,13 @@
 'use client';
 
 import {useState} from 'react';
-import type {AppPage} from '@/types';
 import cls from './StockPredictor.module.css';
 import ActionPanel from '@/components/mini-apps/stock-predictor/ActionPanel';
 import Spinner from '@/ui/Spinner';
 import useArray from '@/hooks/useArray';
 import {fetchReport, fetchStockData} from './actions';
 
-const StockPredictor: AppPage<{}> = async ({}) => {
+const StockPredictor = () => {
   const {array: tickers, push} = useArray<string>([]);
   const [status, setStatus] = useState('idle');
   const [report, setReport] = useState('');

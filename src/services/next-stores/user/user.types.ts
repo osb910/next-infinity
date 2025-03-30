@@ -1,6 +1,7 @@
-import type {Model, Types, Document} from 'mongoose';
+import type {DocResult} from '@/types';
+import type {Model} from 'mongoose';
 
-export interface IUser extends Document<Types.ObjectId> {
+export interface IUser extends DocResult<IUser> {
   email: string;
   name: string;
   password: string;
@@ -8,9 +9,6 @@ export interface IUser extends Document<Types.ObjectId> {
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   gravatar?: string;
-}
-
-export interface IUserMethods {
   comparePassword(password: string): Promise<boolean>;
 }
 
@@ -19,5 +17,4 @@ export interface IUserVirtuals {
   domain: string;
 }
 
-export interface UserModel
-  extends Model<IUser, {}, IUserMethods, IUserVirtuals> {}
+export type UserModel = Model<IUser, unknown, unknown, IUserVirtuals>;

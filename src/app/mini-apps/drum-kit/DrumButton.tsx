@@ -1,7 +1,7 @@
 'use client';
 import {useEffect} from 'react';
 import Wrapper from './ButtonWrapper';
-import {KeyStatuses} from './page';
+// import {KeyStatuses} from './page';
 
 const DrumButton = ({
   keyButton,
@@ -13,7 +13,7 @@ const DrumButton = ({
   length,
 }: {
   keyButton: string;
-  play: Function;
+  play: () => void;
   sound: string;
   keyStatus: {active: boolean; duration: number};
   setStatus: (draft: any) => void;

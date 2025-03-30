@@ -18,6 +18,30 @@ export const getRelativeDate = (date: string) => {
   return moment(date).fromNow();
 };
 
+export const getArHijriGregorianDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+
+  const hijriDate = date
+    .toLocaleDateString('ar-SA', options)
+    .replace(/محرم/, 'المحرم')
+    .replace(/(?<=^[^١] )\p{L}+/u, 'من $&')
+    .replace(/^١\s/, 'غُرَّة ');
+
+  let gregorianDate = date
+    .toLocaleDateString('ar-EG', options)
+    .replace(/\p{L}+/u, 'من $&')
+    .replace(/^١\s/, 'الأول ');
+  gregorianDate += ' م';
+
+  const weekday = date.toLocaleDateString('ar-EG', {weekday: 'long'});
+
+  return `${weekday}، ${hijriDate}، الموافق ${gregorianDate}`;
+};
+
 /**********************************************************************************
  * @function  : hijriToCalendars(year, month, day, [options])
  *

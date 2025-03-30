@@ -1,6 +1,7 @@
 import {Locale} from '@/l10n/l10n.types';
 
-const site = (locale: Locale) => {
+// eslint-disable-next-line
+const site = (locale: Locale, options?: Record<string, any>) => {
   const dict = {
     ar: {
       title: 'مدونة نكست',

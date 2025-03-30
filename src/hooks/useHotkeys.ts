@@ -11,7 +11,7 @@ import {
 
 export type HotKey = {
   hotKey: string;
-  run: Function;
+  run: () => void;
   universal?: boolean;
 };
 
@@ -45,6 +45,7 @@ const useHotKeys = <T>(keyMap: HotKey[], ref?: RefObject<T>): string[] => {
   useEffect(() => {
     const element = (ref?.current as HTMLElement) ?? window;
     keyActions.current = keyMap.map(({hotKey, run, universal}) => {
+      // @ts-expect-error - prefer-const
       let [char, ...mods]: any = hotKey
         .replace(hotKeyRegex, (_, mods, char) => {
           mods = mods
@@ -74,7 +75,7 @@ const useHotKeys = <T>(keyMap: HotKey[], ref?: RefObject<T>): string[] => {
     const handleKeyDown = (evt: KeyboardEvent) => {
       evt.stopPropagation();
       const {key, code} = evt;
-      for (let {char, mods, run, universal} of keyActions.current) {
+      for (const {char, mods, run, universal} of keyActions.current) {
         const isHotKey = universal ? char === code : char === key;
         if (
           isHotKey &&

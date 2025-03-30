@@ -2,7 +2,7 @@
 
 import {useRef} from 'react';
 
-import Button from '@/ui/Button';
+// import Button from '@/ui/Button';
 import Form, {type FormHandle} from '@/ui/Form';
 import Input from '@/ui/Input';
 import useTimers from '@/store/next-timer/useTimers';
@@ -23,9 +23,21 @@ export default function AddTimer() {
   };
 
   return (
-    <Form submitText='Add Timer' ref={form} onSave={saveTimer} id='add-timer'>
-      <Input label='Name' name='name' />
-      <Input type='number' label='Duration' name='duration' />
+    <Form
+      submitText='Add Timer'
+      ref={form}
+      onSave={saveTimer}
+      id='add-timer'
+    >
+      <Input
+        label='Name'
+        name='name'
+      />
+      <Input
+        type='number'
+        label='Duration'
+        name='duration'
+      />
     </Form>
   );
 }

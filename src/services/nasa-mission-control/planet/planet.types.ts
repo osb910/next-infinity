@@ -7,4 +7,4 @@ export interface IPlanet {
   koi_prad: number;
 }
 
-export interface PlanetModel extends Model<IPlanet> {}
+export type PlanetModel = Model<IPlanet>;

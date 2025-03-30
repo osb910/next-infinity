@@ -5,7 +5,7 @@ export interface ContactEmailProps {
   lang?: string;
 }
 
-const ContactEmail = ({email, name, body, lang}: ContactEmailProps) => {
+const ContactEmail = ({email, name, body}: ContactEmailProps) => {
   return (
     <section>
       <h1>

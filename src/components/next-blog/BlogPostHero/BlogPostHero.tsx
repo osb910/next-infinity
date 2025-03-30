@@ -1,10 +1,10 @@
-import {format} from 'date-fns';
 import clsx from 'clsx';
 import {type ComponentProps, type ReactNode} from 'react';
 import cls from './BlogPostHero.module.css';
 import Image from 'next/image';
 import DateTooltip from '../DateTooltip';
 import Separator from '@/ui/Separator';
+import {type Locale} from '@/l10n';
 
 const loadingStyle = {fontFamily: 'var(--fn-loading)'};
 
@@ -16,7 +16,7 @@ export interface BlogPostHeroProps extends ComponentProps<'header'> {
   category?: string;
   readingTime: string;
   img?: string;
-  locale?: 'en';
+  locale?: Locale;
 }
 const BlogPostHero = ({
   title,
@@ -26,12 +26,15 @@ const BlogPostHero = ({
   publishedOn,
   children,
   img,
-  ...delegated
+  locale,
+  ...rest
 }: BlogPostHeroProps) => {
-  // const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
-
   return (
-    <header className={clsx(cls.hero, delegated.className)} {...delegated}>
+    <header
+      className={clsx(cls.hero, rest.className)}
+      dir='auto'
+      {...rest}
+    >
       <h1>{title}</h1>
       {img && (
         <figure className={cls.image}>
@@ -48,7 +51,10 @@ const BlogPostHero = ({
         <Separator color='var(--blog-decorative-800)' />
         <p>{readingTime}</p>
         <Separator color='var(--blog-decorative-800)' />
-        <DateTooltip date={publishedOn} />
+        <DateTooltip
+          date={publishedOn}
+          locale={locale}
+        />
       </section>
       {children}
     </header>
@@ -58,22 +64,21 @@ const BlogPostHero = ({
 export const BlogPostHeroLoading = ({
   title,
   publishedOn,
-  slug,
   category = 'Web',
   readingTime,
-  img,
-  ...delegated
+  ...rest
 }: BlogPostHeroProps) => {
-  const humanizedDate = format(new Date(publishedOn), 'MMMM do, yyyy');
-
   return (
     <header
-      className={clsx(cls.hero, delegated.className)}
-      {...delegated}
+      className={clsx(cls.hero, rest.className)}
+      {...rest}
       dir='auto'
     >
       <h1 style={loadingStyle}>{title}</h1>
-      <section className={cls.meta} style={loadingStyle}>
+      <section
+        className={cls.meta}
+        style={loadingStyle}
+      >
         <p>{category}</p>
         <Separator color='var(--blog-decorative-600)' />
         <p>{readingTime}</p>

@@ -1,20 +1,19 @@
 import Image from 'next/image';
 import cls from './BlogHero.module.css';
+import {getLocale} from '@/l10n/getL10n';
+import {localize} from '@/l10n';
 
-export interface BlogHeroProps {}
-
-const BlogHero = ({}: BlogHeroProps) => {
+const BlogHero = async () => {
+  const locale = await getLocale();
+  const {l6e} = await localize(locale);
   return (
     <section className={cls.hero}>
-      <h1>Hi, I&apos;m Omar</h1>
-      <p>
-        I blog about web development, translation, and the Arabic language.
-        💻🌐🖊️📗
-      </p>
+      <h1>{l6e('nextBlog.home.hero.hi')}</h1>
+      <p>{l6e('nextBlog.home.hero.about')}</p>
       <figure className={cls.image}>
         <Image
           src='/img/next-blog/omar.png'
-          alt='An image showing Omar'
+          alt={l6e('nextBlog.home.omarPicAlt')}
           width={480}
           height={480}
         />

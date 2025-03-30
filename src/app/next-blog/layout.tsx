@@ -65,7 +65,7 @@ export const generateMetadata: NextBlogLayout = async () => {
 const RootLayout: Layout = async ({children}) => {
   const cookieStore = await cookies();
   const locale = await getLocale();
-  const userId = cookieStore.get('next-blog-user-id')?.value ?? '';
+  // const userId = cookieStore.get('next-blog-user-id')?.value ?? '';
   const theme = (cookieStore.get('color-theme')?.value ?? 'light') as
     | 'light'
     | 'dark';

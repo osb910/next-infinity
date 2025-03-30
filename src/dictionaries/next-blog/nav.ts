@@ -1,6 +1,7 @@
 import {Locale} from '@/l10n/l10n.types';
 
-const nav = (locale: Locale) => {
+// eslint-disable-next-line
+const nav = (locale: Locale, options?: Record<string, any>) => {
   const dict = {
     ar: {
       home: 'المدخل',

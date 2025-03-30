@@ -3,9 +3,7 @@
 import useTimers from '@/store/next-timer/useTimers';
 import cls from './Header.module.css';
 
-interface HeaderProps {}
-
-const Header = ({}: HeaderProps) => {
+const Header = () => {
   const {isRunning, toggleTimers} = useTimers();
   return (
     <header className={cls.header}>

@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
     const resetUrl = `${req.headers.get(
       'origin'
     )}/api/next-stores/auth/reset-password?token=${updated.resetPasswordToken}`;
-    const sent = await sendEmail({
+    await sendEmail({
       email: updated.email,
       subject: 'Password Reset Request',
       react: ResetPasswordEmail({resetUrl}),

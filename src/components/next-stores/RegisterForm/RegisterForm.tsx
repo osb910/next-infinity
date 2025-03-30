@@ -9,7 +9,7 @@ import PasswordInput from '@/ui/PasswordInput';
 import {emailRegex, stringifyRegex} from '@/lib/text/regex';
 import {getURL} from '@/utils/path';
 import Spinner from '@/ui/Spinner';
-import styles from './RegisterForm.module.css';
+// import styles from './RegisterForm.module.css';
 
 export type Response =
   | {status: 'error'; errors?: {message: string}[]; message?: string}
@@ -42,7 +42,7 @@ const RegisterForm = () => {
         json?.errors?.forEach(({message}: {message: string}) => {
           createToast(json.status, message);
         });
-        json?.message && createToast(json.status, <p>{json.message}</p>);
+        if (json?.message) createToast(json.status, <p>{json.message}</p>);
         return;
       }
 
@@ -64,7 +64,11 @@ const RegisterForm = () => {
     }
   };
   return (
-    <Form className={styles.form} onSave={signUp} submitText='Register'>
+    <Form
+      // className={styles.form}
+      onSave={signUp}
+      submitText='Register'
+    >
       <Input
         label='Name'
         name='name'

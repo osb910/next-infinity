@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import cls from './HomePage.module.css';
 
 export const metadata = {
   title: 'Page Not Found',
