@@ -2,6 +2,7 @@ import {type NextRequest, NextResponse} from 'next/server';
 import {verifyJWT} from './lib/token';
 import {sendError} from './lib/helpers';
 import {readLocale as readNextBlogLocale} from './l10n/getL10n';
+import {Geo, geolocation, ipAddress} from '@vercel/functions';
 // import {defaultLocale, locales as nextBlogLocales} from './l10n/config';
 
 export const middleware = async (req: NextRequest) => {
@@ -22,12 +23,12 @@ export const middleware = async (req: NextRequest) => {
     ? authHeader.split(' ')[1]
     : undefined;
 
-  const whitelisted =
+  const whitelistedRegex =
     process.env.NODE_ENV === 'production'
-      ? ['https://next-infinity.vercel.app', 'http://localhost:3000']
-      : ['http://localhost:3000'];
+      ? /^https:\/\/(www\.)?next-infinity\.vercel\.app$|^http:\/\/localhost:3000$/
+      : /^http:\/\/localhost:3000$|^https:\/\/[-\w]+\.ngrok-free\.app$/;
 
-  if (origin && !whitelisted.includes(origin)) {
+  if (origin && !whitelistedRegex.test(origin)) {
     console.log(`Origin ${origin} not allowed`);
     return new NextResponse(null, {
       status: 400,
@@ -41,10 +42,11 @@ export const middleware = async (req: NextRequest) => {
 
   const response = NextResponse.next();
 
+  const ip = ipAddress(req) ?? req.headers.get('x-forwarded-for') ?? '';
+  const loc = geolocation(req) as Geo;
+  response.headers.set('x-ip', ip);
+  response.headers.set('x-loc', JSON.stringify(loc));
   response.headers.set('x-url', req.url);
-
-  const ipAddress = req.headers.get('x-forwarded-for') ?? '';
-  response.headers.set('x-ip', ipAddress);
   response.headers.set('x-theme', theme);
   response.cookies.set('theme', theme);
 
