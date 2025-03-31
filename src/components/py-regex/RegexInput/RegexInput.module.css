@@ -1,0 +1,47 @@
+/* components/RegexInput.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.delimiter {
+  padding: 0 0.5rem;
+  color: #6b7280;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+}
+
+.invalid {
+  border-color: #dc2626;
+}
+
+.flagsInput {
+  width: 40px;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.errorText {
+  font-size: 0.875rem;
+  color: #dc2626;
+}

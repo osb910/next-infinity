@@ -1,0 +1,22 @@
+.container {
+  padding: 1rem;
+  max-width: 32rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.status {
+  margin-top: 1rem;
+}
+
+.error {
+  color: #dc2626;
+}
