@@ -228,15 +228,15 @@
 body {
   display: flex;
   flex-direction: column;
-  font-family: var(--fn-atkinson);
+  font-family: 'Atkinson Hyperlegible';
 }
 
 .rtl {
   direction: rtl;
+  font-family: Lotus;
 }
 
 /* body.rtl {
-  font-family: Lotus;
 } */
 
 .ltr {

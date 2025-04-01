@@ -1,6 +1,6 @@
-import './globals.css';
 import './reset.css';
 import './fonts.css';
+import './globals.css';
 import {
   Atkinson_Hyperlegible,
   Roboto_Mono,

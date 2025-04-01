@@ -25,7 +25,13 @@ const Home = async () => {
 
     const projects = appDir.filter(
       ({name}) =>
-        !['api', 'mini-apps', 'nasa-mission-control', 'test'].includes(name)
+        ![
+          'api',
+          'mini-apps',
+          'nasa-mission-control',
+          'test',
+          'py-regex',
+        ].includes(name)
     );
     // .map(async ({name}) => ({
     //   name,
