@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import Event, {IEvent} from '@/services/next-events/event/event-model';
 import {jsonifyError} from '@/lib/helpers';
+import {nextDBConnect} from '@/lib/db';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -54,6 +55,8 @@ export const POST = async (req: NextRequest) => {
         : true;
 
     const searchFilters = {...dateFilter, ...queryFilter};
+
+    await nextDBConnect({dbName: 'next-events'});
 
     // const count = await Event.countDocuments(searchFilters);
     const res = (await Event.find(searchFilters).sort({date: 1})).filter(

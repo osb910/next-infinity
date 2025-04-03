@@ -1,6 +1,6 @@
 import {NextResponse} from 'next/server';
 import Event from '@/services/next-events/event';
-import {dbConnect, nextDBConnect} from '@/lib/db';
+import {nextDBConnect} from '@/lib/db';
 
 export const GET = async () => {
   try {

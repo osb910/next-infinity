@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import Subscriber from '@/services/next-events/subscriber-model';
 import {isEmail} from '@/utils/validators';
+import {nextDBConnect} from '@/lib/db';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -11,6 +12,7 @@ export const POST = async (req: NextRequest) => {
         {status: 422}
       );
     }
+    await nextDBConnect({dbName: 'next-events'});
     const subscriber = new Subscriber({email});
     const res = await subscriber.save();
     return NextResponse.json(
