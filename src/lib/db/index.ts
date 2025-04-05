@@ -10,6 +10,13 @@ export const nextDBConnect = async ({
   const MONGO_USER = process.env.MONGO_USER;
   const MONGO_PASSWORD = process.env.MONGO_PASSWORD;
   const MONGO_CLUSTER = process.env.MONGO_CLUSTER;
+  const MONGODB_URI = process.env.MONGODB_URI;
+
+  if (!MONGODB_URI) {
+    throw new Error(
+      'Please define the MONGODB_URI environment variable inside .env.local'
+    );
+  }
 
   if (!MONGO_USER) {
     throw new Error(
@@ -36,7 +43,7 @@ export const nextDBConnect = async ({
 
   const usedUri = useOldUri ? oldUri : uri;
   try {
-    const client = await dbConnect({uri: usedUri});
+    const client = await dbConnect({uri: MONGODB_URI});
     if (client) {
       console.info(`Connected to [${client.connections[0].name}] DB!`);
     }
