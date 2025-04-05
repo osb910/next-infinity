@@ -8,8 +8,9 @@ export type EventParams = {event: string};
 export const GET: AppRoute<EventParams> = async (req, {params}) => {
   // let json;
   try {
-    await nextDBConnect({dbName: 'next-events'});
+    await nextDBConnect();
     const {event: eventParam} = await params;
+    console.log('eventParam', eventParam);
     const json = await getEvent(eventParam);
     return NextResponse.json(json, {
       status: json.code,
