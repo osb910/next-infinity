@@ -20,7 +20,7 @@ export const generateMetadata: GenEventMeta = async ({params}) => {
   const res = await fetch(getURL(`/api/events/${event}`), {
     headers: {
       'User-Agent': '*',
-      Accept: 'application/json, text/plain, */*',
+      Accept: 'application/json',
     },
   });
   const json = await res.json();
@@ -36,7 +36,12 @@ export const generateMetadata: GenEventMeta = async ({params}) => {
 const EventDetail: EventPg = async ({params}) => {
   try {
     const {event} = await params;
-    const res = await fetch(getURL(`/api/events/${event}`));
+    const res = await fetch(getURL(`/api/events/${event}`), {
+      headers: {
+        'User-Agent': '*',
+        Accept: 'application/json',
+      },
+    });
     const json = await res.json();
     if (json.status === 'error') return <ErrorAlert>{json.message}</ErrorAlert>;
     const {title, description, location, date, image} = json.data;
