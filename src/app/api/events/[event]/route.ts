@@ -8,10 +8,9 @@ export type EventParams = {event: string};
 export const GET: AppRoute<EventParams> = async (req, {params}) => {
   // let json;
   try {
-    const {event: eventParam} = await params;
     await nextDBConnect({dbName: 'next-events'});
+    const {event: eventParam} = await params;
     const json = await getEvent(eventParam);
-    console.log('api event', json);
     return NextResponse.json(json, {
       status: json.code,
       headers: {
@@ -20,6 +19,11 @@ export const GET: AppRoute<EventParams> = async (req, {params}) => {
     });
   } catch (err) {
     const json = jsonifyError({err});
-    return NextResponse.json(json, {status: json.code});
+    return NextResponse.json(json, {
+      status: json.code,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 };

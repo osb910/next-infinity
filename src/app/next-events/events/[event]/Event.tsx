@@ -36,6 +36,7 @@ export const generateMetadata: GenEventMeta = async ({params}) => {
 const EventDetail: EventPg = async ({params}) => {
   try {
     const {event} = await params;
+    console.log('[event] page', event);
     const res = await fetch(getURL(`/api/events/${event}`), {
       headers: {
         'User-Agent': '*',

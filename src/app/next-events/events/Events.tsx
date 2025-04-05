@@ -5,6 +5,8 @@ import {IEvent} from '../../../services/next-events/event/event-model';
 import {Metadata} from 'next';
 import {getURL} from '@/utils/path';
 
+export const dynamic = 'force-static';
+
 export const metadata: Metadata = {
   title: 'All Events',
 };
@@ -13,6 +15,10 @@ const AllEvents = async () => {
   try {
     const res = await fetch(getURL('/api/events'), {
       next: {revalidate: 1800}, // 30 minutes
+      headers: {
+        'User-Agent': '*',
+        Accept: 'application/json',
+      },
     });
     const events: IEvent[] = await res.json();
 

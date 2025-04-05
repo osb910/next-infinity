@@ -5,7 +5,8 @@ import isEmail from 'validator/lib/isEmail';
 export const getEvent = async (eventId: string) => {
   try {
     const event = await Event.findById(eventId);
-    if (!event) return jsonifyError({message: 'Event not found'});
+    console.log('event', event);
+    if (!event) return jsonifyError({message: 'Event not found', code: 404});
     return {
       status: 'success',
       message: 'Event retrieved successfully',
