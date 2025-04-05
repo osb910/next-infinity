@@ -13,11 +13,16 @@ type Params = {
 type EventPg = AppPage<Params>;
 type GenEventMeta = GetMetadata<Params>;
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 export const generateMetadata: GenEventMeta = async ({params}) => {
   const {event} = await params;
-  const res = await fetch(getURL(`/api/events/${event}`));
+  const res = await fetch(getURL(`/api/events/${event}`), {
+    headers: {
+      'User-Agent': '*',
+      Accept: 'application/json, text/plain, */*',
+    },
+  });
   const json = await res.json();
   if (json.error) return {title: json.error, description: json.error};
   const {title, description} = json;

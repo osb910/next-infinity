@@ -45,7 +45,12 @@ export const middleware = async (req: NextRequest) => {
   const ip = ipAddress(req) ?? req.headers.get('x-forwarded-for') ?? '';
   const loc = geolocation(req) as Geo;
   response.headers.set('x-ip', ip);
-  response.headers.set('x-loc', JSON.stringify(loc));
+  response.headers.set('x-city', loc.city ?? '');
+  response.headers.set('x-country', loc.country ?? '');
+  response.headers.set('x-country-region', loc.countryRegion ?? '');
+  response.headers.set('x-region', loc.region ?? '');
+  response.headers.set('x-latitude', loc.latitude ?? '');
+  response.headers.set('x-longitude', loc.longitude ?? '');
   response.headers.set('x-url', req.url);
   response.headers.set('x-theme', theme);
   response.cookies.set('theme', theme);
