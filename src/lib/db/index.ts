@@ -37,7 +37,9 @@ export const nextDBConnect = async ({
   const usedUri = useOldUri ? oldUri : uri;
   try {
     const client = await dbConnect({uri: usedUri});
-    console.info(`Connected to [${client.connections[0].name}] DB!`);
+    if (client) {
+      console.info(`Connected to [${client.connections[0].name}] DB!`);
+    }
     return client;
   } catch (err) {
     if (!(err instanceof Error)) return;
