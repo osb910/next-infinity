@@ -12,7 +12,9 @@ export const GET: AppRoute<EventParams> = async (req, {params}) => {
     await nextDBConnect();
     const {event: eventParam} = await params;
     console.log('eventParam', eventParam);
-    const event = await Event.findById(eventParam);
+    const event = await Event.findOne({
+      _id: eventParam,
+    });
     if (!event)
       return NextResponse.json(
         jsonifyError({message: 'Event not found', code: 404}),
