@@ -1,12 +1,14 @@
 import {NextResponse} from 'next/server';
 import Review, {type IReview} from '@/services/next-stores/review';
 import {type StoreRoute} from '../../route';
+import {nextDBConnect} from '@/lib/db';
 
 type ReviewRoute = StoreRoute<{reviewId: string}>;
 
 export const PUT: ReviewRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
+    await nextDBConnect();
     const {reviewId} = await params;
     const {reviewText, rating} = await req.json();
     if (!reviewText && !rating) {

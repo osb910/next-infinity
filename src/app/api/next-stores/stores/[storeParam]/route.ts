@@ -6,6 +6,7 @@ import Store, {
 } from '@/services/next-stores/store';
 import {getModelQuery} from '@/services/lib';
 import type {AppRoute} from '@/types';
+import {nextDBConnect} from '@/lib/db';
 
 export type StoreRoute<T = Record<string, string>> = AppRoute<
   {
@@ -15,6 +16,7 @@ export type StoreRoute<T = Record<string, string>> = AppRoute<
 
 export const GET: StoreRoute = async (_, {params}) => {
   try {
+    await nextDBConnect();
     const {storeParam} = await params;
     const json = await getStore(storeParam);
     return NextResponse.json(json, {status: json.code});

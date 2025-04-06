@@ -4,10 +4,12 @@ import Store, {type IStore} from '@/services/next-stores/store';
 import {getModelQuery} from '@/services/lib';
 import {type HydratedDocument} from 'mongoose';
 import {type StoreRoute} from '../route';
+import {nextDBConnect} from '@/lib/db';
 
 export const POST: StoreRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
+    await nextDBConnect();
     const {storeParam} = await params;
     const storeQuery = getModelQuery(storeParam);
     const store = (await Store.findOne(storeQuery)) as IStore;

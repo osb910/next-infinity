@@ -2,10 +2,12 @@ import {NextResponse} from 'next/server';
 import User, {type IUser} from '@/services/next-stores/user';
 import {type StoreRoute} from '../route';
 import type {HDoc} from '@/types';
+import {nextDBConnect} from '@/lib/db';
 
 export const GET: StoreRoute = async (req, {params}) => {
   const userId = req.headers.get('X-USER-ID');
   try {
+    await nextDBConnect();
     const {storeParam} = await params;
     const user = (await User.findById(userId)) as HDoc<IUser>;
     if (!user) {

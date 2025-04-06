@@ -23,6 +23,32 @@ const opts = {
   waitQueueTimeoutMS: 5000, // Timeout for connection queue
 };
 
+const mongoConnect = async (uri: string, dbName?: string): Promise<any> => {
+  const db = connection?.db;
+  if (dbName && dbName !== db?.databaseName) {
+    connection.useDb(dbName);
+    return;
+  }
+  if (db) {
+    console.log(`Already connected to ${db.databaseName}!`);
+    return;
+  }
+  try {
+    console.log('Connecting to MongoDB...');
+    const client = await connect(uri);
+
+    if (dbName) {
+      connection.useDb(dbName);
+    }
+    console.log(`Connected to ${client.connections[0].name} DB!`);
+    return client;
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(`Connecting to the database failed! ${err.message}`);
+    throw err;
+  }
+};
+
 export async function dbConnect({uri, dbName}: {uri: string; dbName?: string}) {
   const db = connection?.db;
   if (dbName && dbName !== db?.databaseName) {

@@ -3,12 +3,14 @@ import Store, {
   createStore,
   deleteAllStores,
 } from '@/services/next-stores/store';
+import {nextDBConnect} from '@/lib/db';
 
 export const GET = async ({nextUrl: {searchParams}}: NextRequest) => {
   const page = searchParams.get('p');
   const limit = searchParams.get('limit');
   const tag = searchParams.get('tag');
   try {
+    await nextDBConnect();
     const query = {
       tags: !tag || tag === 'undefined' ? {$exists: true} : tag,
     };

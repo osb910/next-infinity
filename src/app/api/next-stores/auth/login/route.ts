@@ -5,6 +5,7 @@ import {signJWT} from '@/lib/token';
 import {loginValidator} from '@/lib/validators';
 import {env, jsonifyError} from '@/lib/helpers';
 import {defaultLocale, localize} from '@/l10n';
+import {nextDBConnect} from '@/lib/db';
 
 export const POST = async (req: NextRequest) => {
   const {validated, errorMap} = loginValidator(await req.json());
@@ -20,6 +21,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   try {
+    await nextDBConnect();
     const user = (await User.findOne({email})) as HydratedDocument<IUser> & {
       _doc: IUser;
     };

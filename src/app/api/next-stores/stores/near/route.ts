@@ -2,11 +2,13 @@ import {type NextRequest, NextResponse} from 'next/server';
 import Store from '@/services/next-stores/store';
 import {getNearby} from '@/services/lib';
 import {type Request} from 'request-ip';
+import {nextDBConnect} from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
 export const GET = async (req: NextRequest & Request) => {
   try {
+    await nextDBConnect();
     const json = await getNearby(Store, req);
 
     return NextResponse.json(json, {status: json.code});
