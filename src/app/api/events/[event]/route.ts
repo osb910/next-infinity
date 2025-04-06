@@ -3,6 +3,7 @@ import type {AppRoute} from '@/types';
 import {jsonifyError} from '@/lib/helpers';
 import {getEvent} from '@/services/next-events/event/controllers';
 import {nextDBConnect} from '@/lib/db';
+import Event from '@/services/next-events/event/event-model';
 
 export type EventParams = {event: string};
 export const GET: AppRoute<EventParams> = async (req, {params}) => {
@@ -11,13 +12,24 @@ export const GET: AppRoute<EventParams> = async (req, {params}) => {
     await nextDBConnect();
     const {event: eventParam} = await params;
     console.log('eventParam', eventParam);
-    const json = await getEvent(eventParam);
-    return NextResponse.json(json, {
-      status: json.code,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const event = await Event.findById(eventParam);
+    if (!event)
+      return NextResponse.json(
+        jsonifyError({message: 'Event not found', code: 404})
+      );
+    return NextResponse.json({
+      status: 'success',
+      message: 'Event retrieved successfully',
+      code: 200,
+      data: event,
     });
+    // const json = await getEvent(eventParam);
+    // return NextResponse.json(json, {
+    //   status: json.code,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
   } catch (err) {
     const json = jsonifyError({err});
     return NextResponse.json(json, {
