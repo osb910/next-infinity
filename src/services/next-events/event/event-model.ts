@@ -1,12 +1,7 @@
-import {
-  Schema,
-  type Model,
-  type Types,
-  connection,
-  type Document,
-} from 'mongoose';
+import type {DocResult} from '@/types';
+import {Schema, type Model, type Types, connection} from 'mongoose';
 
-export interface IEvent extends Document<Types.ObjectId> {
+export interface IEvent extends DocResult<IEvent> {
   title: string;
   description: string;
   location: string;

@@ -86,7 +86,7 @@ const EventItem = ({
       <section className={styles.actions}>
         <ButtonLink
           link={exploreLink}
-          prefetch={false}
+          // prefetch={false}
         >
           <span>Explore Event</span>
           <span className={styles.icon}>
