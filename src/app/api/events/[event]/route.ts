@@ -1,17 +1,20 @@
-import {NextResponse} from 'next/server';
-import type {AppRoute} from '@/types';
+import {type NextRequest, NextResponse} from 'next/server';
+// import type {AppRoute} from '@/types';
 import {jsonifyError} from '@/lib/helpers';
 // import {getEvent} from '@/services/next-events/event/controllers';
 import {nextDBConnect} from '@/lib/db';
 // import Event, {IEvent} from '@/services/next-events/event/event-model';
 
 export type EventParams = {event: string};
-export const GET: AppRoute<EventParams> = async (req, {params}) => {
+export const GET = async (
+  req: NextRequest,
+  {params}: {params: Promise<EventParams>}
+) => {
   // let json;
   try {
     await nextDBConnect();
-    const {event: eventParam} = await params;
-    console.log('eventParam', eventParam);
+    const {event} = await params;
+    console.log('eventParam', event);
     // const event = (await Event.findById(eventParam)) as IEvent;
     console.log('event api');
     // if (!event)
