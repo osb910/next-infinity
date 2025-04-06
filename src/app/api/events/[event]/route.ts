@@ -1,7 +1,7 @@
 import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
 import {jsonifyError} from '@/lib/helpers';
-import {getEvent} from '@/services/next-events/event/controllers';
+// import {getEvent} from '@/services/next-events/event/controllers';
 import {nextDBConnect} from '@/lib/db';
 import Event from '@/services/next-events/event/event-model';
 
@@ -15,14 +15,23 @@ export const GET: AppRoute<EventParams> = async (req, {params}) => {
     const event = await Event.findById(eventParam);
     if (!event)
       return NextResponse.json(
-        jsonifyError({message: 'Event not found', code: 404})
+        jsonifyError({message: 'Event not found', code: 404}),
+        {status: 404, headers: {'Content-Type': 'application/json'}}
       );
-    return NextResponse.json({
-      status: 'success',
-      message: 'Event retrieved successfully',
-      code: 200,
-      data: event,
-    });
+    return NextResponse.json(
+      {
+        status: 'success',
+        message: 'Event retrieved successfully',
+        code: 200,
+        data: event,
+      },
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     // const json = await getEvent(eventParam);
     // return NextResponse.json(json, {
     //   status: json.code,
