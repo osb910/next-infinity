@@ -23,7 +23,10 @@ const opts = {
   waitQueueTimeoutMS: 5000, // Timeout for connection queue
 };
 
-const mongoConnect = async (uri: string, dbName?: string): Promise<any> => {
+export const mongoConnect = async (
+  uri: string,
+  dbName?: string
+): Promise<any> => {
   const db = connection?.db;
   if (dbName && dbName !== db?.databaseName) {
     connection.useDb(dbName);
