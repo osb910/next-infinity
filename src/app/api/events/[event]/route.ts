@@ -12,9 +12,7 @@ export const GET: AppRoute<EventParams> = async (req, {params}) => {
     await nextDBConnect();
     const {event: eventParam} = await params;
     console.log('eventParam', eventParam);
-    const event = (await Event.findOne({
-      _id: eventParam,
-    })) as IEvent;
+    const event = (await Event.findById(eventParam)) as IEvent;
     console.log('event', event._doc);
     // if (!event)
     //   return NextResponse.json(
@@ -26,7 +24,7 @@ export const GET: AppRoute<EventParams> = async (req, {params}) => {
         status: 'success',
         message: 'Event retrieved successfully',
         code: 200,
-        data: event._doc,
+        // data: event._doc,
       },
       {
         status: 200,
