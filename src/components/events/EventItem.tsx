@@ -66,7 +66,12 @@ const EventItem = ({
   const exploreLink = `/next-events/events/${id}`;
   return (
     <li className={styles.item}>
-      <Image src={'/' + image} alt={title!} width={256} height={160} />
+      <Image
+        src={'/' + image}
+        alt={title!}
+        width={256}
+        height={160}
+      />
       <section className={styles.content}>
         <h2>{title}</h2>
         <span className={styles.date}>
@@ -79,7 +84,10 @@ const EventItem = ({
         </span>
       </section>
       <section className={styles.actions}>
-        <ButtonLink link={exploreLink}>
+        <ButtonLink
+          link={exploreLink}
+          prefetch={false}
+        >
           <span>Explore Event</span>
           <span className={styles.icon}>
             <ArrowRightIcon />

@@ -63,8 +63,8 @@ const eventSchema = new Schema<IEvent, EventModel>(
     ],
   },
   {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true},
+    // toJSON: {virtuals: true},
+    // toObject: {virtuals: true},
     timestamps: true,
   }
 );
