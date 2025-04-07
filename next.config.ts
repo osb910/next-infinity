@@ -42,17 +42,17 @@ const nextConfig: NextConfig = {
   },
   // routes any requests starting with /api/py
   // to the Flask server running on http://127.0.0.1:5328
-  // rewrites: async () => {
-  //   return [
-  //     {
-  //       source: '/api/py/:path*',
-  //       destination:
-  //         process.env.NODE_ENV === 'development'
-  //           ? 'http://127.0.0.1:5328/api/py/:path*'
-  //           : '/api/',
-  //     },
-  //   ];
-  // },
+  rewrites: async () => {
+    return [
+      {
+        source: '/api/py/:path*',
+        destination:
+          process.env.NODE_ENV === 'development'
+            ? 'http://127.0.0.1:5328/api/py/:path*'
+            : '/api/py',
+      },
+    ];
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
