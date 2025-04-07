@@ -1,18 +1,27 @@
 import {jsonifyError} from '@/lib/helpers';
-import Event from './event-model';
+import Event, {IEvent} from './event-model';
 import isEmail from 'validator/lib/isEmail';
+import {nextDBConnect} from '@/lib/db';
 
 export const getEvent = async (eventId: string) => {
   try {
-    const event = await Event.findById(eventId);
+    await nextDBConnect();
+    const event = (await Event.findById(eventId)) as IEvent;
     if (!event) return jsonifyError({message: 'Event not found', code: 404});
+    const eventDoc = event._doc;
+    // Convert ObjectId to string for comments
+    const comments = eventDoc.comments.map((comment: any) => ({
+      ...comment._doc,
+      _id: comment._id.toString(),
+    }));
     return {
       status: 'success',
       message: 'Event retrieved successfully',
       code: 200,
-      data: event,
+      data: {...event._doc, comments} as IEvent,
     };
   } catch (err) {
+    console.error(err);
     return jsonifyError({err, message: 'Error retrieving event'});
   }
 };

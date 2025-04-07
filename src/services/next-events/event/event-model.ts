@@ -8,7 +8,7 @@ export interface IEvent extends DocResult<IEvent> {
   date: string;
   image: string;
   isFeatured: boolean;
-  comments: Types.ObjectId[];
+  comments: {comment: string; author: string; email: string; _id?: string}[];
 }
 
 export type EventModel = Model<IEvent>;

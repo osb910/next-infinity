@@ -1,4 +1,4 @@
-import {dbConnect, mongoConnect} from './mongo';
+import {dbConnect} from './mongo';
 
 export const nextDBConnect = async ({
   dbName = 'next-infinity',
@@ -43,7 +43,7 @@ export const nextDBConnect = async ({
 
   const usedUri = useOldUri ? oldUri : uri;
   try {
-    const client = await mongoConnect(MONGODB_URI);
+    const client = await dbConnect({uri: oldUri, dbName});
     if (client) {
       console.info(`Connected to [${client.connections[0].name}] DB!`);
     }

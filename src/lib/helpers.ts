@@ -62,6 +62,7 @@ export const jsonifyError = ({
   code?: number;
   status?: ResponseStatus;
   errorMap?: {count: number} & Record<string, unknown>;
+  data?: null;
 } = {}) => {
   if (err?.code === 11000) {
     code = 409;
@@ -86,6 +87,7 @@ export const jsonifyError = ({
     message: error.message,
     code,
     ...(errorMap ?? {errors: errorMap}),
+    data: null,
   };
 
   return json;

@@ -1,8 +1,9 @@
+import {cache} from 'react';
+import {getEvent} from '@/services/next-events/event/controllers';
 import EventSummary from '@/components/events/event-detail/EventSummary';
 import EventLogistics from '@/components/events/event-detail/EventLogistics';
 import EventContent from '@/components/events/event-detail/EventContent';
 import ErrorAlert from '@/components/ErrorAlert/ErrorAlert';
-import {getURL} from '@/utils/path';
 import Comments from '@/components/events/input/Comments';
 import {AppPage, GetMetadata} from '@/types';
 
@@ -15,17 +16,21 @@ type GenEventMeta = GetMetadata<Params>;
 
 // export const dynamic = 'force-dynamic';
 
+const fetcher = cache(async (event: string) => await getEvent(event));
+
 export const generateMetadata: GenEventMeta = async ({params}) => {
   const {event} = await params;
-  const res = await fetch(getURL(`/api/events/${event}`), {
-    headers: {
-      'User-Agent': '*',
-      Accept: 'application/json',
-    },
-  });
-  const json = await res.json();
-  if (json.error) return {title: json.error, description: json.error};
-  const {title, description} = json;
+  // const res = await fetch(getURL(`/api/events/${event}`), {
+  //   headers: {
+  //     'User-Agent': '*',
+  //     Accept: 'application/json',
+  //   },
+  // });
+  // const json = await res.json();
+  const json = await fetcher(event);
+  if (json.status === 'error' || !json.data)
+    return {title: json.message, description: json.message};
+  const {title, description} = json.data;
 
   return {
     title,
@@ -36,16 +41,18 @@ export const generateMetadata: GenEventMeta = async ({params}) => {
 const EventDetail: EventPg = async ({params}) => {
   try {
     const {event} = await params;
-    console.log('[event] page', event);
-    const res = await fetch(getURL(`/api/events/${event}`), {
-      headers: {
-        'User-Agent': '*',
-        Accept: 'application/json',
-      },
-    });
-    const json = await res.json();
+    // const res = await fetch(getURL(`/api/events/${event}`), {
+    //   headers: {
+    //     'User-Agent': '*',
+    //     Accept: 'application/json',
+    //   },
+    // });
+    // const json = await res.json();
+    const json = await fetcher(event);
     if (json.status === 'error') return <ErrorAlert>{json.message}</ErrorAlert>;
-    const {title, description, location, date, image} = json.data;
+    const eventDoc = json.data;
+    if (!eventDoc) return null;
+    const {title, description, location, date, image} = eventDoc;
     return (
       <>
         <EventSummary title={title} />
@@ -59,7 +66,7 @@ const EventDetail: EventPg = async ({params}) => {
           <p>{description}</p>
         </EventContent>
         <Comments
-          comments={json.data.comments}
+          comments={eventDoc.comments}
           event={event}
         />
       </>

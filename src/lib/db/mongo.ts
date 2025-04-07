@@ -23,38 +23,40 @@ const opts = {
   waitQueueTimeoutMS: 5000, // Timeout for connection queue
 };
 
-export const mongoConnect = async (
-  uri: string,
-  dbName?: string
-): Promise<any> => {
-  const db = connection?.db;
-  if (dbName && dbName !== db?.databaseName) {
-    connection.useDb(dbName);
-    return;
-  }
-  if (db) {
-    console.log(`Already connected to ${db.databaseName}!`);
-    return;
-  }
-  try {
-    console.log('Connecting to MongoDB...');
-    const client = await connect(uri);
+// export const mongoConnect = async (
+//   uri: string,
+//   dbName?: string
+// ): Promise<any> => {
+//   const db = connection?.db;
+//   if (dbName && dbName !== db?.databaseName) {
+//     connection.useDb(dbName);
+//     return;
+//   }
+//   if (db) {
+//     console.log(`Already connected to ${db.databaseName}!`);
+//     return;
+//   }
+//   try {
+//     console.log('Connecting to MongoDB...');
+//     const client = await connect(uri, opts);
 
-    if (dbName) {
-      connection.useDb(dbName);
-    }
-    console.log(`Connected to ${client.connections[0].name} DB!`);
-    return client;
-  } catch (err) {
-    if (!(err instanceof Error)) return;
-    console.error(`Connecting to the database failed! ${err.message}`);
-    throw err;
-  }
-};
+//     if (dbName) {
+//       connection.useDb(dbName);
+//     }
+//     console.log(`Connected to ${client.connections[0].name} DB!`);
+//     return client;
+//   } catch (err) {
+//     if (!(err instanceof Error)) return;
+//     console.error(`Connecting to the database failed! ${err.message}`);
+//     throw err;
+//   }
+// };
 
 export async function dbConnect({uri, dbName}: {uri: string; dbName?: string}) {
   const db = connection?.db;
-  if (dbName && dbName !== db?.databaseName) {
+
+  if (db && dbName && dbName !== db?.databaseName) {
+    console.log(`Switching to ${dbName} DB...`);
     connection.useDb(dbName);
     return;
   }
@@ -65,11 +67,12 @@ export async function dbConnect({uri, dbName}: {uri: string; dbName?: string}) {
   }
 
   if (cached.conn && cached.conn.readyState === 1) {
+    console.log('Using cached MongoDB connection...');
     return cached.conn;
   }
 
-  // Wait for an in-progress connection if one exists
   if (cached.promise) {
+    console.log('Using in-progress MongoDB connection...');
     cached.conn = await cached.promise;
     return cached.conn;
   }

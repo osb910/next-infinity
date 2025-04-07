@@ -13,7 +13,7 @@ const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {
   const {createToast} = useToaster();
 
   const toggleComments = () => {
-    setShowComments(prevStatus => !prevStatus);
+    setShowComments((prevStatus) => !prevStatus);
   };
 
   const addComment = async (commentData: Comment) => {
@@ -21,7 +21,7 @@ const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {
       const json: any = await ky
         .put(`/api/events/${event}/comment`, {json: commentData})
         .json();
-      setClientComments(current => [
+      setClientComments((current) => [
         {...json, _id: crypto.randomUUID()},
         ...current,
       ]);
