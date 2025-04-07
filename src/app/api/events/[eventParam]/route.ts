@@ -3,12 +3,12 @@ import type {AppRoute} from '@/types';
 import {jsonifyError} from '@/lib/helpers';
 import {getEvent} from '@/services/next-events/event/controllers';
 
-export type EventParams = {event: string};
+export type EventParams = {eventParam: string};
 export const GET: AppRoute<EventParams> = async (req, {params}) => {
   let json;
   try {
-    const {event} = await params;
-    json = await getEvent(event);
+    const {eventParam} = await params;
+    json = await getEvent(eventParam);
   } catch (err) {
     json = jsonifyError({err});
   }
