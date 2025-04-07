@@ -1,11 +1,8 @@
-// import {join} from 'path';
+import {join} from 'path';
 import Link from 'next/link';
 import Poster from '@/components/Poster/Poster';
 import Logo from '@/components/Logo';
-import {
-  // calculateDirSize,
-  getDirNames,
-} from '@/utils/file';
+import {calculateDirSize, getDirNames} from '@/utils/file';
 import styles from './page.module.css';
 
 const Home = async () => {
@@ -18,35 +15,36 @@ const Home = async () => {
     const appPath = 'src/app';
     const appDirPromise = getDirNames(appPath);
     const miniAppsDirPromise = getDirNames(`${appPath}/mini-apps`);
-    const [appDir, miniApps] = await Promise.all([
+    const [appDir, miniAppsDir] = await Promise.all([
       appDirPromise,
       miniAppsDirPromise,
     ]);
 
-    const projects = appDir.filter(
-      ({name}) =>
-        ![
-          'api',
-          'mini-apps',
-          'nasa-mission-control',
-          'test',
-          'py-regex',
-        ].includes(name)
-    );
-    // .map(async ({name}) => ({
-    //   name,
-    //   size: await calculateDirSize(join(appPath, name)),
-    // }));
+    const projectsPromises = appDir
+      .filter(
+        ({name}) =>
+          ![
+            'api',
+            'mini-apps',
+            'nasa-mission-control',
+            'test',
+            'py-regex',
+          ].includes(name)
+      )
+      .map(async ({name}) => ({
+        name,
+        size: await calculateDirSize(join(appPath, name)),
+      }));
 
-    // const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
-    //   name,
-    //   size: await calculateDirSize(join(appPath, 'mini-apps', name)),
-    // }));
+    const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
+      name,
+      size: await calculateDirSize(join(appPath, 'mini-apps', name)),
+    }));
 
-    // const [projects, miniApps] = await Promise.all([
-    //   Promise.all(projectsPromises),
-    //   Promise.all(miniAppsPromises),
-    // ]);
+    const [projects, miniApps] = await Promise.all([
+      Promise.all(projectsPromises),
+      Promise.all(miniAppsPromises),
+    ]);
 
     return (
       <>
@@ -63,7 +61,7 @@ const Home = async () => {
             <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
             <ol className={styles.apps}>
               {projects
-                // .sort((a, b) => b.size - a.size)
+                .sort((a, b) => b.size - a.size)
                 .map(({name}) => (
                   <Poster
                     poster={`/img/${name}.png`}
@@ -82,7 +80,7 @@ const Home = async () => {
             <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
             <ol className={styles.apps}>
               {miniApps
-                // .sort((a, b) => b.size - a.size)
+                .sort((a, b) => b.size - a.size)
                 .map(({name}) => (
                   <Poster
                     poster={`/img/${name}.png`}
