@@ -61,17 +61,20 @@ export const GET: GetRoute = async (req) => {
     //     {status: 422}
     //   );
     const appPath = 'src/app';
-    const appDir = (await getDirNames(appPath)).map(async ({name}) => ({
-      name,
-      size: await calculateDirSize(join(appPath, name)),
-    }));
-    console.log({appDir});
+    const appDir = await getDirNames(appPath);
+    const projectsPromises = appDir
+      .filter(({name}) => !['api', 'mini-apps', 'test'].includes(name))
+      .map(async ({name}) => ({
+        name,
+        size: await calculateDirSize(join(appPath, name)),
+      }));
+    const projects = Promise.all(projectsPromises);
     return NextResponse.json(
       {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: appDir,
+        data: projects,
       },
       {status: 200}
     );
