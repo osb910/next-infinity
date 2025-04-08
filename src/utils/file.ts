@@ -127,7 +127,7 @@ export const calculateDirSize = async (dir: string): Promise<number> => {
   const files = await fs.readdir(dir, {withFileTypes: true});
 
   const sizesPromises = files.map(async (file) => {
-    const path = join(file.path, file.name);
+    const path = join(file.parentPath, file.name);
 
     if (file.isDirectory()) return await calculateDirSize(path);
 
