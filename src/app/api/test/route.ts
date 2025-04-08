@@ -2,6 +2,7 @@ import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
 // import pyRegex from '@/lib/text/regex/py-regex';
 import {getPath} from '@/utils/path';
+import {getDirNames} from '@/utils/file';
 // import {getDirNames, readDir} from '@/utils/file';
 
 export type GetRoute = AppRoute;
@@ -58,14 +59,19 @@ export const GET: GetRoute = async (req) => {
     //     },
     //     {status: 422}
     //   );
+    const appPath = 'src/app';
+    const appDir = await getDirNames(appPath);
+    // .map(async ({name}) => ({
+    //   name,
+    //   size: await calculateDirSize(join(appPath, name)),
+    // }));;
+    console.log({appDir});
     return NextResponse.json(
       {
         status: 'success',
         message: 'PyRegex got a match',
         code: 200,
-        data: {
-          vercelPy,
-        },
+        data: appDir,
       },
       {status: 200}
     );

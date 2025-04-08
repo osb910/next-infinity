@@ -20,31 +20,31 @@ const Home = async () => {
       miniAppsDirPromise,
     ]);
 
-    const projectsPromises = appDir
-      .filter(
-        ({name}) =>
-          ![
-            'api',
-            'mini-apps',
-            'nasa-mission-control',
-            'test',
-            'py-regex',
-          ].includes(name)
-      )
-      .map(async ({name}) => ({
-        name,
-        size: await calculateDirSize(join(appPath, name)),
-      }));
+    const projectsPromises = appDir.filter(
+      ({name}) =>
+        ![
+          'api',
+          'mini-apps',
+          'nasa-mission-control',
+          'test',
+          'py-regex',
+        ].includes(name)
+    );
 
-    const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
-      name,
-      size: await calculateDirSize(join(appPath, 'mini-apps', name)),
-    }));
+    // .map(async ({name}) => ({
+    //   name,
+    //   size: await calculateDirSize(join(appPath, name)),
+    // }));
 
-    const [projects, miniApps] = await Promise.all([
-      Promise.all(projectsPromises),
-      Promise.all(miniAppsPromises),
-    ]);
+    // const miniAppsPromises = miniAppsDir.map(async ({name}) => ({
+    //   name,
+    //   size: await calculateDirSize(join(appPath, 'mini-apps', name)),
+    // }));
+
+    // const [projects, miniApps] = await Promise.all([
+    //   Promise.all(projectsPromises),
+    //   Promise.all(miniAppsPromises),
+    // ]);
 
     return (
       <>
@@ -60,8 +60,8 @@ const Home = async () => {
           <section className={styles.section}>
             <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
             <ol className={styles.apps}>
-              {projects
-                .sort((a, b) => b.size - a.size)
+              {projectsPromises
+                // .sort((a, b) => b.size - a.size)
                 .map(({name}) => (
                   <Poster
                     poster={`/img/${name}.png`}
@@ -77,10 +77,12 @@ const Home = async () => {
             </ol>
           </section>
           <section className={styles.section}>
-            <h2 className={styles.subtitle}>Mini-Apps ({miniApps.length})</h2>
+            <h2 className={styles.subtitle}>
+              Mini-Apps ({miniAppsDir.length})
+            </h2>
             <ol className={styles.apps}>
-              {miniApps
-                .sort((a, b) => b.size - a.size)
+              {miniAppsDir
+                // .sort((a, b) => b.size - a.size)
                 .map(({name}) => (
                   <Poster
                     poster={`/img/${name}.png`}
