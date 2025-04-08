@@ -150,10 +150,13 @@ export const getDirInfo = async (
 
     let folders = list
       .filter((item) => item.isDirectory())
-      .map(({path, name}) => ({
+      .map(({path, parentPath, name}) => ({
         name,
-        dir: path,
-        path: join(path, name),
+        dir: process.env.NODE_ENV === 'development' ? path : parentPath,
+        path: join(
+          process.env.NODE_ENV === 'development' ? path : parentPath,
+          name
+        ),
       }));
 
     if (filter && filter.length > 0) {
