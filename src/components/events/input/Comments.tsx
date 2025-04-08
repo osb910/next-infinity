@@ -1,13 +1,24 @@
 'use client';
-import {useState} from 'react';
+
+import {useActionState, useLayoutEffect, useState} from 'react';
 
 import CommentList from './CommentList';
-import NewComment, {Comment} from './NewComment';
+import NewComment, {type Comment} from './NewComment';
 import styles from './Comments.module.css';
 import {useToaster} from '@/ui/Toaster';
-import ky from 'ky';
+import {createCommentAction} from '@/services/next-events/event/controllers';
 
 const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {
+  const [formState, formAction, isPending] = useActionState(
+    createCommentAction,
+    {
+      status: 'notice',
+      eventParam: event,
+      message: '',
+      data: null,
+    }
+  );
+  console.log({isPending});
   const [showComments, setShowComments] = useState(false);
   const [clientComments, setClientComments] = useState<Comment[]>(comments);
   const {createToast} = useToaster();
@@ -16,29 +27,29 @@ const Comments = ({event, comments}: {event: string; comments: Comment[]}) => {
     setShowComments((prevStatus) => !prevStatus);
   };
 
-  const addComment = async (commentData: Comment) => {
-    try {
-      const json: any = await ky
-        .put(`/api/events/${event}/comment`, {json: commentData})
-        .json();
-      setClientComments((current) => [
-        {...json, _id: crypto.randomUUID()},
-        ...current,
-      ]);
-      createToast(json.status, json.message);
-    } catch (err) {
-      if (!(err instanceof Error)) return;
-      console.log(err);
-      createToast('error', `Failed to add comment!\n${err.message}`);
+  useLayoutEffect(() => {
+    const toast = () =>
+      createToast(formState.status, <p>{formState.message}</p>, 'infinite');
+
+    if (formState.status === 'error' && formState.message) toast();
+
+    if (formState.status === 'success' && formState.message) {
+      toast();
+      setClientComments(formState.data);
     }
-  };
+  }, [formState, createToast]);
 
   return (
     <section className={styles.comments}>
       <button onClick={toggleComments}>
         {showComments ? 'Hide' : 'Show'} Comments
       </button>
-      {showComments && <NewComment onAddComment={addComment} />}
+      {showComments && (
+        <NewComment
+          onAddComment={formAction}
+          isPending={isPending}
+        />
+      )}
       {showComments && <CommentList comments={clientComments} />}
     </section>
   );

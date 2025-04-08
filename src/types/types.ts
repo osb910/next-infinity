@@ -32,9 +32,8 @@ export interface JsonRes<T = unknown> extends Partial<P8n> {
   status: ResponseStatus;
   code: number;
   message: string;
-  data?: T & {
-    errors?: {[x: string]: unknown};
-  };
+  data?: T;
+  errors?: {[x: string]: unknown};
 }
 
 export interface GeoLocation {

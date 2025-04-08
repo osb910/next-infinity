@@ -234,6 +234,8 @@ body {
 .rtl {
   direction: rtl;
   font-family: Lotus;
+  line-height: 1.4;
+  font-size: 1.125rem;
 }
 
 .ltr {
