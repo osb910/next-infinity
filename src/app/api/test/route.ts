@@ -2,9 +2,6 @@ import {NextResponse} from 'next/server';
 import type {AppRoute} from '@/types';
 // import pyRegex from '@/lib/text/regex/py-regex';
 import {getPath} from '@/utils/path';
-import {calculateDirSize, getDirNames} from '@/utils/file';
-import {join} from 'path';
-// import {getDirNames, readDir} from '@/utils/file';
 
 export type GetRoute = AppRoute;
 
@@ -60,23 +57,11 @@ export const GET: GetRoute = async (req) => {
     //     },
     //     {status: 422}
     //   );
-    const appPath = 'src/app';
-    const appDir = await getDirNames(appPath);
-    const projectsPromises = appDir
-      .filter(({name}) => !['api', 'mini-apps', 'test'].includes(name))
-      .map(async ({name}) => ({
-        name,
-        size: await calculateDirSize(join(appPath, name)),
-      }));
-    const projects = (await Promise.all(projectsPromises)).sort(
-      (a, b) => b.size - a.size
-    );
     return NextResponse.json(
       {
         status: 'success',
-        message: 'PyRegex got a match',
+        message: 'Test done',
         code: 200,
-        data: projects,
       },
       {status: 200}
     );
