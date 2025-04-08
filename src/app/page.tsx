@@ -58,7 +58,9 @@ const Home = async () => {
         </header>
         <main className={styles.main}>
           <section className={styles.section}>
-            <h2 className={styles.subtitle}>Projects ({projects.length})</h2>
+            <h2 className={styles.subtitle}>
+              Projects ({projectsPromises.length})
+            </h2>
             <ol className={styles.apps}>
               {projectsPromises
                 // .sort((a, b) => b.size - a.size)
