@@ -2,6 +2,8 @@ import {NextResponse} from 'next/server';
 import Event from '@/services/next-events/event';
 import {nextDBConnect} from '@/lib/db';
 
+export const dynamic = 'force-static';
+
 export const GET = async () => {
   try {
     await nextDBConnect({dbName: 'next-events'});

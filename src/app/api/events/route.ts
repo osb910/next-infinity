@@ -2,6 +2,8 @@ import {NextResponse} from 'next/server';
 import Event from '@/services/next-events/event/event-model';
 import {nextDBConnect} from '@/lib/db';
 
+export const dynamic = 'force-static';
+
 export const GET = async () => {
   try {
     // const isFeatured = req.nextUrl.searchParams.has('featured');
