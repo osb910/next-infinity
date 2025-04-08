@@ -68,7 +68,9 @@ export const GET: GetRoute = async (req) => {
         name,
         size: await calculateDirSize(join(appPath, name)),
       }));
-    const projects = await Promise.all(projectsPromises);
+    const projects = (await Promise.all(projectsPromises)).sort(
+      (a, b) => b.size - a.size
+    );
     return NextResponse.json(
       {
         status: 'success',
