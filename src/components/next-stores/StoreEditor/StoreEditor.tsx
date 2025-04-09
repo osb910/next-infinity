@@ -31,7 +31,7 @@ const features = [
 ];
 
 const StoreEditor = ({store}: StoreEditorProps) => {
-  const [formState, formAction] = useActionState(saveStore, {
+  const [formState, formAction, isPending] = useActionState(saveStore, {
     status: 'idle',
     message: null,
     data: store ?? null,

@@ -13,6 +13,7 @@ export const createStore = async (
   body: FormData,
   userId: string
 ): Promise<any> => {
+  await nextDBConnect();
   const data = Object.fromEntries(body);
   const {name, description, address, lat, lng} = data;
   const tags = body.getAll('tags');
@@ -47,9 +48,7 @@ export const createStore = async (
       const err = new Error('Something went wrong!');
       throw err;
     }
-    const doc = (await store.save()) as HydratedDocument<IStore> & {
-      _doc: IStore;
-    };
+    const doc = (await store.save()) as IStore;
     return {
       data: doc._doc,
       status: 'success',
@@ -178,6 +177,81 @@ export const getStore = async (
 };
 
 export const updateStore = async (req: NextRequest, storeParam: string) => {
+  await nextDBConnect();
+  const userId = req.headers.get('X-USER-ID');
+  const storeQuery = getModelQuery(storeParam);
+  try {
+    const store = (await Store.findOne(storeQuery)) as IStore;
+    if (store.author.toString() !== userId) {
+      return {
+        status: 'error',
+        message: 'You are not the author of this store!',
+        code: 400,
+      };
+    }
+    const body = await req.formData();
+    const data = Object.fromEntries(body);
+    const {name, description, address, lat, lng} = data;
+    const tags = body.getAll('tags');
+
+    const file =
+      body.get('photo') &&
+      (await processUploadFile(body, {field: 'photo', folder: 'next-stores'}));
+
+    const update = {
+      name,
+      description,
+      tags,
+      location: {
+        type: 'Point',
+        coordinates: [+lng, +lat],
+        address,
+      },
+      ...(file && {
+        photo: {
+          key: file?.fileName,
+          title: file?.title,
+          ext: file?.ext,
+          mimeType: file?.mimetype,
+          size: file?.size,
+          readableSize: file?.readableSize,
+        },
+      }),
+    };
+
+    const res = (await Store.findOneAndUpdate(storeQuery, update, {
+      new: true,
+      runValidators: true,
+    })) as HydratedDocument<IStore> & {_doc: HydratedDocument<IStore>};
+
+    if (!res) {
+      return {
+        status: 'error',
+        message: 'Something went wrong',
+        code: 500,
+      };
+    }
+    return {
+      status: 'success',
+      code: 201,
+      message: `Successfully updated ${res.name}!`,
+      data: res._doc,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      status: 'error',
+      message: (err as Error).message,
+      code: 500,
+    };
+  }
+};
+
+export const updateStoreAction = async (
+  req: NextRequest,
+  storeParam: string
+) => {
+  await nextDBConnect();
   const userId = req.headers.get('X-USER-ID');
   const storeQuery = getModelQuery(storeParam);
   try {
@@ -249,6 +323,7 @@ export const updateStore = async (req: NextRequest, storeParam: string) => {
 
 export const deleteAllStores = async (): Promise<any> => {
   try {
+    await nextDBConnect();
     const res = await Store.deleteMany({});
     if (!res) {
       const err = new Error('Something went wrong!');
