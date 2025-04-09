@@ -127,9 +127,8 @@ export const getStore = async (
 }> => {
   const storeQuery = getModelQuery(storeParam);
   try {
-    const store = (await Store.findOne(storeQuery)) as IStore & {
-      _doc: IStore;
-    };
+    const store = (await Store.findOne(storeQuery)) as IStore;
+
     if (!store) {
       return {
         status: 'error',

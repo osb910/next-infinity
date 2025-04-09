@@ -100,7 +100,7 @@ const SingleStore = async ({store, isPlaceholder}: SingleStoreProps) => {
         </section>
         <Image
           className={styles.storeImage}
-          src={`/api/next-stores/files/${photo?.key}`}
+          src={`/api/next-stores/files?key=${photo?.key}`}
           alt='Store Image'
           width={360}
           height={360}

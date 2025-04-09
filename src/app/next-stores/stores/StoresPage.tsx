@@ -24,7 +24,9 @@ const fetcher = cache(async (p: string) => {
 export const generateMetadata: StoresGenMetadata = async ({searchParams}) => {
   const {p} = await searchParams;
   const json = await fetcher(p);
-  const randStore = json.status === 'error' ? [] : randArrayEl(json.data ?? []);
+  const randStore = (
+    json.status === 'error' ? [] : randArrayEl(json.data ?? [])
+  ) as IStoreWithReviews;
   return {
     title: 'Stores',
     description: 'Browse all stores',

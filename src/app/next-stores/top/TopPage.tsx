@@ -38,7 +38,7 @@ const TopPage = async () => {
                 <td>
                   <Link href={`stores/${store.slug}`}>
                     <Image
-                      src={`/api/next-stores/files/${store?.photo?.key}`}
+                      src={`/api/next-stores/files?key=${store?.photo?.key}`}
                       alt={store.name}
                       width={100}
                       height={100}

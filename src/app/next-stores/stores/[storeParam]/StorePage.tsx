@@ -1,5 +1,5 @@
 import {cache} from 'react';
-import {type IStoreWithReviews} from '@/services/next-stores/store';
+import {getStore, type IStoreWithReviews} from '@/services/next-stores/store';
 import SingleStore from '@/components/next-stores/SingleStore';
 import ErrorAlert from '@/components/ErrorAlert';
 import {getURL} from '@/utils/path';
@@ -12,8 +12,9 @@ export type StoreGenMetadata = GetMetadata<{storeParam: string}>;
 export const revalidate = 60 * 60 * 12;
 
 const fetcher = cache(async (param: string) => {
-  const res = await fetch(getURL(`/api/next-stores/stores/${param}`));
-  const json = (await res.json()) as JsonRes<IStoreWithReviews>;
+  // const res = await fetch(getURL(`/api/next-stores/stores/${param}`));
+  // const json = (await res.json()) as JsonRes<IStoreWithReviews>;
+  const json = (await getStore(param)) as JsonRes<IStoreWithReviews>;
   return json;
 });
 
@@ -33,7 +34,7 @@ export const generateMetadata: StoreGenMetadata = async ({params}) => {
             description: json.data?.description,
             images: [
               {
-                url: `/api/next-stores/files/${json.data?.photo?.key}`,
+                url: `/api/next-stores/files?key=${json.data?.photo?.key}`,
                 width: 800,
                 height: 600,
                 alt: json.data?.name,
@@ -43,7 +44,7 @@ export const generateMetadata: StoreGenMetadata = async ({params}) => {
           twitter: {
             title: json.data?.name,
             description: json.data?.description,
-            images: [`/api/next-stores/files/${json.data?.photo?.key}`],
+            images: [`/api/next-stores/files?key=${json.data?.photo?.key}`],
           },
         };
   return metadata;

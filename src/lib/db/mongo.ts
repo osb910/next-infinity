@@ -1,6 +1,11 @@
-import {connect, connection, type Collection, type Document} from 'mongoose';
+import {
+  connect,
+  connection,
+  type Collection,
+  type Document,
+  type ConnectOptions,
+} from 'mongoose';
 
-// import mongoose from 'mongoose';
 declare global {
   // eslint-disable-next-line
   var mongoose: any; // This must be a `var` and not a `let / const`
@@ -12,7 +17,7 @@ if (!cached) {
   cached = global.mongoose = {conn: null, promise: null};
 }
 
-const opts = {
+const opts: ConnectOptions = {
   // bufferCommands: false,
   maxPoolSize: 1,
   minPoolSize: 1,
@@ -23,34 +28,34 @@ const opts = {
   waitQueueTimeoutMS: 5000, // Timeout for connection queue
 };
 
-// export const mongoConnect = async (
-//   uri: string,
-//   dbName?: string
-// ): Promise<any> => {
-//   const db = connection?.db;
-//   if (dbName && dbName !== db?.databaseName) {
-//     connection.useDb(dbName);
-//     return;
-//   }
-//   if (db) {
-//     console.log(`Already connected to ${db.databaseName}!`);
-//     return;
-//   }
-//   try {
-//     console.log('Connecting to MongoDB...');
-//     const client = await connect(uri, opts);
+export const mongoConnect = async (
+  uri: string,
+  dbName?: string
+): Promise<any> => {
+  const db = connection?.db;
+  if (dbName && dbName !== db?.databaseName) {
+    connection.useDb(dbName);
+    return;
+  }
+  if (db) {
+    console.log(`Already connected to ${db.databaseName}!`);
+    return;
+  }
+  try {
+    console.log('Connecting to MongoDB...');
+    const client = await connect(uri, opts);
 
-//     if (dbName) {
-//       connection.useDb(dbName);
-//     }
-//     console.log(`Connected to ${client.connections[0].name} DB!`);
-//     return client;
-//   } catch (err) {
-//     if (!(err instanceof Error)) return;
-//     console.error(`Connecting to the database failed! ${err.message}`);
-//     throw err;
-//   }
-// };
+    if (dbName) {
+      connection.useDb(dbName);
+    }
+    console.log(`Connected to ${client.connections[0].name} DB!`);
+    return client;
+  } catch (err) {
+    if (!(err instanceof Error)) return;
+    console.error(`Connecting to the database failed! ${err.message}`);
+    throw err;
+  }
+};
 
 export async function dbConnect({uri, dbName}: {uri: string; dbName?: string}) {
   const db = connection?.db;

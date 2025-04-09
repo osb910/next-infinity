@@ -41,9 +41,14 @@ export const nextDBConnect = async ({
 
   const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.ugcdgqg.mongodb.net/${dbName}`;
 
-  const usedUri = useOldUri ? oldUri : uri;
+  const usedUri =
+    process.env.NODE_ENV === 'production'
+      ? MONGODB_URI
+      : useOldUri
+      ? oldUri
+      : uri;
   try {
-    const client = await dbConnect({uri: oldUri, dbName});
+    const client = await dbConnect({uri: usedUri, dbName});
     if (client) {
       console.info(`Connected to [${client.connections[0].name}] DB!`);
     }
