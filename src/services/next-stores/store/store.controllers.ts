@@ -7,6 +7,7 @@ import {getP8n} from '@/lib/helpers';
 import type {IStore, IStoreWithReviews, StoreModel} from './store.types';
 import {type HydratedDocument} from 'mongoose';
 import {NextRequest} from 'next/server';
+import {nextDBConnect} from '@/lib/db';
 
 export const createStore = async (
   body: FormData,
@@ -125,6 +126,7 @@ export const getStore = async (
   code: number;
   data?: any;
 }> => {
+  await nextDBConnect();
   const storeQuery = getModelQuery(storeParam);
   try {
     const store = (await Store.findOne(storeQuery)) as IStore;
