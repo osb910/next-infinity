@@ -33,7 +33,7 @@ export const generateMetadata: StoresGenMetadata = async ({searchParams}) => {
       description: 'Browse all stores',
       images: [
         {
-          url: `/api/next-stores/files/${randStore?.photo?.key}`,
+          url: `/api/next-stores/files?key=${randStore?.photo?.key}`,
           width: 800,
           height: 600,
           alt: 'Stores',
@@ -43,7 +43,7 @@ export const generateMetadata: StoresGenMetadata = async ({searchParams}) => {
     twitter: {
       title: 'Stores',
       description: 'Browse all stores',
-      images: [`/api/next-stores/files/${randStore?.photo?.key}`],
+      images: [`/api/next-stores/files?key=${randStore?.photo?.key}`],
     },
   };
 };

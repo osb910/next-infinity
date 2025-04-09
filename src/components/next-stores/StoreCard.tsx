@@ -52,7 +52,11 @@ const StoreCard = ({item, userId, isPlaceholder}: StoreProps) => {
     .slice(0, 25)
     .join(' ');
   return (
-    <article className={styles.store} data-item={id} id={id}>
+    <article
+      className={styles.store}
+      data-item={id}
+      id={id}
+    >
       <section className={styles.storeHero}>
         <section className={styles.storeActions}>
           {!!userId && <FavoriteToggler favoredId={id!} />}
@@ -64,7 +68,10 @@ const StoreCard = ({item, userId, isPlaceholder}: StoreProps) => {
               >
                 <Edit size={28} />
               </Link>
-              <Eraser itemId={id!} endpoint={`/api/next-stores/stores/${id}`} />
+              <Eraser
+                itemId={id!}
+                endpoint={`/api/next-stores/stores/${id}`}
+              />
             </>
           )}
           {!!item?.reviews?.length && (
@@ -76,7 +83,7 @@ const StoreCard = ({item, userId, isPlaceholder}: StoreProps) => {
         </section>
         <Image
           className={styles.storeImage}
-          src={`/api/next-stores/files/${item?.photo?.key}`}
+          src={`/api/next-stores/files?key=${item?.photo?.key}`}
           alt='Store Image'
           width={360}
           height={360}
@@ -85,7 +92,10 @@ const StoreCard = ({item, userId, isPlaceholder}: StoreProps) => {
           <Link href={`/next-stores/stores/${item.slug}`}>{item.name}</Link>
         </h2>
       </section>
-      <p className={styles.storeDescription} dir='auto'>
+      <p
+        className={styles.storeDescription}
+        dir='auto'
+      >
         {truncatedDescription}
         {item.description.split(' ').length > 25 && '...'}
       </p>
