@@ -6,7 +6,7 @@ import cls from './Footer.module.css';
 import Icon from '@/ui/Icon/lucide';
 import {FaDiscord} from 'react-icons/fa';
 import IconLabel from '../IconLabel';
-import {Locale} from '@/l10n/l10n.types';
+import type {Locale} from '@/l10n/l10n.types';
 import {localize} from '@/l10n';
 
 interface FooterProps {
@@ -14,13 +14,13 @@ interface FooterProps {
 }
 
 const Footer = async ({locale}: FooterProps) => {
-  const {l6e} = await localize(locale);
+  const {l6e, L6e} = await localize(locale);
   const navLinks = [
     {
-      to: '/api/next-blog/rss',
+      to: l6e('nextBlog.links.rss'),
       label: (
         <IconLabel
-          label='RSS'
+          label={l6e('nextBlog.links.rssLabel')}
           className={cls.iconLink}
         >
           <Icon name='rss' />
@@ -32,7 +32,7 @@ const Footer = async ({locale}: FooterProps) => {
       to: l6e('nextBlog.links.github'),
       label: (
         <IconLabel
-          label='GitHub'
+          label={l6e('nextBlog.links.githubLabel')}
           className={cls.iconLink}
         >
           <Icon name='github' />
@@ -43,7 +43,7 @@ const Footer = async ({locale}: FooterProps) => {
       to: l6e('nextBlog.links.linkedin'),
       label: (
         <IconLabel
-          label='LinkedIn'
+          label={l6e('nextBlog.links.linkedinLabel')}
           className={cls.iconLink}
         >
           <Icon name='linkedin' />
@@ -54,7 +54,7 @@ const Footer = async ({locale}: FooterProps) => {
       to: l6e('nextBlog.links.twitter'),
       label: (
         <IconLabel
-          label='Twitter'
+          label={l6e('nextBlog.links.twitterLabel')}
           className={cls.iconLink}
         >
           <Icon name='twitter' />
@@ -65,7 +65,7 @@ const Footer = async ({locale}: FooterProps) => {
       to: l6e('nextBlog.links.discord'),
       label: (
         <IconLabel
-          label='Discord'
+          label={l6e('nextBlog.links.discordLabel')}
           className={cls.iconLink}
         >
           <FaDiscord />
@@ -74,49 +74,30 @@ const Footer = async ({locale}: FooterProps) => {
     },
     {
       to: '/',
-      label: 'Next Infinity',
+      label: l6e('nextInfinity.site.title'),
     },
   ];
   return (
     <NavProvider>
       <footer className={cls.footer}>
-        <DecorativeSwoops />
         <section className={cls.body}>
           <Logo width='10rem' />
           <p className={cls.description}>{l6e('nextBlog.site.description')}</p>
           <p className={cls.attribution}>
-            Blog created with ❤️ by{' '}
-            <Link
-              href={l6e('nextBlog.links.github')}
-              target='_blank'
-            >
-              Omar Shareef
-            </Link>
-            .
+            <L6e
+              k='nextBlog.footer.blogCredit'
+              options={{ghLink: l6e('nextBlog.links.github')}}
+            />
           </p>
           <p className={cls.attribution}>
-            Blog template created by{' '}
-            <Link
-              href='https://www.joshwcomeau.com/'
-              target='_blank'
-            >
-              Josh W. Comeau
-            </Link>
-            . Check out{' '}
-            <Link
-              href='https://www.joyofreact.com/'
-              target='_blank'
-            >
-              The Joy of React
-            </Link>{' '}
-            to learn how to build dynamic React apps like this one!
+            <L6e k='nextBlog.footer.blogTemplateCredit' />
           </p>
           <small className={cls.copyright}>
-            All rights reserved | Copyright {new Date().getFullYear()}
+            <L6e k='nextBlog.footer.copyright' />
           </small>
         </section>
         <Nav className={cls.nav}>
-          <h2 className={cls.linkHeading}>Links</h2>
+          <h2 className={cls.linkHeading}>{l6e('nextBlog.footer.links')}</h2>
           <NavList className={cls.linkList}>
             {navLinks.map(({to, label, external}) => (
               <NavItem

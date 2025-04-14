@@ -5,6 +5,7 @@ import nav from './nav';
 import articles from './articles';
 import home from './home';
 import contact from './contact';
+import footer from './footer';
 
 export const nextBlog = (locale: Locale, options?: Record<string, any>) => ({
   site: site(locale, options),
@@ -13,4 +14,5 @@ export const nextBlog = (locale: Locale, options?: Record<string, any>) => ({
   articles: articles(locale, options),
   home: home(locale, options),
   contact: contact(locale, options),
+  footer: footer(locale, options),
 });

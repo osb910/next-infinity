@@ -5,6 +5,7 @@ import Image from 'next/image';
 import DateTooltip from '../DateTooltip';
 import Separator from '@/ui/Separator';
 import {type Locale} from '@/l10n';
+import {AR_REGEX} from '@/lib/text/regex/ar-regex';
 
 const loadingStyle = {fontFamily: 'var(--fn-loading)'};
 
@@ -35,7 +36,7 @@ const BlogPostHero = ({
       dir='auto'
       {...rest}
     >
-      <h1>{title}</h1>
+      <h1 className={AR_REGEX.anyChar.test(title) ? 'rtl' : 'ltr'}>{title}</h1>
       {img && (
         <figure className={cls.image}>
           <Image

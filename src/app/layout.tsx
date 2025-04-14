@@ -125,6 +125,7 @@ const RootLayout = async ({children}: {children: React.ReactNode}) => {
     >
       <body
         dir={site === 'next-blog' ? blogDir : 'ltr'}
+        className={clsx(site, site === 'next-blog' && blogDir, theme)}
         suppressHydrationWarning
       >
         <ObeyMotionPref>

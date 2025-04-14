@@ -17,6 +17,8 @@ import {
 import {env} from '@/lib/helpers';
 import {localize} from '@/l10n';
 import {getLocale} from '@/l10n/getL10n';
+import clsx from 'clsx';
+import {AR_REGEX} from '@/lib/text/regex/ar-regex';
 
 interface BlogPostProps {
   data: {
@@ -44,14 +46,20 @@ const BlogPost = async ({data, slug}: BlogPostProps) => {
         locale={locale}
       />
       <aside
-        className={cls.abstract}
+        className={clsx(
+          cls.abstract,
+          AR_REGEX.anyChar.test(data.frontmatter.abstract) ? 'rtl' : 'ltr'
+        )}
         dir='auto'
       >
         {data.frontmatter.abstract}
       </aside>
       <section className={cls.content}>
         <main
-          className={cls.body}
+          className={clsx(
+            cls.body,
+            AR_REGEX.anyChar.test(data.content) ? 'rtl' : 'ltr'
+          )}
           dir='auto'
         >
           <Mdx

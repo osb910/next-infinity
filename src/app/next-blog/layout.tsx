@@ -7,6 +7,7 @@ import Footer from '@/components/next-blog/Footer';
 import {ThemeProvider} from '@/ui/ThemeSwitch/useTheme';
 import type {GetLayoutMetadata, Layout} from '@/types';
 import cls from './HomePage.module.css';
+// import '../fonts.css';
 import './styles.css';
 import {localize} from '@/l10n';
 

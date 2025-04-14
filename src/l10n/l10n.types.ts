@@ -2,6 +2,7 @@ import type {Langs, Loc, DottedPaths, DotPathValue} from '@/types';
 import {type ReactElement} from 'react';
 import THE_DICTIONARY from '@/dictionaries';
 import {languages} from './config';
+import type {MdxProps} from '@/ui/Mdx/remote-client';
 
 export type Languages = Langs<typeof languages>;
 export type Locale = Loc<Languages>;
@@ -19,7 +20,10 @@ export type L6eFn = <K extends DottedL10n>(
   options?: Record<string, unknown>
 ) => DotPathValue<Dictionary, K>;
 
-export type L6eComponent = <K extends DottedL10n>(props: {
-  k: K;
-  forceMdx?: boolean;
-}) => ReactElement | undefined;
+export type L6eComponent = <K extends DottedL10n>(
+  props: {
+    k: K;
+    forceMdx?: boolean;
+    options?: Record<string, unknown>;
+  } & Omit<MdxProps, 'source'>
+) => ReactElement | undefined;

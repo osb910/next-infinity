@@ -8,9 +8,13 @@ export const noFullStop =
   /^(?!.+[؟؛]["»\])]?$|[«"][.!:،].+|.+[.!:،]["»]$)(["«]?)([^.!،:].*?[^.!،:؟؛])(["»]?)$/g;
 
 export const hasMdx = (text: string): boolean =>
+  // HTML tags
   /<[^>]*?>/.test(text) ||
-  /\[[^]]+\]\(https?:\/\/\S+\)/.test(text) ||
+  // Markdown links
+  /\[[^]+?\]\([^)]+?\)/.test(text) ||
+  // Markdown images
   /(^|[\n\r])\s*\d\.\s.*\s+\d\.\s/.test(text) ||
+  // Markdown bold/italic
   /\s([_*]){2}(?!\1).+?\1{2}/.test(text);
 
 // Octal escape sequences and backreferences are not allowed in a character class. If this was intended as an escape sequence, use the syntax '\x01' instead.

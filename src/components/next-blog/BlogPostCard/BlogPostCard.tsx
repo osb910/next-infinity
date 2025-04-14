@@ -10,6 +10,7 @@ import Separator from '@/ui/Separator';
 import {getLocale} from '@/l10n/getL10n';
 import {CSSProps} from '@/types';
 import {localize} from '@/l10n';
+import {AR_REGEX} from '@/lib/text/regex/ar-regex';
 
 export interface BlogPostCardProps {
   slug: string;
@@ -61,7 +62,12 @@ const BlogPostCard = async ({
         href={href}
         className={cls.title}
       >
-        <h3 dir='auto'>{title}</h3>
+        <h3
+          className={AR_REGEX.anyChar.test(title) ? 'rtl' : 'ltr'}
+          dir='auto'
+        >
+          {title}
+        </h3>
       </Link>
       <section
         className={cls.meta}
@@ -77,7 +83,12 @@ const BlogPostCard = async ({
         />
       </section>
       <p dir={dir}>
-        <span dir='auto'>{truncatedAbstract}</span>{' '}
+        <span
+          className={AR_REGEX.anyChar.test(truncatedAbstract) ? 'rtl' : 'ltr'}
+          dir='auto'
+        >
+          {truncatedAbstract}
+        </span>{' '}
         <Link
           href={href}
           className={cls.readMoreLink}

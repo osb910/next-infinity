@@ -31,6 +31,14 @@
   box-shadow: var(--shadow-page);
 }
 
+.body p {
+  font-size: 1.25rem;
+}
+
+.body code {
+  font-family: var(--fn-spline-sans-mono);
+}
+
 .body > * {
   grid-column: 2;
 }

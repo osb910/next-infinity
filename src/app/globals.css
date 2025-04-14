@@ -5,9 +5,9 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --fn-mono: ui-monospace, 'Source Code Pro', Menlo, Monaco, 'Cascadia Mono',
+  --fn-mono: Consolas, 'Courier New', 'Source Code Pro', ui-monospace, Menlo, Monaco, 'Cascadia Mono',
     'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Fira Mono',
-    'Droid Sans Mono', 'Courier New', monospace;
+    'Droid Sans Mono', monospace;
 
   --bg-start-rgb: 214, 219, 220;
   --bg-end-rgb: 255, 255, 255;
@@ -97,6 +97,8 @@
   --shadow-card: 0px 1px 2px hsl(30, 20%, 50%, 0.2),
     0px 2px 4px hsl(30, 20%, 50%, 0.2), 0px 4px 8px hsl(30, 20%, 50%, 0.2),
     0px 8px 16px hsl(30, 20%, 50%, 0.2);
+
+    --fn-primary: 'Atkinson Hyperlegible', sans-serif;
 
   --scoped-base: #ffc600;
   --scoped-base-rgb: 255, 198, 0;
@@ -226,20 +228,33 @@
 }
 
 body {
+  --fn-primary: 'Atkinson Hyperlegible', sans-serif;
   display: flex;
   flex-direction: column;
-  font-family: 'Atkinson Hyperlegible';
+  font-family: var(--fn-primary);
 }
+
 
 .rtl {
   direction: rtl;
-  font-family: Lotus;
+}
+
+body.rtl {
+  --fn-primary: Lotus;
   line-height: 1.4;
   font-size: 1.125rem;
 }
 
 .ltr {
   direction: ltr;
+}
+
+body.ltr {
+  --fn-primary: 'Atkinson Hyperlegible';
+}
+
+body .ltr {
+  font-family: 'Atkinson Hyperlegible';
 }
 
 .center {

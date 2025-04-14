@@ -11,19 +11,17 @@ body ::selection {
 }
 
 body {
-  min-block-size: 100vh;
-  min-block-size: 100svh;
-  display: flex;
-  flex-direction: column;
   background-color: var(--blog-decorative-200);
   border-bottom: 3px solid var(--blog-decorative-600);
   color: var(--blog-text);
-  font-family: var(--fn-work-sans), sans-serif;
-  line-height: 1.5;
-  letter-spacing: -0.03125em;
-  -webkit-font-smoothing: antialiased;
-  transition: all 300ms ease-in-out;
 }
+
+/* .rtl {
+  direction: rtl;
+  font-family: Lotus;
+  line-height: 1.4;
+  font-size: 1.125rem;
+} */
 
 body::before {
   content: '';
