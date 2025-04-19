@@ -2,7 +2,6 @@
 import type {
   ReactNode,
   MouseEvent,
-  // ComponentPropsWithoutRef,
   ReactElement,
   ComponentPropsWithRef,
 } from 'react';

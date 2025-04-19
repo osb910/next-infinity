@@ -28,7 +28,7 @@
   max-width: var(--blog-outer-width);
   margin: 0 auto;
   background: var(--color-page-background);
-  box-shadow: var(--shadow-page);
+  text-shadow: var(--shadow-page);
 }
 
 .body p {

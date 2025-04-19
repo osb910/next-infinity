@@ -1,8 +1,4 @@
-interface TIMEObject {
-  [key: string]: number;
-}
-
-export const TIME: TIMEObject = Object.freeze({
+export const TIME = Object.freeze({
   SEC: 1000,
   GOLDEN_SEC: 1618,
   PI_SEC: 3141,

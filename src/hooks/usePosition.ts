@@ -2,6 +2,7 @@
 
 import {RefObject, useLayoutEffect, useRef, useState} from 'react';
 import useWindowSize from './useWindowSize';
+import useScroll from './useScroll';
 
 export type Position = {
   top: number;
@@ -26,6 +27,7 @@ const usePosition = <T extends HTMLElement = HTMLElement>(
   });
 
   const {width, height} = useWindowSize();
+  const {scrollPos} = useScroll();
 
   useLayoutEffect(() => {
     if (ref.current) {
@@ -40,7 +42,7 @@ const usePosition = <T extends HTMLElement = HTMLElement>(
       });
     }
     // eslint-disable-next-line
-  }, [width, height, ...deps]);
+  }, [width, height, scrollPos, ...deps]);
 
   return [position, ref];
 };

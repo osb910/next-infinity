@@ -36,13 +36,14 @@
   position: fixed;
   z-index: 3;
   inline-size: max-content;
+  max-block-size: 61.8vh;
   padding: 0;
   border: 2px solid currentColor;
   border-width: 0;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   list-style-type: none;
   cursor: pointer;
@@ -50,7 +51,7 @@
   box-shadow: var(--shadow-elevation-medium);
   backdrop-filter: blur(4px);
   background: var(--bg-menu);
-  overflow: clip;
+  /* overflow-y: auto; */
 }
 
 .lang {
@@ -75,7 +76,7 @@
 
 .lang p {
   pointer-events: none;
-  filter: drop-shadow(0 0 4px hsl(0, 0%, 13%, 0.5));
+  text-shadow: 0 0 6px hsl(0, 0%, 13%, 0.5);
 }
 
 .active {

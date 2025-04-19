@@ -114,7 +114,7 @@ const Localizer = ({
         `/${locale}`
       );
       router.prefetch(target);
-    }, TIME.goldenSec / 4);
+    }, TIME.GOLDEN_SEC / 4);
   };
 
   const onMouseEnter = async (evt: MouseEvent<HTMLLIElement>) => {
@@ -135,8 +135,8 @@ const Localizer = ({
     '--bg-hover': bgHover,
   };
 
-  const insetBlockStart = `calc(${position.top + position.height}px + 0.75em)`;
-  const insetInlineStart = `calc(${position.left}px - ${position.width}px / 2)`;
+  const insetBlockStart = `calc(${position.top + position.height}px + 1em)`;
+  const insetInlineStart = `calc(${position.left}px - ${position.width}px / 2 - 4px)`;
 
   return (
     <>
@@ -172,6 +172,7 @@ const Localizer = ({
                   filter: 'blur(0px)',
                   insetBlockStart,
                   insetInlineStart,
+                  overflowY: 'auto',
                 }
               : {
                   height: '0px',
@@ -179,13 +180,14 @@ const Localizer = ({
                   filter: 'blur(2px)',
                   insetBlockStart,
                   insetInlineStart,
+                  overflowY: 'hidden',
                 }
           }
           transition={{type: 'spring', damping: 20, stiffness: 450}}
         >
-          {langs.map(({name, code, dir}) => (
+          {langs.map(({name, code, dir}, idx) => (
             <li
-              key={code}
+              key={`${code}-${idx}`}
               className={clsx(
                 cls.lang,
                 cls[dir],
