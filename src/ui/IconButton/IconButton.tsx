@@ -64,8 +64,8 @@ export const IconButton = ({
 
   const transition = {
     type: 'spring',
-    damping: 30,
-    stiffness: 500,
+    damping: 25,
+    stiffness: 280,
     restDelta: 0.01,
     ...userTransition,
   };

@@ -71,7 +71,7 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 1.5rem;
-  color: var(--blog-primary-900);
+  color: var(--blog-primary-700);
 }
 
 .navItem .navLink svg {
@@ -83,7 +83,7 @@
 }
 
 .navItem .highlight {
-  background: var(--blog-decorative-500);
+  /* background: var(--blog-decorative-300); */
   box-shadow: var(--shadow-elevation-medium);
   filter: blur(1px);
 }
@@ -98,7 +98,7 @@
   block-size: 3px;
   margin: 0 auto;
   background: var(--blog-decorative-800);
-  opacity: 0.7;
+  opacity: 0.8;
   border-radius: 6px;
 }
 
@@ -135,6 +135,10 @@
 
   .navItem .navLink {
     font-size: 1.125rem;
+  }
+
+  :root[lang='ar'] .navItem .navLink {
+    font-size: 1.25rem;
   }
 
   .overlay {

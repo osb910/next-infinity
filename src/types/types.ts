@@ -27,13 +27,14 @@ export type GetP8n = (
 ) => P8n;
 
 export type ResponseStatus = 'success' | 'error' | 'warning' | 'notice';
+export type ErrorMap = {count: number} & Record<string, unknown>;
 
 export interface JsonRes<T = unknown> extends Partial<P8n> {
   status: ResponseStatus;
   code: number;
   message: string;
   data?: T;
-  errors?: {[x: string]: unknown};
+  errors?: ErrorMap;
 }
 
 export interface GeoLocation {
@@ -70,7 +71,7 @@ export type CSSProps = CSSProperties &
   Record<`--${string}`, string | number | undefined>;
 
 export type DottedPaths<
-  T extends {[x: string]: unknown} = Record<string, unknown>
+  T extends {[x: string]: unknown} = Record<string, unknown>,
 > = Join<PathsToStringProps<T>, '.'>;
 
 export type DotPathValue<T, S extends string> = PathValue<T, Split<S, '.'>>;

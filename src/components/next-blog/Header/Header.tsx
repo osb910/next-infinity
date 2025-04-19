@@ -27,8 +27,8 @@ const btnAnimation = {
 };
 
 const transition = {
-  damping: 10,
-  stiffness: 400,
+  damping: 20,
+  stiffness: 280,
 };
 
 const Header = async ({locale, theme}: HeaderProps) => {

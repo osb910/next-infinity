@@ -16,8 +16,8 @@ const Navigation = ({navLinks}: NavigationProps) => {
     width >= 768 || isOpen
       ? '0'
       : width >= 480
-      ? '-62%'
-      : 'calc(var(--width) * -1)';
+        ? '-62%'
+        : 'calc(var(--width) * -1)';
   return (
     <Nav
       className={clsx(cls.nav, isOpen && cls.open)}
@@ -35,10 +35,12 @@ const Navigation = ({navLinks}: NavigationProps) => {
             slug={to}
             key={to}
             className={cls.navItem}
-            highlightClass={cls.highlight}
+            // highlightClass={cls.highlight}
             highlightStyle={{
               borderRadius: 6,
               padding: '0.5em 1em',
+              background: 'var(--blog-decorative-300)',
+              zIndex: 0,
             }}
           >
             <NavLink

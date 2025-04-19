@@ -87,8 +87,8 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
     InputProps extends InputComponent
       ? HTMLInputElement
       : typeof Tag extends 'textarea'
-      ? HTMLTextAreaElement
-      : any
+        ? HTMLTextAreaElement
+        : any
   >;
   const appliedId = `${
     rest?.name ?? rest?.id ?? label?.replace?.(/\s/g, '-') ?? ''
@@ -153,8 +153,8 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
             {...(isTextAreaProps(props)
               ? {rows: 4}
               : rest.type === 'number'
-              ? {min: 1, step: 1}
-              : {type: 'text'})}
+                ? {min: 1, step: 1}
+                : {type: 'text'})}
             ref={ref ?? inputRef}
             {...rest}
             onChange={changeInput}
@@ -162,7 +162,11 @@ const Input = forwardRef<InputElement, InputProps>(function Input(props, ref) {
             onBlur={blurInput}
             id={appliedId}
             dir='auto'
-            style={{...rest.style, zIndex: focused === rest.name ? 1 : 2}}
+            style={{
+              ...rest.style,
+              zIndex: focused === rest.name ? 1 : 2,
+              borderRadius: backdropStyle?.borderRadius ?? 'inherit',
+            }}
           />
           {layoutId && focused === rest.name && (
             <MotionBackdrop

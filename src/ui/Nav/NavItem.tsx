@@ -21,7 +21,7 @@ export const NavItem = ({
     <motion.li
       {...rest}
       className={clsx(cls.navItem, rest.className)}
-      style={{...rest.style, zIndex: hoveredItem === slug ? 1 : 2}}
+      style={{...rest.style, zIndex: hoveredItem === slug ? 2 : 1}}
       onMouseEnter={(evt: MouseEvent<HTMLLIElement>) => {
         rest.onMouseEnter?.(evt);
         changeHovered(slug);
@@ -39,7 +39,8 @@ export const NavItem = ({
           transition={{
             type: 'spring',
             damping: 24,
-            stiffness: 400,
+            stiffness: 340,
+            restDelta: 0.001,
           }}
           {...backdropProps}
         />

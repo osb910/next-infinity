@@ -10,6 +10,7 @@ const contact = (locale: Locale, options?: Record<string, any>) => {
       nameLabel: 'الاسم',
       messageLabel: 'الرسالة',
       messagePlaceholder: 'بمَ أساعدك؟',
+      requiredField: 'هذه الخانة مطلوبة',
       sendBtn: 'أرسِل',
     },
     en: {
@@ -20,6 +21,7 @@ const contact = (locale: Locale, options?: Record<string, any>) => {
       nameLabel: 'Your Name',
       messageLabel: 'Your Message',
       messagePlaceholder: 'How can I help you?',
+      requiredField: 'This field is required',
       sendBtn: 'Send Message',
     },
   };

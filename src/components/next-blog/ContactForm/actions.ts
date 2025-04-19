@@ -1,12 +1,13 @@
 'use server';
 
-import {JsonRes} from '@/types';
+import {ErrorMap, JsonRes} from '@/types';
 import {getURL} from '@/utils/path';
 
 export type FormState = {
   status: 'success' | 'error' | 'warning' | 'notice';
   message: string | null;
   data: any | null;
+  errors?: ErrorMap;
 };
 
 type SendMessageAction = (
@@ -22,10 +23,12 @@ export const sendMessage: SendMessageAction = async (prev, body) => {
     });
     const json = (await res.json()) as JsonRes;
     const data = json.status === 'error' ? null : json.data;
+    const errors = json.status === 'error' ? json.errors : undefined;
     return {
       status: json.status,
       message: json.message,
       data,
+      errors,
     };
   } catch (err) {
     console.error(err);

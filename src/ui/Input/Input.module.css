@@ -41,6 +41,11 @@
   pointer-events: none;
 }
 
+.ctrl > section {
+  display: flex;
+  flex: 1 1 auto;
+}
+
 .input {
   position: relative;
   flex: 1 1 auto;

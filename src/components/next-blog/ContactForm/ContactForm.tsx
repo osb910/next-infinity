@@ -31,11 +31,12 @@ const ContactForm = ({l10n, dir}: ContactFormProps) => {
     status: 'notice',
     message: null,
     data: null,
+    errors: undefined,
   });
   const [focused, setFocused] = useState('');
   const [isCleared, setIsCleared] = useState(false);
   const form = useRef<HTMLFormElement & FormHandle>(null);
-  const {errors} = formState.data ?? {};
+  const {errors} = formState ?? {};
   const {createToast} = useToaster();
   const layoutId = `backdrop${useId()}`;
 
@@ -84,6 +85,7 @@ const ContactForm = ({l10n, dir}: ContactFormProps) => {
           layoutId={layoutId}
           backdropStyle={initial}
           invalidMsg={errors?.email?.[0]}
+          asteriskText={l10n.requiredField}
         />
         <Input
           label={l10n.nameLabel}
@@ -94,6 +96,7 @@ const ContactForm = ({l10n, dir}: ContactFormProps) => {
           layoutId={layoutId}
           backdropStyle={initial}
           invalidMsg={errors?.name?.[0]}
+          asteriskText={l10n.requiredField}
         />
         <Input
           as='textarea'
@@ -107,6 +110,8 @@ const ContactForm = ({l10n, dir}: ContactFormProps) => {
           layoutId={layoutId}
           backdropStyle={initial}
           invalidMsg={errors?.message?.[0]}
+          removeExternalTabs={false}
+          asteriskText={l10n.requiredField}
         />
         <Submit
           onFocus={() => changeFocused('submit')}

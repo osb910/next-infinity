@@ -160,7 +160,7 @@ const Localizer = ({
           </p>
         )}
       </IconButton>
-      <Portal style='z-index: 3;'>
+      <Portal style='z-index: 4;'>
         <motion.ul
           className={clsx(cls.langs)}
           style={{color: rest.style?.color, ...style}}
