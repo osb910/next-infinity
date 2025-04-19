@@ -13,7 +13,8 @@ import Spinner from '@/ui/Spinner';
 import cls from './Localizer.module.css';
 import type {CSSProps, Lang} from '@/types';
 import {TIME} from '@/utils/constants';
-// import {defaultLocale} from '@/l10n/config';
+import Portal from '../Portal';
+import usePosition from '@/hooks/usePosition';
 
 export type LocalizerProps = Partial<IconButtonProps> & {
   langs: Array<Lang>;
@@ -26,6 +27,7 @@ export type LocalizerProps = Partial<IconButtonProps> & {
   bg?: string;
   bgMenu?: string;
   bgActive?: string;
+  bgHover?: string;
 };
 
 const Localizer = ({
@@ -37,8 +39,9 @@ const Localizer = ({
   defaultLocale = 'en',
   radius = '6px',
   bg = 'transparent',
-  bgMenu = 'var(--gray-500)',
-  bgActive = 'var(--gray-700)',
+  bgMenu = 'var(--gray-300)',
+  bgActive = 'var(--gray-500)',
+  bgHover = 'var(--gray-400)',
   ...rest
 }: LocalizerProps) => {
   const router = useRouter();
@@ -47,6 +50,8 @@ const Localizer = ({
   const [isOpen, toggleIsOpen] = useToggle();
   const [targetLocale, setTargetLocale] = useState<string>('');
   const language = langs.find((lang) => lang.code === locale);
+
+  const [position, btnRef] = usePosition<HTMLButtonElement>([locale]);
 
   // close on click outside this component
   useEffect(() => {
@@ -122,90 +127,84 @@ const Localizer = ({
     prefetch(locale as Locale);
   };
 
-  const height = `${langs.length * 100}% + ${langs.length * 2 + 1}px`;
-
-  // Define variants outside of the return statement
-  // const listVariants = {
-  //   open: {
-  //     blockSize: `calc(${height})`,
-  //     borderWidth: '2px',
-  //     filter: 'blur(0px)',
-  //   },
-  //   closed: {
-  //     blockSize: '0',
-  //     borderWidth: '0',
-  //     filter: 'blur(2px)',
-  //   },
-  // };
-
   const style: CSSProps = {
     '--border-radius': radius,
     '--bg': bg,
     '--bg-menu': bgMenu,
     '--bg-active': bgActive,
+    '--bg-hover': bgHover,
   };
 
+  const insetBlockStart = `calc(${position.top + position.height}px + 0.75em)`;
+  const insetInlineStart = `calc(${position.left}px - ${position.width}px / 2)`;
+
   return (
-    <IconButton
-      icon={
-        <figure className={cls.icons}>
-          <Globe />
-          <ChevronDown className={clsx(cls.chevron, isOpen && cls.up)} />
-        </figure>
-      }
-      {...rest}
-      className={clsx(cls.localizer, rest.className)}
-      style={{...style, ...rest.style}}
-      highlightDeps={[locale]}
-      onClick={() => toggleIsOpen()}
-    >
-      {displayLang && (
-        <p className={clsx(cls.currentLang, 'current-lang')}>
-          {language?.name}
-        </p>
-      )}
-      <motion.ul
-        // className={cls.langs}
-        // variants={listVariants}
-        // initial='closed'
-        // animate={isOpen ? 'open' : 'closed'}
-        className={clsx(cls.langs)}
-        animate={
-          isOpen
-            ? {
-                blockSize: `calc(${height})`,
-                borderWidth: '2px',
-                filter: 'blur(0px)',
-              }
-            : {
-                blockSize: '0',
-                borderWidth: '0',
-                filter: 'blur(2px)',
-              }
+    <>
+      <IconButton
+        icon={
+          <figure className={cls.icons}>
+            <Globe />
+            <ChevronDown className={clsx(cls.chevron, isOpen && cls.up)} />
+          </figure>
         }
-        transition={{type: 'spring', damping: 18, stiffness: 450}}
+        {...rest}
+        ref={btnRef}
+        className={clsx(cls.localizer, rest.className)}
+        style={{...style, ...rest.style}}
+        highlightDeps={[locale]}
+        onClick={() => toggleIsOpen()}
       >
-        {langs.map(({name, code, dir}) => (
-          <li
-            key={code}
-            className={clsx(
-              cls.lang,
-              cls[dir],
-              code === language?.code && cls.active
-            )}
-            data-locale={code}
-            onClick={changeLocale}
-            onMouseEnter={onMouseEnter}
-            onFocus={onFocus}
-            dir='auto'
-          >
-            <p>{name}</p>
-            {targetLocale === code && <Spinner color='currentColor' />}
-            {code === language?.code && <Check />}
-          </li>
-        ))}
-      </motion.ul>
-    </IconButton>
+        {displayLang && (
+          <p className={clsx(cls.currentLang, 'current-lang')}>
+            {language?.name}
+          </p>
+        )}
+      </IconButton>
+      <Portal style='z-index: 3;'>
+        <motion.ul
+          className={clsx(cls.langs)}
+          style={{color: rest.style?.color, ...style}}
+          animate={
+            isOpen
+              ? {
+                  height: 'auto',
+                  borderWidth: '2px',
+                  filter: 'blur(0px)',
+                  insetBlockStart,
+                  insetInlineStart,
+                }
+              : {
+                  height: '0px',
+                  borderWidth: '0px',
+                  filter: 'blur(2px)',
+                  insetBlockStart,
+                  insetInlineStart,
+                }
+          }
+          transition={{type: 'spring', damping: 20, stiffness: 450}}
+        >
+          {langs.map(({name, code, dir}) => (
+            <li
+              key={code}
+              className={clsx(
+                cls.lang,
+                cls[dir],
+                code === language?.code && cls.active
+              )}
+              data-locale={code}
+              onClick={changeLocale}
+              onMouseEnter={onMouseEnter}
+              onFocus={onFocus}
+              dir='auto'
+            >
+              <p>{name}</p>
+              {targetLocale === code && <Spinner color='currentColor' />}
+              {code === language?.code && <Check />}
+            </li>
+          ))}
+        </motion.ul>
+      </Portal>
+    </>
   );
 };
 

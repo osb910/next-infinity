@@ -135,7 +135,15 @@
   --blog-decorative-700: hsl(50, 100%, 50%);
   --blog-decorative-800: hsl(50, 100%, 33%);
   --blog-decorative-900: hsl(50, 100%, 25%);
-  --blog-bg-decorative: hsl(50, 100%, 85%, 0.7)
+  --blog-decorative-hsl-100: 50, 100%, 94%;
+  --blog-decorative-hsl-200: 50, 100%, 90%;
+  --blog-decorative-hsl-300: 50, 100%, 85%;
+  --blog-decorative-hsl-500: 50, 100%, 70%;
+  --blog-decorative-hsl-600: 50, 100%, 60%;
+  --blog-decorative-hsl-700: 50, 100%, 50%;
+  --blog-decorative-hsl-800: 50, 100%, 33%;
+  --blog-decorative-hsl-900: 50, 100%, 25%;
+  --blog-bg-decorative: hsl(50, 100%, 85%, 0.5);
 
   --blog-backdrop: var(--blog-decorative-500);
   --blog-backdrop-highlight: var(--blog-decorative-300);
@@ -213,6 +221,14 @@
   --blog-decorative-700: hsl(256, 40%, 50%);
   --blog-decorative-800: hsl(256, 45%, 65%);
   --blog-decorative-900: hsl(256, 55%, 80%);
+  --blog-decorative-hsl-100: 256, 20%, 4%;
+  --blog-decorative-hsl-200: 256, 30%, 10%;
+  --blog-decorative-hsl-300: 256, 30%, 15%;
+  --blog-decorative-hsl-500: 256, 40%, 30%;
+  --blog-decorative-hsl-600: 256, 40%, 40%;
+  --blog-decorative-hsl-700: 256, 40%, 50%;
+  --blog-decorative-hsl-800: 256, 45%, 65%;
+  --blog-decorative-hsl-900: 256, 55%, 80%;
   --blog-bg-decorative: hsl(256, 30%, 15%, 0.7)
 
   --blog-backdrop: var(--blog-decorative-100);

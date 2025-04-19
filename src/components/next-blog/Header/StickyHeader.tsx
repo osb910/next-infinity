@@ -4,6 +4,7 @@ import {type ReactNode, type ComponentPropsWithoutRef} from 'react';
 import {motion, type MotionProps} from 'framer-motion';
 import useScroll from '@/hooks/useScroll';
 import useWindowSize from '@/hooks/useWindowSize';
+import {useNav} from '@/ui/Nav';
 
 export type StickyHeaderProps = ComponentPropsWithoutRef<'header'> &
   Partial<MotionProps> & {
@@ -18,12 +19,16 @@ const StickyHeader = ({
 }: StickyHeaderProps) => {
   const {scrollDir} = useScroll();
   const {width} = useWindowSize();
+  const {isOpen} = useNav();
 
   const needsHiding = width >= (minWindowWidth ?? 50) && scrollDir === 'down';
 
   return (
     <motion.header
-      animate={{translateY: needsHiding ? '-100%' : '0%'}}
+      animate={{
+        translateY: needsHiding ? '-100%' : '0%',
+        backdropFilter: isOpen ? 'unset ' : 'blur(4px)',
+      }}
       {...rest}
       // transition={{
       //   type: 'spring',

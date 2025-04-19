@@ -31,7 +31,7 @@ const transition = {
   stiffness: 400,
 };
 
-const Header = async ({locale}: HeaderProps) => {
+const Header = async ({locale, theme}: HeaderProps) => {
   const {l6e} = await localize(locale);
 
   const navLinks = [
@@ -99,8 +99,10 @@ const Header = async ({locale}: HeaderProps) => {
             langs={langs}
             method='cookie'
             className={cls.localizer}
-            bgMenu='var(--bg-gdt-1)'
-            bgActive='var(--bg-gdt-3)'
+            style={{color: 'var(--blog-primary-700)'}}
+            bgMenu='transparent'
+            bgActive='hsl(var(--blog-decorative-hsl-500), 0.6)'
+            bgHover='hsl(var(--blog-decorative-hsl-300), 0.6)'
             displayLang
             transition={transition}
             whileHover={{...btnAnimation, scale: 1}}

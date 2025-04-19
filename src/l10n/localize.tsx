@@ -7,6 +7,19 @@ import {getDeepProp} from '@/utils/objects';
 import {defaultLocale, languages} from './config';
 import type {Dictionary, L6eComponent, L6eFn, Locale} from './l10n.types';
 import type {Dir, DotPathValue} from '@/types';
+import {type MDXComponents} from 'next-mdx-remote-client/rsc';
+
+const components: MDXComponents = {
+  a: ({href, ...props}) => (
+    <Link
+      href={href ?? '#'}
+      {...(href.startsWith('http') && {
+        target: '_blank',
+      })}
+      {...props}
+    />
+  ),
+};
 
 export const localize = cache(async (locale?: Locale | null) => {
   const usedLocale = locale ?? defaultLocale;
@@ -15,20 +28,31 @@ export const localize = cache(async (locale?: Locale | null) => {
 
   const l6e: L6eFn = (key, options) => {
     const dictionary = THE_DICTIONARY(usedLocale, options);
-    const value = (getDeepProp(dictionary, key) ?? '') as DotPathValue<
+    let value = (getDeepProp(dictionary, key) ?? '') as DotPathValue<
       Dictionary,
       typeof key
     >;
 
+    if (!value) {
+      console.error(`Missing translation for key: ${key}`);
+      const dictionary = THE_DICTIONARY(defaultLocale, options);
+      value = (getDeepProp(dictionary, key) ?? '') as DotPathValue<
+        Dictionary,
+        typeof key
+      >;
+    }
+
     let text;
     if (typeof value === 'string' && /ar(-[A-Z]{2})?/.test(usedLocale)) {
-      text = value.replace(
-        /(?<![\p{Script=Latin}\d])\d+(?![\p{Script=Latin}\d])/gu,
-        (m) =>
-          (+m).toLocaleString('ar-EG', {
-            useGrouping: false,
-          })
-      );
+      text = value
+        .replace(
+          /(?<![\p{Script=Latin}\d])\d+(?![\p{Script=Latin}\d])/gu,
+          (m) =>
+            (+m).toLocaleString('ar-EG', {
+              useGrouping: false,
+            })
+        )
+        .trim();
     } else {
       text = value;
     }
@@ -37,10 +61,19 @@ export const localize = cache(async (locale?: Locale | null) => {
 
   const L6e: L6eComponent = ({k, forceMdx = false, options, ...rest}) => {
     const dictionary = THE_DICTIONARY(usedLocale, options);
-    const value = (getDeepProp(dictionary, k) ?? '') as DotPathValue<
+    let value = (getDeepProp(dictionary, k) ?? '') as DotPathValue<
       Dictionary,
       typeof k
     >;
+
+    if (!value) {
+      console.error(`Missing translation for key: ${k}`);
+      const dictionary = THE_DICTIONARY(defaultLocale, options);
+      value = (getDeepProp(dictionary, k) ?? '') as DotPathValue<
+        Dictionary,
+        typeof k
+      >;
+    }
 
     if (typeof value !== 'string') return <>{JSON.stringify(value, null, 2)}</>;
 
@@ -63,17 +96,7 @@ export const localize = cache(async (locale?: Locale | null) => {
     return renderMdx ? (
       <Mdx
         source={text}
-        components={{
-          a: ({href, ...props}) => (
-            <Link
-              href={href ?? '#'}
-              {...(href.startsWith('http') && {
-                target: '_blank',
-              })}
-              {...props}
-            />
-          ),
-        }}
+        components={components}
         {...rest}
       />
     ) : (

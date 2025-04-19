@@ -20,9 +20,10 @@
   transform: rotate(-180deg);
 }
 
-.rtl .currentLang {
+:root[lang='ar'] .currentLang {
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
+  font-family: Lotus, Calibri;
 }
 
 .currentLang {
@@ -32,10 +33,9 @@
 }
 
 .langs {
-  position: absolute;
-  inset-block-start: calc(100% + 1rem);
+  position: fixed;
+  z-index: 3;
   inline-size: max-content;
-  block-size: 0;
   padding: 0;
   border: 2px solid currentColor;
   border-width: 0;
@@ -50,7 +50,7 @@
   box-shadow: var(--shadow-elevation-medium);
   backdrop-filter: blur(4px);
   background: var(--bg-menu);
-  overflow: hidden;
+  overflow: clip;
 }
 
 .lang {
@@ -64,8 +64,9 @@
   text-align: center;
 }
 
-.lang.rtl {
-  font-size: 1.125em;
+.lang.rtl p {
+  font-size: 1.25em;
+  font-family: Lotus, Calibri;
 }
 
 .lang.ltr {
@@ -74,7 +75,7 @@
 
 .lang p {
   pointer-events: none;
-  filter: drop-shadow(0 0 3px #fff);
+  filter: drop-shadow(0 0 4px hsl(0, 0%, 13%, 0.5));
 }
 
 .active {
@@ -84,5 +85,5 @@
 }
 
 .lang:where(:hover, :focus) {
-  background: var(--bg-active);
+  background: var(--bg-hover);
 }

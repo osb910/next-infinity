@@ -11,7 +11,6 @@
   gap: 1.75em;
   border-bottom: 2px dashed var(--blog-decorative-800);
   background-color: var(--blog-bg-decorative);
-  backdrop-filter: blur(4px);
 }
 
 .header::after {
@@ -45,6 +44,8 @@
 @media (min-width: 48rem) {
   .header {
     flex-flow: row nowrap;
+    backdrop-filter: blur(4px);
+    background: transparent;
   }
 
   .logo {
@@ -67,7 +68,6 @@
   flex-shrink: 0;
 }
 
-/* .localizer {
-  position: relative;
-  z-index: 3;
-} */
+.localizer {
+  color: var(--blog-primary-700);
+}

@@ -2,8 +2,9 @@
 import type {
   ReactNode,
   MouseEvent,
-  ComponentPropsWithoutRef,
+  // ComponentPropsWithoutRef,
   ReactElement,
+  ComponentPropsWithRef,
 } from 'react';
 import {
   motion,
@@ -15,7 +16,7 @@ import clsx from 'clsx';
 import useSfx from '@/ui/SfxSwitch/useSfx';
 import cls from './IconButton.module.css';
 
-export type IconButtonProps = ComponentPropsWithoutRef<'button'> &
+export type IconButtonProps = ComponentPropsWithRef<'button'> &
   Partial<MotionProps> & {
     icon: ReactElement;
     noSfx?: boolean;

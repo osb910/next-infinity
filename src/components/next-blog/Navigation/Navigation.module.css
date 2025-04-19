@@ -19,8 +19,8 @@
 .navBar {
   --bg: linear-gradient(
     to bottom,
-    var(--decorative-200),
-    var(--decorative-500)
+    hsl(var(--blog-decorative-hsl-200), 0.7),
+    hsl(var(--blog-decorative-hsl-500), 0.7)
   );
   --tail-width: 4%;
   --width: calc(100% + var(--tail-width));
@@ -37,9 +37,10 @@
   justify-content: center;
   gap: 3em;
   background: var(--bg);
+  /* backdrop-filter: blur(4px); */
 }
 
-.navBar::before {
+/* .navBar::before {
   content: '';
   position: absolute;
   z-index: 2;
@@ -48,7 +49,7 @@
   block-size: 100%;
   background: var(--bg);
   filter: blur(1px);
-}
+} */
 
 /* .overlay {
   background-color: rgba(40, 40, 40, 0.5);
