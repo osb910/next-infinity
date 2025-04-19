@@ -52,7 +52,7 @@ const ContactForm = ({l10n, dir}: ContactFormProps) => {
       setTimeout(() => {
         form.current?.clear();
         setIsCleared(true);
-      }, TIME.goldenSec / 1.5);
+      }, TIME.GOLDEN_SEC / 1.5);
     }
   }, [formState, createToast]);
 

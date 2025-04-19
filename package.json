@@ -84,7 +84,7 @@
     "reading-time": "^1.5.0",
     "regex": "^6.0.1",
     "request-ip": "^3.3.0",
-    "resend": "^3.3.0",
+    "resend": "^4.3.0",
     "rlayers": "^3.6.0",
     "rss": "^1.2.2",
     "sharp": "^0.34.0",

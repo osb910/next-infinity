@@ -1,5 +1,10 @@
 import {type ChangeEvent} from 'react';
 import cls from './RegexInput.module.css';
+import clsx from 'clsx';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
 
 interface RegexInputProps {
   value: string;
@@ -8,6 +13,17 @@ interface RegexInputProps {
   onFlagsChange: (flags: string[]) => void;
   isValid: boolean;
 }
+
+const flagsMap = [
+  {
+    value: 'v',
+    label: 'Version1',
+  },
+  {
+    value: 'i',
+    label: 'Case insensitive',
+  },
+];
 
 const RegexInput = ({
   value,
@@ -24,6 +40,10 @@ const RegexInput = ({
     onFlagsChange(e.target.value);
   };
 
+  const changeFlags = (data) => {
+    console.log({data});
+  };
+
   return (
     <div className={cls.container}>
       <label
@@ -33,7 +53,7 @@ const RegexInput = ({
         Regular Expression
       </label>
       <div className={cls.inputWrapper}>
-        <span className={cls.delimiter}>/</span>
+        <span className={clsx(cls.delimiter, 'no-interaction')}>/</span>
         <input
           id='regex-input'
           type='text'
@@ -42,7 +62,26 @@ const RegexInput = ({
           className={`${cls.input} ${!isValid ? cls.invalid : ''}`}
           placeholder='Enter your regex pattern'
         />
-        <span className={cls.delimiter}>/</span>
+        <span className={clsx(cls.delimiter, 'no-interaction')}>/</span>
+        <Select
+          // inputId={appliedId}
+          name='flags'
+          defaultValue={[flagsMap[0]]}
+          inputValue={value}
+          isMulti
+          options={flagsMap}
+          // onInputChange={handleFlagsChange}
+          onChange={changeFlags}
+          components={animatedComponents}
+          className='basic-multi-select'
+          classNamePrefix='select'
+          closeMenuOnSelect={false}
+          isClearable
+          isSearchable
+          noOptionsMessage='All flags used'
+          placeholder='Flags'
+          hideSelectedOptions={false}
+        />
         <input
           type='text'
           value={flags}

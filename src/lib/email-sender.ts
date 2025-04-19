@@ -1,36 +1,60 @@
-import {Resend} from 'resend';
+import {
+  Resend,
+  type CreateEmailOptions,
+  type CreateEmailRequestOptions,
+} from 'resend';
+import {jsonifyError} from './helpers';
 
-export type Email = {
-  email: string;
-  subject: string;
-  react: JSX.Element;
-  sender?: string;
-  username?: string;
+export type Postman = Omit<CreateEmailOptions, 'to' | 'from'> & {
+  title: string;
+  sender: string;
+  to: string | Array<string>;
+  domain?: string;
 };
 
-export default async function sendEmail({
-  email,
-  subject,
-  react,
-  sender = 'Omar',
-  username = 'next',
-}: Email) {
-  const resend = new Resend(process.env.RESEND_API_KEY!);
+const postman = async (
+  mail: Postman,
+  requestOptions?: CreateEmailRequestOptions
+) => {
+  const {to, subject, title, sender, domain, ...rest} = mail;
+  if (!process.env.RESEND_API_KEY) {
+    return jsonifyError({
+      code: 500,
+      message: 'RESEND_API_KEY is not defined',
+    });
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const from = `${title} ${'<'}${sender}@${domain ?? 'resend.dev'}>`;
+
+  const recipient = Array.isArray(to) ? to : [to];
 
   try {
-    const {data, error} = await resend.emails.send({
-      from: `${sender} <${username}@resend.dev>`,
-      to: [email],
-      subject,
-      react,
-    });
-    console.log({data});
+    const {data, error} = await resend.emails.send(
+      {
+        from,
+        to: recipient,
+        subject,
+        ...rest,
+        react: rest.react,
+      },
+      requestOptions
+    );
+
     if (error || !data) {
-      throw new Error(error!.message);
+      return jsonifyError({code: 500, message: error?.message});
     }
-    return data;
+
+    return {
+      status: 'success',
+      message: 'Email sent successfully',
+      code: 200,
+      data,
+    };
   } catch (err) {
-    if (!(err instanceof Error)) return;
-    console.error(err);
+    return jsonifyError({err});
   }
-}
+};
+
+export default postman;

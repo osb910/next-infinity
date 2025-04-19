@@ -1,20 +1,24 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {contactValidator} from '@/lib/validators';
 import {createMsg} from '@/services/next-blog/message';
+import {jsonifyError} from '@/lib/helpers';
 
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.formData();
     const {email, name, message} = Object.fromEntries(body.entries());
-    const {validated, errorMap} = contactValidator({email, name, message});
+    const {validated, errorMap} = contactValidator({
+      email: email.toString(),
+      name: name.toString(),
+      message: message.toString(),
+    });
     if (errorMap.count)
       return NextResponse.json(
-        {
-          status: 'error',
-          message: 'Invalid input. Please fix any errors and try again.',
+        jsonifyError({
           code: 422,
-          data: {errors: errorMap},
-        },
+          errorMap,
+          message: 'Invalid input. Please fix any errors and try again.',
+        }),
         {status: 422}
       );
     const {doc} = await createMsg({
@@ -25,17 +29,13 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         status: 'success',
+        code: 200,
         message: 'Message received. Thank you.',
         data: doc,
       },
       {status: 200}
     );
   } catch (err) {
-    if (!(err instanceof Error)) return;
-    console.error(err);
-    return NextResponse.json(
-      {status: 'error', message: err.message, code: 500},
-      {status: 500}
-    );
+    return NextResponse.json(jsonifyError({err}), {status: 500});
   }
 };
