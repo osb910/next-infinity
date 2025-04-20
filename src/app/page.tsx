@@ -4,10 +4,12 @@ import Logo from '@/components/Logo';
 import {getDirInfo} from '@/utils/file';
 import styles from './page.module.css';
 import {getDependency} from '@/utils/path';
+import Magnetic from '@/ui/Magnetic';
+import Button from '@/ui/Button';
 
 const Home = async () => {
   try {
-    const nextVersion = await getDependency('next');
+    const nextVersion = (await getDependency('next')).replace(/^\^/, '');
     const appPath = 'src/app';
     const appDirPromise = getDirInfo(appPath, {
       filter: ['api', 'mini-apps', 'test', 'py-regex'],

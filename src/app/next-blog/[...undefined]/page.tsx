@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import type {AppPage, GetMetadata} from '@/types';
-import styles from '../HomePage.module.css';
+// import cls from '../HomePage.module.css';
+import {getLocale} from '@/l10n/getL10n';
+import {localize} from '@/l10n';
 
 type Params = {undefined: Array<string>};
 type SearchParams = {type: string};
@@ -12,25 +14,45 @@ export const generateMetadata: UndefinedMetadata = async ({
   params,
   searchParams,
 }) => {
-  const {undefined} = await params;
-  const {type} = await searchParams;
+  const [{undefined}, {type}, locale] = await Promise.all([
+    params,
+    searchParams,
+    getLocale(),
+  ]);
+  const {l6e} = await localize(locale);
   return {
-    title: `${type ?? 'Page'} Not Found at ${undefined}`,
+    title: l6e('nextBlog.home.notFound.title', {
+      pageType: type,
+    }),
+    description: l6e('nextBlog.home.notFound.description', {
+      pageType: type,
+      path: undefined.join('/'),
+    }),
   };
 };
 
 const Undefined: UndefinedPg = async ({params, searchParams}) => {
-  const {undefined} = await params;
-  const {type} = await searchParams;
+  const [{undefined}, {type}, locale] = await Promise.all([
+    params,
+    searchParams,
+    getLocale(),
+  ]);
+  const {l6e} = await localize(locale);
   return (
     <>
-      <h1>{type ?? 'Page'} not found</h1>
+      <h1>
+        {l6e('nextBlog.home.notFound.title', {
+          pageType: type,
+        })}
+      </h1>
       <section>
         <p>
-          The {type ? type.toLowerCase() : 'page'} you are looking for at
-          &ldquo;{undefined.join('/')}&rdquo; does not exist.
+          {l6e('nextBlog.home.notFound.description', {
+            pageType: type,
+            path: undefined.join('/'),
+          })}
         </p>
-        <Link href='/next-blog'>Return Home</Link>
+        <Link href='/next-blog'>{l6e('nextBlog.home.notFound.goHome')}</Link>
       </section>
     </>
   );
